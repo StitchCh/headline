@@ -1,0 +1,31 @@
+/* app过渡动画 */
+.in-app-enter-active, .in-app-leave-active {transform: scale(1);opacity: 1;transition: opacity .4s linear, transform .4s ease;}
+.in-app-enter{transform: scale(0.9)!important;opacity: 0;}
+.in-app-leave-to{transform: scale(1.1)!important;opacity: 0;}
+
+.out-app-enter-active, .out-app-leave-active{transform: scale(1);opacity: 1;transition: opacity .4s linear, transform .4s ease;}
+.out-app-enter{transform: scale(1.1)!important;opacity: 0;}
+.out-app-leave-to{transform: scale(0.9)!important;opacity: 0;}
+
+.fade-app-enter-active, .fade-app-leave-active{opacity: 1;transition: opacity .3s linear;}
+.fade-app-enter{opacity: 0;}
+.fade-app-leave-to{opacity: 0;}
+
+.route-enter-active, .route-leave-active{transform: translateX(0);opacity: 1;transition: opacity .25s linear, transform .25s ease;}
+.route-enter{transform: translateY(5px);opacity: 0;}
+.route-leave-to{transform: translateY(-5px);opacity: 0;}
+
+
+/* 公共过渡动画 */
+.fade-enter-active, .fade-leave-active{opacity: 1;transition: opacity .3s linear;}
+.fade-enter, .fade-leave-to{opacity: 0;}
+
+.slide-y-enter-active, .slide-y-leave-active{transform: translateY(0);opacity: 1;transition: opacity .3s linear, transform .3s ease;}
+.slide-y-enter, .slide-y-leave-to{transform: translateY(5px);opacity: 0;}
+
+.slide-x-enter-active, .slide-x-leave-active{transform: translateX(0);opacity: 1;transition: opacity .3s linear, transform .3s ease;}
+.slide-x-enter, .slide-x-leave-to{transform: translateX(-5px);opacity: 0;}
+
+.list-complete-item {transition: all .3s;}
+.list-complete-enter, .list-complete-leave-to {opacity: 0;transform: translateX(-20px);}
+.list-complete-leave-active {position: absolute;width: 100%;}

@@ -1,0 +1,84 @@
+html, body{width: 100%;height: 100%;overflow: hidden;}
+body{
+  margin: 0;
+  font-family: 'SFNSText', 'Helvetica Neue', sans-serif, 'Microsoft Yahei';
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  transform: translate3d(0,0,0);
+  background: #fff;
+  line-height: 1.45em;
+}
+input{outline: none;padding: 0;}
+button{padding: 0;-webkit-appearance: none;border-radius: 0;border: none;outline: none;cursor: pointer;}
+svg, img{vertical-align: middle;}
+div{overflow: visible;box-sizing: border-box;outline: none;}
+ul, li, dl, dt, dd{list-style-type: none;margin: 0;padding: 0;}
+table{width: 100%;border-collapse: collapse;text-align: left;}
+h1, h2, h3, h4, h5, h6{font-weight: normal;}
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../font/MaterialIcons-Regular.woff2) format('woff2');
+}
+.icon {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  // width: 24px;
+  overflow: hidden;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga';
+  transition: color .4s;
+  user-select: none;
+  vertical-align: middle;
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+.scroll{overflow: auto;}
+.scroll-x{overflow-x: auto;overflow-y: hidden;}
+.scroll-y{overflow-y: auto;overflow-x: hidden;}
+.hidden{overflow: hidden;}
+
+.flex{display: flex;}
+.flex-col{display: flex;flex-direction: column;}
+.flex-v-center{display: flex;align-items: center;}
+.flex-h-center{display: flex;justify-content: center;}
+.flex-center{display: flex;justify-content: center;align-items: center;}
+.flex-item{flex: 1;}
+
+.t-center{text-align: center;}
+.t-left{text-align: left;}
+.t-right{text-align: right;}
+
+.abs{position: absolute;width: 100%;height: 100%;left: 0;top: 0;}
+.relative{position: relative;}
+
+.a{cursor: pointer;}
+.b{font-weight: bold;}
+
+/* 保留换行符 */
+.pre-wrap{white-space: pre-wrap;}
+
+/* 滚动条 */
+.win32 div::-webkit-scrollbar{width: 8px;height: 8px;background: transparent;padding-right: 2px;} /* 滚动条整体部分，可以设置宽度啥的 */
+.win32 div::-webkit-scrollbar-thumb{background: rgba(0, 0, 0, .2);border-radius: 1px;} /* 滚动的滑块 */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button{-webkit-appearance: none !important;margin: 0;}
+input[type="number"]{-moz-appearance:textfield;}

@@ -1,0 +1,20 @@
+.top-bar{position: relative;height: 60px;padding: 10px;box-shadow: 0 1px 0 rgba(0, 0, 0, .07);background: #fff;z-index: 10;transition: all .3s;}
+.card{background: #fff;border-radius: 2px;box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15)}
+
+.tooltip{position: absolute;background: rgba(0, 0, 0, 1);padding: 5px 8px;border-radius: 5px;z-index: 20;color: #fff;
+  text-align: left;font-size: 12px;line-height: 14px;white-space: nowrap;
+  transition: opacity .4s;font-family: 'SFNSText', 'Helvetica Neue', sans-serif, 'Microsoft Yahei'}
+.tooltip-el{position: relative;}
+.tooltip:after{content: '';position: absolute;display: block;width: 0;height: 0;border-style: solid;border-color: transparent;}
+.tooltip-top:after{border-width: 4px 4px 0 4px;border-top-color: rgba(0, 0, 0, 1);top: 100%;margin-left: -4px;left: 50%;}
+.tooltip-bottom:after{border-width: 0 4px 4px 4px;border-bottom-color: rgba(0, 0, 0, 1);bottom: 100%;margin-left: -4px;left: 50%;}
+.tooltip-left:after{border-width: 4px 0 4px 4px;border-left-color: rgba(0, 0, 0, 1);left: 100%;margin-top: -4px;top: 50%;}
+.tooltip-right:after{border-width: 4px 4px 4px 0;border-right-color: rgba(0, 0, 0, 1);right: 100%;margin-top: -4px;top: 50%;}
+.tooltip.tooltip-break{white-space: normal;width: 200px;word-break: break-all;}
+
+// APP FRAME 前缀 af
+.af-left{width: 200px;border-right: 1px solid rgba(0, 0, 0, .1)}
+.af-center{width: 400px;border-right: 1px solid rgba(0, 0, 0, .1)}
+.af-right{flex: 1;}
+.af-topbar{display: flex;align-items: center;height: 45px;border-bottom: 1px solid #eee;}
+.af-bottombar{display: flex;align-items: center;height: 40px;border-top: 1px solid #eee;}
