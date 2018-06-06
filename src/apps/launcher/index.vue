@@ -93,6 +93,7 @@ export default {
     &:active{opacity: .8;}
   }
   .app-name{font-weight: 300;font-size: 20px;}
+  .notification-toggler, .account-toggler{color: #fff;}
 }
 @media screen and (max-width: 1250px) {
   .app-launcher{

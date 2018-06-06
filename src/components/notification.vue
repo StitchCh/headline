@@ -1,6 +1,6 @@
 <template>
 <div class="notification">
-  <icon-btn class="c-f a" @click="show=true">mail_outline</icon-btn>
+  <icon-btn class="c-6 a notification-toggler" @click="show=true">mail_outline</icon-btn>
   <layer v-if="show" side mask-click @close="show=false" width="360px">
     <div class="abs flex-center c-a">
       <div class="t-center">

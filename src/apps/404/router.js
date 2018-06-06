@@ -2,5 +2,5 @@ export default {
   path: '*',
   name: '404',
   component: resolve => require(['@/apps/404/index.vue'], resolve),
-  meta: { title: '中俄头条' }
+  meta: { title: 'CCTP' }
 }

@@ -1,7 +1,7 @@
 <template>
-<div class="account flex-v-center">
+<div class="account c-6 flex-v-center">
   <div class="relative">
-    <div class="flex-v-center a" @click="menuShow=true">
+    <div class="flex-v-center a account-toggler" @click="menuShow=true">
       <span>超级管理员</span>
       <i class="icon">keyboard_arrow_down</i>
     </div>
