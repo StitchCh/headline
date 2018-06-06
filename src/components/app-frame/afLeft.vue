@@ -25,7 +25,7 @@ export default {
 </script>
 
 <style lang="less">
-.af-left{
+.af-left{width: 200px;border-right: 1px solid rgba(0, 0, 0, .1);background: #e2f1fa;
   //
 }
 </style>
