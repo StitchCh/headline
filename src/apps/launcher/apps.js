@@ -4,8 +4,8 @@ export default [{
   icon: 'icon-article'
 }, {
   name: '图集',
-  path: '/photos',
-  icon: 'icon-photos'
+  path: '/gallery',
+  icon: 'icon-gallery'
 }, {
   name: '视频',
   path: '/videos',

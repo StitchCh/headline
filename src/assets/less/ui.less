@@ -13,8 +13,27 @@
 .tooltip.tooltip-break{white-space: normal;width: 200px;word-break: break-all;}
 
 // APP FRAME 前缀 af
-.af-left{width: 200px;border-right: 1px solid rgba(0, 0, 0, .1);background: #e2f1fa;}
-.af-center{width: 400px;border-right: 1px solid rgba(0, 0, 0, .1);background: #f8f8f8;}
-.af-right{flex: 1;}
-.af-topbar{display: flex;align-items: center;height: 50px;border-bottom: 1px solid rgba(0, 0, 0, .1);padding: 0 15px;}
-.af-bottombar{display: flex;align-items: center;height: 40px;border-top: 1px solid rgba(0, 0, 0, .1);padding: 0 15px;}
+// .af-left{width: 200px;border-right: 1px solid rgba(0, 0, 0, .1);background: #e2f1fa;}
+// .af-center{width: 400px;border-right: 1px solid rgba(0, 0, 0, .1);background: #f8f8f8;}
+// .af-right{flex: 1;}
+// .af-topbar{display: flex;align-items: center;height: 50px;border-bottom: 1px solid rgba(0, 0, 0, .1);padding: 0 15px;}
+// .af-bottombar{display: flex;align-items: center;height: 40px;border-top: 1px solid rgba(0, 0, 0, .1);padding: 0 15px;}
+
+
+
+.list-view{
+  .list-cover{width: 70px;height: 50px;background: #ddd;border-radius: 5px;margin-right: 15px;}
+  .list-item{padding: 12px 15px;
+    &:hover{background: rgba(0, 0, 0, .05);}
+    .icon{margin-right: 5px;}
+    .icon:last-child{margin: 0;}
+  }
+  .list-ctn{width: 50%;padding-top: 2px;}
+  .list-title{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 1em;
+    .flex-item{overflow: hidden;text-overflow: ellipsis;}
+  }
+  .list-info{line-height: 1em;margin-top: 8px;
+    span{margin-right: 10px;}
+    .list-info-num i{font-style: normal;display: inline-block;padding: 2px;cursor: default;}
+  }
+}
