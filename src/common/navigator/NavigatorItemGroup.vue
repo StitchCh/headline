@@ -3,7 +3,7 @@
     <div @click="handleClick" class="relative">
       <i class="icon" v-if="icon">{{icon}}</i>
       <slot name="title"></slot>
-      <i class="c-rgb-5" :class="{ icon: true, rotate: extended }" style="transition: all 0.3s;position: absolute;right: 10px;top: 10px;">keyboard_arrow_down</i>
+      <i class="c-rgb-5 icon" :class="{ rotate: extended }" style="transition: all 0.3s;position: absolute;right: 10px;top: 13px;">keyboard_arrow_down</i>
     </div>
     <transition name="collapse">
       <ul v-if="extended" :style="{ height, overflow: 'hidden' }">
@@ -28,6 +28,7 @@
     },
     methods: {
       handleClick () {
+        console.log('group')
         this.extended = !this.extended
         this.$emit('click')
       }

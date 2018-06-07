@@ -31,6 +31,11 @@ import Dock from '@/components/dock'
 export default {
   name: 'af-left',
   components: { Dock },
+  data () {
+    return {
+      activeIndex: ''
+    }
+  },
   props: {
     color: {
       type: String,
@@ -47,11 +52,17 @@ export default {
     title: {
       type: String,
       default: 'CCPT'
-    }
+    },
+    defaultActive: String
   },
   methods: {
-    lll (str) {
-      alert(str)
+    setActiveIndex (index) {
+      this.activeIndex = index
+    }
+  },
+  created () {
+    if (this.defaultActive) {
+      this.activeIndex = this.defaultActive
     }
   }
 }
