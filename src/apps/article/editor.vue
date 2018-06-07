@@ -61,5 +61,6 @@ export default {
   .ql-snow .ql-tooltip::before{content: '链接地址'}
   .ql-snow .ql-tooltip a.ql-action::after{content: '修改'}
   .ql-snow .ql-tooltip a.ql-remove::before{content: '删除'}
+  .ql-tooltip{border-radius: 6px;}
 }
 </style>
