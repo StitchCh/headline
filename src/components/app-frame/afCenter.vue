@@ -1,7 +1,7 @@
 <template>
 <div class="af-center flex-col">
   <div class="af-topbar flex-center">
-    <icon-btn color="#0060ff" v-tooltip:bottom="'添加'">add</icon-btn>
+    <icon-btn color="#0060ff" v-tooltip:bottom="'添加'" @click="$emit('add')">add</icon-btn>
   </div>
   <div class="flex-v-center filter-bar c-6 f-13">
     <i class="icon c-a a item" v-tooltip:top="'推荐'">thumb_up</i>
