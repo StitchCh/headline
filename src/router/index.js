@@ -49,6 +49,10 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to, from) => {
   document.title = to.meta.title || 'CCPT'
+  let token = localStorage.token || sessionStorage.token
+  if (!token && to.name !== 'Login') {
+    router.replace('/login')
+  }
 })
 
 export default router

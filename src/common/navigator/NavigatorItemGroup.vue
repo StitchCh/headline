@@ -54,5 +54,6 @@
   .collapse-enter, .collapse-leave-to {
     height: 0!important;
   }
+  ul .navigator-item{padding-left: 40px;}
 }
 </style>
