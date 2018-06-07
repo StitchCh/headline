@@ -1,8 +1,9 @@
 <template>
 <div class="relative c-6 dock">
   <div class="flex-v-center" @click="show=true" style="cursor: pointer;">
-    <span>{{title || '中俄头条'}}</span>
-    <i class="icon">keyboard_arrow_down</i>
+    <img class="dock-logo" src="../assets/img/dock-logo.png" :style="{filter: `drop-shadow(100px 0 0 ${color})`}">
+    <span class="f-18" :style="{color}">{{title || 'CCPT'}}</span>
+    <i class="icon" :style="{color}">keyboard_arrow_down</i>
   </div>
   <bubble v-if="show" align="start" @close="show=false">
     <div class="dock-ctn f-14 flex">
@@ -27,7 +28,11 @@ import apps from '@/apps/launcher/apps'
 export default {
   name: 'dock',
   props: {
-    title: String
+    title: String,
+    color: {
+      type: String,
+      default: '#000'
+    }
   },
   data () {
     return {
@@ -56,7 +61,7 @@ export default {
 
 <style lang="less">
 .dock{
-  display: inline-block;vertical-align: middle;margin: 0 10px;
+  display: inline-block;vertical-align: middle;
   .dock-ctn{padding: 20px;flex-wrap: wrap;width: 710px;}
   .app-item{padding: 15px;text-align: center;width: 110px;}
   .app-icon{width: 80px;height: 80px;background: #eee;display: inline-block;vertical-align: middle;border-radius: 17px;border: 1px solid #eee;overflow: hidden;}
@@ -64,5 +69,6 @@ export default {
     white-space: nowrap;
     &.on{color: #2196F3;border-color: #5cb6ff;}
   }
+  .dock-logo{height: 20px;margin-left: -100px;padding-right: 110px;filter: drop-shadow(100px 0 0 #000);}
 }
 </style>

@@ -3,7 +3,7 @@
   <af-left>
     <navigator-item icon="delete">已发</navigator-item>
     <navigator-item icon="hourglass_full">审核</navigator-item>
-    <navigator-item-group>
+    <navigator-item-group defaultExtended>
       <navigator-item slot="title" icon="face">我的</navigator-item>
       <navigator-item style="padding-left: 40px;" status="done">已发</navigator-item>
       <navigator-item style="padding-left: 40px;" status="warning" :number="0">待审</navigator-item>

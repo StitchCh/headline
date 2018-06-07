@@ -1,6 +1,6 @@
 <template>
 <div class="af-left flex-col" :style="{ color: textColor, backgroundColor: bgColor }">
-  <div class="af-dock flex-center"><dock :title="title"></dock></div>
+  <div class="af-dock flex-v-center"><dock :title="title"></dock></div>
   <div class="flex-item">
     <ul>
       <!--<navigator-item icon="delete" @click="lll(666)">111</navigator-item>-->
@@ -60,6 +60,6 @@ export default {
 <style lang="less">
 .af-left{width: 200px;border-right: 1px solid rgba(0, 0, 0, .1);background: #e2f1fa;
   //
-  .af-dock {height: 50px;border-bottom: 1px solid rgba(0, 0, 0, .1);}
+  .af-dock {height: 50px;border-bottom: 1px solid rgba(0, 0, 0, .1);padding-left: 20px;}
 }
 </style>
