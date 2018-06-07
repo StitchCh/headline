@@ -5,7 +5,7 @@
     <navigator-item>审核</navigator-item>
     <navigator-item-group>
       <navigator-item slot="title" icon="list">我的</navigator-item>
-      <navigator-item style="padding-left: 40px;" status="done" @click="lll(123)">已发</navigator-item>
+      <navigator-item style="padding-left: 40px;" status="done">已发</navigator-item>
       <navigator-item style="padding-left: 40px;" status="warning" :number="0">待审</navigator-item>
       <navigator-item style="padding-left: 40px;" status="error" :number="0">驳回</navigator-item>
       <navigator-item style="padding-left: 40px;" status="disabled">草稿</navigator-item>
