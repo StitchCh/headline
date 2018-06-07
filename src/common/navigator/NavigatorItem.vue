@@ -24,9 +24,9 @@
 <style lang="less">
 .navigator-item {height: 45px;border-bottom: 1px solid rgba(0, 0, 0, .05);box-sizing: border-box;padding: 10px 20px;cursor: pointer;
   &:hover {background: rgba(255, 255, 255, .5);}
-  .icon {font-size: 20px;margin-right: 5px;}
-  .status {display: inline-block;width: 10px;height: 10px;border-radius: 5px;margin-right: 5px;}
-  .number {position: absolute;right: 10px;padding: 0px 10px;background: #549FFF; border-radius: 12px;font-size: 12px;color: #fff;}
+  .icon {font-size: 20px;margin-right: 15px;}
+  .status {display: inline-block;width: 10px;height: 10px;border-radius: 5px;margin-right: 15px;}
+  .number {position: absolute;right: 10px;padding: 4px 10px;background: #549FFF; border-radius: 12px;font-size: 12px;color: #fff;line-height: 1em;}
   .done {background: #4ab36b;}
   .warning {background: #f89972;}
   .error {background: #d74947;}

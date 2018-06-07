@@ -3,7 +3,7 @@
     <div @click="handleClick" class="relative">
       <i class="icon" v-if="icon">{{icon}}</i>
       <slot name="title"></slot>
-      <i :class="{ icon: true, rotate: extended }" style="transition: all 0.3s;position: absolute;right: 10px;top: 10px;">keyboard_arrow_down</i>
+      <i class="c-rgb-5" :class="{ icon: true, rotate: extended }" style="transition: all 0.3s;position: absolute;right: 10px;top: 10px;">keyboard_arrow_down</i>
     </div>
     <transition name="collapse">
       <ul v-if="extended" :style="{ height, overflow: 'hidden' }">
@@ -44,7 +44,7 @@
 
 <style lang="less">
 .navigator-item-group {box-sizing: border-box;cursor: pointer;
-  .icon{font-size: 20px;margin-right: 5px;}
+  .icon{font-size: 20px;margin-right: 15px;}
   .rotate {transform: rotate(180deg)}
 
   .collapse-enter-active, .collapse-leave-active {

@@ -1,16 +1,16 @@
 <template>
 <div class="abs bg-f flex app-article">
   <af-left>
-    <navigator-item icon="delete" @click="lll(666)">已发</navigator-item>
-    <navigator-item>审核</navigator-item>
+    <navigator-item icon="delete">已发</navigator-item>
+    <navigator-item icon="hourglass_full">审核</navigator-item>
     <navigator-item-group>
-      <navigator-item slot="title" icon="list">我的</navigator-item>
+      <navigator-item slot="title" icon="face">我的</navigator-item>
       <navigator-item style="padding-left: 40px;" status="done">已发</navigator-item>
       <navigator-item style="padding-left: 40px;" status="warning" :number="0">待审</navigator-item>
       <navigator-item style="padding-left: 40px;" status="error" :number="0">驳回</navigator-item>
       <navigator-item style="padding-left: 40px;" status="disabled">草稿</navigator-item>
     </navigator-item-group>
-    <navigator-item>回收站</navigator-item>
+    <navigator-item icon="delete">回收站</navigator-item>
   </af-left>
   <af-center @add="$router.push('/articleAdd')">
     <div class="list-item a" slot-scope="slotProps">
