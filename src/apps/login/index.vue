@@ -7,11 +7,11 @@
       <div class="f-22" style="font-weight: 300;">登录中俄头条</div>
       <div class="form c-6">
         <div class="input bg-f flex-v-center" style="border-bottom: 1px solid #ddd;border-radius: 8px 8px 0 0;">
-          <input class="flex-item f-16" v-model="email" type="text" placeholder="邮箱">
+          <input class="flex-item f-16" v-model="loginName" type="text" placeholder="邮箱">
         </div>
         <div class="input bg-f flex-v-center relative" style="border-radius: 0 0 8px 8px;">
           <input class="flex-item f-16" v-model="password" type="password" placeholder="密码">
-          <div v-if="!loading" class="login-btn a" @click="login" :class="{'disabled': (!email || !password)}">
+          <div v-if="!loading" class="login-btn a" @click="login" :class="{'disabled': (!loginName || !password)}">
             <i class="icon">arrow_forward</i>
           </div>
           <loading v-else size="30" style="margin-right: 10px;"/>
@@ -26,7 +26,7 @@
           </bubble>
         </div>
       </div>
-      <div class="c-f f-16"><check-box text="保持我的登录状态"></check-box></div>
+      <div class="c-f f-16"><check-box text="保持我的登录状态" v-model="keepLogin"></check-box></div>
       <div class="line"></div>
       <div><a class="c-f a f-14" @click="error.show=true">忘记了邮箱或密码？</a></div>
     </div>
@@ -40,8 +40,9 @@ export default {
   name: 'app-login',
   data () {
     return {
-      email: '',
+      loginName: '',
       password: '',
+      keepLogin: false,
       loading: false,
       error: {
         show: false,
@@ -52,10 +53,10 @@ export default {
   methods: {
     login () {
       this.loading = true
-      setTimeout(() => {
-        this.loading = false
-        this.$router.push('/')
-      }, 500)
+      let { loginName, password } = this
+      this.$http.post('/cri-cms-platform/login.monitor', { loginName, password }).then(res => {
+        console.log(res)
+      })
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
 <div class="abs bg-f flex app-article">
-  <af-center>
+  <af-center @add="$router.push('/articleAdd')">
     <div class="list-item a" slot-scope="slotProps">
       <div class="list-title flex-v-center">
         <i class="icon f-16 blue">thumb_up</i>
@@ -20,6 +20,23 @@
       </div>
     </div>
   </af-center>
+  <div class="flex-item flex-col">
+    <div class="af-topbar flex-v-center">
+      <div class="content-tool">
+        <icon-btn small v-tooltip:bottom="'查看'">remove_red_eye</icon-btn>
+        <icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn>
+        <icon-btn small v-tooltip:bottom="'编辑'">edit</icon-btn>
+        <icon-btn small v-tooltip:bottom="'删除'">delete</icon-btn>
+        <icon-btn small v-tooltip:bottom="'二维码'"><img class="qr-icon" src="../../assets/img/QR_code.svg"></icon-btn>
+        <icon-btn small v-tooltip:bottom="'复制并重新发布'">file_copy</icon-btn>
+      </div>
+      <div class="flex-item"></div>
+      <account/>
+    </div>
+    <div class="flex-item scroll-y">
+      <router-view/>
+    </div>
+  </div>
 </div>
 </template>
 

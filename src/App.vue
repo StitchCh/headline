@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <!--  :class="{'has-bg': $route.name === 'Login' || $route.name === 'Launcher' || $route.name === 'FindPassword'}" -->
     <transition :name="$store.state.ui.transition">
       <router-view/>
     </transition>
@@ -18,8 +19,7 @@ export default {
 </script>
 
 <style lang="less">
-#app{height: 100%;
-  background: linear-gradient(#002d70, #0097a1);
+#app{min-width: 1000px;height: 100%;background: linear-gradient(#002d70, #0097a1);
   // background: url('./assets/img/bg.png') center / cover #1d5e9b;
 }
 </style>
