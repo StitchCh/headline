@@ -1,5 +1,17 @@
 <template>
 <div class="abs bg-f flex app-article">
+  <af-left>
+    <navigator-item icon="delete" @click="lll(666)">已发</navigator-item>
+    <navigator-item>审核</navigator-item>
+    <navigator-item-group>
+      <navigator-item slot="title" icon="list">我的</navigator-item>
+      <navigator-item style="padding-left: 40px;" status="done" @click="lll(123)">已发</navigator-item>
+      <navigator-item style="padding-left: 40px;" status="warning" :number="0">待审</navigator-item>
+      <navigator-item style="padding-left: 40px;" status="error" :number="0">驳回</navigator-item>
+      <navigator-item style="padding-left: 40px;" status="disabled">草稿</navigator-item>
+    </navigator-item-group>
+    <navigator-item>回收站</navigator-item>
+  </af-left>
   <af-center @add="$router.push('/articleAdd')">
     <div class="list-item a" slot-scope="slotProps">
       <div class="list-title flex-v-center">
@@ -44,10 +56,11 @@
 import Account from '@/components/account'
 import Dock from '@/components/dock'
 import AfCenter from '@/components/app-frame/afCenter'
+import AfLeft from '@/components/app-frame/afLeft'
 
 export default {
   name: 'app-article',
-  components: { Account, AfCenter, Dock },
+  components: { Account, AfLeft, AfCenter, Dock },
   data () {
     return {
       list: []

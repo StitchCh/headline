@@ -1,6 +1,6 @@
 <template>
 <div class="relative c-6 dock">
-  <div class="flex-v-center" @click="show=true">
+  <div class="flex-v-center" @click="show=true" style="cursor: pointer;">
     <span>{{title || '中俄头条'}}</span>
     <i class="icon">keyboard_arrow_down</i>
   </div>
