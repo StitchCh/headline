@@ -1,6 +1,6 @@
 <template>
-<div class="af-left flex-col" :style="{ color: textColor, backgroundColor: bgColor }">
-  <div class="af-dock flex-v-center"><dock :title="title"></dock></div>
+<div class="af-left flex-col" :style="{ color, backgroundColor: bgColor }">
+  <div class="af-dock flex-v-center"><dock :title="title" :color="color"></dock></div>
   <div class="flex-item">
     <ul>
       <!--<navigator-item icon="delete" @click="lll(666)">111</navigator-item>-->
@@ -32,7 +32,7 @@ export default {
   name: 'af-left',
   components: { Dock },
   props: {
-    textColor: {
+    color: {
       type: String,
       default: ''
     },
