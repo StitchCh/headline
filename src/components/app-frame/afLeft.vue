@@ -1,6 +1,6 @@
 <template>
 <div class="af-left flex-col" :style="{ color: textColor, backgroundColor: bgColor }">
-  <div class="af-dock flex-center"><dock></dock></div>
+  <div class="af-dock flex-center"><dock :title="title"></dock></div>
   <div class="flex-item">
     <ul>
       <!--<navigator-item icon="delete" @click="lll(666)">111</navigator-item>-->
