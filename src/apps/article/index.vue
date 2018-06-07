@@ -22,13 +22,13 @@
   </af-center>
   <div class="flex-item flex-col">
     <div class="af-topbar flex-v-center">
-      <div class="content-tool">
-        <icon-btn small v-tooltip:bottom="'查看'">remove_red_eye</icon-btn>
-        <icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn>
-        <icon-btn small v-tooltip:bottom="'编辑'">edit</icon-btn>
-        <icon-btn small v-tooltip:bottom="'删除'">delete</icon-btn>
-        <icon-btn small v-tooltip:bottom="'二维码'"><img class="qr-icon" src="../../assets/img/QR_code.svg"></icon-btn>
-        <icon-btn small v-tooltip:bottom="'复制并重新发布'">file_copy</icon-btn>
+      <div class="content-tool flex-v-center">
+        <div class="tool-item"><icon-btn small v-tooltip:bottom="'查看'">remove_red_eye</icon-btn></div>
+        <div class="tool-item"><icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn></div>
+        <div class="tool-item"><icon-btn small v-tooltip:bottom="'编辑'">edit</icon-btn></div>
+        <div class="tool-item"><icon-btn small v-tooltip:bottom="'删除'">delete</icon-btn></div>
+        <div class="tool-item"><icon-btn small v-tooltip:bottom="'二维码'"><img class="qr-icon" src="../../assets/img/QR_code.svg"></icon-btn></div>
+        <div class="tool-item"><icon-btn small v-tooltip:bottom="'复制并重新发布'">file_copy</icon-btn></div>
       </div>
       <div class="flex-item"></div>
       <account/>
