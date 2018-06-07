@@ -7,18 +7,18 @@
       <div class="f-22" style="font-weight: 300;">登录中俄头条</div>
       <div class="form c-6">
         <div class="input bg-f flex-v-center" style="border-bottom: 1px solid #ddd;border-radius: 8px 8px 0 0;">
-          <input class="flex-item f-16" v-model="email" type="text" placeholder="邮箱">
+          <input class="flex-item f-16" v-model="loginName" type="text" placeholder="邮箱">
         </div>
         <div class="input bg-f flex-v-center relative" style="border-radius: 0 0 8px 8px;">
           <input class="flex-item f-16" v-model="password" type="password" placeholder="密码">
-          <div v-if="!loading" class="login-btn a" @click="login" :class="{'disabled': (!email || !password)}">
+          <div v-if="!loading" class="login-btn a" @click="login" :class="{'disabled': (!loginName || !password)}">
             <i class="icon">arrow_forward</i>
           </div>
           <loading v-else size="30" style="margin-right: 10px;"/>
           <bubble v-if="error.show" @close="error.show=false" class="err-info">
             <div class="b f-14 flex-center">
               <div class="flex-item">
-                <div>您输入的邮箱或者密码不正确。</div>
+                <div>{{error.message}}</div>
                 <div class="f-12">忘记密码请使用密码找回功能。</div>
               </div>
               <btn flat big @click="$router.push('/findPassword')">找回密码</btn>
@@ -26,9 +26,9 @@
           </bubble>
         </div>
       </div>
-      <div class="c-f f-16"><check-box text="保持我的登录状态"></check-box></div>
+      <div class="c-f f-16"><check-box text="保持我的登录状态" v-model="keepLogin"></check-box></div>
       <div class="line"></div>
-      <div><a class="c-f a f-14" @click="error.show=true">忘记了邮箱或密码？</a></div>
+      <div><a class="c-f a f-14">忘记了邮箱或密码？</a></div>
     </div>
   </div>
   <div class="bottom t-right f-14" style="padding: 10px;opacity:0.9;">Copyright © 2018 XXXXX Inc.</div>
@@ -36,26 +36,43 @@
 </template>
 
 <script>
+import getUserInfo from './getUserInfo'
+
 export default {
   name: 'app-login',
   data () {
     return {
-      email: '',
-      password: '',
+      loginName: 'admin',
+      password: 'asdfasdf',
+      keepLogin: false,
       loading: false,
       error: {
         show: false,
-        message: '您输入的账号或密码不正确。'
+        message: ''
       }
     }
   },
   methods: {
     login () {
       this.loading = true
-      setTimeout(() => {
-        this.loading = false
-        this.$router.push('/')
-      }, 500)
+      let { loginName, password } = this
+      this.$http.post('/cri-cms-platform/login.monitor', { loginName, password }).then(res => {
+        if (this.keepLogin) {
+          sessionStorage.removeItem('token')
+          localStorage.token = res.token
+        } else {
+          localStorage.removeItem('token')
+          sessionStorage.token = res.token
+        }
+        getUserInfo().then(res => {
+          this.$router.replace('/')
+        }).catch(e => this.showError(e))
+      }).catch(e => this.showError(e))
+    },
+    showError (e) {
+      this.loading = false
+      this.error.show = true
+      this.error.message = e.msg || '您输入的账号或密码不正确。'
     }
   }
 }

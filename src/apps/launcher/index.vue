@@ -73,7 +73,7 @@ export default {
       setTimeout(() => {
         app.loading = false
         this.$router.push(app.path)
-      }, 300)
+      }, 100)
     }
   }
 }
