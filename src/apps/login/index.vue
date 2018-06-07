@@ -18,7 +18,7 @@
           <bubble v-if="error.show" @close="error.show=false" class="err-info">
             <div class="b f-14 flex-center">
               <div class="flex-item">
-                <div>您输入的邮箱或者密码不正确。</div>
+                <div>{{error.message}}</div>
                 <div class="f-12">忘记密码请使用密码找回功能。</div>
               </div>
               <btn flat big @click="$router.push('/findPassword')">找回密码</btn>
@@ -28,7 +28,7 @@
       </div>
       <div class="c-f f-16"><check-box text="保持我的登录状态" v-model="keepLogin"></check-box></div>
       <div class="line"></div>
-      <div><a class="c-f a f-14" @click="error.show=true">忘记了邮箱或密码？</a></div>
+      <div><a class="c-f a f-14">忘记了邮箱或密码？</a></div>
     </div>
   </div>
   <div class="bottom t-right f-14" style="padding: 10px;opacity:0.9;">Copyright © 2018 XXXXX Inc.</div>
@@ -36,17 +36,19 @@
 </template>
 
 <script>
+import getUserInfo from './getUserInfo'
+
 export default {
   name: 'app-login',
   data () {
     return {
-      loginName: '',
-      password: '',
+      loginName: 'admin',
+      password: 'asdfasdf',
       keepLogin: false,
       loading: false,
       error: {
         show: false,
-        message: '您输入的账号或密码不正确。'
+        message: ''
       }
     }
   },
@@ -55,8 +57,22 @@ export default {
       this.loading = true
       let { loginName, password } = this
       this.$http.post('/cri-cms-platform/login.monitor', { loginName, password }).then(res => {
-        console.log(res)
-      })
+        if (this.keepLogin) {
+          sessionStorage.removeItem('token')
+          localStorage.token = res.token
+        } else {
+          localStorage.removeItem('token')
+          sessionStorage.token = res.token
+        }
+        getUserInfo().then(res => {
+          this.$router.replace('/')
+        }).catch(e => this.showError(e))
+      }).catch(e => this.showError(e))
+    },
+    showError (e) {
+      this.loading = false
+      this.error.show = true
+      this.error.message = e.msg || '您输入的账号或密码不正确。'
     }
   }
 }

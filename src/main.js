@@ -21,11 +21,12 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(function (response) {
   if (response.data) {
     let code = parseInt(response.data.code)
-    if (code === 1) return response.data.data
+    if (code === 1) return response.data.result
     if (code === 1002) {
       router.replace('/login')
       sessionStorage.removeItem('token')
       localStorage.removeItem('token')
+      store.commit('LOGOUT')
       return
     }
     return Promise.reject(response.data)
