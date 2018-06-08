@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     setActiveIndex (index) {
-      this.activeIndex = index
+      if (index) this.activeIndex = index
     }
   },
   created () {

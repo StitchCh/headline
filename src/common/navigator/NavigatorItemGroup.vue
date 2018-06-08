@@ -1,8 +1,9 @@
 <template>
   <li class="navigator-item-group">
     <div @click="handleClick" class="relative">
-      <i class="icon" v-if="icon">{{icon}}</i>
-      <slot name="title"></slot>
+      <navigator-item slot="title" :icon="icon">
+        <slot name="title"></slot>
+      </navigator-item>
       <i class="c-rgb-5 icon" :class="{ rotate: extended }" style="transition: all 0.3s;position: absolute;right: 10px;top: 13px;">keyboard_arrow_down</i>
     </div>
     <transition name="collapse">
@@ -45,7 +46,7 @@
 
 <style lang="less">
 .navigator-item-group {box-sizing: border-box;cursor: pointer;
-  .icon{font-size: 20px;margin-right: 15px;}
+  .icon{font-size: 20px;margin-right: 15px;transition: all .2s}
   .rotate {transform: rotate(180deg)}
 
   .collapse-enter-active, .collapse-leave-active {

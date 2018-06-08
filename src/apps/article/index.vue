@@ -1,14 +1,13 @@
 <template>
 <div class="abs bg-f flex app-article">
   <af-left color="#365d9e">
-    <navigator-item icon="delete">已发</navigator-item>
-    <navigator-item icon="hourglass_full">审核</navigator-item>
-    <navigator-item-group defaultExtended>
-      <navigator-item slot="title" icon="face">我的</navigator-item>
-      <navigator-item status="done">已发</navigator-item>
-      <navigator-item status="warning" :number="0">待审</navigator-item>
-      <navigator-item status="error" :number="0">驳回</navigator-item>
-      <navigator-item status="disabled">草稿</navigator-item>
+    <navigator-item icon="delete" index="1">已发</navigator-item>
+    <navigator-item-group defaultExtended index="2" icon="face">
+      <span slot="title">我的</span>
+      <navigator-item status="done" index="2-1">已发</navigator-item>
+      <navigator-item status="warning" index="2-2" :number="0">待审</navigator-item>
+      <navigator-item status="error" index="2-3" :number="0">驳回</navigator-item>
+      <navigator-item status="disabled" index="2-4">草稿</navigator-item>
     </navigator-item-group>
     <navigator-item icon="delete" index="3">回收站</navigator-item>
   </af-left>
