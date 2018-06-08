@@ -1,18 +1,17 @@
 <template>
 <div class="abs bg-f flex app-article">
-  <af-left color="#365d9e">
-    <navigator-item icon="delete">已发</navigator-item>
-    <navigator-item icon="hourglass_full">审核</navigator-item>
-    <navigator-item-group defaultExtended>
-      <navigator-item slot="title" icon="face">我的</navigator-item>
-      <navigator-item status="done">已发</navigator-item>
-      <navigator-item status="warning" :number="0">待审</navigator-item>
-      <navigator-item status="error" :number="0">驳回</navigator-item>
-      <navigator-item status="disabled">草稿</navigator-item>
+  <af-left color="#365d9e" :defaultActive="status === 'index' ? scope : status">
+    <navigator-item icon="delete" index="sent" @click="$router.push('/article/sent')">已发</navigator-item>
+    <navigator-item-group defaultExtended index="2" icon="face">
+      <span slot="title">我的</span>
+      <navigator-item status="done" index="mySent" @click="$router.push('/article/my/mySent')">已发</navigator-item>
+      <navigator-item status="warning" index="check" @click="$router.push('/article/my/check')" :number="0">待审</navigator-item>
+      <navigator-item status="error" index="reject" @click="$router.push('/article/my/reject')" :number="0">驳回</navigator-item>
+      <navigator-item status="disabled" index="draft" @click="$router.push('/article/my/draft')">草稿</navigator-item>
     </navigator-item-group>
-    <navigator-item icon="delete">回收站</navigator-item>
+    <navigator-item icon="delete" index="recycle" @click="$router.push('/article/recycle/index')">回收站</navigator-item>
   </af-left>
-  <af-center @add="$router.push('/articleAdd')">
+  <af-center @add="$router.push('/articleAdd')" url="/cri-cms-platform/article/list.monitor" v-if="status !== 'reject' && status !== 'draft'">
     <div class="list-item a" slot-scope="slotProps">
       <div class="list-title flex-v-center">
         <i class="icon f-16 blue">thumb_up</i>
@@ -60,6 +59,7 @@ import AfLeft from '@/components/app-frame/afLeft'
 
 export default {
   name: 'app-article',
+  props: [ 'scope', 'status' ],
   components: { Account, AfLeft, AfCenter, Dock },
   data () {
     return {
@@ -67,6 +67,7 @@ export default {
     }
   },
   created () {
+    console.log(this.$route)
     this.getList()
   },
   methods: {
