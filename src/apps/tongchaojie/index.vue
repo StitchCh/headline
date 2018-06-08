@@ -29,7 +29,7 @@ export default {
           date: '2018-06-06 13:44'
         },
         {
-        	img: '/static/logo.png',
+          img: '/static/logo.png',
           name: '我的草稿222',
           date: '2018-06-06 13:44'
         },
@@ -69,7 +69,7 @@ export default {
           date: '2018-06-06 13:44'
         },
         {
-        	img: '/static/logo.png',
+          img: '/static/logo.png',
           name: '我的草稿222',
           date: '2018-06-06 13:44'
         }
