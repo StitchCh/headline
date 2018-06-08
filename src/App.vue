@@ -1,7 +1,8 @@
 <template>
-  <div id="app">
-    <div v-if="!showApp" class="abs flex-center"><loading :size="50" color="#fff"/></div>
-    <!--  :class="{'has-bg': $route.name === 'Login' || $route.name === 'Launcher' || $route.name === 'FindPassword'}" -->
+  <div id="app" :class="{'showBg': $store.state.ui.showBg}">
+    <div v-if="!showApp" class="abs flex-center">
+      <loading :size="50" :color="$store.state.ui.showBg ? '#fff' : '#666'"/>
+    </div>
     <transition :name="$store.state.ui.transition">
       <router-view v-if="showApp"/>
     </transition>
@@ -33,7 +34,6 @@ export default {
 </script>
 
 <style lang="less">
-#app{min-width: 1000px;height: 100%;background: linear-gradient(#002d70, #0097a1);
-  // background: url('./assets/img/bg.png') center / cover #1d5e9b;
-}
+#app{min-width: 1000px;height: 100%;background: #f8f8f8;}
+#app.showBg{background: linear-gradient(#002d70, #0097a1);}
 </style>

@@ -32,6 +32,8 @@ const createRouter = () => new Router({
 
 const router = createRouter()
 
+const showBgRoutes = ['Launcher', 'Login', 'FindPassword', 'ChooseSite']
+
 function setTransition (to, from) {
   let transitionName = 'none'
   let toLevel = to.meta.level
@@ -39,6 +41,13 @@ function setTransition (to, from) {
   if (toLevel > fromLevel) transitionName = 'in-app'
   else if (toLevel < fromLevel) transitionName = 'out-app'
   else transitionName = 'fade-app'
+  if (showBgRoutes.includes(to.name) || showBgRoutes.includes(from.name)) {
+    console.log(1, to.name, from.name)
+    store.commit('SET_SHOW_BG', true)
+  } else {
+    console.log(2, to.name, from.name)
+    store.commit('SET_SHOW_BG', false)
+  }
   store.commit('SET_TRANSITION', transitionName)
 }
 
