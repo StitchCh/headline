@@ -4,14 +4,14 @@
     <navigator-item icon="delete" index="1">已发</navigator-item>
     <navigator-item-group defaultExtended index="2" icon="face">
       <span slot="title">我的</span>
-      <navigator-item status="done" index="2-1">已发</navigator-item>
-      <navigator-item status="warning" index="2-2" :number="0">待审</navigator-item>
-      <navigator-item status="error" index="2-3" :number="0">驳回</navigator-item>
-      <navigator-item status="disabled" index="2-4">草稿</navigator-item>
+      <navigator-item status="done" index="2-1" @click="$router.push('/article/sent')">已发</navigator-item>
+      <navigator-item status="warning" index="2-2" @click="$router.push('/article/check')" :number="0">待审</navigator-item>
+      <navigator-item status="error" index="2-3" @click="$router.push('/article/reject')" :number="0">驳回</navigator-item>
+      <navigator-item status="disabled" index="2-4" @click="$router.push('/article/draft')">草稿</navigator-item>
     </navigator-item-group>
     <navigator-item icon="delete" index="3">回收站</navigator-item>
   </af-left>
-  <af-center @add="$router.push('/articleAdd')" url="/cri-cms-platform/article/list.monitor">
+  <router-view name="center" @add="$router.push('/articleAdd')" url="/cri-cms-platform/article/list.monitor">
     <div class="list-item a" slot-scope="slotProps">
       <div class="list-title flex-v-center">
         <i class="icon f-16 blue">thumb_up</i>
@@ -30,7 +30,7 @@
         <i class="icon f-14 c-a">public</i>
       </div>
     </div>
-  </af-center>
+  </router-view>
   <div class="flex-item flex-col">
     <div class="af-topbar flex-v-center">
       <div class="content-tool flex-v-center">
