@@ -12,7 +12,7 @@
     </navigator-item-group>
     <navigator-item icon="delete" index="3">回收站</navigator-item>
   </af-left>
-  <af-center @add="$router.push('/articleAdd')">
+  <af-center @add="$router.push('/articleAdd')" url="/cri-cms-platform/article/list.monitor">
     <div class="list-item a" slot-scope="slotProps">
       <div class="list-title flex-v-center">
         <i class="icon f-16 blue">thumb_up</i>

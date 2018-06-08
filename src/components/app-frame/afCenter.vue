@@ -1,7 +1,7 @@
 <template>
 <div class="af-center flex-col">
   <div class="af-topbar flex-center">
-    <icon-btn color="#0060ff" v-tooltip:bottom="'添加'" @click="$emit('add')">add</icon-btn>
+    <icon-btn class="add-btn" v-tooltip:bottom="'添加'" @click="$emit('add')">add</icon-btn>
   </div>
   <div class="flex-v-center filter-bar c-6 f-13">
     <i class="icon c-a a item" v-tooltip:top="'推荐'">thumb_up</i>
@@ -59,7 +59,7 @@
     <input type="text" class="flex-item c-4 f-13 search-input" placeholder="搜索标题 回车" @keydown.esc="ui.searchOptionShow=false">
     <i class="icon f-20 c-a a" @click="ui.searchShow=false">close</i>
   </div>
-  <list-view :list="list" class="flex-item">
+  <list-view :list="list" class="flex-item relative" @prev="onPrev" @next="onNext" ref="listView">
     <li slot-scope="slotProps">
       <slot :item="slotProps.item"></slot>
     </li>
@@ -79,18 +79,51 @@ export default {
   },
   data () {
     return {
-      list: [{id: 1}, {id: 2}],
+      list: [],
       ui: {
         searchShow: false,
         searchOptionShow: false,
         sectionShow: false, // 栏目
         sortShow: false // 排序
       },
-      filter: {}
+      totalPage: 0,
+      filter: {
+        page: 1,
+        size: 50
+      }
     }
   },
+  created () {
+    this.getList()
+  },
   methods: {
-    getList () {}
+    getList () {
+      if (!this.url) return
+      let { filter } = this
+      this.$http.post(this.url, {
+        scope: 'my',
+        status: 'all',
+        pageSize: filter.size,
+        toPage: filter.page
+      }).then(res => {
+        this.totalPage = res.totalPage || 0
+        this.list = res.pages || []
+      }).catch(e => {
+        console.log(e.message)
+      })
+    },
+    onPrev () {
+      if (!this.url) return
+      setTimeout(() => {
+        this.$refs.listView.loadState = 0
+      }, 1000)
+    },
+    onNext () {
+      if (!this.url) return
+      setTimeout(() => {
+        this.$refs.listView.loadState = 0
+      }, 1000)
+    }
   }
 }
 </script>
