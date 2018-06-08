@@ -1,24 +1,24 @@
 <template>
-  <div class="flex-item flex-col">
+  <div class="flex-item flex-col f-14 article-tile">
     <div class="af-topbar flex-v-center">
       <div class="flex-item"></div>
       <account/>
     </div>
-    <div class="flex-item scroll-y">
-      <div class="manuscript flex-col">
-        <div class="search">
-          <input type="text" placeholder="输入关键字"/>
-        </div>
-        <div class="box flex-item scroll-y" style="width:100%;">
-          <ul class="">
-            <li class="" v-for="(item,i) in dataList" :key="i">
-              <p><img :src="item.img"/></p>
-              <p>{{ item.name }}</p>
-              <p>{{ item.date }}</p>
-              <icon-btn style="position:absolute; right:5px; bottom:5px;" @click="$confirm('确认删除吗？')">delete</icon-btn>
-            </li>
-          </ul>
-        </div>
+    <div class="flex-item flex-col">
+      <div class="t-center" style="padding: 15px 0;"><input class="f-14 search" type="text" placeholder="输入关键字"/></div>
+      <div class="box flex-item scroll-y">
+        <ul class="flex" ref="ul" style="flex-wrap: wrap;padding-bottom: 50px;" :style="{paddingLeft: (width - (240 * ~~((width - 80) / 240))) * 0.5 + 'px'}">
+          <li v-for="(item, i) in 12" :key="i" class="a" @click="$router.push('/articleAdd')">
+            <div class="cover"></div>
+            <div class="flex-v-center item-info">
+              <div class="flex-item" style="overflow: hidden;">
+                <div class="c-6 item-name">测试名称测试名称测试名称测试名称</div>
+                <div class="f-12 c-8">2018-09-08 18:00:08</div>
+              </div>
+              <icon-btn class="c-c" @click="deleteItem">delete</icon-btn>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -33,114 +33,39 @@ export default {
   components: { Account },
   data () {
     return {
-      removeIndex: '',
-      show: false,
-      dataList: [
-        {
-          img: '/static/logo.png',
-          name: '我的草稿111',
-          date: '2018-06-06 13:44'
-        },
-        {
-          img: '/static/logo.png',
-          name: '我的草稿222',
-          date: '2018-06-06 13:44'
-        },
-        {
-          img: '/static/logo.png',
-          name: '我的草稿333',
-          date: '2018-06-06 13:44'
-        },
-        {
-          img: '/static/logo.png',
-          name: '我的草稿444',
-          date: '2018-06-06 13:44'
-        },
-        {
-          img: '/static/logo.png',
-          name: '我的草稿555',
-          date: '2018-06-06 13:44'
-        },
-        {
-          img: '/static/logo.png',
-          name: '我的草稿666',
-          date: '2018-06-06 13:44'
-        },
-        {
-          img: '/static/logo.png',
-          name: '我的草稿777',
-          date: '2018-06-06 13:44'
-        },
-        {
-          img: '/static/logo.png',
-          name: '我的草稿888',
-          date: '2018-06-06 13:44'
-        },
-        {
-          img: '/static/logo.png',
-          name: '我的草稿111',
-          date: '2018-06-06 13:44'
-        },
-        {
-          img: '/static/logo.png',
-          name: '我的草稿222',
-          date: '2018-06-06 13:44'
-        }
-      ]
+      width: 0
     }
   },
+  mounted () {
+    this.onResize()
+    window.addEventListener('resize', this.onResize)
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.onResize)
+  },
   methods: {
-    removeTodo (index) {
-      this.show = true
-      this.removeIndex = index
-    },
-    remove () {
-      this.dataList.splice(this.removeIndex, 1)
-      this.removeIndex = ''
-      this.show = false
-    },
-    cancel () {
-      this.show = false
+    onResize () { this.width = this.$refs.ul.clientWidth },
+    deleteItem () {
+      this.$confirm({
+        title: '您确定要删除此草稿吗？',
+        text: '删除后可在回收站找回。',
+        btns: ['取消', '删除'],
+        color: 'red'
+      })
     }
   }
 }
 </script>
 
 <style lang="less">
-  .manuscript{background-color: #f8f8f8;min-height: 100%;display: -webkit-flex;display: flex;flex-direction: column;
-    .search{text-align: center;margin-top: 20px;
-      input{width: 300px;line-height: 32px;border:1px solid #ddd;border-radius: 10px;padding-left:10px;}
-    }
-    .box{flex: 1;
-      ul{display: flex;flex-wrap: wrap;margin:10px auto;
-        li{padding:10px;background-color: #fff;margin: 10px;box-shadow: 0 1px 3px rgba(0,0,0,.2)!important;transition: box-shadow .2s ease;position: relative;
-          p{margin: 0;font-size: 14px;color: #666;text-align: center;
-            &:nth-child(2){overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
-            &:first-child{width: 100%;height: 220px;overflow: hidden;}
-          }
-          &:hover{box-shadow: 0 8px 20px rgba(0,0,0,.2)!important;}
-        }
-      }
-    }
+.article-tile{
+  .search{width: 300px;line-height: 32px;border:1px solid #ddd;border-radius: 20px;padding: 0 20px;}
+  li{width: 210px;margin: 15px;box-shadow: 0 0 0 1px rgba(0, 0, 0, .1);border-radius: 8px;overflow: hidden;transition: box-shadow .3s;}
+  li:hover{box-shadow: 0 0 3px 1px rgba(0, 0, 0, .05), 0 10px 30px rgba(0, 0, 0, .15);
+    .icon{color: rgb(255, 115, 115);}
   }
-  @media screen and (min-width: 1600px) and (max-width: 1920px){
-    .box ul{width: 1600px;
-      li{width:226px;}
-    }
-  }
-  @media screen and (min-width: 1440px) and (max-width: 1600px){
-    .box ul{width: 1440px;
-      li{width:200px;}
-    }
-  }
-  @media screen and (min-width: 1280px) and (max-width: 1440px){
-    .box ul{width: 1280px;
-      li{width:216px;}
-    }
-  }
-  @media screen and (max-width: 1280px){
-    .box ul{width: 1000px;
-      li{width:210px;}
-    }
-  }
+  .cover{width: 210px;height: 210px;background: #eee;}
+  .item-info{padding: 10px;}
+  .item-name{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+}
 </style>

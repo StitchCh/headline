@@ -1,6 +1,6 @@
 <template>
 <div class="abs bg-f flex app-article">
-  <af-left color="#365d9e" :defaultActive="defaultActive">
+  <af-left color="#586c8e" :defaultActive="defaultActive">
     <navigator-item icon="delete" index="1-1" @click="$router.push('/article/list?scope=1&status=1')">已发</navigator-item>
     <navigator-item-group defaultExtended index="2" icon="face">
       <span slot="title">我的</span>
@@ -46,5 +46,6 @@ export default {
 <style lang="less">
 .app-article{
   .list-item{width: auto;}
+  .navigator-item.active{background: #b8ddf3;color: #0059cc;}
 }
 </style>
