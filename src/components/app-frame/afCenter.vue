@@ -59,12 +59,35 @@
     <input type="text" class="flex-item c-4 f-13 search-input" placeholder="搜索标题 回车" @keydown.esc="ui.searchOptionShow=false">
     <i class="icon f-20 c-a a" @click="ui.searchShow=false">close</i>
   </div>
-  <list-view :list="list" class="flex-item relative" @prev="onPrev" @next="onNext" ref="listView">
+  <list-view :list="list" class="flex-item relative" @prev="onPrev" @next="onNext" :page="filter.page" :totalPage="totalPage" ref="listView">
     <li slot-scope="slotProps">
       <slot :item="slotProps.item"></slot>
     </li>
   </list-view>
-  <div class="af-bottombar"></div>
+  <div class="af-bottombar flex-v-center">
+    <icon-btn small class="a" @click="onPrev" :disabled="filter.page <= 1">keyboard_arrow_left</icon-btn>
+    <span class="f-14 c-6" style="margin: 0 10px;line-height: 1em;">第 {{filter.page}} / {{totalPage}} 页</span>
+    <icon-btn small class="a" @click="onNext" :disabled="filter.page >= totalPage">keyboard_arrow_right</icon-btn>
+  </div>
+<!-- <div class="list-item a" slot-scope="slotProps">
+      <div class="list-title flex-v-center">
+        <i v-if="~~(slotProps.item.isOriginal)" class="icon f-16 green">copyright</i>
+        <i v-if="~~(slotProps.item.isRecommnd)" class="icon f-16 blue">thumb_up</i>
+        <i v-if="slotProps.item.hasThumb" class="icon f-16 orange">image</i>
+        <span class="flex-item c-6 f-14 b">{{slotProps.item.title}}</span>
+      </div>
+      <div class="list-info f-12 c-8 flex-v-center">
+        <span>{{slotProps.item.createDate}}</span>
+        <span>{{slotProps.item.createUser}}</span>
+        <span class="list-info-num">
+          <i v-tooltip:top="'阅读'">6</i>/<i v-tooltip:top="'评论'">0</i>/<i v-tooltip:top="'分享'">0</i>
+        </span>
+        <span class="flex-item"></span>
+        <i class="icon f-14 c-a">computer</i>
+        <i class="icon f-14 c-a">phone_iphone</i>
+        <i class="icon f-14 c-a">public</i>
+      </div>
+    </div> -->
 </div>
 </template>
 
@@ -89,40 +112,44 @@ export default {
       totalPage: 0,
       filter: {
         page: 1,
-        size: 50
+        size: 15
       }
     }
   },
-  created () {
+  mounted () {
     this.getList()
   },
   methods: {
     getList () {
       if (!this.url) return
       let { filter } = this
+      this.$refs.listView.loading = true
       this.$http.post(this.url, {
         scope: 'my',
         status: 'all',
         pageSize: filter.size,
         toPage: filter.page
       }).then(res => {
+        this.$refs.listView.loading = false
         this.totalPage = res.totalPage || 0
         this.list = res.pages || []
       }).catch(e => {
-        console.log(e.message)
+        this.$refs.listView.loading = false
       })
     },
     onPrev () {
       if (!this.url) return
-      setTimeout(() => {
-        this.$refs.listView.loadState = 0
-      }, 1000)
+      let { filter } = this
+      if (filter.page === 1) return
+      filter.page = filter.page <= 1 ? 1 : filter.page - 1
+      this.getList()
     },
     onNext () {
       if (!this.url) return
-      setTimeout(() => {
-        this.$refs.listView.loadState = 0
-      }, 1000)
+      let { filter, totalPage } = this
+      if (filter.page === totalPage) return
+      filter.page = filter.page >= totalPage ? totalPage : filter.page + 1
+      this.getList()
     }
   }
 }
