@@ -17,10 +17,16 @@ export default [{
       path: ':scope/:status'
     },
     {
+      path: ':scope/:status/index',
+      component: resolve => require(['@/apps/article/draftList'], resolve),
+      props: true
+    },
+    {
       path: ':scope/:status/:id',
       component: resolve => require(['@/apps/article/content'], resolve),
       props: true
     }
+
     // {
     //   path: ':status/:id'
     // }

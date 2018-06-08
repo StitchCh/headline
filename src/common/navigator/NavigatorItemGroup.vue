@@ -6,7 +6,7 @@
       </navigator-item>
       <i class="c-rgb-5 icon" :class="{ rotate: extended }" style="transition: all 0.3s;position: absolute;right: 10px;top: 13px;">keyboard_arrow_down</i>
     </div>
-    <transition name="collapse">
+    <transition name="collapse-y">
       <ul v-if="extended" :style="{ height, overflow: 'hidden' }">
         <slot></slot>
       </ul>
@@ -49,10 +49,10 @@
   .icon{font-size: 20px;margin-right: 15px;transition: all .2s}
   .rotate {transform: rotate(180deg)}
 
-  .collapse-enter-active, .collapse-leave-active {
+  .collapse-y-enter-active, .collapse-y-leave-active {
     transition: height .3s;
   }
-  .collapse-enter, .collapse-leave-to {
+  .collapse-y-enter, .collapse-y-leave-to {
     height: 0!important;
   }
   ul .navigator-item{padding-left: 40px;}

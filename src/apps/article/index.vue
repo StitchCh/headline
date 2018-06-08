@@ -11,6 +11,7 @@
     </navigator-item-group>
     <navigator-item icon="delete" index="recycle" @click="$router.push('/article/recycle/index')">回收站</navigator-item>
   </af-left>
+  <transition name="collapse-x">
   <af-center @add="$router.push('/articleAdd')" url="/cri-cms-platform/article/list.monitor" v-if="status !== 'reject' && status !== 'draft'">
     <div class="list-item a" slot-scope="slotProps">
       <div class="list-title flex-v-center">
@@ -31,6 +32,7 @@
       </div>
     </div>
   </af-center>
+  </transition>
   <div class="flex-item flex-col">
     <div class="af-topbar flex-v-center">
       <div class="content-tool flex-v-center">
@@ -81,5 +83,12 @@ export default {
 <style lang="less">
 .app-article{
   .list-item{width: auto;}
+  .collapse-x-enter-active, .collapse-x-leave-active {
+    overflow: hidden;
+    transition: width .3s;
+  }
+  .collapse-x-enter, .collapse-x-leave-to {
+    width: 0;
+  }
 }
 </style>
