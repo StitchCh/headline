@@ -17,7 +17,7 @@
         </div>
       <a href="javascript:;" class="blue f-14 mr15">本地上传</a>
     </div>
-    
+
     <div class="flex-item box scroll-y">
       <div>
         <h4>2018年06月06日</h4>

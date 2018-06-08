@@ -7,67 +7,27 @@ export default [{
   children: [
     {
       path: '/',
-      redirect: '/article/sent/index'
+      redirect: '/article/list'
     },
     {
-      path: ':any',
-      redirect: '/article/sent/index'
+      path: 'list',
+      component: resolve => require(['@/apps/article/list/index.vue'], resolve),
+      props: true,
+      children: [
+        {
+          path: ':id',
+          component: resolve => require(['@/apps/article/list/content.vue'], resolve),
+          props: true
+        }
+      ]
     },
     {
-      path: ':scope/:status'
+      path: 'tile',
+      component: resolve => require(['@/apps/article/tile/index.vue'], resolve)
     },
     {
-      path: ':scope/:status/index',
-      component: resolve => require(['@/apps/article/draftList'], resolve),
-      props: true
-    },
-    {
-      path: ':scope/:status/:id',
-      component: resolve => require(['@/apps/article/content'], resolve),
-      props: true
+      path: 'recycle'
     }
-
-    // {
-    //   path: ':status/:id'
-    // }
-    // {
-    //   path: 'sent/:id',
-    //   components: {
-    //     default: resolve => require(['@/apps/article/content'], resolve),
-    //     center: resolve => require(['@/components/app-frame/afCenter'], resolve),
-    //     props: { default: true, center: false }
-    //   }
-    // },
-    // {
-    //   path: 'check',
-    //   components: {
-    //     center: resolve => require(['@/components/app-frame/afCenter'], resolve)
-    //   }
-    // },
-    // {
-    //   path: 'check/:id',
-    //   components: {
-    //     default: resolve => require(['@/apps/article/content'], resolve),
-    //     center: resolve => require(['@/components/app-frame/afCenter'], resolve),
-    //     props: { default: true, center: false }
-    //   }
-    // },
-    // {
-    //   path: 'reject'
-    // },
-    // {
-    //   path: 'reject/:id',
-    //   component: resolve => require(['@/apps/article/content'], resolve),
-    //   props: true
-    // },
-    // {
-    //   path: 'draft'
-    // },
-    // {
-    //   path: 'draft/:id',
-    //   component: resolve => require(['@/apps/article/content'], resolve),
-    //   props: true
-    // }
   ]
 }, {
   path: '/articleAdd',
