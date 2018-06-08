@@ -14,7 +14,8 @@ axios.interceptors.request.use(function (config) {
   let token = sessionStorage.token || localStorage.token
   if (!config.headers.Authorization && token) config.headers.Authorization = `Bearer ${token}`
   if (config.method !== 'post') return config
-  if (config.data instanceof Object) config.data = obj2FormData(config.data)
+  let data = Object.assign({ siteId: '1001' }, config.data)
+  config.data = obj2FormData(data)
   return config
 })
 

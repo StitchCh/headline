@@ -72,7 +72,7 @@ export default {
     showError (e) {
       this.loading = false
       this.error.show = true
-      this.error.message = e.msg || '您输入的账号或密码不正确。'
+      this.error.message = e.msg || e.message || '您输入的账号或密码不正确。'
     }
   }
 }

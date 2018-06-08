@@ -8,4 +8,9 @@ export default [{
   name: 'FindPassword',
   component: resolve => require(['@/apps/login/findPassword.vue'], resolve),
   meta: { level: 1, title: '找回密码' }
+}, {
+  path: '/chooseSite',
+  name: 'ChooseSite',
+  component: resolve => require(['@/apps/login/siteSelect.vue'], resolve),
+  meta: { level: 1, title: '选择站点' }
 }]
