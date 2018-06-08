@@ -4,7 +4,8 @@
 
 <script>
 export default {
-  name: 'app-article-content'
+  name: 'app-article-content',
+  props: [ 'scope', 'status', 'id' ]
 }
 </script>
 

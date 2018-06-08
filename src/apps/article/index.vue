@@ -1,17 +1,17 @@
 <template>
 <div class="abs bg-f flex app-article">
-  <af-left color="#365d9e">
-    <navigator-item icon="delete" index="1">已发</navigator-item>
+  <af-left color="#365d9e" :defaultActive="status === 'index' ? scope : status">
+    <navigator-item icon="delete" index="sent" @click="$router.push('/article/sent')">已发</navigator-item>
     <navigator-item-group defaultExtended index="2" icon="face">
       <span slot="title">我的</span>
-      <navigator-item status="done" index="2-1" @click="$router.push('/article/sent')">已发</navigator-item>
-      <navigator-item status="warning" index="2-2" @click="$router.push('/article/check')" :number="0">待审</navigator-item>
-      <navigator-item status="error" index="2-3" @click="$router.push('/article/reject')" :number="0">驳回</navigator-item>
-      <navigator-item status="disabled" index="2-4" @click="$router.push('/article/draft')">草稿</navigator-item>
+      <navigator-item status="done" index="mySent" @click="$router.push('/article/my/mySent')">已发</navigator-item>
+      <navigator-item status="warning" index="check" @click="$router.push('/article/my/check')" :number="0">待审</navigator-item>
+      <navigator-item status="error" index="reject" @click="$router.push('/article/my/reject')" :number="0">驳回</navigator-item>
+      <navigator-item status="disabled" index="draft" @click="$router.push('/article/my/draft')">草稿</navigator-item>
     </navigator-item-group>
-    <navigator-item icon="delete" index="3">回收站</navigator-item>
+    <navigator-item icon="delete" index="recycle" @click="$router.push('/article/recycle/index')">回收站</navigator-item>
   </af-left>
-  <router-view name="center" @add="$router.push('/articleAdd')" url="/cri-cms-platform/article/list.monitor">
+  <af-center @add="$router.push('/articleAdd')" url="/cri-cms-platform/article/list.monitor" v-if="status !== 'reject' && status !== 'draft'">
     <div class="list-item a" slot-scope="slotProps">
       <div class="list-title flex-v-center">
         <i class="icon f-16 blue">thumb_up</i>
@@ -30,7 +30,7 @@
         <i class="icon f-14 c-a">public</i>
       </div>
     </div>
-  </router-view>
+  </af-center>
   <div class="flex-item flex-col">
     <div class="af-topbar flex-v-center">
       <div class="content-tool flex-v-center">
@@ -59,6 +59,7 @@ import AfLeft from '@/components/app-frame/afLeft'
 
 export default {
   name: 'app-article',
+  props: [ 'scope', 'status' ],
   components: { Account, AfLeft, AfCenter, Dock },
   data () {
     return {
@@ -66,6 +67,7 @@ export default {
     }
   },
   created () {
+    console.log(this.$route)
     this.getList()
   },
   methods: {
