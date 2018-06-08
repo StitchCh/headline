@@ -110,6 +110,34 @@
           <span class="blue a">查看</span>
         </div>
       </div>
+      <div class="option-item flex-v-center blue a">
+        <i class="icon f-20  add-other-icon">collections</i>
+        <span class="flex-item">添加组图</span>
+      </div>
+      <div class="option-item flex-v-center blue a">
+        <i class="icon f-20  add-other-icon">book</i>
+        <span class="flex-item">添加相关阅读</span>
+      </div>
+      <div class="option-item flex-v-center blue a">
+        <i class="icon f-20  add-other-icon">attach_file</i>
+        <span class="flex-item">添加附件</span>
+      </div>
+      <div class="option-item flex-v-center blue a">
+        <i class="icon f-20  add-other-icon">how_to_vote</i>
+        <span class="flex-item">添加投票挂件</span>
+      </div>
+      <div class="option-item flex-v-center blue a">
+        <i class="icon f-20  add-other-icon">link</i>
+        <span class="flex-item">关联投票链接</span>
+      </div>
+      <div class="option-item flex-v-center blue a">
+        <i class="icon f-20  add-other-icon">link</i>
+        <span class="flex-item">关联活动报名链接</span>
+      </div>
+      <div class="option-item flex-v-center blue a">
+        <i class="icon f-20  add-other-icon">movie</i>
+        <span class="flex-item">添加视频</span>
+      </div>
     </div>
   </div>
 </div>
@@ -133,13 +161,14 @@ export default {
 </script>
 
 <style lang="less">
-.app-article-add{
+.app-article-add{line-height: 1em;
   .art-options{width: 320px;padding: 20px 0;background: #f8f8f8;transition: width .3s;
     textarea, input{border: none;width: 100%;outline: none;font-size: 14px;color: #444;resize: none;background: transparent;
       &::-webkit-input-placeholder{color: #999;}
     }
   }
-  .option-item{border-bottom: 1px solid rgba(0, 0, 0, .1);padding: 10px 0;}
+  .option-item{border-bottom: 1px solid rgba(0, 0, 0, .1);padding: 12px 0;}
   .add-photo-btn{background: rgba(0, 0, 0, .06);border-radius: 5px;overflow: hidden;}
+  .add-other-icon{margin-right: 10px;}
 }
 </style>

@@ -14,13 +14,14 @@
   <af-center @add="$router.push('/articleAdd')" url="/cri-cms-platform/article/list.monitor" v-if="status !== 'reject' && status !== 'draft'">
     <div class="list-item a" slot-scope="slotProps">
       <div class="list-title flex-v-center">
-        <i class="icon f-16 blue">thumb_up</i>
-        <i class="icon f-16 orange">image</i>
-        <span class="flex-item c-6 f-14 b">俄加里宁格勒今年将向中国出口360吨琥珀俄加里宁格勒今年将向中国出口360吨琥珀</span>
+        <i v-if="~~(slotProps.item.isOriginal)" class="icon f-16 green">copyright</i>
+        <i v-if="~~(slotProps.item.isRecommnd)" class="icon f-16 blue">thumb_up</i>
+        <i v-if="slotProps.item.hasThumb" class="icon f-16 orange">image</i>
+        <span class="flex-item c-6 f-14 b">{{slotProps.item.title}}</span>
       </div>
       <div class="list-info f-12 c-8 flex-v-center">
-        <span>2018-09-09</span>
-        <span>超级管理员</span>
+        <span>{{slotProps.item.createDate}}</span>
+        <span>{{slotProps.item.createUser}}</span>
         <span class="list-info-num">
           <i v-tooltip:top="'阅读'">6</i>/<i v-tooltip:top="'评论'">0</i>/<i v-tooltip:top="'分享'">0</i>
         </span>
