@@ -3,7 +3,7 @@
   <div class="t-center site-ctn">
     <!-- <div class="f-32 s-title">选择站点</div> -->
     <div v-for="item in list" :key="item.id">
-      <div class="flex-center a site-item" :class="{'selected': select === item.id}" @click="select = item.id">
+      <div class="flex-center a site-item" :class="{'selected': select === item.siteId}" @click="select = item.siteId">
         <i class="icon f-18">language</i>
         <span>{{item.siteName}}</span>
       </div>
