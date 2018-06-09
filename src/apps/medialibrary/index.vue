@@ -4,9 +4,9 @@
     <dock title="素材库" color="#2088ff"/>
     <div class="flex-item flex-center">
       <div class="top-tab f-18 blue flex-v-center">
-        <router-link class="blue" replace to="/media">图片</router-link>
-        <router-link class="blue" replace to="/media/videos">视频</router-link>
-        <router-link class="blue" replace to="/media/audios">音频</router-link>
+        <router-link class="blue" replace to="/media" :class="{'on': $route.meta.type == 0}">图片</router-link>
+        <router-link class="blue" replace to="/media/videos" :class="{'on': $route.meta.type == 1}">视频</router-link>
+        <router-link class="blue" replace to="/media/audios" :class="{'on': $route.meta.type == 2}">音频</router-link>
       </div>
     </div>
     <account/>
@@ -43,7 +43,7 @@ export default {
     .nav-item-icon{margin-right: 15px;}
   }
   .top-tab a{display: inline-block;line-height: 1em;padding: 10px;opacity: .4;text-decoration: none;
-    &.router-link-exact-active{opacity: 1;}
+    &.on{opacity: 1;}
   }
   .search-bar input{width:200px;height: 100%;border:none;margin-left: 10px;}
   .opera-btns{
