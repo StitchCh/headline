@@ -11,30 +11,8 @@
     </div>
     <account/>
   </div>
-  <div class="flex-item flex">
-    <div class="af-left flex-col">
-      <div class="flex-item scroll-y">
-        <ul class="f-16">
-          <li class="flex-v-center nav-item a">
-            <i class="icon nav-item-icon">face</i>
-            <span class="flex-item">我的</span>
-            <icon-btn @click="addFolder.show=true">add</icon-btn>
-          </li>
-          <li class="flex-v-center nav-item nav-item-folder a on">
-            <i class="icon nav-item-icon">folder</i>
-            <span class="flex-item">文章图集</span>
-          </li>
-          <li v-if="addFolder.show" class="flex-v-center nav-item nav-item-folder a">
-            <i class="icon nav-item-icon">folder</i>
-            <input type="text" class="flex-item f-16 c-a" placeholder="输入名称">
-            <icon-btn small @click="addFolder.show=false">close</icon-btn>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="flex-item flex-col">
-      <router-view/>
-    </div>
+  <div class="flex-item relative">
+    <router-view/>
   </div>
 </div>
 </template>
@@ -47,11 +25,7 @@ export default {
   name: 'media-library',
   components: { Account, Dock },
   data () {
-    return {
-      addFolder: {
-        show: false
-      }
-    }
+    return {}
   }
 }
 </script>
@@ -75,5 +49,10 @@ export default {
   .opera-btns{
     .a{display: inline-block;padding: 0 10px;}
   }
+  .media-group{padding: 13px 30px;
+    ul{flex-wrap: wrap;}
+    li{margin: 0 15px 15px 0}
+  }
+  .media-group-title{padding: 15px 0;}
 }
 </style>
