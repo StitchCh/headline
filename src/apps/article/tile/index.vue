@@ -15,7 +15,7 @@
                 <div class="c-6 item-name">测试名称测试名称测试名称测试名称</div>
                 <div class="f-12 c-8">2018-09-08 18:00:08</div>
               </div>
-              <icon-btn class="c-c" @click="deleteItem">delete</icon-btn>
+              <icon-btn class="c-c" @click.native="deleteItem($event, item)">delete</icon-btn>
             </div>
           </li>
         </ul>
@@ -45,7 +45,8 @@ export default {
   },
   methods: {
     onResize () { this.width = this.$refs.ul.clientWidth },
-    deleteItem () {
+    deleteItem (e, item) {
+      e.stopPropagation()
       this.$confirm({
         title: '您确定要删除此草稿吗？',
         text: '删除后可在回收站找回。',
@@ -60,7 +61,7 @@ export default {
 <style lang="less">
 .article-tile{
   .search{width: 300px;line-height: 32px;border:1px solid #ddd;border-radius: 20px;padding: 0 20px;}
-  li{width: 210px;margin: 15px;box-shadow: 0 0 0 1px rgba(0, 0, 0, .1);border-radius: 8px;overflow: hidden;transition: box-shadow .3s;}
+  li{width: 210px;margin: 15px;box-shadow: 0 0 0 1px rgba(0, 0, 0, .1);border-radius: 6px;overflow: hidden;transition: box-shadow .3s;}
   li:hover{box-shadow: 0 0 3px 1px rgba(0, 0, 0, .05), 0 10px 30px rgba(0, 0, 0, .15);
     .icon{color: rgb(255, 115, 115);}
   }
