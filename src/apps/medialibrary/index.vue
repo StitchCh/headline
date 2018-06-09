@@ -47,6 +47,7 @@ export default {
   }
   .search-bar input{width:200px;height: 100%;border:none;margin-left: 10px;}
   .opera-btns{
+    font-size: 14px;
     .a{display: inline-block;padding: 0 10px;}
   }
   .media-group{padding: 13px 30px;
@@ -54,5 +55,14 @@ export default {
     li{margin: 0 15px 15px 0}
   }
   .media-group-title{padding: 15px 0;}
+  .bubble-item{padding: 4px 15px;white-space: nowrap;cursor: pointer;}
+  .bubble-item:hover{background: rgba(0, 0, 0, .1)}
+  .datepicker{
+    &:before{content: none;}
+    input{background: transparent;border: none;padding: 0 10px;}
+  }
+  .datepicker-range{min-width: 200px;
+    .datepicker-popup{right: 0;width: 420px;}
+  }
 }
 </style>

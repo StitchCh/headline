@@ -51,15 +51,15 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
-router.afterEach((to, from) => {
+router.afterEach((to) => {
   document.title = to.meta.title || 'CCPT'
   let token = localStorage.token || sessionStorage.token
   let siteId = localStorage.siteId || sessionStorage.siteId
-  if (!siteId && !(to.name === 'Login' || to.name === 'ChooseSite')) {
+  if (!siteId && !(to.name === 'Login' || to.name === 'ChooseSite' || to.name === 'FindPassword')) {
     router.replace('/login')
     return
   }
-  if (!token && to.name !== 'Login') {
+  if (!token && !(to.name === 'Login' || to.name === 'FindPassword')) {
     router.replace('/login')
   }
 })

@@ -7,10 +7,10 @@
       <div class="f-22" style="font-weight: 300;">登录中俄头条</div>
       <div class="form c-6">
         <div class="input bg-f flex-v-center" style="border-bottom: 1px solid #ddd;border-radius: 8px 8px 0 0;">
-          <input class="flex-item f-16" v-model="loginName" type="text" placeholder="邮箱">
+          <input class="flex-item f-16" v-model="loginName" type="text" placeholder="邮箱" style="border-radius: 8px 8px 0 0;">
         </div>
         <div class="input bg-f flex-v-center relative" style="border-radius: 0 0 8px 8px;">
-          <input class="flex-item f-16" v-model="password" type="password" placeholder="密码">
+          <input class="flex-item f-16" v-model="password" type="password" placeholder="密码" style="margin-right: 10px;border-radius: 0 0 0 8px;">
           <div v-if="!loading" class="login-btn a" @click="login" :class="{'disabled': (!loginName || !password)}">
             <i class="icon">arrow_forward</i>
           </div>
@@ -40,8 +40,8 @@ export default {
   name: 'app-login',
   data () {
     return {
-      loginName: 'admin',
-      password: 'asdfasdf',
+      loginName: '',
+      password: '',
       keepLogin: false,
       loading: false,
       error: {
@@ -65,7 +65,9 @@ export default {
           sessionStorage.token = res.token
         }
         this.$router.replace('/chooseSite')
-      }).catch(e => this.showError(e))
+      }).catch(e => {
+        this.showError(e)
+      })
     },
     showError (e) {
       this.loading = false
@@ -79,6 +81,7 @@ export default {
 <style modules lang="less">
 .app-login{
   .ctn{padding-bottom: 120px;}
+  // .input{overflow: hidden;}
   .logo{display: inline-block;width: 100px;height: 100px;background: url('../../assets/img/login-logo.png') center / cover #fff;border-radius: 20px;margin-bottom: 10px;}
   .form{border-radius: 10px;width: 320px;margin: 30px 0 20px 0;
     input{margin: 0;padding: 0;border: none;height: 46px;padding: 0 15px;background: transparent;}

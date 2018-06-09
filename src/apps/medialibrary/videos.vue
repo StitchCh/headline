@@ -9,8 +9,29 @@
       </div>
       <div class="flex-item"></div>
       <div class="flex-v-center opera-btns">
-        <span class="a blue">全选</span>
-        <span class="a blue">上传</span>
+        <div class="relative">
+          <span class="a flex-v-center" @click="stateShow=true">
+            <span>全部状态</span>
+            <i class="icon f-18 c-a">keyboard_arrow_down</i>
+          </span>
+          <bubble v-if="stateShow" @close="stateShow=false">
+            <div style="padding: 10px 0;">
+              <div class="bubble-item">已转码</div>
+              <div class="bubble-item">转码中</div>
+              <div class="bubble-item">转码失败</div>
+            </div>
+          </bubble>
+        </div>
+        <div class="relative">
+          <span class="a relative">
+            <span v-if="!filter.range.length" class="abs flex-v-center" style="padding: 0 15px;top: 0;">
+              <span>全部时间</span>
+              <i class="icon c-a f-18">keyboard_arrow_down</i>
+            </span>
+            <vue-datepicker-local v-model="filter.range"></vue-datepicker-local>
+          </span>
+        </div>
+        <icon-btn small @click="resetFilter" v-tooltip:bottom="'重置'">close</icon-btn>
       </div>
     </div>
     <div class="flex-item scroll-y">
@@ -31,10 +52,24 @@
 
 <script>
 import MediaLeftTree from './leftTree'
+import VueDatepickerLocal from 'vue-datepicker-local'
 
 export default {
   name: 'media-videos',
-  components: { MediaLeftTree }
+  components: { MediaLeftTree, VueDatepickerLocal },
+  data () {
+    return {
+      stateShow: false,
+      filter: {
+        range: []
+      }
+    }
+  },
+  methods: {
+    resetFilter () {
+      this.filter.range = []
+    }
+  }
 }
 </script>
 
