@@ -15,9 +15,9 @@
             <i v-tooltip:top="'阅读'">6</i>/<i v-tooltip:top="'评论'">0</i>/<i v-tooltip:top="'分享'">0</i>
           </span>
           <span class="flex-item"></span>
-          <i class="icon f-14 c-a">computer</i>
-          <i class="icon f-14 c-a">phone_iphone</i>
-          <i class="icon f-14 c-a">public</i>
+          <i class="icon f-14 tg-icon c-a">computer</i>
+          <i class="icon f-14 tg-icon c-a">phone_iphone</i>
+          <i class="icon f-14 tg-icon c-a">public</i>
         </div>
       </div>
     </af-center>
@@ -66,6 +66,10 @@ export default {
 
 <style lang="less">
 .article-list{
-  .list-item.on{background: #dfdfdf;}
+  .list-item.on{background: #73a9ea;color: #fff;
+    .list-title span{color: #fff;}
+    .list-info{color: rgba(255, 255, 255, .8)}
+    .tg-icon{color: rgba(255, 255, 255, .8);}
+  }
 }
 </style>

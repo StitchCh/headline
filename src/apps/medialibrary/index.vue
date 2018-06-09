@@ -36,7 +36,9 @@ export default {
   .nav-item{height: 40px;border-bottom: 1px solid #eee;line-height: 1em;padding: 0 5px 0 15px;
     &.nav-item-folder{padding-left: 30px;}
     &:hover{background: rgba(0, 0, 0, .05);}
-    &.on{background: #c9e0ff;border-color: #c9e0ff;color: #005eca;}
+    &.on{background: #318fff;border-color: #fff;color: #fff;
+      .icon-btn{color: #fff;}
+    }
     input{border: none;height: 36px;background: transparent;
       &::-webkit-input-placeholder{color: #aaa;}
     }
