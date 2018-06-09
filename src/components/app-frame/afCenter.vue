@@ -103,7 +103,7 @@ export default {
         searchby: [{id: 'title', name: '标题'}, {id: 'keywoards', name: '关键字'}, {id: 'abstracts', name: '摘要'}, {id: 'author', name: '作者'}]
       },
       filter: {
-        scope: 'my',
+        scope: '1',
         status: 'all',
         toPage: 1,
         pageSize: 30,

@@ -28,7 +28,7 @@
               <span>全部时间</span>
               <i class="icon c-a f-18">keyboard_arrow_down</i>
             </span>
-            <vue-datepicker-local v-model="filter.range"></vue-datepicker-local>
+            <vue-datepicker-local v-model="filter.range" show-buttons clearable></vue-datepicker-local>
           </span>
         </div>
         <icon-btn small @click="resetFilter" v-tooltip:bottom="'重置'">close</icon-btn>

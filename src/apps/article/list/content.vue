@@ -9,10 +9,10 @@ export default {
   name: 'app-article-content',
   props: [ 'id' ],
   created () {
-    console.log(this.id)
+    // console.log(this.id)
   },
   updated () {
-    console.log(this.id)
+    // console.log(this.id)
     // this.getArticle()
   },
   methods: {

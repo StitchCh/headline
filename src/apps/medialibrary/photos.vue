@@ -15,10 +15,10 @@
       </div>
     </div>
     <div class="flex-item scroll-y">
-      <div class="media-group" v-for="(g, i) in 3" :key="i">
-        <div class="media-group-title">今天</div>
+      <div class="media-group" v-for="group in list" :key="group.date">
+        <div class="media-group-title">{{group.date}}</div>
         <ul class="flex">
-          <li class="photos-item relative" v-for="(item, i) in 16" :key="i">
+          <li class="photos-item relative" v-for="item in group.list" :key="item.id">
             <check-box></check-box>
             <img src="../../assets/img/bg.png" alt="">
           </li>
@@ -32,10 +32,28 @@
 
 <script>
 import MediaLeftTree from './leftTree'
+import getData from './getData'
 
 export default {
   name: 'media-photos',
-  components: { MediaLeftTree }
+  components: { MediaLeftTree },
+  data () {
+    return {
+      list: []
+    }
+  },
+  created () {
+    this.getList()
+  },
+  methods: {
+    getList () {
+      let type = this.$route.meta.type
+      let folderId = this.$route.query.folderId || ''
+      getData(type, folderId, 1).then(res => {
+        this.list = res.attachments || []
+      })
+    }
+  }
 }
 </script>
 

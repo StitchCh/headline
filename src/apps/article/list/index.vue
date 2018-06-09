@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-item">
+  <div class="flex flex-item article-list">
     <af-center @add="$router.push('/articleAdd')" :scope="$route.query.scope" :status="$route.query.status" url="/cri-cms-platform/article/list.monitor">
-      <div class="list-item a" slot-scope="slotProps" @click="onItemClick(slotProps.item)">
+      <div class="list-item a" slot-scope="slotProps" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.id == $route.params.id}">
         <div class="list-title flex-v-center">
           <i v-if="~~(slotProps.item.isRecommnd)" class="icon f-16 blue">thumb_up</i>
           <i v-if="~~(slotProps.item.hasThumb)" class="icon f-16 orange">image</i>
@@ -53,13 +53,7 @@ export default {
       list: []
     }
   },
-  created () {
-    this.getList()
-  },
   methods: {
-    getList () {
-      // TO DO
-    },
     onItemClick (item) {
       this.$router.replace({
         path: `/article/list/${item.id}`,
@@ -70,6 +64,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="less">
+.article-list{
+  .list-item.on{background: #dfdfdf;}
+}
 </style>

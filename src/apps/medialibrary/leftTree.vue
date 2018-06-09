@@ -1,12 +1,12 @@
 <template>
 <div class="media-left-tree">
   <ul class="f-16">
-    <li class="flex-v-center nav-item a">
+    <li class="flex-v-center nav-item a" @click="folderClick()" :class="{'on': !$route.query.folderId}">
       <i class="icon nav-item-icon">face</i>
       <span class="flex-item">我的</span>
-      <icon-btn @click="addFolder.show=true">add</icon-btn>
+      <icon-btn @click.native="add">add</icon-btn>
     </li>
-    <li v-for="item in list" :key="item.id" class="flex-v-center nav-item nav-item-folder a" :class="{'on': $route.query.type === item.id}" @click="folderClick(item)">
+    <li v-for="item in list" :key="item.id" class="flex-v-center nav-item nav-item-folder a" :class="{'on': $route.query.folderId === item.id}" @click="folderClick(item)">
       <i class="icon nav-item-icon">folder</i>
       <span class="flex-item">{{item.name}}</span>
       <icon-btn small @click.native="deleteFolder($event, item)" class="del-btn">delete</icon-btn>
@@ -73,11 +73,18 @@ export default {
       })
     },
     folderClick (item) {
-      if (!item) this.$router.replace(this.$route.path)
+      if (!item) {
+        this.$router.replace(this.$route.path)
+        return
+      }
       this.$router.replace({
         name: this.$route.name,
-        query: { type: item.id }
+        query: { folderId: item.id }
       })
+    },
+    add (e) {
+      e.stopPropagation()
+      this.addFolder.show = true
     }
   }
 }

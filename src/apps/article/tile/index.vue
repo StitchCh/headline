@@ -44,7 +44,9 @@ export default {
     window.removeEventListener('resize', this.onResize)
   },
   methods: {
-    onResize () { this.width = this.$refs.ul.clientWidth },
+    onResize () {
+      this.width = this.$refs.ul.clientWidth
+    },
     deleteItem (e, item) {
       e.stopPropagation()
       this.$confirm({

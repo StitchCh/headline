@@ -28,15 +28,15 @@
               <span>全部时间</span>
               <i class="icon c-a f-18">keyboard_arrow_down</i>
             </span>
-            <vue-datepicker-local v-model="filter.range"></vue-datepicker-local>
+            <vue-datepicker-local v-model="filter.range" show-buttons></vue-datepicker-local>
           </span>
         </div>
         <icon-btn small @click="resetFilter" v-tooltip:bottom="'重置'">close</icon-btn>
       </div>
     </div>
     <div class="flex-item scroll-y">
-      <div class="media-group" v-for="(g, i) in 3" :key="i">
-        <div class="media-group-title">今天</div>
+      <div class="media-group" v-for="group in list" :key="group.date">
+        <div class="media-group-title">{{group.date}}</div>
         <ul class="flex">
           <li class="videos-item relative" v-for="(item, i) in 16" :key="i">
             <div class="videos-item-cover"></div>
@@ -53,6 +53,7 @@
 <script>
 import MediaLeftTree from './leftTree'
 import VueDatepickerLocal from 'vue-datepicker-local'
+import getData from './getData'
 
 export default {
   name: 'media-videos',
@@ -60,14 +61,25 @@ export default {
   data () {
     return {
       stateShow: false,
+      list: [],
       filter: {
         range: []
       }
     }
   },
+  created () {
+    this.getList()
+  },
   methods: {
     resetFilter () {
       this.filter.range = []
+    },
+    getList () {
+      let type = this.$route.meta.type
+      let folderId = this.$route.query.folderId || ''
+      getData(type, folderId, 1).then(res => {
+        this.list = res.attachments || []
+      })
     }
   }
 }
