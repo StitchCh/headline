@@ -14,16 +14,17 @@
       </div>
     </div>
     <div class="flex-item scroll-y">
-      <div class="media-group" v-for="g in 3">
+      <div class="media-group" v-for="(g, i) in 3" :key="i">
         <div class="media-group-title">今天</div>
         <ul class="flex">
-          <li class="videos-item relative" v-for="item in 6">
+          <li class="videos-item relative" v-for="(item, i) in 16" :key="i">
             <div class="videos-item-cover"></div>
-            <div class="videos-item-name f-14">李小璐曝贾乃亮陪伴少李小璐曝贾乃亮陪伴少李小璐曝贾乃亮陪伴少, 坦言婚前婚后反差大</div>
+            <div class="videos-item-name f-14">李小璐曝贾乃亮陪伴少, 坦言婚前婚后反差大</div>
           </li>
         </ul>
       </div>
     </div>
+    <div class="af-bottombar"></div>
   </div>
 </div>
 </template>

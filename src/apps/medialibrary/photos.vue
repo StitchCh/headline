@@ -15,18 +15,18 @@
       </div>
     </div>
     <div class="flex-item scroll-y">
-      <div class="media-group" v-for="g in 3">
+      <div class="media-group" v-for="(g, i) in 3" :key="i">
         <div class="media-group-title">今天</div>
         <ul class="flex">
-          <li class="photos-item relative" v-for="item in 6">
+          <li class="photos-item relative" v-for="(item, i) in 16" :key="i">
             <check-box></check-box>
             <img src="../../assets/img/bg.png" alt="">
           </li>
         </ul>
       </div>
     </div>
+    <div class="af-bottombar"></div>
   </div>
-  <div class="af-bottombar"></div>
 </div>
 </template>
 

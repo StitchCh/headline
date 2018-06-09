@@ -1,5 +1,5 @@
 <template>
-<div class="abs flex-item f-14 flex media-audios">
+<div class="abs flex-item flex media-audios">
   <media-left-tree/>
   <div class="flex-item flex-col">
     <div class="af-topbar flex-v-center" style="height:36px;">
@@ -14,10 +14,10 @@
       </div>
     </div>
     <div class="flex-item scroll-y">
-      <div class="media-group" v-for="g in 3">
+      <div class="media-group" v-for="(g, i) in 3" :key="i">
         <div class="media-group-title">今天</div>
         <ul class="flex">
-          <li class="audios-item relative a" v-for="item in 6">
+          <li class="audios-item relative a" v-for="(item, i) in 16" :key="i">
             <div class="audios-item-cover flex-v-center">
               <i class="icon c-f">audiotrack</i>
               <span class="flex-item t-right c-f">20:00</span>
@@ -27,9 +27,7 @@
         </ul>
       </div>
     </div>
-    <div class="af-bottombar flex-v-center">
-
-    </div>
+    <div class="af-bottombar flex-v-center"></div>
   </div>
 </div>
 </template>
@@ -45,7 +43,7 @@ export default {
 
 <style lang="less">
 .media-audios{
-  .audios-item{width: 200px;margin: 0!important;padding: 5px;border-radius: 8px;outline: none;border: 1px solid transparent;}
+  .audios-item{width: 200px;border-radius: 8px;outline: none;border: 1px solid transparent;}
   .audios-item-cover{height: 60px;background: #79b6ff;padding: 0 15px;border-radius: 5px;}
   .audios-item-name{margin-top: 5px;max-height: 46px;overflow: hidden;}
 }
