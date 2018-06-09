@@ -46,6 +46,8 @@ export default {
       this.logoutShow = false
       localStorage.removeItem('token')
       sessionStorage.removeItem('token')
+      localStorage.removeItem('siteId')
+      sessionStorage.removeItem('siteId')
       this.$store.commit('LOGOUT')
       this.$router.replace('/login')
     }

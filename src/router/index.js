@@ -54,6 +54,11 @@ router.beforeEach((to, from, next) => {
 router.afterEach((to, from) => {
   document.title = to.meta.title || 'CCPT'
   let token = localStorage.token || sessionStorage.token
+  let siteId = localStorage.siteId || sessionStorage.siteId
+  if (!siteId && !(to.name === 'Login' || to.name === 'ChooseSite')) {
+    router.replace('/login')
+    return
+  }
   if (!token && to.name !== 'Login') {
     router.replace('/login')
   }

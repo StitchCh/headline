@@ -36,8 +36,6 @@
 </template>
 
 <script>
-import getUserInfo from './getUserInfo'
-
 export default {
   name: 'app-login',
   data () {
@@ -59,14 +57,14 @@ export default {
       this.$http.post('/cri-cms-platform/login.monitor', { loginName, password }).then(res => {
         if (this.keepLogin) {
           sessionStorage.removeItem('token')
+          sessionStorage.removeItem('siteId')
           localStorage.token = res.token
         } else {
           localStorage.removeItem('token')
+          localStorage.removeItem('siteId')
           sessionStorage.token = res.token
         }
-        getUserInfo().then(res => {
-          this.$router.replace('/')
-        }).catch(e => this.showError(e))
+        this.$router.replace('/chooseSite')
       }).catch(e => this.showError(e))
     },
     showError (e) {

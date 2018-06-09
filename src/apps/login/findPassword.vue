@@ -1,5 +1,5 @@
 <template>
-<div class="abs app-find-password">
+<div class="abs c-f flex-center app-find-password">
   app-find-password
 </div>
 </template>
