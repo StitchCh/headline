@@ -33,7 +33,25 @@ export default {
   components: { Account },
   data () {
     return {
-      width: 0
+      width: 0,
+      filter: {
+        scope: 'my',
+        status: 'REJECT',
+        pageSize: 30,
+        toPage: 1,
+        searchby: 'title',
+        search: ''
+      }
+    }
+  },
+  watch: {
+    '$route.query' (query) {
+      let { filter } = this
+      if (query.scope !== filter.scope || query.status !== filter.status) {
+        filter.scope = query.scope
+        filter.status = query.status
+        this.getList(true)
+      }
     }
   },
   mounted () {
@@ -54,6 +72,12 @@ export default {
         text: '删除后可在回收站找回。',
         btns: ['取消', '删除'],
         color: 'red'
+      })
+    },
+    getList (refresh) {
+      if (refresh) this.filter.toPage = 1
+      this.$http.post('/cri-cms-platform/article/list.monitor', this.filter).then(res => {
+        console.log(res)
       })
     }
   }

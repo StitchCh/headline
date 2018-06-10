@@ -6,10 +6,16 @@
       <span class="flex-item">我的</span>
       <icon-btn @click.native="add">add</icon-btn>
     </li>
-    <li v-for="item in list" :key="item.id" class="flex-v-center nav-item nav-item-folder a" :class="{'on': $route.query.folderId === item.id}" @click="folderClick(item)">
-      <i class="icon nav-item-icon">folder</i>
-      <span class="flex-item">{{item.name}}</span>
-      <icon-btn small @click.native="deleteFolder($event, item)" class="del-btn">delete</icon-btn>
+    <li>
+      <draggable v-model="list" @end="onDragEnd">
+        <transition-group tag="ul" name="flip-list">
+          <li v-for="item in list" :key="item.id" :data-id="item.id" :data-name="item.name" class="flex-v-center nav-item nav-item-folder a" :class="{'on': $route.query.folderId === item.id}" @click="folderClick(item)">
+            <i class="icon nav-item-icon">folder</i>
+            <span class="flex-item">{{item.name}}</span>
+            <icon-btn small @click.native="deleteFolder($event, item)" class="del-btn">delete</icon-btn>
+          </li>
+        </transition-group>
+      </draggable>
     </li>
     <li v-if="addFolder.show" class="flex-v-center nav-item nav-item-folder a">
       <i class="icon nav-item-icon">create_new_folder</i>
@@ -22,8 +28,11 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable'
+
 export default {
   name: 'media-left-tree',
+  components: { draggable },
   data () {
     return {
       list: [],
@@ -66,10 +75,15 @@ export default {
     },
     submit () {
       if (!this.addFolder.name) return
-      this.$http.post('/cri-cms-platform/media/folder/add.monitor', {
-        name: this.addFolder.name
+      this.$http.post('/cri-cms-platform/media/folder/save.monitor', {
+        type: this.$route.meta.type,
+        name: this.addFolder.name,
+        belone: 'custom',
+        sort: this.list.length
       }).then(res => {
-        console.log(res)
+        this.getList()
+        this.addFolder.show = false
+        this.addFolder.name = ''
       })
     },
     folderClick (item) {
@@ -85,6 +99,15 @@ export default {
     add (e) {
       e.stopPropagation()
       this.addFolder.show = true
+    },
+    onDragEnd (e) {
+      if (e.oldIndex === e.newIndex) return
+      console.log(e.newIndex)
+      // this.$http.post('/cri-cms-platform/media/folder/update.monitor', {
+      //   id: e.item.getAttribute('data-id'),
+      //   sort: e.newIndex,
+      //   type: this.$route.meta.type
+      // })
     }
   }
 }
@@ -94,6 +117,8 @@ export default {
 .media-left-tree{
   width: 280px;border-right: 1px solid rgba(0, 0, 0, .1);
   .del-btn{opacity: 0;}
-  li:hover .del-btn{opacity: 1;}
+  .nav-item:hover .del-btn{opacity: 1;}
+  .nav-item.sortable-ghost{background: #eee;}
 }
+.flip-list-move{transition: transform .1s;}
 </style>
