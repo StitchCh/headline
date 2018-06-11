@@ -26,7 +26,6 @@
 
 <script>
 import Account from '@/components/account'
-// import dra from '@/components/account'
 
 export default {
   name: 'app-article-tile',
