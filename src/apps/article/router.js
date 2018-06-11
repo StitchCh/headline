@@ -26,7 +26,15 @@ export default [{
       component: resolve => require(['@/apps/article/tile/index.vue'], resolve)
     },
     {
-      path: 'recycle'
+      path: 'recycle',
+      component: resolve => require(['@/apps/article/recycle/index.vue'], resolve),
+      children: [
+        {
+          path: ':id',
+          component: resolve => require(['@/apps/article/list/content.vue'], resolve),
+          props: true
+        }
+      ]
     }
   ]
 }, {

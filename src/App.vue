@@ -21,12 +21,17 @@ export default {
   name: 'App',
   computed: {
     showApp () {
-      if (this.$route.name === 'Login' || this.$route.name === 'FindPassword') return true
+      let route = this.$route.name
+      if (route === 'Login' || route === 'FindPassword' || route === 'ChooseSite') return true
       if (this.$store.state.account.id) return true
     }
   },
   created () {
     getUserInfo().then().catch(e => {
+      localStorage.removeItem('token')
+      sessionStorage.removeItem('token')
+      localStorage.removeItem('siteId')
+      sessionStorage.removeItem('siteId')
       this.$router.replace('/login')
     })
   }

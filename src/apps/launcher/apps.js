@@ -1,6 +1,6 @@
 export default [{
   name: '文章',
-  path: '/article',
+  path: '/article/list?scope=all&status=all',
   icon: 'icon-article'
 }, {
   name: '图集',

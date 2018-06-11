@@ -3,8 +3,8 @@ import store from '@/store'
 
 export default function getUserInfo () {
   return axios.post('/cri-cms-platform/sites.monitor').then(res => {
-    store.commit('LOGIN', res[0])
-    return Promise.resolve(res[0])
+    store.commit('LOGIN', res.user)
+    return Promise.resolve(res)
   }).catch(e => {
     return Promise.reject(e)
   })

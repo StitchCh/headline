@@ -41,13 +41,8 @@ function setTransition (to, from) {
   if (toLevel > fromLevel) transitionName = 'in-app'
   else if (toLevel < fromLevel) transitionName = 'out-app'
   else transitionName = 'fade-app'
-  if (showBgRoutes.includes(to.name) || showBgRoutes.includes(from.name)) {
-    console.log(1, to.name, from.name)
-    store.commit('SET_SHOW_BG', true)
-  } else {
-    console.log(2, to.name, from.name)
-    store.commit('SET_SHOW_BG', false)
-  }
+  if (showBgRoutes.includes(to.name) || showBgRoutes.includes(from.name)) store.commit('SET_SHOW_BG', true)
+  else store.commit('SET_SHOW_BG', false)
   store.commit('SET_TRANSITION', transitionName)
 }
 
@@ -56,10 +51,15 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
-router.afterEach((to, from) => {
+router.afterEach((to) => {
   document.title = to.meta.title || 'CCPT'
   let token = localStorage.token || sessionStorage.token
-  if (!token && to.name !== 'Login') {
+  let siteId = localStorage.siteId || sessionStorage.siteId
+  if (!siteId && !(to.name === 'Login' || to.name === 'ChooseSite' || to.name === 'FindPassword')) {
+    router.replace('/login')
+    return
+  }
+  if (!token && !(to.name === 'Login' || to.name === 'FindPassword')) {
     router.replace('/login')
   }
 })

@@ -2,7 +2,7 @@
 <div class="account c-6 flex-v-center">
   <div class="relative">
     <div class="flex-v-center a account-toggler" @click="menuShow=true">
-      <span>UserId: {{$store.state.account.userId}}</span>
+      <span>{{$store.state.account.userName}}</span>
       <i class="icon">keyboard_arrow_down</i>
     </div>
     <bubble v-if="menuShow" class="c-6" pos="bottom" align="center" @close="menuShow=false">
@@ -46,6 +46,8 @@ export default {
       this.logoutShow = false
       localStorage.removeItem('token')
       sessionStorage.removeItem('token')
+      localStorage.removeItem('siteId')
+      sessionStorage.removeItem('siteId')
       this.$store.commit('LOGOUT')
       this.$router.replace('/login')
     }
@@ -56,7 +58,7 @@ export default {
 <style lang="less">
 .account{
   .account-menu{padding: 10px 0;}
-  .menu-item{padding: 5px 10px;
+  .menu-item{padding: 5px 10px;white-space: nowrap;
     &:hover{background: #ddd;}
   }
   .log-out-logo{width: 50px;height: 50px;border: 1px solid #ddd;border-radius: 8px;margin-right: 20px;}
