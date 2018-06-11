@@ -28,7 +28,7 @@
     </af-center>
     <div class="flex-item flex-col">
       <div class="af-topbar flex-v-center">
-        <div class="content-tool flex-v-center">
+        <div v-if="$route.params.id" class="content-tool flex-v-center">
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'查看'">remove_red_eye</icon-btn>
           </div>

@@ -14,13 +14,16 @@
         <span class="a blue">上传</span>
       </div>
     </div>
-    <div class="flex-item scroll-y">
+    <div class="flex-item relative scroll-y">
+      <div v-if="!list.length" class="abs flex-center">
+        <no-data/>
+      </div>
       <div class="media-group" v-for="group in list" :key="group.date">
         <div class="media-group-title">{{group.date}}</div>
         <ul class="flex">
           <li class="photos-item relative" v-for="item in group.data" :key="item.id">
             <check-box></check-box>
-            <img src="../../assets/img/bg.png" alt="">
+            <img src="../../../assets/img/bg.png" alt="">
           </li>
         </ul>
       </div>
@@ -31,7 +34,7 @@
 </template>
 
 <script>
-import MediaLeftTree from './leftTree'
+import MediaLeftTree from '../components/leftTree'
 
 export default {
   name: 'media-photos',

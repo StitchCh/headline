@@ -27,7 +27,7 @@ export default {
     this.arrowStyle = this.getArrowStyle()
     document.body.addEventListener('click', this.close)
   },
-  destroyed () {
+  beforeDestroy () {
     document.body.removeEventListener('click', this.close)
   },
   methods: {
