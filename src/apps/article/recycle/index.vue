@@ -3,9 +3,10 @@
   <div class="flex-col recycle-center">
     <div class="af-topbar flex-v-center">
       <i class="icon c-a f-20">search</i>
-      <input type="text" class="flex-item c-6 f-14 search-input" placeholder="搜索标题">
+      <input v-model="filter.search" type="text" class="flex-item c-6 f-14 search-input" placeholder="搜索标题">
+      <icon-btn small @click="filter.search=''">close</icon-btn>
     </div>
-    <div class="filter-bar flex-v-center">
+    <!-- <div class="filter-bar flex-v-center">
       <label class="relative a" style="display:inline-block;height: 100%;">
         <vue-datepicker-local v-model="filter.range" show-buttons></vue-datepicker-local>
         <span v-if="!filter.range.length" class="flex-v-center" style="position:absolute;left: 0;top: 6px;">
@@ -15,10 +16,18 @@
       </label>
       <span class="flex-item"></span>
       <icon-btn small v-tooltip:top="'清空'" @click="filter.range=[]">close</icon-btn>
-    </div>
-    <list-view class="flex-item">
+    </div> -->
+    <list-view :list="list" class="flex-item"
+      @prev="filter.toPage = filter.toPage <= 1 ? 1 : filter.toPage - 1"
+      @next="filter.toPage = filter.toPage >= totalPage ? totalPage : filter.toPage + 1"
+      >
       <li slot-scope="slotProps">
-        sss
+        <div class="list-item c-6 f-14 a" @click="$router.push('/article/recycle/' + slotProps.item.id)">
+          <div class="b" style="white-space: nowrap;overflow:hidden;text-overflow:ellipsis">{{slotProps.item.title}}</div>
+          <div class="c-8 f-12" style="margin-top: 5px;">
+            <span>{{slotProps.item.createDate}}</span>
+          </div>
+        </div>
       </li>
     </list-view>
     <div class="af-bottombar">ss</div>
@@ -30,7 +39,9 @@
       <div class="flex-item"></div>
       <account/>
     </div>
-    <div class="flex-item"></div>
+    <div class="flex-item scroll-y">
+      <router-view></router-view>
+    </div>
   </div>
 </div>
 </template>
@@ -39,6 +50,7 @@
 import Account from '@/components/account'
 import ListView from '@/components/listView'
 import VueDatepickerLocal from 'vue-datepicker-local'
+import debounce from 'lodash/debounce'
 
 export default {
   name: 'recycle',
@@ -46,18 +58,41 @@ export default {
   data () {
     return {
       list: [],
+      totalPage: 1,
       filter: {
-        range: []
+        // range: []
+        scope: 'my',
+        toPage: 1,
+        pageSize: 30,
+        order: 'asc',
+        searchby: 'title',
+        search: ''
       }
     }
   },
   created () {
     this.getList()
   },
+  watch: {
+    'filter.search' () {
+      this.search()
+    },
+    'filter.toPage' () {
+      this.getList()
+    }
+  },
   methods: {
     getList () {
-      // TO DO
-    }
+      this.$http.post('/cri-cms-platform/article/getRecycle.monitor', this.filter).then(res => {
+        this.list = res.pages || []
+        this.totalPage = res.totalPage || 1
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+    search: debounce(function () {
+      this.getList(true)
+    }, 400)
   }
 }
 </script>

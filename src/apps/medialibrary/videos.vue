@@ -34,11 +34,12 @@
         <icon-btn small @click="resetFilter" v-tooltip:bottom="'重置'">close</icon-btn>
       </div>
     </div>
-    <div class="flex-item scroll-y">
+    <div class="flex-item relative scroll-y">
+      <div v-if="!list.length" class="abs flex-center"><no-data/></div>
       <div class="media-group" v-for="group in list" :key="group.date">
         <div class="media-group-title">{{group.date}}</div>
         <ul class="flex">
-          <li class="videos-item relative" v-for="(item, i) in 16" :key="i">
+          <li class="videos-item relative" v-for="item in group.data" :key="item.id">
             <div class="videos-item-cover"></div>
             <div class="videos-item-name f-14">李小璐曝贾乃亮陪伴少, 坦言婚前婚后反差大</div>
           </li>
@@ -53,7 +54,6 @@
 <script>
 import MediaLeftTree from './leftTree'
 import VueDatepickerLocal from 'vue-datepicker-local'
-import getData from './getData'
 
 export default {
   name: 'media-videos',
@@ -70,6 +70,11 @@ export default {
   created () {
     this.getList()
   },
+  watch: {
+    '$route.query' () {
+      this.getList()
+    }
+  },
   methods: {
     resetFilter () {
       this.filter.range = []
@@ -77,7 +82,12 @@ export default {
     getList () {
       let type = this.$route.meta.type
       let folderId = this.$route.query.folderId || ''
-      getData(type, folderId, 1).then(res => {
+      this.$http.post('/cri-cms-platform/media/list.monitor', {
+        type,
+        folderId,
+        toPage: 1,
+        pageSize: 30
+      }).then(res => {
         this.list = res.data || []
       })
     }

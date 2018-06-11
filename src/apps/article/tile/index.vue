@@ -6,9 +6,12 @@
     </div>
     <div class="flex-item flex-col">
       <div class="t-center" style="padding: 15px 0;"><input class="f-14 search" type="text" placeholder="输入关键字"/></div>
-      <div class="box flex-item scroll-y">
+      <div class="box flex-item relative scroll-y">
+        <div v-if="!list.length" class="abs flex-center" style="height: 80%;">
+          <no-data/>
+        </div>
         <ul class="flex" ref="ul" style="flex-wrap: wrap;padding-bottom: 50px;" :style="{paddingLeft: (width - (240 * ~~((width - 80) / 240))) * 0.5 + 'px'}">
-          <li v-for="(item, i) in 12" :key="i" class="a" @click="$router.push('/articleAdd')">
+          <li v-for="item in list" :key="item.id" class="a" @click="$router.push('/articleAdd?id='+item.id)">
             <div class="cover"></div>
             <div class="flex-v-center item-info">
               <div class="flex-item" style="overflow: hidden;">
@@ -34,12 +37,14 @@ export default {
   data () {
     return {
       width: 0,
+      list: [],
       filter: {
         scope: 'my',
         status: 'REJECT',
         pageSize: 30,
         toPage: 1,
         searchby: 'title',
+        order: 'asc',
         search: ''
       }
     }
@@ -53,6 +58,9 @@ export default {
         this.getList(true)
       }
     }
+  },
+  created () {
+    this.getList()
   },
   mounted () {
     this.onResize()
@@ -77,7 +85,9 @@ export default {
     getList (refresh) {
       if (refresh) this.filter.toPage = 1
       this.$http.post('/cri-cms-platform/article/list.monitor', this.filter).then(res => {
-        console.log(res)
+        this.list = res.pages || []
+      }).catch(e => {
+        console.log(e)
       })
     }
   }

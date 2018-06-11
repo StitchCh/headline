@@ -1,6 +1,11 @@
 <template>
   <div class="flex flex-item article-list">
-    <af-center @add="$router.push('/articleAdd')" :scope="$route.query.scope" :status="$route.query.status" url="/cri-cms-platform/article/list.monitor">
+    <af-center
+      @add="$router.push('/articleAdd')"
+      :scope="$route.query.scope"
+      :status="$route.query.status"
+      url="/cri-cms-platform/article/list.monitor"
+      ref="afCenter">
       <div class="list-item a" slot-scope="slotProps" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.id == $route.params.id}">
         <div class="list-title flex-v-center">
           <i v-if="~~(slotProps.item.isRecommnd)" class="icon f-16 blue">thumb_up</i>
@@ -24,12 +29,24 @@
     <div class="flex-item flex-col">
       <div class="af-topbar flex-v-center">
         <div class="content-tool flex-v-center">
-          <div class="tool-item"><icon-btn small v-tooltip:bottom="'查看'">remove_red_eye</icon-btn></div>
-          <div class="tool-item"><icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn></div>
-          <div class="tool-item"><icon-btn small v-tooltip:bottom="'编辑'">edit</icon-btn></div>
-          <div class="tool-item"><icon-btn small v-tooltip:bottom="'删除'">delete</icon-btn></div>
-          <div class="tool-item"><icon-btn small v-tooltip:bottom="'二维码'"><img class="qr-icon" src="../../../assets/img/QR_code.svg"></icon-btn></div>
-          <div class="tool-item"><icon-btn small v-tooltip:bottom="'复制并重新发布'">file_copy</icon-btn></div>
+          <div class="tool-item">
+            <icon-btn small v-tooltip:bottom="'查看'">remove_red_eye</icon-btn>
+          </div>
+          <div class="tool-item">
+            <icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn>
+          </div>
+          <div class="tool-item">
+            <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push('/articleAdd?id='+$route.params.id)">edit</icon-btn>
+          </div>
+          <div class="tool-item">
+            <icon-btn small v-tooltip:bottom="'删除'" @click="deleteArticle">delete</icon-btn>
+          </div>
+          <div class="tool-item">
+            <icon-btn small v-tooltip:bottom="'二维码'"><img class="qr-icon" src="../../../assets/img/QR_code.svg"></icon-btn>
+          </div>
+          <div class="tool-item">
+            <icon-btn small v-tooltip:bottom="'复制并重新发布'">file_copy</icon-btn>
+          </div>
         </div>
         <div class="flex-item"></div>
         <account/>
@@ -58,6 +75,25 @@ export default {
       this.$router.replace({
         path: `/article/list/${item.id}`,
         query: this.$route.query
+      })
+    },
+    deleteArticle () {
+      this.$confirm({
+        title: '您确定要删除此文章吗？',
+        text: `您可以从回收站中恢复。`,
+        btns: ['取消', '删除'],
+        color: 'red',
+        yes: () => {
+          this.$http.post('/cri-cms-platform/article/delete.monitor', {
+            id: this.$route.params.id
+          }).then(res => {
+            this.$refs.afCenter.getList()
+            this.$router.replace({
+              path: '/article/list',
+              query: this.$route.query
+            })
+          })
+        }
       })
     }
   }

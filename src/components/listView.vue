@@ -48,7 +48,7 @@ export default {
 <style lang="less">
 .list-view{
   overflow: hidden;
-  li{border-top: 1px solid #eee;}
+  li{border-top: 1px solid #eee;line-height: 1em;}
   li:last-child{border-color: transparent;}
   .list-scroller{transition: all .3s;
     &.load-prev{transform: translateY(50px);}

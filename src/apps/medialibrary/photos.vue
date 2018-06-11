@@ -32,7 +32,6 @@
 
 <script>
 import MediaLeftTree from './leftTree'
-import getData from './getData'
 
 export default {
   name: 'media-photos',
@@ -45,11 +44,21 @@ export default {
   created () {
     this.getList()
   },
+  watch: {
+    '$route.query' () {
+      this.getList()
+    }
+  },
   methods: {
     getList () {
       let type = this.$route.meta.type
       let folderId = this.$route.query.folderId || ''
-      getData(type, folderId, 1).then(res => {
+      this.$http.post('/cri-cms-platform/media/list.monitor', {
+        type,
+        folderId,
+        toPage: 1,
+        pageSize: 30
+      }).then(res => {
         this.list = res.data || []
       })
     }
