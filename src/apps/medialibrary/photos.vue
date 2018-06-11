@@ -18,7 +18,7 @@
       <div class="media-group" v-for="group in list" :key="group.date">
         <div class="media-group-title">{{group.date}}</div>
         <ul class="flex">
-          <li class="photos-item relative" v-for="item in group.list" :key="item.id">
+          <li class="photos-item relative" v-for="item in group.data" :key="item.id">
             <check-box></check-box>
             <img src="../../assets/img/bg.png" alt="">
           </li>
@@ -50,7 +50,7 @@ export default {
       let type = this.$route.meta.type
       let folderId = this.$route.query.folderId || ''
       getData(type, folderId, 1).then(res => {
-        this.list = res.attachments || []
+        this.list = res.data || []
       })
     }
   }

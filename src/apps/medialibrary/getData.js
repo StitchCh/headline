@@ -5,23 +5,23 @@ export default function (type, folderId, toPage) {
     type, folderId, toPage, pageSize: 30
   }).then(res => {
     // 按时间分组
-    res.attachments = res.attachments || []
-    let result = {
-      suffix: res.suffix,
-      totalPage: res.totalPage,
-      attachments: []
-    }
-    let group = { date: null, list: [] }
-    res.attachments.forEach(item => {
-      let date = item.createDate.substring(0, 10)
-      if (group.date !== date) {
-        group = { date, list: [item] }
-        result.attachments.push(group)
-      } else {
-        group.list.push(item)
-      }
-    })
-    return Promise.resolve(result)
+    // res.attachments = res.attachments || []
+    // let result = {
+    //   suffix: res.suffix,
+    //   totalPage: res.totalPage,
+    //   attachments: []
+    // }
+    // let group = { date: null, list: [] }
+    // res.attachments.forEach(item => {
+    //   let date = item.createDate.substring(0, 10)
+    //   if (group.date !== date) {
+    //     group = { date, list: [item] }
+    //     result.attachments.push(group)
+    //   } else {
+    //     group.list.push(item)
+    //   }
+    // })
+    return Promise.resolve(res)
   }).catch(e => {
     return Promise.reject(e)
   })

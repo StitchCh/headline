@@ -1,7 +1,7 @@
 <template>
 <div class="article-editor">
-  <input class="title" type="text" placeholder="请输入标题">
-  <quill-editor :options="options"/>
+  <input v-model="title" class="title" type="text" placeholder="请输入标题">
+  <quill-editor v-model="content" ref="editor" :options="options"/>
 </div>
 </template>
 
@@ -15,13 +15,15 @@ export default {
   components: { quillEditor },
   data () {
     return {
+      title: '',
+      content: '',
       options: {
         theme: 'snow',
         placeholder: '请输入内容',
         modules: {
           toolbar: {
             container: [
-              [{ 'header': [1, 2, 3, 4, false] }],
+              [{ 'header': [2, 3, 4, false] }],
               ['bold', 'italic', 'underline', 'strike'], // toggled buttons
               ['blockquote', 'code-block', 'link', 'image', 'video'],
               // [{ 'header': 1 }, { 'header': 2 }], // custom button values
@@ -36,6 +38,11 @@ export default {
           }
         }
       }
+    }
+  },
+  methods: {
+    getText () {
+      return this.$refs.editor.quill.getText()
     }
   }
 }

@@ -78,7 +78,7 @@ export default {
       let type = this.$route.meta.type
       let folderId = this.$route.query.folderId || ''
       getData(type, folderId, 1).then(res => {
-        this.list = res.attachments || []
+        this.list = res.data || []
       })
     }
   }

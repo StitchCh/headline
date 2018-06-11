@@ -12,10 +12,10 @@
       </div>
       <div class="f-14" v-html="article.content"></div>
       <div class="art-relate f-14">
-        <div class="b" style="margin-bottom: 10px;">相关阅读：</div>
+        <div class="b c-8" style="margin-bottom: 10px;">相关阅读：</div>
         <ul>
           <li v-for="item in relateContents" :key="item.id">
-            <a class="a c-6" @click="toLink(item)">{{item.title}}</a>
+            <a class="a c-8" @click="toLink(item)">{{item.title}}</a>
           </li>
         </ul>
       </div>
