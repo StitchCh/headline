@@ -12,8 +12,8 @@
 <!-- 11. 回收站？ -->
 
 12. 文章删除 提示成功，但是还在？
-13. 回收站接口报错（PreparedStatementCallback; bad SQL grammar [select count(*) c from
+<!-- 13. 回收站接口报错（PreparedStatementCallback; bad SQL grammar [select count(*) c from
     ( SELECT * FROM site_1001.content WHERE 1=1 AND app = ? AND is_delete = ? AND
     create_user = ? ORDER BY CREATE_DATE null) pc]; nested exception is
-    com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: #42000）
+    com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: #42000） -->
 14. 路由问题

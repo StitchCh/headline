@@ -24,7 +24,11 @@
     </div>
     <div class="mp-info">
       <div class="f-24 base">DJLFJADLS.JPG</div>
-      <input class="tag-input f-14" type="text" placeholder="点击添加标签">
+      <div class="flex-v-center" style="margin-top: 15px;">
+        <i class="icon c-8 f-20">label</i>
+        <input class="tag-input flex-item f-14" type="text" placeholder="点击添加标签">
+        <icon-btn small>done</icon-btn>
+      </div>
       <div class="f-12" style="margin-top: 20px;">详情</div>
       <div class="flex-v-center info-item">
         <i class="icon c-8">insert_drive_file</i>
@@ -69,7 +73,7 @@ export default {
     .icon-btn{margin: 0 5px;}
     .icon-btn:hover{background: rgba(255, 255, 255, .2);}
   }
-  .tag-input{background:transparent;border: none;padding: 10px 0;margin-top: 15px;}
+  .tag-input{background:transparent;border: none;padding: 10px 0;margin-left: 15px;}
   .info-item{margin: 15px 0;line-height: 1.4em;
     .icon{margin-right: 15px;font-size: 22px;}
   }
