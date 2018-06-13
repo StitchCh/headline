@@ -27,17 +27,9 @@ export default [{
   path: '/links',
   icon: ''
 }, {
-  name: '会员用户',
-  path: '/members',
-  icon: ''
-}, {
   name: '素材库',
   path: '/media',
   icon: 'icon-media'
-}, {
-  name: '站点设置',
-  path: '/webSettings',
-  icon: ''
 }, {
   name: '设置',
   path: '/settings',

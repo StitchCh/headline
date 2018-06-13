@@ -38,16 +38,18 @@
     </div>
   </div>
   <media-preview v-if="ui.viewerShow" @close="ui.viewerShow=false"/>
+  <image-editor/>
 </div>
 </template>
 
 <script>
 import MediaLeftTree from '../components/leftTree'
 import MediaPreview from '../components/mediaPreview'
+import ImageEditor from '../components/imageEditor'
 
 export default {
   name: 'media-photos',
-  components: { MediaLeftTree, MediaPreview },
+  components: { MediaLeftTree, MediaPreview, ImageEditor },
   data () {
     return {
       list: [],
