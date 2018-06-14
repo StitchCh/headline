@@ -38,7 +38,7 @@
     </div>
   </div>
   <media-preview v-if="ui.viewerShow" @close="ui.viewerShow=false"/>
-  <image-editor/>
+  <!-- <image-editor/> -->
 </div>
 </template>
 

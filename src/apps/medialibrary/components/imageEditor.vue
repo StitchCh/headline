@@ -94,7 +94,7 @@ export default {
     onRotate (e) {
       if (!this.rotate.move) return
       let y = e.clientY
-      let deg = this.rotate.deg + (y - this.rotate.sy) / 240 * 50
+      let deg = this.rotate.deg + (y - this.rotate.sy) / 50
       if (deg >= 45) {
         this.rotate.deg = 45
         return
