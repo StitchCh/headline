@@ -18,7 +18,8 @@ export default {
   props: {
     disabled: Boolean,
     checked: Boolean,
-    value: Boolean
+    value: [Boolean, Number],
+    mode: String
   },
   methods: {
     handleChange () {
@@ -30,9 +31,12 @@ export default {
   computed: {
     model: {
       get () {
-        return this.value
+        let value = this.value
+        if (this.mode === 'Number') value = !!value
+        return value
       },
       set (val) {
+        if (this.mode === 'Number') val = ~~val
         this.$emit('input', val)
       }
     }

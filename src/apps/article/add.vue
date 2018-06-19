@@ -21,18 +21,18 @@
   <div class="art-options c-4 scroll-y" :style="{width: ui.optionShow ? '320px' : '0px'}">
     <div style="width: 280px;margin: 0 20px;">
       <div class="option-item flex-v-center relative a" @click="ui.channelShow=!ui.channelShow">
-        <span class="flex-item">选择栏目</span>
+        <span class="flex-item">{{channelNames}}</span>
         <i class="icon f-20 c-a">keyboard_arrow_down</i>
         <bubble v-if="ui.channelShow" pos="bottom" align="center" @close="ui.channelShow=false">
           <ul class="bubble-list">
             <li v-for="item in ui.channels" :key="item.id">
-              <check-box :text="item.name"/>
+              <check-box :text="item.channelName" :label="item.id" v-model="channelIds"/>
             </li>
           </ul>
         </bubble>
       </div>
       <div class="option-item flex-v-center">
-        <icon-btn small v-tooltip:top="'推荐'">thumb_up</icon-btn>
+        <icon-btn small v-tooltip:top="'推荐'" :class="{ isRecommnd: form.isRecommnd }" @click="form.isRecommnd = ~~!form.isRecommnd">thumb_up</icon-btn>
         <span class="flex-item"></span>
         <icon-btn small v-tooltip:top="'发布到 PC 页面'">computer</icon-btn>
         <icon-btn small v-tooltip:top="'发布到客户端'">phone_iphone</icon-btn>
@@ -51,57 +51,67 @@
           </div>
         </div>
         <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
-          <div class="flex-item"><radio-box text="默认"/></div>
-          <div class="flex-item"><radio-box text="三图"/></div>
-          <div><radio-box text="16:9 大图" style="margin: 0;"/></div>
+          <div class="flex-item"><radio-box text="默认" :label="1" v-model="form.thumbType"/></div>
+          <div class="flex-item"><radio-box text="三图" :label="2" v-model="form.thumbType"/></div>
+          <div><radio-box text="16:9 大图" style="margin: 0;" :label="3" v-model="form.thumbType"/></div>
         </div>
       </div>
       <div class="option-item">
-        <textarea placeholder="摘要，限制 128 字。"></textarea>
+        <textarea placeholder="摘要，限制 128 字。" v-model="form.abstarcts"></textarea>
       </div>
       <div class="option-item">
-        <input type="text" placeholder="关键词，逗号分隔。"/>
+        <input type="text" placeholder="关键词，逗号分隔。" v-model="form.keywords"/>
       </div>
       <div class="option-item flex-v-center">
         <span class="flex-item">©原创声明</span>
-        <switcher/>
+        <switcher mode="Number" v-model="form.isOriginal"/>
       </div>
-      <div class="option-item flex">
-        <input type="text" class="flex-item" placeholder="来源名称">
-        <input type="text" class="flex-item" placeholder="来源URL">
-      </div>
-      <div class="option-item">
-        <input type="text" placeholder="作者，逗号分隔">
+      <div class="option-item flex" v-if="!form.isOriginal">
+        <input type="text" class="flex-item" placeholder="来源名称" v-model="form.originalFrom">
+        <input type="text" class="flex-item" placeholder="来源URL" v-model="form.originalUrl">
       </div>
       <div class="option-item">
-        <input type="text" placeholder="权重，范围 0 ~ 100">
+        <input type="text" placeholder="作者，逗号分隔" v-model="form.author">
+      </div>
+      <div class="option-item">
+        <input type="number" placeholder="权重，范围 0 ~ 100" v-model="form.weight">
+      </div>
+      <div class="option-item flex-v-center">
+        <span class="flex-item">水印</span>
+        <switcher mode="Number" v-model="form.isWatermarked"/>
       </div>
       <div class="option-item flex-v-center">
         <div class="flex-item">定时上线</div>
         <div class="relative flex-v-center a">
-          <span>设置</span>
-          <i class="icon f-18 c-a">keyboard_arrow_down</i>
+          <span v-if="!form.upLineTime" class="flex-v-center" style="position: absolute;right: 0;">
+            <span>设置</span>
+            <i class="icon f-18 c-a">keyboard_arrow_down</i>
+          </span>
+          <vue-datepicker-local show-buttons clearable format="YYYY-MM-DD HH:mm:ss" v-model="form.upLineTime"></vue-datepicker-local>
         </div>
       </div>
       <div class="option-item flex-v-center">
         <div class="flex-item">定时下线</div>
         <div class="relative flex-v-center a">
-          <span>设置</span>
-          <i class="icon f-18 c-a">keyboard_arrow_down</i>
+          <span v-if="!form.downLineTime" class="flex-v-center" style="position: absolute;right: 0;">
+            <span>设置</span>
+            <i class="icon f-18 c-a">keyboard_arrow_down</i>
+          </span>
+          <vue-datepicker-local show-buttons clearable format="YYYY-MM-DD HH:mm:ss" v-model="form.downLineTime"></vue-datepicker-local>
         </div>
       </div>
       <div class="option-item flex-v-center">
         <span>初始阅读量</span>
-        <input class="flex-item t-right" type="number" placeholder="请输入">
+        <input class="flex-item t-right" type="number" placeholder="请输入" v-model="form.virtualPv">
       </div>
       <div class="option-item flex-v-center">
         <span>初始点赞量</span>
-        <input class="flex-item t-right" type="number" placeholder="请输入">
+        <input class="flex-item t-right" type="number" placeholder="请输入" v-model="form.virtualDigg">
       </div>
       <div class="option-item">
         <div class="flex-v-center">
           <span class="flex-item">开启评论</span>
-          <switcher/>
+          <switcher mode="Number" v-model="form.isOpenComment"/>
         </div>
         <div class="flex-v-center" style="margin-top: 10px;">
           <i class="icon f-20 c-8" style="margin-right: 10px;">comment</i>
@@ -147,23 +157,57 @@
 
 <script>
 import ArticleEditor from './editor'
+import VueDatepickerLocal from 'vue-datepicker-local'
 
 export default {
   name: 'app-article-add',
-  components: { ArticleEditor },
+  components: { ArticleEditor, VueDatepickerLocal },
   data () {
     return {
       ui: {
         loading: false,
         optionShow: true,
         channelShow: false,
-        channels: []
+        channels: [],
+        realetes: []
       },
       form: {
+        app: 'ARTICLE',
         title: '',
         content: '',
-        channelIds: []
+        channelIds: '',
+        isOpenComment: 0,
+        isOriginal: 0,
+        originalFrom: '',
+        originalUrl: '',
+        isRecommnd: 0,
+        abstarcts: '',
+        keywords: '',
+        author: '',
+        weight: '',
+        isWatermarked: 0,
+        upLineTime: '',
+        downLineTime: '',
+        virtualPv: '',
+        virtualDigg: '',
+        hasThumb: 0,
+        thumbType: 1,
+        thumb: ''
       }
+    }
+  },
+  computed: {
+    channelIds: {
+      get () {
+        return this.form.channelIds === '' ? [] : this.form.channelIds.split(',')
+      },
+      set (newValue) {
+        this.form.channelIds = newValue.join(',')
+      }
+    },
+    channelNames () {
+      if (!this.channelIds.length) return '选择栏目'
+      return this.channelIds.map(val => this.ui.channels.find(v => v.id === val).channelName).join('，')
     }
   },
   methods: {
@@ -173,6 +217,20 @@ export default {
       }).catch(e => {
         console.log(e)
       })
+    },
+    getRealetes () {
+      this.$http.post('/cri-cms-platform/article/realtes.monitor').then(
+        res => {
+          this.ui.realetes = res || []
+        }
+      ).catch(
+        res => {
+          console.log(res)
+        }
+      )
+    },
+    disabledDate (time, format) {
+      return time <= new Date()
     },
     submit () {
       let { title, content, getText } = this.$refs.editor
@@ -186,7 +244,18 @@ export default {
         return
       }
       console.log(title, content, text)
+      this.form.title = title
+      this.form.content = content
+      this.$http.post('/cri-cms-platform/article/save.monitor', this.form).then(
+        res => {
+          console.log(res)
+        }
+      )
     }
+  },
+  created () {
+    this.getChannels()
+    this.getRealetes()
   }
 }
 </script>
@@ -205,5 +274,7 @@ export default {
     li{padding: 5px 15px;}
     li:hover{background: #eee;}
   }
+  .isRecommnd {color: #018be6;}
+  .datepicker::before {content: none}
 }
 </style>
