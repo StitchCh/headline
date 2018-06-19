@@ -1,0 +1,88 @@
+<template>
+<transition name="slide-y">
+  <div class="media-preview f-14 c-4 flex">
+    <div class="flex-item flex-col">
+      <div class="flex-v-center mp-top">
+        <icon-btn class="c-f" @click="$emit('close')">arrow_back</icon-btn>
+        <div class="flex-item"></div>
+        <icon-btn class="c-f" v-tooltip:bottom="'下载'">get_app</icon-btn>
+        <icon-btn class="c-f" v-tooltip:bottom="'复制链接'">link</icon-btn>
+        <icon-btn class="c-f" v-tooltip:bottom="'编辑'">edit</icon-btn>
+        <icon-btn class="c-f" v-tooltip:bottom="'删除'">delete</icon-btn>
+      </div>
+      <div class="flex-item flex">
+        <div class="arrow-btn flex-center">
+          <icon-btn class="c-f">keyboard_arrow_left</icon-btn>
+        </div>
+        <div class="flex-item flex-center">
+          <img src="../../../assets/img/bg.png" alt="">
+        </div>
+        <div class="arrow-btn flex-center">
+          <icon-btn class="c-f">keyboard_arrow_right</icon-btn>
+        </div>
+      </div>
+    </div>
+    <div class="mp-info">
+      <div class="f-24 base">DJLFJADLS.JPG</div>
+      <div class="flex-v-center" style="margin-top: 15px;">
+        <i class="icon c-8 f-20">label</i>
+        <input class="tag-input flex-item f-14" type="text" placeholder="点击添加标签">
+        <icon-btn small>done</icon-btn>
+      </div>
+      <div class="f-12" style="margin-top: 20px;">详情</div>
+      <div class="flex-v-center info-item">
+        <i class="icon c-8">insert_drive_file</i>
+        <div class="flex-item">
+          <div class="c-a f-12">文件大小</div>
+          <div>
+            <span style="margin-right: 20px;">740 x 740</span>
+            <span>12434 KB</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex-v-center info-item">
+        <i class="icon c-8">person</i>
+        <div class="flex-item">
+          <div class="c-a f-12">创建者</div>
+          <div>超级管理员</div>
+        </div>
+      </div>
+      <div class="flex-v-center info-item">
+        <i class="icon c-8">access_time</i>
+        <div class="flex-item">
+          <div class="c-a f-12">创建时间</div>
+          <div>2018-09-09 12:00:00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</transition>
+</template>
+
+<script>
+export default {
+  name: 'media-preview'
+}
+</script>
+
+<style lang="less">
+.media-preview{
+  position: fixed;width: 100%;height: 100%;left: 0;top:0;background: rgba(0, 0, 0, 0.85);z-index: 50;
+  .mp-info{width: 300px;background: #f8f8f8;padding: 30px 20px;}
+  .mp-top{padding: 10px;
+    .icon-btn{margin: 0 5px;}
+    .icon-btn:hover{background: rgba(255, 255, 255, .2);}
+  }
+  .tag-input{background:transparent;border: none;padding: 10px 0;margin-left: 15px;}
+  .info-item{margin: 15px 0;line-height: 1.4em;
+    .icon{margin-right: 15px;font-size: 22px;}
+  }
+  .arrow-btn{
+    padding: 10px;
+    .icon-btn{
+      opacity: .5;
+      &:hover{background: rgba(255, 255, 255, .2);}
+    }
+  }
+}
+</style>

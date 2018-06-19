@@ -21,27 +21,41 @@
       <div class="media-group" v-for="group in list" :key="group.date">
         <div class="media-group-title">{{group.date}}</div>
         <ul class="flex">
-          <li class="photos-item relative" v-for="item in group.data" :key="item.id">
+          <li class="photos-item relative" v-for="item in group.data" :key="item.id" @click="onItemClick">
             <check-box></check-box>
             <img src="../../../assets/img/bg.png" alt="">
           </li>
         </ul>
       </div>
     </div>
-    <div class="af-bottombar"></div>
+    <div class="af-bottombar flex-v-center">
+      <div class="flex-item"></div>
+      <loading size="25"/>
+      <div class="up-progress-bar">
+        <div style="width: 50%;"></div>
+      </div>
+      <span class="f-12">1 个文件正在上传</span>
+    </div>
   </div>
+  <media-preview v-if="ui.viewerShow" @close="ui.viewerShow=false"/>
+  <!-- <image-editor/> -->
 </div>
 </template>
 
 <script>
 import MediaLeftTree from '../components/leftTree'
+import MediaPreview from '../components/mediaPreview'
+import ImageEditor from '../components/imageEditor'
 
 export default {
   name: 'media-photos',
-  components: { MediaLeftTree },
+  components: { MediaLeftTree, MediaPreview, ImageEditor },
   data () {
     return {
-      list: []
+      list: [],
+      ui: {
+        viewerShow: false
+      }
     }
   },
   created () {
@@ -64,6 +78,9 @@ export default {
       }).then(res => {
         this.list = res.data || []
       })
+    },
+    onItemClick (e) {
+      this.ui.viewerShow = true
     }
   }
 }

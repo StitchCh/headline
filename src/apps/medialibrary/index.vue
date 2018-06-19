@@ -66,5 +66,8 @@ export default {
   .datepicker-range{min-width: 200px;
     .datepicker-popup{right: 0;width: 420px;}
   }
+  .up-progress-bar{height: 8px;width: 200px;background: #ddd;border-radius: 5px;margin: 0 10px;overflow: hidden;
+    div{height: 100%;background: #0074ff;border-radius: 5px;}
+  }
 }
 </style>

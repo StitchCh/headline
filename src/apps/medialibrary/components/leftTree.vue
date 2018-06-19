@@ -2,8 +2,8 @@
 <div class="media-left-tree">
   <ul class="f-16">
     <li class="flex-v-center nav-item a" @click="folderClick()" :class="{'on': !$route.query.folderId}">
-      <i class="icon nav-item-icon">face</i>
-      <span class="flex-item">我的</span>
+      <i class="icon nav-item-icon">folder</i>
+      <span class="flex-item">全部</span>
       <icon-btn @click.native="add">add</icon-btn>
     </li>
     <li>
@@ -107,6 +107,8 @@ export default {
       //   id: e.item.getAttribute('data-id'),
       //   sort: e.newIndex,
       //   type: this.$route.meta.type
+      // }).then(res => {
+      //   console.log(e)
       // })
     }
   }

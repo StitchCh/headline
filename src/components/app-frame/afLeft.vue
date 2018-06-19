@@ -1,6 +1,6 @@
 <template>
 <div class="af-left flex-col" :style="{ color, backgroundColor: bgColor }">
-  <div class="af-dock flex-v-center"><dock :title="title" :color="color"></dock></div>
+  <div class="af-dock flex-v-center"><dock :title="title" :color="vibrantColor"></dock></div>
   <div class="flex-item">
     <ul>
       <slot></slot>
@@ -22,6 +22,10 @@ export default {
   },
   props: {
     color: {
+      type: String,
+      default: ''
+    },
+    vibrantColor: {
       type: String,
       default: ''
     },
