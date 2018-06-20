@@ -17,15 +17,19 @@ export default [{
 }, {
   name: '专题',
   path: '/topics',
-  icon: ''
+  icon: 'icon-special'
 }, {
   name: '直播',
   path: '/live',
-  icon: ''
+  icon: 'icon-live'
 }, {
   name: '链接',
   path: '/links',
-  icon: ''
+  icon: 'icon-links'
+}, {
+  name: '工作台',
+  path: '/works',
+  icon: 'icon-todo'
 }, {
   name: '素材库',
   path: '/media',

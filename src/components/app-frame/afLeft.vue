@@ -1,7 +1,7 @@
 <template>
 <div class="af-left flex-col" :style="{ color, backgroundColor: bgColor }">
   <div class="af-dock flex-v-center"><dock :title="title" :color="vibrantColor"></dock></div>
-  <div class="flex-item">
+  <div class="flex-item scroll-y">
     <ul>
       <slot></slot>
     </ul>

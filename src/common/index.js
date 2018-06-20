@@ -23,7 +23,7 @@ import Tab from './Tab'
 import Tag from './Tag'
 import Toast from './Toast'
 import Tooltip from './Tooltip'
-// import Tree from './Tree'
+import Tree from './Tree'
 import UploadBox from './UploadBox'
 import Navigator from './Navigator'
 
@@ -50,7 +50,7 @@ Vue.use(Tab)
 Vue.use(Tag)
 Vue.use(Toast)
 Vue.use(Tooltip)
-// Vue.use(Tree)
+Vue.use(Tree)
 Vue.use(UploadBox)
 Vue.use(Navigator.Navigator)
 Vue.use(Navigator.NavigatorItem)

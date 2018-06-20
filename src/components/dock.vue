@@ -8,7 +8,7 @@
   <bubble v-if="show" align="start" @close="show=false">
     <div class="dock-ctn f-14 flex">
       <div class="app-item a" @click="$router.push('/')">
-        <div class="app-icon relative" style="background:#eee;"></div>
+        <div class="app-icon relative" style="background: url(/static/img/icon-launcher.png) center / cover #eee;"></div>
         <div class="app-name">首页</div>
       </div>
       <div class="app-item a" v-for="(app, i) in apps" :key="i" @click="toApp(app)">
