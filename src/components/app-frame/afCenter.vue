@@ -7,7 +7,7 @@
     <i class="icon c-a a item" v-tooltip:top="'推荐'">thumb_up</i>
     <span class="flex-item"></span>
     <i class="icon c-a a item" style="font-size:18px;" v-tooltip:top="'搜索'" @click="ui.searchShow=!ui.searchShow">search</i>
-    <div class="relative">
+    <!-- <div class="relative">
       <div class="relative flex-v-center a item" v-tooltip:top="'筛选栏目'" @click="ui.channelShow=true">
         <span>{{channelName}}</span><i class="icon c-a">keyboard_arrow_down</i>
       </div>
@@ -23,7 +23,7 @@
           </li>
         </ul>
       </bubble>
-    </div>
+    </div> -->
     <div class="relative">
       <div class="relative flex-v-center a item" v-tooltip:top="'排序'" @click="ui.orderShow=true">
         <span>排序</span><i class="icon c-a">keyboard_arrow_down</i>
@@ -107,7 +107,7 @@ export default {
         status: 'all',
         toPage: 1,
         pageSize: 30,
-        channelIds: '',
+        // channelIds: '',
         orderby: 'createDate',
         order: 'asc',
         searchby: 'title',
@@ -124,10 +124,10 @@ export default {
         this.getList(true)
       }
     },
-    'filter.channelIds' () {
-      this.ui.channelShow = false
-      this.getList(true)
-    },
+    // 'filter.channelIds' () {
+    //   this.ui.channelShow = false
+    //   this.getList(true)
+    // },
     'filter.orderby' () {
       this.ui.orderShow = false
       this.getList(true)
@@ -145,11 +145,11 @@ export default {
     }
   },
   computed: {
-    channelName () {
-      let arr = this.ui.channels.filter(item => item.id === this.filter.channelIds)
-      if (arr.length) return arr[0].channelName
-      return '全部频道'
-    },
+    // channelName () {
+    //   let arr = this.ui.channels.filter(item => item.id === this.filter.channelIds)
+    //   if (arr.length) return arr[0].channelName
+    //   return '全部频道'
+    // },
     searchByName () {
       let arr = this.ui.searchby.filter(item => item.id === this.filter.searchby)
       if (arr.length) return arr[0].name

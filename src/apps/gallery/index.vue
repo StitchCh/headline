@@ -1,6 +1,6 @@
 <template>
 <div class="abs bg-f flex app-gallery">
-  <af-left color="#7b5b4d" bg-color="#f3ebd0" vibrant-color="#e45000" title="图集" :defaultActive="defaultActive">
+  <af-left color="#7b5b4d" bg-color="#f3eee0" vibrant-color="#e45000" title="图集" :defaultActive="defaultActive">
     <navigator-item icon="folder" index="all-all" @click="$router.replace('/gallery/list?scope=all&status=all')">全部</navigator-item>
     <!-- <navigator-item-group defaultExtended index="2" icon="face">
     <span slot="title">我的</span> -->
