@@ -99,7 +99,7 @@ export default {
         channelShow: false, // 栏目
         orderShow: false, // 排序
         channels: [],
-        orderby: [{id: 'createDate', name: '日期'}, {id: 'readnum', name: '阅读'}],
+        orderby: [{id: 'create_date', name: '日期'}, {id: 'readnum', name: '阅读'}],
         searchby: [{id: 'title', name: '标题'}, {id: 'keywoards', name: '关键字'}, {id: 'abstracts', name: '摘要'}, {id: 'author', name: '作者'}]
       },
       filter: {
@@ -108,7 +108,7 @@ export default {
         toPage: 1,
         pageSize: 30,
         // channelIds: '',
-        orderby: 'createDate',
+        orderby: 'create_date',
         order: 'asc',
         searchby: 'title',
         search: ''
