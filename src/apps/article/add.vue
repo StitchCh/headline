@@ -243,10 +243,17 @@ export default {
         this.$toast('请输入内容')
         return
       }
-      console.log(title, content, text)
+      if (!this.form.channelIds) {
+        this.$toast('请选择栏目')
+        return
+      }
       this.form.title = title
       this.form.content = content
       this.$http.post('/cri-cms-platform/article/save.monitor', this.form).then(
+        res => {
+          this.$router.replace('/article/list?scope=all&status=all')
+        }
+      ).catch(
         res => {
           console.log(res)
         }

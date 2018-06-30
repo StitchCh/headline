@@ -1,6 +1,13 @@
 <template>
 <div class="settings-channel">
-  settings-channel
+  <div class="af-topbar">
+    settings-channel
+  </div>
+  <div class="flex-item scroll-y">
+    <div class="card">
+      dsfsaf
+    </div>
+  </div>
 </div>
 </template>
 
