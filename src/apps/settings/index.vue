@@ -1,6 +1,7 @@
 <template>
 <div class="abs bg-f flex app-settings">
   <af-left color="#555" vibrant-color="#008cff" bg-color="#fafafa" title="设置" :defaultActive="$route.name">
+    <navigator-item icon="settings" @click="$router.replace('/settings/common')" index="SettingsCommon">通用</navigator-item>
     <navigator-item icon="language" @click="$router.replace('/settings/site')" index="SettingsSite">站点</navigator-item>
     <navigator-item icon="radio" @click="$router.replace('/settings/channel')" index="SettingsChannel">频道</navigator-item>
     <navigator-item icon="people" @click="$router.replace('/settings/user')" index="SettingsUser">用户</navigator-item>

@@ -4,7 +4,12 @@ export default {
   component: resolve => require(['@/apps/settings/index.vue'], resolve),
   meta: { level: 2, title: '设置', identifier: 'settings' },
   children: [{
+    path: '/settings/common',
+    name: 'SettingsCommon',
+    component: resolve => require(['@/apps/settings/common/index.vue'], resolve)
+  }, {
     path: '/settings/site',
+    name: 'SettingsSite',
     component: resolve => require(['@/apps/settings/site/index.vue'], resolve)
   }, {
     path: '/settings/channel',

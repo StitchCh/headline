@@ -1,6 +1,8 @@
 <template>
 <div class="settings-user">
-  <div class="af-topbar"></div>
+  <div class="af-topbar">
+    用户管理
+  </div>
   <div class="flex-item scroll-y">
     <div class="card">
       <table>
@@ -64,7 +66,7 @@ export default {
 </script>
 
 <style lang="less">
-.settings-user{
+.settings-user{background: #fafafa;color: #666;
   //
   .card {max-width: 1440px;margin: 20px auto;border-radius: 6px;box-shadow: 0 0 5px 1px rgba(0, 0, 0, .15);padding: 20px;
     th,td {padding: 5px 10px;font-size: 14px;}
