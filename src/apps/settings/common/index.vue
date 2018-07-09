@@ -1,5 +1,5 @@
 <template>
-  <div class="settings-common flex-col">
+  <div class="settings-common flex-col c-6">
     <div class="af-topbar">
       <span class="f-18">通用设置</span>
     </div>
@@ -12,80 +12,88 @@
 
       <div v-if="!loading" class="setting-card">
         <ul>
-          <li class="flex">
-            <span>是否设置水印</span>
+          <!--<li class="flex">-->
+            <!--<span>是否设置水印</span>-->
+            <!--<div class="flex-item"></div>-->
+            <!--<switcher mode="Number" v-model="settings.system_watermark" @change="switchValue('system_watermark')"></switcher>-->
+          <!--</li>-->
+          <!--<li class="flex">-->
+            <!--<span>是否开启自动相关阅读</span>-->
+            <!--<div class="flex-item"></div>-->
+            <!--<switcher mode="Number" v-model="settings.system_autoread" @change="switchValue('system_autoread')"></switcher>-->
+          <!--</li>-->
+          <!--<li class="flex">-->
+            <!--<span>是否开启自动推荐图集</span>-->
+            <!--<div class="flex-item"></div>-->
+            <!--<switcher mode="Number" v-model="settings.system_autorecommend" @change="switchValue('system_autorecommend')"></switcher>-->
+          <!--</li>-->
+          <!--<li class="flex">-->
+            <!--<span>专题-阅读量是否显示</span>-->
+            <!--<div class="flex-item"></div>-->
+            <!--<switcher mode="Number" v-model="settings.special_pvshow" @change="switchValue('special_pvshow')"></switcher>-->
+          <!--</li>-->
+          <!--<li class="flex">-->
+            <!--<span>专题-通讯社是否显示</span>-->
+            <!--<div class="flex-item"></div>-->
+            <!--<switcher mode="Number" v-model="settings.special_agencyshow" @change="switchValue('special_agencyshow')"></switcher>-->
+          <!--</li>-->
+          <!--<li class="flex">-->
+            <!--<span>专题-发布时间是否显示</span>-->
+            <!--<div class="flex-item"></div>-->
+            <!--<switcher mode="Number" v-model="settings.special_releasetimeshow" @change="switchValue('special_releasetimeshow')"></switcher>-->
+          <!--</li>-->
+          <!--<li class="flex">-->
+            <!--<span>风格设置</span>-->
+            <!--<div class="flex-item"></div>-->
+            <!--<span class="flex-v-center" style="line-height: 25px;cursor: pointer;" @click="styleShow = true">{{settings.system_style | style}}<i class="icon">keyboard_arrow_right</i></span>-->
+          <!--</li>-->
+          <!--<li class="flex">-->
+            <!--<span>图片尺寸</span>-->
+            <!--<div class="flex-item"></div>-->
+            <!--<span class="flex-v-center" style="line-height: 25px;cursor: pointer;" @click="imageratioShow = true">{{settings.system_imageratio}}<i class="icon">keyboard_arrow_right</i></span>-->
+          <!--</li>-->
+          <!--<li class="flex">-->
+            <!--<span>是否显示小印章</span>-->
+            <!--<div class="flex-item"></div>-->
+            <!--<switcher mode="Number" v-model="settings.system_sealshow" @change="switchValue('system_sealshow')"></switcher>-->
+          <!--</li>-->
+          <!--<li class="flex">-->
+            <!--<span>分享显示形式</span>-->
+            <!--<div class="flex-item"></div>-->
+            <!--<span class="flex-v-center" style="line-height: 25px;cursor: pointer;" @click="sharemodelShow = true">{{settings.system_sharemodel | sharemodel}}<i class="icon">keyboard_arrow_right</i></span>-->
+          <!--</li>-->
+          <!--<li class="flex">-->
+            <!--<span>标题最多行数</span>-->
+            <!--<div class="flex-item"></div>-->
+            <!--<span class="flex-v-center" style="line-height: 25px;cursor: pointer;" @click="titlemaxShow = true">{{settings.system_titlemax}}<i class="icon">keyboard_arrow_right</i></span>-->
+          <!--</li>-->
+          <!--<li class="flex">-->
+            <!--<span>阅读量是否显示</span>-->
+            <!--<div class="flex-item"></div>-->
+            <!--<switcher mode="Number" v-model="settings.system_pvshow" @change="switchValue('system_pvshow')"></switcher>-->
+          <!--</li>-->
+          <!--<li class="flex">-->
+            <!--<span>通讯社是否显示</span>-->
+            <!--<div class="flex-item"></div>-->
+            <!--<switcher mode="Number" v-model="settings.system_agencyshow" @change="switchValue('system_agencyshow')"></switcher>-->
+          <!--</li>-->
+          <!--<li class="flex">-->
+            <!--<span>发布时间是否显示</span>-->
+            <!--<div class="flex-item"></div>-->
+            <!--<switcher mode="Number" v-model="settings.system_releasetimeshow" @change="switchValue('system_releasetimeshow')"></switcher>-->
+          <!--</li>-->
+          <!--<li class="flex">-->
+            <!--<span>评论是否需要审核</span>-->
+            <!--<div class="flex-item"></div>-->
+            <!--<switcher mode="Number" v-model="settings.system_commentaudit" @change="switchValue('system_commentaudit')"></switcher>-->
+          <!--</li>-->
+
+          <li class="flex"  v-for="item in list" :key="item.id">
+            <span>{{item.explain}}</span>
+            <!--<input type="text" v-model="explain"/>-->
             <div class="flex-item"></div>
-            <switcher mode="Number" v-model="settings.system_watermark" @change="switchValue('system_watermark')"></switcher>
-          </li>
-          <li class="flex">
-            <span>是否开启自动相关阅读</span>
-            <div class="flex-item"></div>
-            <switcher mode="Number" v-model="settings.system_autoread" @change="switchValue('system_autoread')"></switcher>
-          </li>
-          <li class="flex">
-            <span>是否开启自动推荐图集</span>
-            <div class="flex-item"></div>
-            <switcher mode="Number" v-model="settings.system_autorecommend" @change="switchValue('system_autorecommend')"></switcher>
-          </li>
-          <li class="flex">
-            <span>专题-阅读量是否显示</span>
-            <div class="flex-item"></div>
-            <switcher mode="Number" v-model="settings.special_pvshow" @change="switchValue('special_pvshow')"></switcher>
-          </li>
-          <li class="flex">
-            <span>专题-通讯社是否显示</span>
-            <div class="flex-item"></div>
-            <switcher mode="Number" v-model="settings.special_agencyshow" @change="switchValue('special_agencyshow')"></switcher>
-          </li>
-          <li class="flex">
-            <span>专题-发布时间是否显示</span>
-            <div class="flex-item"></div>
-            <switcher mode="Number" v-model="settings.special_releasetimeshow" @change="switchValue('special_releasetimeshow')"></switcher>
-          </li>
-          <li class="flex">
-            <span>风格设置</span>
-            <div class="flex-item"></div>
-            <span class="flex-v-center" style="line-height: 25px;cursor: pointer;" @click="styleShow = true">{{settings.system_style | style}}<i class="icon">keyboard_arrow_right</i></span>
-          </li>
-          <li class="flex">
-            <span>图片尺寸</span>
-            <div class="flex-item"></div>
-            <span class="flex-v-center" style="line-height: 25px;cursor: pointer;" @click="imageratioShow = true">{{settings.system_imageratio}}<i class="icon">keyboard_arrow_right</i></span>
-          </li>
-          <li class="flex">
-            <span>是否显示小印章</span>
-            <div class="flex-item"></div>
-            <switcher mode="Number" v-model="settings.system_sealshow" @change="switchValue('system_sealshow')"></switcher>
-          </li>
-          <li class="flex">
-            <span>分享显示形式</span>
-            <div class="flex-item"></div>
-            <span class="flex-v-center" style="line-height: 25px;cursor: pointer;" @click="sharemodelShow = true">{{settings.system_sharemodel | sharemodel}}<i class="icon">keyboard_arrow_right</i></span>
-          </li>
-          <li class="flex">
-            <span>标题最多行数</span>
-            <div class="flex-item"></div>
-            <span class="flex-v-center" style="line-height: 25px;cursor: pointer;" @click="titlemaxShow = true">{{settings.system_titlemax}}<i class="icon">keyboard_arrow_right</i></span>
-          </li>
-          <li class="flex">
-            <span>阅读量是否显示</span>
-            <div class="flex-item"></div>
-            <switcher mode="Number" v-model="settings.system_pvshow" @change="switchValue('system_pvshow')"></switcher>
-          </li>
-          <li class="flex">
-            <span>通讯社是否显示</span>
-            <div class="flex-item"></div>
-            <switcher mode="Number" v-model="settings.system_agencyshow" @change="switchValue('system_agencyshow')"></switcher>
-          </li>
-          <li class="flex">
-            <span>发布时间是否显示</span>
-            <div class="flex-item"></div>
-            <switcher mode="Number" v-model="settings.system_releasetimeshow" @change="switchValue('system_releasetimeshow')"></switcher>
-          </li>
-          <li class="flex">
-            <span>评论是否需要审核</span>
-            <div class="flex-item"></div>
-            <switcher mode="Number" v-model="settings.system_commentaudit" @change="switchValue('system_commentaudit')"></switcher>
+            <switcher v-if="switcherShow(item.key)" mode="Number" v-model="item.value" @change="switchValue('system_commentaudit')"></switcher>
+            <span v-else class="flex-v-center" style="line-height: 25px;cursor: pointer;" @click="openSettingBox(item.key)">{{settings.system_titlemax}}<i class="icon">keyboard_arrow_right</i></span>
           </li>
         </ul>
       </div>
@@ -132,7 +140,9 @@ export default {
   components: { SettingOption },
   data () {
     return {
+      explain: '',
       loading: true,
+      list: [],
       settings: {
         system_watermark: 0,
         system_autoread: 0,
@@ -163,13 +173,28 @@ export default {
       this.$http.post('/cri-cms-platform/site/setting/index.monitor', { siteId }).then(
         res => {
           console.log(res)
-          for (let k in this.settings) {
-            let temp = Number(res[k])
-            this.settings[k] = isNaN(temp) ? res[k] : temp
+          for (let i = 0; i < res.length; i++) {
+            let temp = Number(res[i].value)
+            res[i].value = isNaN(temp) ? res[i].value : temp
           }
+          this.list = res
+          // for (let k in this.settings) {
+          //   let temp = Number(res[k])
+          //   this.settings[k] = isNaN(temp) ? res[k] : temp
+          // }
           this.loading = false
         }
       )
+    },
+    switcherShow (key) {
+      if (key === 'style') return false
+      if (key === 'imageratio') return false
+      if (key === 'sharemodel') return false
+      if (key === 'titlemax') return false
+      return true
+    },
+    openSettingBox (key) {
+      this[key + 'Show'] = true
     },
     switchValue (key, isOption) {
       let temp = key.split('_')
@@ -214,7 +239,7 @@ export default {
 </script>
 
 <style lang="less">
-  .settings-common{color: #666;background: #fafafa;
+  .settings-common{background: #fafafa;
     .content {background: #eee;}
     .setting-card {max-width: 800px;margin: 20px auto;border-radius: 10px;padding-left: 20px;background: #fff;
       li {padding: 12px 20px 12px 0;border-bottom: 1px solid #e1e1e1;

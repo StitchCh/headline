@@ -38,4 +38,8 @@ export default [{
   name: '设置',
   path: '/settings',
   icon: 'icon-settings'
+}, {
+  name: '用户',
+  path: '/users',
+  icon: 'icon-settings'
 }]

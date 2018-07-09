@@ -1,9 +1,9 @@
 <template>
-<div class="settings-site flex-col">
+<div class="settings-site flex-col c-6">
   <div class="af-topbar">
     <span class="f-18">站点管理</span>
   </div>
-  <div class="flex-item scroll-y content relative">
+  <div class="flex-item scroll-y bg-e relative">
     <transition name="fade">
       <div v-if="loading" class="abs" style="background: #eee;">
         <loading style="left: 50%;top: 50%;transform: translate(-50%, -50%)"></loading>
@@ -146,8 +146,7 @@ export default {
 </script>
 
 <style lang="less">
-.settings-site{color: #666;background: #fafafa;
-  .content {background: #eee;}
+.settings-site{background: #fafafa;
   .setting-card {max-width: 1440px;margin: 20px auto;border-radius: 10px;padding: 20px;background: #fff;
     th,td {padding: 5px 10px;}
     tr {border-top: 1px solid #e1e1e1;}
