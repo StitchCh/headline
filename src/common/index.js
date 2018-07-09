@@ -19,7 +19,6 @@ import SelectBox from './SelectBox'
 import Slider from './Slider'
 import StarRate from './StarRate'
 import Switcher from './Switcher'
-import Tab from './Tab'
 import Tag from './Tag'
 import Toast from './Toast'
 import Tooltip from './Tooltip'
@@ -46,7 +45,6 @@ Vue.use(SelectBox)
 Vue.use(Slider)
 Vue.use(StarRate)
 Vue.use(Switcher)
-Vue.use(Tab)
 Vue.use(Tag)
 Vue.use(Toast)
 Vue.use(Tooltip)

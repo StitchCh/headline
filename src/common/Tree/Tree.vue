@@ -6,9 +6,11 @@
     :key="item.id"
     :model="item"
     :autoOpen="autoOpen"
+    :openAll="openAll"
     :hideLeaf="hideLeaf"
     :format="format"
     :childrenTxt="childrenTxt"
+    :activeId="activeId"
     @select="$emit('select', $event)"
   />
 </div>
@@ -27,7 +29,9 @@ export default {
     pidTxt: { type: String, default: 'parentid' },
     childrenTxt: { type: String, default: 'children' },
     rootId: { type: [Number, String], default: '0' },
+    activeId: [Number, String],
     autoOpen: Boolean,
+    openAll: Boolean,
     hideLeaf: Boolean,
     format: {
       type: Function,
