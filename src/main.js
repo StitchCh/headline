@@ -17,7 +17,7 @@ axios.interceptors.request.use(function (config) {
   let siteId = sessionStorage.siteId || localStorage.siteId || ''
   if (!config.headers.Authorization && token) config.headers.Authorization = `Bearer ${token}`
   if (config.method !== 'post') return config
-  let data = Object.assign({ siteId: siteId }, config.data)
+  let data = Object.assign({ siteId }, config.data)
   config.data = obj2FormData(data)
   return config
 })
@@ -26,7 +26,7 @@ axios.interceptors.response.use(function (response) {
   if (response.data) {
     let code = parseInt(response.data.code)
     if (code === 1) return (response.data.result || response.data.results)
-    if (code === 1002) {
+    if (code === 1002 || code === 1001) {
       router.replace('/login')
       sessionStorage.removeItem('token')
       localStorage.removeItem('token')

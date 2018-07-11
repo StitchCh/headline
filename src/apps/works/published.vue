@@ -35,10 +35,10 @@ export default {
         channelId: this.$route.query.channelId
       }).then(res => {
         this.$emit('endLoading')
-        res.forEach(item => {
-          if (item.type === '1') item.typeStr = 'list'
-          if (item.type === '2') item.typeStr = 'ppt'
-        })
+        // res.forEach(item => {
+        //   if (item.type === '1') item.typeStr = 'list'
+        //   if (item.type === '2') item.typeStr = 'ppt'
+        // })
         this.layout = res
       }).catch(e => {
         this.$emit('endLoading')

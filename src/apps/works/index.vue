@@ -24,7 +24,7 @@
             <div class="tab-item" :class="{'on': $route.name==='works-unpublished'}" @click="onTab('/works/unpublished')">未发布</div>
           </div>
         </div>
-        <btn>发布</btn>
+        <div style="width: 65px;"><btn v-if="$route.name === 'works-published'">发布</btn></div>
       </div>
       <div class="flex-item relative scroll-y">
         <router-view @loading="loading=true" @endLoading="loading=false"></router-view>
