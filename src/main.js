@@ -10,7 +10,7 @@ import './common'
 
 Vue.config.productionTip = false
 
-axios.defaults.timeout = 10000
+// axios.defaults.timeout = 10000
 
 axios.interceptors.request.use(function (config) {
   let token = sessionStorage.token || localStorage.token

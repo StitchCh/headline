@@ -10,7 +10,7 @@
       <ul>
         <li class="item flex-v-center" v-for="li in list" :key="li.id">
           <span class="flex-item item-title">{{li.newTitle}}</span>
-          <span>{{li.sortOrder}}</span>
+          <span class="f-12 c-a" style="margin-right: 15px;">{{li.sortOrder}}</span>
           <icon-btn small v-tooltip="'定时上/下线'">access_time</icon-btn>
           <icon-btn small v-tooltip="'上移'" @click="opera(li, 'up')" :disabled="li.sortOrder === '9999999'">arrow_upward</icon-btn>
           <icon-btn small v-tooltip="'下移'" @click="opera(li, 'down')" :disabled="li.sortOrder === '9999999'">arrow_downward</icon-btn>

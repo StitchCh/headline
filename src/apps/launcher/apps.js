@@ -35,11 +35,11 @@ export default [{
   path: '/media',
   icon: 'icon-media'
 }, {
-  name: '设置',
-  path: '/settings',
-  icon: 'icon-settings'
-}, {
   name: '用户',
   path: '/users',
+  icon: 'icon-users'
+}, {
+  name: '设置',
+  path: '/settings',
   icon: 'icon-settings'
 }]

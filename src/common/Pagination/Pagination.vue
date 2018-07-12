@@ -8,6 +8,7 @@
     v-for="item in arr"
     :key="item"
     :style="{ color: item === page ? color : '' }"
+    :class="{ 'b': item === page }"
     @click="changePage(item)"
     v-text="typeof item === 'string' ? '...' : item"
   ></li>
@@ -65,7 +66,7 @@ export default {
 </script>
 
 <style>
-.pagination{display: flex;align-items: center;font-weight: bold;user-select: none;}
+.pagination{display: flex;align-items: center;user-select: none;}
 .pagination li{display: inline-block;width: 30px;height: 30px;cursor: pointer;border-radius: 15px;text-align: center;line-height: 30px;transition: background-color .2s;}
 .pagination li:hover{background: rgba(0, 0, 0, .06)}
 .pagination li i.icon{font-size: 20px;}

@@ -95,12 +95,12 @@ export default {
 .bubble-top{bottom: 100%;padding-bottom: 10px;}
 .bubble-bottom{top: 100%;padding-top: 10px;}
 
-.bubble-arrow{position: absolute;width: 12px;height: 12px;border: 1px solid rgba(0, 0, 0, .08);border-width: 1px 0 0 1px;border-radius: 2px 0 0 0;z-index: 2;}
+.bubble-arrow{position: absolute;width: 12px;height: 12px;border: 1px solid rgba(0, 0, 0, .12);border-width: 1px 0 0 1px;border-radius: 2px 0 0 0;z-index: 2;}
 .bubble-left .bubble-arrow{right: 4px;transform: rotate(135deg);}
 .bubble-right .bubble-arrow{left: 4px;transform: rotate(-45deg);}
 .bubble-top .bubble-arrow{bottom: 4px;transform: rotate(225deg);}
 .bubble-bottom .bubble-arrow{top: 4px;transform: rotate(45deg);}
 
 .bubble-ctn{padding: 0;height: 100%;text-align: left;
-  border-radius: 5px;box-shadow: 0 0 0 1px rgba(0,0,0,.06);pointer-events: auto;}
+  border-radius: 5px;box-shadow: 0 0 0 1px rgba(0,0,0,.12);pointer-events: auto;}
 </style>

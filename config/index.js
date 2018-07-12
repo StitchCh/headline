@@ -11,7 +11,8 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/cri-cms-platform': { target: 'http://112.103.196.145:9099' }
+      // '/cri-cms-platform': { target: 'http://112.103.196.145:9099' }
+      '/cri-cms-platform': { target: 'http://60.247.77.208:59099' }
     },
 
     // Various Dev Server settings

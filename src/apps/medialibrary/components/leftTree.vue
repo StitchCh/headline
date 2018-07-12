@@ -66,6 +66,7 @@ export default {
           this.$http.post('/cri-cms-platform/media/folder/del.monitor', {
             id: item.id
           }).then(res => {
+            this.$router.replace(this.$route.path)
             this.getList()
           }).catch(e => {
             this.$toast(e.msg)
