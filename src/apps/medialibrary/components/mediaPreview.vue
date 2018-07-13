@@ -1,88 +1,153 @@
 <template>
-<transition name="slide-y">
-  <div class="media-preview f-14 c-4 flex">
-    <div class="flex-item flex-col">
-      <div class="flex-v-center mp-top">
-        <icon-btn class="c-f" @click="$emit('close')">arrow_back</icon-btn>
-        <div class="flex-item"></div>
-        <icon-btn class="c-f" v-tooltip:bottom="'下载'">get_app</icon-btn>
-        <icon-btn class="c-f" v-tooltip:bottom="'复制链接'">link</icon-btn>
-        <icon-btn class="c-f" v-tooltip:bottom="'编辑'">edit</icon-btn>
-        <icon-btn class="c-f" v-tooltip:bottom="'删除'">delete</icon-btn>
-      </div>
-      <div class="flex-item flex">
-        <div class="arrow-btn flex-center">
-          <icon-btn class="c-f">keyboard_arrow_left</icon-btn>
+<layer class="media-preview">
+  <div class="flex">
+    <div class="img-container flex-item relative" :style="{width: w+'px', height: h+'px'}">
+      <transition name="fade">
+        <div class="abs flex-center" v-if="type === 0 && current" style="overflow: hidden;" :key="current.id">
+          <img :src="imgOrigin+current.filePath+current.fileName" :style="imgStyle">
         </div>
-        <div class="flex-item flex-center">
-          <img src="../../../assets/img/bg.png" alt="">
+      </transition>
+      <div class="abs flex">
+        <div class="flex-item relative" v-if="i !== 0">
+          <icon-btn big @click="prev()" class="img-btn img-btn-prev">keyboard_arrow_left</icon-btn>
         </div>
-        <div class="arrow-btn flex-center">
-          <icon-btn class="c-f">keyboard_arrow_right</icon-btn>
+        <div class="flex-item relative" v-if="i < list.length - 1">
+          <icon-btn big @click="next()" class="img-btn img-btn-next">keyboard_arrow_right</icon-btn>
         </div>
       </div>
     </div>
-    <div class="mp-info">
-      <div class="f-24 base">DJLFJADLS.JPG</div>
-      <div class="flex-v-center" style="margin-top: 15px;">
-        <i class="icon c-8 f-20">label</i>
-        <input class="tag-input flex-item f-14" type="text" placeholder="点击添加标签">
-        <icon-btn small>done</icon-btn>
+    <div class="img-info c-6 f-14">
+      <div class="t-right">
+        <icon-btn small @click="$emit('close')">close</icon-btn>
       </div>
-      <div class="f-12" style="margin-top: 20px;">详情</div>
-      <div class="flex-v-center info-item">
-        <i class="icon c-8">insert_drive_file</i>
-        <div class="flex-item">
-          <div class="c-a f-12">文件大小</div>
-          <div>
-            <span style="margin-right: 20px;">740 x 740</span>
-            <span>12434 KB</span>
-          </div>
-        </div>
+      <div class="f-18 b file-name" :title="current.alias">{{current.alias}}</div>
+      <div class="flex">
+        <a :href="imgOrigin+current.filePath+current.fileName" :download="current.alias" target="_blank">
+          <icon-btn small v-tooltip:top="'下载图片'">cloud_download</icon-btn>
+        </a>
+        <icon-btn small v-tooltip:top="'复制链接地址'" @click="copyLink">link</icon-btn>
+        <input type="text" :value="imgOrigin+current.filePath+current.fileName" ref="copyInput" readonly style="width: 1px;border: none;opacity: 0;">
+        <icon-btn small v-tooltip:top="'编辑图片'">edit</icon-btn>
+        <icon-btn small v-tooltip:top="'删除图片'" @click="del">delete</icon-btn>
       </div>
-      <div class="flex-v-center info-item">
-        <i class="icon c-8">person</i>
-        <div class="flex-item">
-          <div class="c-a f-12">创建者</div>
-          <div>超级管理员</div>
-        </div>
+      <div class="flex" style="margin: 15px 0;">
+        <i class="icon f-20 c-a">label</i>
+        <textarea class="flex-item f-14" placeholder="输入标签，多个逗号隔开" style="height: 40px;"></textarea>
       </div>
       <div class="flex-v-center info-item">
-        <i class="icon c-8">access_time</i>
-        <div class="flex-item">
-          <div class="c-a f-12">创建时间</div>
-          <div>2018-09-09 12:00:00</div>
-        </div>
+        <i class="icon f-20 c-a">insert_drive_file</i>
+        <span class="flex-item">
+          <span>{{current.width}}x{{current.height}}</span>
+          <span style="margin-left: 15px;">{{current.filesize | filesize}}</span>
+        </span>
+      </div>
+      <div class="flex-v-center info-item">
+        <i class="icon f-20 c-a">person</i>
+        <span class="flex-item">{{current.createUser}}</span>
+      </div>
+      <div class="flex-v-center info-item">
+        <i class="icon f-20 c-a">access_time</i>
+        <span class="flex-item">{{current.createDate}}</span>
       </div>
     </div>
   </div>
-</transition>
+</layer>
 </template>
 
 <script>
+const IMG_ORIGIN = 'http://60.247.77.208:58088'
+
 export default {
-  name: 'media-preview'
+  name: 'media-preview',
+  props: {
+    list: {
+      type: Array,
+      default: () => []
+    },
+    index: {
+      type: Number,
+      default: 0
+    },
+    type: {
+      type: Number,
+      default: 0
+    }
+  },
+  data () {
+    return {
+      w: 550,
+      h: 500,
+      i: this.index,
+      imgOrigin: IMG_ORIGIN
+    }
+  },
+  computed: {
+    current () {
+      return this.list[this.i]
+    },
+    imgStyle () {
+      let w = this.current.width
+      let h = this.current.height
+      if (w < this.w && h < this.h) {
+        return { width: 'auto', height: 'auto' }
+      }
+      if (w / h > this.w / this.h) {
+        return { width: '100%', height: 'auto' }
+      } else {
+        return { height: '100%', width: 'auto' }
+      }
+    }
+  },
+  methods: {
+    prev () {
+      this.i -= 1
+    },
+    next () {
+      this.i += 1
+    },
+    del () {
+      this.$confirm({
+        title: '删除确认',
+        text: `您确定要删除以下文件吗？\n${this.current.alias}`,
+        color: 'red',
+        btns: ['取消', '删除'],
+        yes: () => {
+          this.$http.post('/cri-cms-platform/media/del.monitor', {
+            id: this.current.id,
+            type: '0'
+          }).then(res => {
+            this.$emit('delected')
+            this.list.splice(this.i, 1)
+            if (this.i >= this.list.length) {
+              this.i = this.list.length - 1
+            }
+          }).catch(e => {
+            this.$toast(e.msg)
+          })
+        }
+      })
+    },
+    copyLink () {
+      this.$refs.copyInput.select()
+      document.execCommand('copy')
+      this.$toast('链接地址已复制')
+    }
+  }
 }
 </script>
 
 <style lang="less">
 .media-preview{
-  position: fixed;width: 100%;height: 100%;left: 0;top:0;background: rgba(0, 0, 0, 0.85);z-index: 50;
-  .mp-info{width: 300px;background: #f8f8f8;padding: 30px 20px;}
-  .mp-top{padding: 10px;
-    .icon-btn{margin: 0 5px;}
-    .icon-btn:hover{background: rgba(255, 255, 255, .2);}
+  .layer-ctn{max-width: 800px!important;}
+  .img-container{width: 100%;background: #222;}
+  .img-info{width: 250px;padding: 15px;}
+  textarea{margin: 0;padding: 0;border: none;outline: none;background: transparent;resize: none;margin-left: 15px;}
+  .info-item{margin: 10px 0;line-height: 1em;
+    .icon{margin-right: 15px;}
   }
-  .tag-input{background:transparent;border: none;padding: 10px 0;margin-left: 15px;}
-  .info-item{margin: 15px 0;line-height: 1.4em;
-    .icon{margin-right: 15px;font-size: 22px;}
-  }
-  .arrow-btn{
-    padding: 10px;
-    .icon-btn{
-      opacity: .5;
-      &:hover{background: rgba(255, 255, 255, .2);}
-    }
-  }
+  .file-name{padding: 10px 0;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+  .img-btn{position: absolute;top: 45%;z-index: 10;text-shadow: 2px 0 0 #fff;}
+  .img-btn-prev{left: 0;}
+  .img-btn-next{right: 0;}
 }
 </style>

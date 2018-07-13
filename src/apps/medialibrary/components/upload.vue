@@ -1,9 +1,11 @@
 <template>
 <div class="media-upload relative">
   <div class="flex-v-center">
-    <btn flat class="b" @click="bubbleShow=!bubbleShow" color="#008eff">上传</btn>
-    <loading v-if="status === 'uploading'" size="25"/>
-    <i class="icon red f-20" v-if="status === 'error'">error_outline</i>
+    <btn flat class="b flex-v-center" @click="bubbleShow=!bubbleShow" color="#008eff" style="padding: 5px 10px;">
+      <span>上传</span>
+      <loading v-if="status === 'uploading'" size="25" style="margin-left: 5px;"/>
+      <i class="icon red f-20" v-if="status === 'error'" style="margin-left: 5px;">error_outline</i>
+    </btn>
   </div>
   <bubble v-if="bubbleShow" pos="bottom" align="end">
     <div style="width: 400px;">

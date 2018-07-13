@@ -12,14 +12,17 @@
     <account/>
   </div>
   <div class="flex-item relative">
-    <router-view @preview="onPreview"/>
+    <router-view ref="routerView" @preview="onPreview"/>
   </div>
 
-  <media-preview v-if="preview.show" :item="preview.item" @close="preview.show=false"/>
+  <media-preview
+    v-if="preview.show"
+    :list="preview.list"
+    :index="preview.index"
+    :type="$route.meta.type"
+    @close="preview.show=false"
+    @delected="onDelected"/>
 
-  <!-- <div class="af-bottombar flex-v-center">
-    <media-upload/>
-  </div> -->
 </div>
 </template>
 
@@ -36,14 +39,19 @@ export default {
     return {
       preview: {
         show: false,
-        item: {}
+        list: [],
+        index: 0
       }
     }
   },
   methods: {
     onPreview (e) {
       this.preview.show = true
-      this.preview.item = e
+      this.preview.list = e.list || []
+      this.preview.index = e.index || 0
+    },
+    onDelected (e) {
+      this.$refs.routerView.getList()
     }
   }
 }
@@ -73,7 +81,7 @@ export default {
   }
   .media-group{padding: 13px 30px;
     ul{flex-wrap: wrap;}
-    li{margin: 0 10px 10px 0}
+    li{margin: 0 6px 6px 0}
   }
   .media-group-title{padding: 15px 0;}
   .bubble-item{padding: 4px 15px;white-space: nowrap;cursor: pointer;}

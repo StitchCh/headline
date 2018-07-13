@@ -1,65 +1,65 @@
 <template>
-<div class="image-editor flex">
-  <div class="tool-bar flex-center">
-    <div style="padding: 12px;">
-      <icon-btn :disabled="toolActive!==''&&toolActive!=='crop'" @click="toolActive='crop'" v-tooltip:right="'裁剪'" :key="toolActive+'1'">crop</icon-btn>
-      <icon-btn :disabled="toolActive!==''&&toolActive!=='flip'" @click="toolActive='flip'" v-tooltip:right="'翻转'" :key="toolActive+'2'">flip</icon-btn>
-      <icon-btn :disabled="toolActive!==''&&toolActive!=='rotate'" @click="toolActive='rotate'" v-tooltip:right="'旋转'" :key="toolActive+'3'">rotate_90_degrees_ccw</icon-btn>
-      <div style="height: 1px;background: rgba(255,255,255,0.2);margin: 10px;"></div>
-      <icon-btn v-tooltip:right="'移动'" class="move-icon">pan_tool</icon-btn>
-      <icon-btn v-tooltip:right="'放大'">zoom_in</icon-btn>
-      <icon-btn v-tooltip:right="'缩小'">zoom_out</icon-btn>
-      <div style="height: 1px;background: rgba(255,255,255,0.2);margin: 10px;"></div>
-      <icon-btn v-tooltip:bottom="'撤销'">undo</icon-btn>
-      <icon-btn v-tooltip:bottom="'恢复'">redo</icon-btn>
-      <!-- <icon-btn v-tooltip:right="'涂鸦'">brush</icon-btn>
-      <icon-btn v-tooltip:right="'文字'">text_fields</icon-btn> -->
-      <!-- <icon-btn v-tooltip:right="'水印'">branding_watermark</icon-btn> -->
+<layer class="image-editor" width="700px">
+  <div class="content flex">
+    <div class="tool-bar flex-center">
+      <div style="padding: 12px;">
+        <icon-btn :disabled="toolActive!==''&&toolActive!=='crop'" @click="toolActive='crop'" v-tooltip:right="'裁剪'" :key="toolActive+'1'">crop</icon-btn>
+        <icon-btn :disabled="toolActive!==''&&toolActive!=='flip'" @click="toolActive='flip'" v-tooltip:right="'翻转'" :key="toolActive+'2'">flip</icon-btn>
+        <icon-btn :disabled="toolActive!==''&&toolActive!=='rotate'" @click="toolActive='rotate'" v-tooltip:right="'旋转'" :key="toolActive+'3'">rotate_90_degrees_ccw</icon-btn>
+        <div style="height: 1px;background: rgba(255,255,255,0.2);margin: 10px;"></div>
+        <icon-btn v-tooltip:right="'移动'" class="move-icon">pan_tool</icon-btn>
+        <icon-btn v-tooltip:right="'放大'">zoom_in</icon-btn>
+        <icon-btn v-tooltip:right="'缩小'">zoom_out</icon-btn>
+        <div style="height: 1px;background: rgba(255,255,255,0.2);margin: 10px;"></div>
+        <icon-btn v-tooltip:bottom="'撤销'">undo</icon-btn>
+        <icon-btn v-tooltip:bottom="'恢复'">redo</icon-btn>
+        <!-- <icon-btn v-tooltip:right="'涂鸦'">brush</icon-btn>
+        <icon-btn v-tooltip:right="'文字'">text_fields</icon-btn> -->
+        <!-- <icon-btn v-tooltip:right="'水印'">branding_watermark</icon-btn> -->
+      </div>
     </div>
-  </div>
-  <div class="tool-bar flex-center option-bar" v-if="toolActive">
-    <div style="padding: 12px;width: 80px;" v-if="toolActive === 'crop'">
-      <icon-btn v-tooltip:right="'16 : 9'">crop_16_9</icon-btn>
-      <icon-btn v-tooltip:right="'4 : 3'">crop_5_4</icon-btn>
-      <icon-btn v-tooltip:right="'3 :2'">crop_3_2</icon-btn>
-      <icon-btn v-tooltip:right="'1 : 1'">crop_din</icon-btn>
-      <icon-btn v-tooltip:right="'自由裁切'">crop_free</icon-btn>
-      <icon-btn v-tooltip:right="'应用'" color="#45ff45" class="on">done</icon-btn>
-      <icon-btn v-tooltip:right="'取消'" color="#ff3131" class="on" @click="toolActive=''">close</icon-btn>
-    </div>
-    <div style="padding: 12px;width: 80px;" v-if="toolActive === 'flip'">
-      <icon-btn v-tooltip:right="'水平翻转'" class="on">flip</icon-btn>
-      <icon-btn v-tooltip:right="'垂直翻转'" class="on flip-y-btn">flip</icon-btn>
-      <icon-btn v-tooltip:right="'应用'" color="#45ff45" @click="toolActive=''" class="on">done</icon-btn>
-    </div>
-    <div style="padding: 12px;width: 80px;" v-if="toolActive === 'rotate'">
-      <icon-btn v-tooltip:right="'旋转 90°'" class="on">rotate_90_degrees_ccw</icon-btn>
-      <div class="rotater c-f flex-col" ref="rotater">
-        <div class="flex-item rot-scale">
-          <div :style="{transform: `translateY(${rotate.deg}px)`}"></div>
+    <transition name="fade">
+      <div class="tool-bar flex-center option-bar" v-if="toolActive">
+        <div style="width: 60px;padding: 12px;" v-if="toolActive === 'crop'">
+          <icon-btn v-tooltip:right="'16 : 9'">crop_16_9</icon-btn>
+          <icon-btn v-tooltip:right="'4 : 3'">crop_5_4</icon-btn>
+          <icon-btn v-tooltip:right="'3 :2'">crop_3_2</icon-btn>
+          <icon-btn v-tooltip:right="'1 : 1'">crop_din</icon-btn>
+          <icon-btn v-tooltip:right="'自由裁切'">crop_free</icon-btn>
+          <icon-btn v-tooltip:right="'应用'" color="#45ff45" class="on">done</icon-btn>
+          <icon-btn v-tooltip:right="'取消'" color="#ff3131" class="on" @click="toolActive=''">close</icon-btn>
         </div>
-        <div class="t-center" style="padding: 10px;pointer-events:none;">{{rotate.deg}}°</div>
-        <div class="flex-item rot-scale">
-          <div :style="{transform: `translateY(${rotate.deg}px)`}"></div>
+        <div style="width: 60px;padding: 12px;" v-if="toolActive === 'flip'">
+          <icon-btn v-tooltip:right="'水平翻转'" class="on">flip</icon-btn>
+          <icon-btn v-tooltip:right="'垂直翻转'" class="on flip-y-btn">flip</icon-btn>
+          <icon-btn v-tooltip:right="'应用'" color="#45ff45" @click="toolActive=''" class="on">done</icon-btn>
+        </div>
+        <div style="width: 60px;" v-if="toolActive === 'rotate'">
+          <icon-btn v-tooltip:right="'旋转 90°'" class="on" style="margin: 12px;">rotate_90_degrees_ccw</icon-btn>
+          <div class="rotater flex-col" ref="rotater">
+            <div class="flex-item rot-scale">
+              <div :style="{transform: `translateY(${rotate.deg}px)`}"></div>
+            </div>
+            <div class="t-center" style="padding: 10px;pointer-events:none;">{{rotate.deg}}°</div>
+            <div class="flex-item rot-scale">
+              <div :style="{transform: `translateY(${rotate.deg}px)`}"></div>
+            </div>
+          </div>
+          <icon-btn v-tooltip:right="'应用'" color="#45ff45" class="on" @click="toolActive=''" style="margin: 12px;">done</icon-btn>
         </div>
       </div>
-      <icon-btn v-tooltip:right="'应用'" color="#45ff45" class="on" @click="toolActive=''">done</icon-btn>
-    </div>
-    <!-- <div style="padding: 12px;">
-      <icon-btn v-tooltip:right="'应用'" color="#45ff45">done</icon-btn>
-    </div> -->
-  </div>
-  <div class="flex-item flex-col">
-    <div class="opera-bar flex-v-center">
-      <div class="flex-item"></div>
-      <btn flat style="margin-left: 15px;color: #fff;">取消</btn>
-      <btn style="margin-left: 10px;">保存</btn>
-    </div>
-    <div class="flex-item flex-center">
-      <img :src="src" ref="cropper"/>
+    </transition>
+    <div class="flex-item flex-col">
+      <div class="flex-item flex-center">
+        <img :src="src" ref="cropper"/>
+      </div>
+      <div class="layer-btns">
+        <btn flat>取消</btn>
+        <btn flat>保存</btn>
+      </div>
     </div>
   </div>
-</div>
+</layer>
 </template>
 
 <script>
@@ -142,12 +142,11 @@ export default {
 <style lang="less">
 .image-editor{
   position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: 20;background: rgba(0, 0, 0, .9);
-  .icon-btn{color: #fff;margin: 10px;
-    &:hover{background: rgba(255, 255, 255, .1);}
-  }
-  .btn-flat:hover{background: rgba(255, 255, 255, .1);}
-  .tool-bar{width: 80px;}
-  .option-bar{background: rgba(255, 255, 255, .05);
+  .layer-ctn{max-width: 800px!important;}
+  .content{height: 500px;}
+  .tool-bar{width: 60px;border-right: 1px solid rgba(0, 0, 0, .1);}
+  .option-bar{position: absolute;left: 60px;top: 0;height: 100%;z-index: 20;border-right: 1px solid rgba(0, 0, 0, .1);
+    background: rgba(255, 255, 255, .7);
     .btn{color: #fff;}
     .icon-btn{opacity: .6;}
     .icon-btn.on{opacity: 1;}
@@ -161,10 +160,10 @@ export default {
     &.on{border-color: rgba(255, 255, 255, .8);}
   }
   .flip-y-btn .icon{transform: rotate(90deg);}
-  .rotater{height: 240px;width: 56px;user-select: none;}
+  .rotater{height: 240px;width: 60px;user-select: none;}
   .rot-scale{
     position: relative;overflow: hidden;pointer-events: none;
-    div{width: 4px;height: 400%;border-left: 4px dotted rgba(255, 255, 255, .3);position: absolute;left: 45%;top: -100%;pointer-events: none;}
+    div{width: 4px;height: 400%;border-left: 4px dotted rgba(0, 0, 0, .3);position: absolute;left: 45%;top: -100%;pointer-events: none;}
   }
   .move-icon .icon{transform: scale(.85);}
   .cropper-bg{background-image: none!important;}

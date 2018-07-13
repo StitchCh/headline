@@ -8,6 +8,8 @@
         <input type="text" class="f-14 c-6" placeholder="搜索">
       </div>
       <div class="flex-item"></div>
+      <span class="f-14" v-if="selected.length" style="margin-right: 10px;">已选择 {{selected.length}} 项</span>
+      <btn flat v-if="selected.length" color="#008eff" @click="cancelSelect">取消选择</btn>
       <div class="flex-v-center opera-btns">
         <!-- <span class="a blue">全选</span> -->
         <btn flat :disabled="!selected.length" color="#008eff" @click="del">批量删除</btn>
@@ -125,7 +127,11 @@ export default {
       this.getList()
     },
     onItemClick (item) {
-      this.$emit('preview', item)
+      this.$emit('preview', {
+        type: 0,
+        list: this.allList,
+        index: this.allList.indexOf(item)
+      })
     },
     del () {
       this.$confirm({
@@ -147,7 +153,14 @@ export default {
     },
     onUploaded: debounce(function () {
       if (this.page === 1) this.getList()
-    }, 1000)
+    }, 1000),
+    cancelSelect () {
+      this.list.forEach(li => {
+        li.data.forEach(item => {
+          item.checked = false
+        })
+      })
+    }
   }
 }
 </script>
