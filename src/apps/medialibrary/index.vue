@@ -12,20 +12,39 @@
     <account/>
   </div>
   <div class="flex-item relative">
-    <router-view/>
+    <router-view @preview="onPreview"/>
   </div>
+
+  <media-preview v-if="preview.show" :item="preview.item" @close="preview.show=false"/>
+
+  <!-- <div class="af-bottombar flex-v-center">
+    <media-upload/>
+  </div> -->
 </div>
 </template>
 
 <script>
 import Account from '@/components/account'
 import Dock from '@/components/dock'
+import MediaPreview from './components/mediaPreview'
+import MediaUpload from './components/upload'
 
 export default {
   name: 'media-library',
-  components: { Account, Dock },
+  components: { Account, Dock, MediaPreview, MediaUpload },
   data () {
-    return {}
+    return {
+      preview: {
+        show: false,
+        item: {}
+      }
+    }
+  },
+  methods: {
+    onPreview (e) {
+      this.preview.show = true
+      this.preview.item = e
+    }
   }
 }
 </script>
@@ -54,7 +73,7 @@ export default {
   }
   .media-group{padding: 13px 30px;
     ul{flex-wrap: wrap;}
-    li{margin: 0 15px 15px 0}
+    li{margin: 0 10px 10px 0}
   }
   .media-group-title{padding: 15px 0;}
   .bubble-item{padding: 4px 15px;white-space: nowrap;cursor: pointer;}
@@ -67,7 +86,7 @@ export default {
     .datepicker-popup{right: 0;width: 420px;}
   }
   .up-progress-bar{height: 8px;width: 200px;background: #ddd;border-radius: 5px;margin: 0 10px;overflow: hidden;
-    div{height: 100%;background: #0074ff;border-radius: 5px;}
+    div{height: 100%;background: #0074ff;border-radius: 5px;transition: all .2s;}
   }
 }
 </style>

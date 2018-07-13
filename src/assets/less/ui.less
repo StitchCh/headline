@@ -44,3 +44,14 @@
 .datepicker-popup{border-radius: 8px;color: #666;}
 .datepicker__buttons button{margin: 10px 5px 5px 5px!important;border-radius: 3px;}
 .datepicker__buttons .datepicker__button-cancel{background: #eee!important;color: #666}
+
+.tab{display: inline-flex;}
+.tab-item{line-height: 1em;padding: 6px 10px;border: 1px solid #ccc;color: #666;margin-left: -1px;position: relative;cursor: pointer;
+  &:hover{z-index: 2;color: #008eff;border-color: #008eff;}
+  &:first-child{border-radius: 4px 0 0 4px;}
+  &:last-child{border-radius: 0 4px 4px 0;}
+  &.on{background: #008eff;color: #fff;border-color: #008eff;z-index: 4;}
+}
+// .input{display: block;background: #fff;border: 1px solid #ddd;margin: 10px 0;padding: 8px;border-radius: 5px;font-size: 14px;outline: none;transition: all .2s;
+//   &:focus{border-color: #008eff;box-shadow: 0 0 2px 1px rgba(0, 140, 255, 0.438);}
+// }

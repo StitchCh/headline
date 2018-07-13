@@ -1,14 +1,14 @@
 <template>
   <div class="relative uploadBox f-14" tabindex="-1">
     <btn @click="$refs.uploadInput.click()">{{btnText}}</btn>
-    <input type="file" class="uploadInput" ref="uploadInput" @change="handleChange" :multiple="multiple">
+    <input type="file" :accept="accept" class="uploadInput" ref="uploadInput" @change="handleChange" :multiple="multiple">
     <div v-if="tips" class="tips">{{tips}}</div>
-    <transition-group name="slide" tag="div">
-      <div v-for="(item, index) in fileList" :key="item.uid" class="flex uploadListItem">
+    <transition-group name="slide" tag="div" style="margin-top: 15px;">
+      <div v-for="(item, index) in fileList" :key="item.uid" class="flex-v-center uploadListItem">
         <img v-if="isImg(item.type)" :src="item.url" alt="" width="24" height="24">
         <i v-else class="icon uploadDocument">description</i>
-        <span>{{item.name}}</span>
-        <div class="flex-item"></div>
+        <span class="flex-item">{{item.name}}</span>
+        <!-- <div class="flex-item"></div> -->
         <div class="loadingBox" v-if="item.status === 'uploading'">
           <Loading size="20"></Loading>
         </div>
@@ -57,13 +57,17 @@
       btnText: {
         type: String,
         default: '点击上传'
+      },
+      accept: {
+        type: String,
+        default: ''
       }
     },
-    data () {
-      return {
-        imgReg: /\.jpg$|\.jpeg$|\.gif$|\.png$|\.tiff$|\.bmp$/i
-      }
-    },
+    // data () {
+    //   return {
+    //     imgReg: /\.jpg$|\.jpeg$|\.gif$|\.png$|\.tiff$|\.bmp$/i
+    //   }
+    // },
     methods: {
       getUrl (file) {
         return URL.createObjectURL(file)
@@ -84,7 +88,7 @@
             type: this.getType(v),
             status: 'ready',
             url: this.getUrl(v),
-            uid: new Date().getTime(),
+            uid: Math.random(),
             source: v
           }
           this.fileList.push(file)
@@ -123,9 +127,9 @@
   .uploadBox {
     .uploadInput {display: none}
     .tips {color: #999;}
-    .uploadListItem {width: 300px;margin-top: 5px;
+    .uploadListItem {margin-top: 5px;
       .uploadDocument {line-height: 30px;font-size: 26px;}
-      span {width: 241px; margin-left: 5px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 30px;}
+      span {margin-left: 10px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 30px;}
       .uploadStatus {color: #67c23a;font-size: 20px;padding: 5px;}
       .uploadStatus.upload-error{color: rgb(252, 61, 61);}
       .loadingBox {width: 30px;height: 30px;padding: 5px;}
