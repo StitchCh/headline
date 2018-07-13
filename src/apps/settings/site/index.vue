@@ -5,7 +5,7 @@
   </div>
   <div class="flex-item scroll-y bg-e relative">
     <transition name="fade">
-      <div v-if="loading" class="abs" style="background: #eee;">
+      <div v-if="loading" class="abs bg-e">
         <loading style="left: 50%;top: 50%;transform: translate(-50%, -50%)"></loading>
       </div>
     </transition>
