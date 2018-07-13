@@ -194,7 +194,7 @@ export default {
       this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor').then(res => {
         this.ui.channels = res || []
       }).catch(e => {
-        this.$toast(e.message)
+        this.$toast(e.msg)
       })
     },
     search: debounce(function () {

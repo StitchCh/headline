@@ -122,7 +122,6 @@ export default {
             id: item.contentLayoutId
           }).then(res => {
             this.getList()
-            this.$toast('移除成功')
           }).catch(e => {
             this.$toast(e.msg)
           })
