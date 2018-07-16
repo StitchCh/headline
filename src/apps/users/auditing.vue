@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="af-topbar">
-      <span class="f-18">正常</span>
+      <span class="f-18">待审</span>
     </div>
     <div class="flex-item scroll-y bg-e relative">
       <transition name="fade">
@@ -19,7 +19,7 @@
             <th>用户状态</th>
             <th>本次登录时间</th>
             <th>登录IP</th>
-            <th colspan="3">操作</th>
+            <th colspan="4">操作</th>
           </thead>
           <tbody>
             <tr v-for="item in list" :key="item.id" @click="openDetail(item.id)">
@@ -32,6 +32,7 @@
               <td style="width: 30px;"><icon-btn v-tooltip="'重置密码'" small @click.stop.native="backPassWd(item.id)">refresh</icon-btn></td>
               <td style="width: 30px;"><icon-btn v-tooltip="'编辑'" small @click.stop.native="openEdit(item.id)">edit</icon-btn></td>
               <td style="width: 30px;"><icon-btn v-tooltip="'删除'" small @click.stop.native="deleteUser(item.id)">delete</icon-btn></td>
+              <td style="width: 30px;"><icon-btn v-tooltip="'审核'" small @click.stop.native="auditUser(item.id)">find_in_page</icon-btn></td>
             </tr>
           </tbody>
         </table>
@@ -106,7 +107,8 @@
               <td>
                 <icon-btn style="margin: 0 2px;" v-tooltip="'重置密码'" small @click.stop.native="backPassWd(detail.sysUser.id)">refresh</icon-btn>
                 <icon-btn style="margin: 0 2px;" v-tooltip="'编辑'" small @click.stop.native="openEdit(detail.sysUser.id)">edit</icon-btn>
-                <icon-btn style="margin: 0 2px;" v-tooltip="'删除'" small @click.stop.native="deleteUser(detail.sysUser.id)">delete</icon-btn>    <icon-btn style="margin: 0 2px;" v-tooltip="'审核'" v-if="detail.sysUser.userStatus === '01'" small>find_in_page</icon-btn>
+                <icon-btn style="margin: 0 2px;" v-tooltip="'删除'" small @click.stop.native="deleteUser(detail.sysUser.id)">delete</icon-btn>
+                <icon-btn style="margin: 0 2px;" v-tooltip="'审核'" small @click.stop.native="auditUser(detail.sysUser.id)">find_in_page</icon-btn>
               </td>
             </tr>
           </tbody>
@@ -148,7 +150,7 @@ import SelectCard from '@/components/select-card/index'
 import SelectCardOption from '@/components/select-card/option'
 
 export default {
-  name: 'users-normal',
+  name: 'users-auditing',
   components: { SelectCard, SelectCardOption },
   data () {
     return {
@@ -187,7 +189,7 @@ export default {
       this.$http.post('/cri-cms-platform/sysUser/queryList.monitor', {
         pageSize: 10,
         toPage: this.page,
-        userStatus: '00'
+        userStatus: '01'
       }).then(
         res => {
           console.log(res)
@@ -330,7 +332,7 @@ export default {
       this.$http.post('/cri-cms-platform/sysUser/queryList.monitor', {
         pageSize: 10,
         toPage: this.page,
-        userStatus: '00'
+        userStatus: '01'
       }),
       this.$http.post('/cri-cms-platform/sysUser/roles.monitor')
     ]).then(

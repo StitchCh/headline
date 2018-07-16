@@ -13,7 +13,7 @@
       :disabled="!isFolder"
       @click.native="toggle($event)">{{icon}}</icon-btn>
     <avatar v-if="model.avatar !== undefined && model.avatar !== null" :src="model.avatar" size="20"/>
-    <span class="tree-name" :title="model.name" v-html="format(model.name)"></span>
+    <span class="tree-name" :title="model[nameTxt]" v-html="format(model[nameTxt])"></span>
     <!-- <icon-btn small class="tree-icon tree-menu-icon">more_vert</icon-btn> -->
   </div>
   <div class="tree-child" v-if="isFolder && open">
@@ -43,6 +43,7 @@ export default {
     level: { type: Number, default: 0 },
     model: { type: Object, default () { return {} } },
     childrenTxt: { type: String, default: 'children' },
+    nameTxt: { type: String, default: 'name'},
     activeId: [Number, String],
     // 是否显示叶子节点 🍃
     hideLeaf: Boolean,
