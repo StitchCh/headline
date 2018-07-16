@@ -1,19 +1,25 @@
 <template>
 <div class="works-published">
-  <works-layout
-    v-for="item in layout"
-    :key="item.id"
-    :item="item"
-  />
+  <draggable v-model="layout">
+    <transition-group tab="div" name="flip-list" :options="{draggable:'.title'}">
+      <works-layout
+        v-for="item in layout"
+        ref="layout"
+        :key="item.id"
+        :item="item"
+      />
+    </transition-group>
+  </draggable>
 </div>
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 import WorksLayout from './layout'
 
 export default {
   name: 'works-published',
-  components: { WorksLayout },
+  components: { draggable, WorksLayout },
   data () {
     return {
       loading: false,
@@ -28,6 +34,11 @@ export default {
       this.getLayout()
     }
   },
+  computed: {
+    result () {
+      return this.$refs.layout.map(item => item.result)
+    }
+  },
   methods: {
     getLayout () {
       this.$emit('loading')
@@ -35,10 +46,6 @@ export default {
         channelId: this.$route.query.channelId
       }).then(res => {
         this.$emit('endLoading')
-        // res.forEach(item => {
-        //   if (item.type === '1') item.typeStr = 'list'
-        //   if (item.type === '2') item.typeStr = 'ppt'
-        // })
         this.layout = res
       }).catch(e => {
         this.$emit('endLoading')

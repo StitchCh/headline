@@ -10,7 +10,7 @@
       pidTxt="channelPartentId"
       @select="onTreeSelect"></tree>
   </af-left>
-  <div class="flex-item flex-col">
+  <div class="flex-item flex-col" style="overflow: hidden;">
     <div class="af-topbar flex-v-center">
       <div class="flex-item"></div>
       <account/>
@@ -24,10 +24,10 @@
             <div class="tab-item" :class="{'on': $route.name==='works-unpublished'}" @click="onTab('/works/unpublished')">未发布</div>
           </div>
         </div>
-        <div style="width: 65px;"><btn v-if="$route.name === 'works-published'">发布</btn></div>
+        <div style="width: 65px;"><btn v-if="$route.name === 'works-published'" @click="publish">发布</btn></div>
       </div>
       <div class="flex-item relative scroll-y">
-        <router-view @loading="loading=true" @endLoading="loading=false"></router-view>
+        <router-view :key="$route.query.channelId + mark" ref="published" @loading="loading=true" @endLoading="loading=false"></router-view>
       </div>
     </div>
   </div>
@@ -44,7 +44,8 @@ export default {
   data () {
     return {
       loading: false,
-      channels: []
+      channels: [],
+      mark: 1
     }
   },
   created () {
@@ -53,10 +54,10 @@ export default {
   methods: {
     getList () {
       this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor').then(res => {
-        res.forEach(item => {
+        res.channels.forEach(item => {
           item.name = item.channelName
         })
-        this.channels = res
+        this.channels = res.channels
       }).catch(e => {
         this.$toast(e.message)
       })
@@ -73,6 +74,19 @@ export default {
       this.$router.replace({
         path,
         query: this.$route.query
+      })
+    },
+    publish () {
+      let data = this.$refs.published.result
+      let result = { results: { data } }
+      result = JSON.stringify(result)
+      this.$http.post('/cri-cms-platform/issue/saveIssue.monitor', {
+        issueJson: result
+      }).then(res => {
+        this.$toast('发布成功')
+        this.mark += 1
+      }).catch(e => {
+        this.$toast(e.msg)
       })
     }
   }

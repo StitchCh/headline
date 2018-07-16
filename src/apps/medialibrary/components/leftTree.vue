@@ -123,5 +123,4 @@ export default {
   .nav-item:hover .del-btn{opacity: 1;}
   .nav-item.sortable-ghost{background: #eee;}
 }
-.flip-list-move{transition: transform .1s;}
 </style>

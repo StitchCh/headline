@@ -20,10 +20,13 @@
         </div>
       </div>
       <div style="padding: 20px;max-height: 500px;overflow-y: auto;">
-        <div v-if="tab === 1">
+        <div v-if="tab === 1" class="relative">
+          <div v-if="urlLoading" class="abs flex-center bg-light-rgb-4" style="z-index:10;">
+            <loading size="30"/>
+          </div>
           <div class="flex-v-center">
-            <input-box label="网络地址" class="flex-item" hint="请输入素材完整地址"></input-box>
-            <btn small style="margin: 0 0 20px 15px;">上传</btn>
+            <input-box label="网络地址" v-model="picUrl" class="flex-item" hint="请输入素材完整地址"></input-box>
+            <btn small @click="uploadImgOnLine" :disabled="!picUrl" style="margin: 0 0 20px 15px;">上传</btn>
           </div>
         </div>
         <div v-if="tab === 2">
@@ -58,7 +61,9 @@ export default {
     return {
       bubbleShow: false,
       tab: 1,
-      fileList: []
+      fileList: [],
+      urlLoading: false,
+      picUrl: ''
     }
   },
   computed: {
@@ -89,6 +94,21 @@ export default {
       }).catch(e => {
         this.$toast(e.msg || `上传失败:（${file.name}）`)
         file.status = 'error'
+      })
+    },
+    uploadImgOnLine () {
+      if (!this.picUrl) return
+      this.urlLoading = true
+      this.$http.post('/cri-cms-platform/media/uploadImgOnLine.monitor', {
+        folderId: this.folderId,
+        picUrl: this.picUrl
+      }).then(res => {
+        this.urlLoading = false
+        this.$emit('uploaded')
+        this.picUrl = ''
+      }).catch(e => {
+        this.urlLoading = false
+        this.$toast(e.msg)
       })
     }
   }

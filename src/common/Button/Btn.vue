@@ -55,7 +55,7 @@ export default {
 .btn-flat{background: transparent;color: #444;}
 .btn-flat:hover{background: rgba(0, 0, 0, .1)}
 .btn-flat:active{background: rgba(0, 0, 0, .2)}
-.btn[disabled]{opacity: .7;}
+.btn[disabled]{opacity: .7;pointer-events: none;}
 .btn-cover{position: absolute;top: 0;left: 0;right: 0;bottom: 0;background-color: #c9c9c9;border-radius: 2px}
 .btn .btn-loading{position: absolute; color: rgba(0,0,0,.26);top: 0;bottom: 0;left: 0;right: 0;margin: auto;}
 .btn-outline{border: 1px solid #aaa;background: transparent;color: #444;}
