@@ -25,6 +25,7 @@ import Tooltip from './Tooltip'
 import Tree from './Tree'
 import UploadBox from './UploadBox'
 import Navigator from './Navigator'
+import BtnGroup from'./BtnGroup'
 
 Vue.use(Avatar)
 Vue.use(Bubble)
@@ -53,3 +54,4 @@ Vue.use(UploadBox)
 Vue.use(Navigator.Navigator)
 Vue.use(Navigator.NavigatorItem)
 Vue.use(Navigator.NavigatorItemGroup)
+Vue.use(BtnGroup)

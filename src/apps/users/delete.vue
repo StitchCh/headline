@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="af-topbar">
-      <span class="f-18">正常</span>
+      <span class="f-18">删除</span>
     </div>
     <div class="flex-item scroll-y bg-e relative">
       <transition name="fade">
@@ -31,7 +31,7 @@
               <td>{{item.userLoginIp}}</td>
               <td style="width: 30px;"><icon-btn v-tooltip="'重置密码'" small @click.stop.native="backPassWd(item.id)">refresh</icon-btn></td>
               <td style="width: 30px;"><icon-btn v-tooltip="'编辑'" small @click.stop.native="openEdit(item.id)">edit</icon-btn></td>
-              <td style="width: 30px;"><icon-btn v-tooltip="'删除'" small @click.stop.native="deleteUser(item.id)">delete</icon-btn></td>
+              <td style="width: 30px;"><icon-btn v-tooltip="'恢复'" small @click.stop.native="restoreUser(item.id)">restore_from_trash</icon-btn></td>
             </tr>
           </tbody>
         </table>
@@ -106,7 +106,7 @@
               <td>
                 <icon-btn style="margin: 0 2px;" v-tooltip="'重置密码'" small @click.stop.native="backPassWd(detail.sysUser.id)">refresh</icon-btn>
                 <icon-btn style="margin: 0 2px;" v-tooltip="'编辑'" small @click.stop.native="openEdit(detail.sysUser.id)">edit</icon-btn>
-                <icon-btn style="margin: 0 2px;" v-tooltip="'删除'" small @click.stop.native="deleteUser(detail.sysUser.id)">delete</icon-btn>    <icon-btn style="margin: 0 2px;" v-tooltip="'审核'" v-if="detail.sysUser.userStatus === '01'" small>find_in_page</icon-btn>
+                <icon-btn style="margin: 0 2px;" v-tooltip="'恢复'" small @click.stop.native="restoreUser(detail.sysUser.id)">restore_from_trash</icon-btn>
               </td>
             </tr>
           </tbody>
@@ -148,7 +148,7 @@ import SelectCard from '@/components/select-card/index'
 import SelectCardOption from '@/components/select-card/option'
 
 export default {
-  name: 'users-normal',
+  name: 'users-delete',
   components: { SelectCard, SelectCardOption },
   data () {
     return {
@@ -187,7 +187,7 @@ export default {
       this.$http.post('/cri-cms-platform/sysUser/queryList.monitor', {
         pageSize: 10,
         toPage: this.page,
-        userStatus: '00'
+        userStatus: '02'
       }).then(
         res => {
           console.log(res)
@@ -258,20 +258,6 @@ export default {
         }
       )
     },
-    auditUser (id) {
-      this.$http.post('/cri-cms-platform/sysUser/updateAudit.monitor', { id }).then(
-        res => {
-          this.$toast('审核成功')
-          this.getList()
-          this.detailShow = false
-        }
-      ).catch(
-        res => {
-          this.$toast(res.msg)
-          console.log(res)
-        }
-      )
-    },
     backPassWd (id) {
       this.$http.post('/cri-cms-platform/sysUser/backPassWd.monitor', { id }).then(
         res => {
@@ -286,10 +272,10 @@ export default {
         }
       )
     },
-    deleteUser (id) {
-      this.$http.post('/cri-cms-platform/sysUser/del.monitor', { id }).then(
+    restoreUser (id) {
+      this.$http.post('/cri-cms-platform/sysUser/userStatusBack.monitor', { id }).then(
         res => {
-          this.$toast('删除成功')
+          this.$toast('恢复成功')
           this.getList()
           this.detailShow = false
         }
@@ -330,7 +316,7 @@ export default {
       this.$http.post('/cri-cms-platform/sysUser/queryList.monitor', {
         pageSize: 10,
         toPage: this.page,
-        userStatus: '00'
+        userStatus: '02'
       }),
       this.$http.post('/cri-cms-platform/sysUser/roles.monitor')
     ]).then(

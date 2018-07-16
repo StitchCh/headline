@@ -22,45 +22,38 @@
       </div>
     </div>
 
-    <layer v-if="styleShow" title="风格设置" width="600px" maskClick @close="styleShow = false">
-      <ul>
-        <setting-option :check="item.value === 'red'" @click.native="switchOption(item, 'red')">红色</setting-option>
-        <setting-option :check="item.value === 'blue'" @click.native="switchOption(item, 'blue')">蓝色</setting-option>
-      </ul>
-    </layer>
+    <select-card :value="item.value" v-if="styleShow" title="风格设置" width="600px" maskClick @close="styleShow = false">
+      <select-card-option value="red" @click="switchOption(item, 'red')">红色</select-card-option>
+      <select-card-option value="blue" @click="switchOption(item, 'blue')">蓝色</select-card-option>
+    </select-card>
 
-    <layer v-if="imageratioShow" title="图片尺寸" width="600px" maskClick @close="imageratioShow = false">
-      <ul>
-        <setting-option :check="item.value === '16:9'" @click.native="switchOption(item, '16:9')">16:9</setting-option>
-        <setting-option :check="item.value === '4:3'" @click.native="switchOption(item, '4:3')">4:3</setting-option>
-        <setting-option :check="item.value === '1:1'" @click.native="switchOption(item, '1:1')">1:1</setting-option>
-      </ul>
-    </layer>
+    <select-card :value="item.value" v-if="imageratioShow" title="图片尺寸" width="600px" maskClick @close="imageratioShow = false">
+      <select-card-option value="16:9" @click="switchOption(item, '16:9')">16:9</select-card-option>
+      <select-card-option value="4:3" @click="switchOption(item, '4:3')">4:3</select-card-option>
+      <select-card-option value="1:1" @click="switchOption(item, '1:1')">1:1</select-card-option>
+    </select-card>
 
-    <layer v-if="sharemodelShow" title="分享显示形式" width="600px" maskClick @close="sharemodelShow = false">
-      <ul>
-        <setting-option :check="item.value === 'logo'" @click.native="switchOption(item, 'logo')">显示Logo</setting-option>
-        <setting-option :check="item.value === 'image'" @click.native="switchOption(item, 'image')">显示缩略图</setting-option>
-      </ul>
-    </layer>
+    <select-card :value="item.value" v-if="sharemodelShow" title="分享显示形式" width="600px" maskClick @close="sharemodelShow = false">
+      <select-card-option value="logo" @click="switchOption(item, 'logo')">显示Logo</select-card-option>
+      <select-card-option value="image" @click="switchOption(item, 'image')">显示缩略图</select-card-option>
+    </select-card>
 
-    <layer v-if="titlemaxShow" title="标题最多行数" width="600px" maskClick @close="titlemaxShow = false">
-      <ul>
-        <setting-option :check="item.value === 2" @click.native="switchOption(item, 2)">2</setting-option>
-        <setting-option :check="item.value === 3" @click.native="switchOption(item, 3)">3</setting-option>
-        <setting-option :check="item.value === 4" @click.native="switchOption(item, 4)">4</setting-option>
-        <setting-option :check="item.value === 5" @click.native="switchOption(item, 5)">5</setting-option>
-      </ul>
-    </layer>
+    <select-card :value="item.value" v-if="titlemaxShow" title="标题最多行数" width="600px" maskClick @close="titlemaxShow = false">
+      <select-card-option :value="2" @click="switchOption(item, 2)">2</select-card-option>
+      <select-card-option :value="3" @click="switchOption(item, 3)">3</select-card-option>
+      <select-card-option :value="4" @click="switchOption(item, 4)">4</select-card-option>
+      <select-card-option :value="5" @click="switchOption(item, 5)">5</select-card-option>
+    </select-card>
   </div>
 </template>
 
 <script>
-import SettingOption from './option'
+import SelectCard from '@/components/select-card/index'
+import SelectCardOption from '@/components/select-card/option'
 
 export default {
   name: 'settings-common',
-  components: { SettingOption },
+  components: { SelectCard, SelectCardOption },
   data () {
     return {
       loading: true,
@@ -104,10 +97,9 @@ export default {
         key,
         value
       }
-      return this.$http.post('/cri-cms-platform/site/setting/update.monitor', data).then(
+      this.$http.post('/cri-cms-platform/site/setting/update.monitor', data).then(
         res => {
           if (isOption) this[key + 'Show'] = false
-          this.$toast(res.msg ? res.msg : '修改成功')
         }
       ).catch(
         res => {

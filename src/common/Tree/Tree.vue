@@ -10,6 +10,7 @@
     :hideLeaf="hideLeaf"
     :format="format"
     :childrenTxt="childrenTxt"
+    :nameTxt="nameTxt"
     :activeId="activeId"
     @select="$emit('select', $event)"
   />
@@ -28,6 +29,7 @@ export default {
     idTxt: { type: String, default: 'id' },
     pidTxt: { type: String, default: 'parentid' },
     childrenTxt: { type: String, default: 'children' },
+    nameTxt: { type: String, default: 'name' },
     rootId: { type: [Number, String], default: '0' },
     activeId: [Number, String],
     autoOpen: Boolean,

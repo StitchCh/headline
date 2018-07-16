@@ -9,7 +9,7 @@
 
     <div class="flex-item relative">
       <account/>
-      <router-view class="abs flex-col c-6"></router-view>
+      <router-view class="abs flex-col c-6 users-content"></router-view>
     </div>
   </div>
 </template>
@@ -29,5 +29,19 @@ export default {
     .account{position: absolute;right: 15px;top: 8px;z-index: 30;}
     .navigator-item.active{background: #66BB6A;color: #fff;}
     .navigator-item .icon{transition: none;}
+    .users-content {background: #fafafa;
+      .setting-card {max-width: 1440px;margin: 20px auto;border-radius: 10px;padding: 20px;background: #fff;
+        th,td {padding: 5px 10px;}
+        tr {border-top: 1px solid #e1e1e1;cursor: pointer;}
+        tr:hover {background: rgba(0, 0, 0, .05);}
+      }
+      .add-btn {color: #008cff;padding: 14px 30px;cursor: pointer;transition: background .2s;
+        &:active {background: #e1e1e1;}
+      }
+      .layer-text {
+        th, td {padding: 5px 15px;}
+        th {width: 130px;}
+      }
+    }
   }
 </style>

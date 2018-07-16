@@ -116,7 +116,6 @@ export default {
       this.$http.post('/cri-cms-platform/site/save.monitor', this.newForm).then(
         res => {
           this.getList()
-          this.$toast('提交成功')
           this.newShow = false
         }
       ).catch(
@@ -129,7 +128,6 @@ export default {
       this.$http.post('/cri-cms-platform/site/update.monitor', this.editForm).then(
         res => {
           this.getList()
-          this.$toast('修改成功')
           this.editShow = false
         }
       ).catch(

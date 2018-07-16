@@ -13,10 +13,10 @@ export default {
   }, {
     path: 'auditing',
     name: 'UsersAuditing',
-    component: resolve => require(['@/apps/settings/common/index.vue'], resolve)
+    component: resolve => require(['@/apps/users/auditing.vue'], resolve)
   }, {
     path: 'delete',
     name: 'UsersDelete',
-    component: resolve => require(['@/apps/settings/common/index.vue'], resolve)
+    component: resolve => require(['@/apps/users/delete.vue'], resolve)
   }]
 }

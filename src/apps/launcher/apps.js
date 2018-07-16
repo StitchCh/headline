@@ -39,6 +39,10 @@ export default [{
   path: '/users',
   icon: 'icon-users'
 }, {
+  name: '角色',
+  path: '/roles',
+  icon: 'icon-users'
+}, {
   name: '设置',
   path: '/settings',
   icon: 'icon-settings'
