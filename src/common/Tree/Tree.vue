@@ -40,20 +40,34 @@ export default {
       default: function (name) {
         return name
       }
-    }
+    },
+    showCheckbox: {
+      type: Boolean,
+      default: false
+    },
+    checkedReadOnly: {
+      type: Boolean,
+      default: false
+    },
+    checkedList: Array
   },
   watch: {
     data () {
       this.analytical()
+    },
+    'checkedListCache' (newValue) {
+      this.$emit('update:checkedList', newValue)
     }
   },
   data () {
     return {
-      model: []
+      model: [],
+      checkedListCache: []
     }
   },
   created () {
     this.analytical()
+    this.checkedListCache = this.checkedList || []
   },
   methods: {
     analytical () {

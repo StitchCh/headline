@@ -12,8 +12,9 @@
       small
       :disabled="!isFolder"
       @click.native="toggle($event)">{{icon}}</icon-btn>
+    <check-box @click.stop.native :disabled="tree.checkedReadOnly" v-if="showCheckbox" v-model="tree.checkedListCache" :label="model.id" @change="tree.$emit('handleCheckChange', model)"></check-box>
     <avatar v-if="model.avatar !== undefined && model.avatar !== null" :src="model.avatar" size="20"/>
-    <span class="tree-name" :title="model[nameTxt]" v-html="format(model[nameTxt])"></span>
+    <span class="tree-name" :title="model[nameTxt]" v-html="format(model[nameTxt], model)"></span>
     <!-- <icon-btn small class="tree-icon tree-menu-icon">more_vert</icon-btn> -->
   </div>
   <div class="tree-child" v-if="isFolder && open">
@@ -53,7 +54,9 @@ export default {
   },
   data () {
     return {
-      open: this.openAll
+      tree: null,
+      open: this.openAll,
+      showCheckbox: null
     }
   },
   mounted () {
@@ -98,6 +101,15 @@ export default {
         })
       }
     }
+  },
+  created () {
+    const parent = this.$parent
+    if (parent.$options.name === 'tree') {
+      this.tree = parent
+    } else {
+      this.tree = parent.tree
+    }
+    this.showCheckbox = this.tree.showCheckbox
   }
 }
 </script>

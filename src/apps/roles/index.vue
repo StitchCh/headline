@@ -77,8 +77,8 @@
           </tbody>
         </table>
 
-        <div v-if="tab === 'menu'" key="menu">
-          <tree :data="detail.menus" pidTxt="pId" rootId="-1"></tree>
+        <div v-if="tab === 'menu'" key="menu" style="min-height: 200px;">
+          <tree :data="detail.menus" pidTxt="pId" rootId="-1" :format="menuFormat"></tree>
         </div>
 
         <div class="flex" v-if="tab === 'site'" key="site">
@@ -86,13 +86,31 @@
             <li v-for="item in detail.siteChannels" :key="item.siteId" :class="{ on: item.siteId === siteActive }" @click="selectSite(item)">{{item.siteName}}</li>
           </ul>
           <div class="channel-list">
-            <tree :data="detailSiteChannels" pid-txt="pId"></tree>
+            <tree :data="detailSiteChannels" pid-txt="pId" :format="channelFormat"></tree>
           </div>
         </div>
         </transition>
       </div>
       <div class="layer-btns">
         <btn flat color="#008cff" @click="detailShow = false">关闭</btn>
+      </div>
+    </layer>
+
+    <layer v-if="newShow" title="添加新角色" width="600px">
+      <div class="layer-text">
+        <input-box label="角色名称" v-model="newForm.rolesName"></input-box>
+        <input-box label="角色中文名称" v-model="newForm.rolesChName"></input-box>
+        <div class="relative input-box">
+          <label>关联菜单</label>
+          <div style="padding-left: 80px;height: 30px;line-height: 30px;">请选择 <i class="icon" style="font-size: 16px;">keyboard_arrow_down</i></div>
+        </div>
+        <div class="relative input-box">
+          <label>关联站点</label>
+          <div style="padding-left: 80px;height: 30px;line-height: 30px;">请选择 <i class="icon" style="font-size: 16px;">keyboard_arrow_down</i></div>
+        </div>
+      </div>
+      <div class="layer-btns">
+        <btn flat color="#008cff" @click="newShow = false">关闭</btn>
       </div>
     </layer>
   </div>
@@ -117,7 +135,14 @@ export default {
       detailShow: false,
       tab: 'base',
       siteActive: '',
-      detailSiteChannels: []
+      detailSiteChannels: [],
+      newShow: false,
+      newForm: {
+        rolesName: '',
+        rolesChName: '',
+        app: '',
+        addSiteChannels: ''
+      }
     }
   },
   methods: {
@@ -135,12 +160,14 @@ export default {
         }
       )
     },
-    menuFormat (menu) {
-      let arr = menu.split['-']
+    menuFormat (menu, node) {
+      let arr = menu.split('-')
       let name = arr[0]
       let path = arr[1].replace('【权限路径为:', '').replace('】', '')
-      // return `<span>${name}</span><span class="c-6 f-12">${path}</span>`
-      return menu
+      return `<span>${name}</span><span class="c-8 f-12" style="margin-left: 10px;">${path}</span>` + (node.checked ? '<i class="icon" style="color: #52d277;font-size: 14px;margin-left: 10px;">check</i>' : '')
+    },
+    channelFormat (channel, node) {
+      return channel + (node.checked ? '<i class="icon" style="color: #52d277;font-size: 14px;margin-left: 10px;">check</i>' : '')
     },
     openDetail (id) {
       if (Object.keys(this.detail).length !== 0 && this.detail.sysRoles.id === id) {
@@ -165,7 +192,11 @@ export default {
       this.siteActive = site.siteId
       this.detailSiteChannels = site.channels
     },
-    openNew () {}
+
+    // 添加新角色
+    openNew () {
+      this.newShow = true
+    }
   },
   created () {
     Promise.all([
