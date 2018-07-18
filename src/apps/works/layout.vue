@@ -3,31 +3,44 @@
   <div class="flex-v-center title a" style="line-height: 1em;" @click="open=!open">
     <i class="icon" style="margin-right: 10px;">{{item.type === '1' ? 'view_carousel' : 'list'}}</i>
     <span class="flex-item c-5 b">{{item.layoutName}}</span>
+    <span v-if="add.length" class="f-12" style="margin: 0 10px;color:#008eff;">新增 {{add.length}} 项</span>
     <span v-if="changed" class="f-12" style="margin: 0 10px;color:#ec5d00;">已修改 {{changed}} 项</span>
     <span v-if="removed.length" class="f-12" style="color:#ec5d00;">移除 {{removed.length}} 项</span>
+    <div class="relative" v-tooltip:top="'显示/隐藏\n已移除项'" v-if="removed.length">
+      <switcher v-model="showDelected" :style="{transform: 'scale(.75)', transformOrigin: 'right'}"/>
+    </div>
     <!-- <span class="f-12 c-8" style="margin-left: 10px;">共 {{list.length}} 条数据</span> -->
   </div>
   <div class="content relative" v-if="open">
     <div v-if="loading" class="abs bg-light-rgb-3 flex-center"><loading size="30"/></div>
-    <div v-if="list && list.length">
-      <draggable v-model="list" @end="sort">
+    <div v-if="viewList && viewList.length">
+      <draggable v-model="viewList" @end="sort">
         <transition-group tag="ul" name="flip-list">
           <!-- v-if="i >= (page - 1) * size && i < page * size"
           :options="{draggable:'.can-drag'}"
           :class="{'can-drag': !li.top}"-->
           <li class="item flex-v-center"
-            v-for="li in list"
-            :key="li.contentLayoutId">
+            v-for="li in viewList"
+            v-if="!(li.del && !showDelected)"
+            :key="li.contentLayoutId || li.key"
+            :class="{'del': li.del, 'new': li.new}">
             <span class="f-12 fix-top" v-if="li.top">置顶</span>
             <span class="flex-item item-title">{{li.newTitle}}</span>
-            <!-- <span class="f-12 c-8">{{li.sortOrder}}</span> -->
-            <icon-btn small v-tooltip="'定时上/下线'">access_time</icon-btn>
-            <span class="relative opera-btns">
+            <!-- <span class="f-12 c-8">{{li.sortOrder + ', ' + li.order}}</span>,
+            <span class="f-12 c-8">{{li.id}}</span> -->
+            <span class="f-12 c-5">
+              <span>{{li.sendDate}}</span>
+              <span> ~ </span>
+              <span>{{li.endDate}}</span>
+            </span>
+            <!-- <icon-btn small v-tooltip="'定时上/下线'" v-if="!li.del">access_time</icon-btn> -->
+            <icon-btn small v-tooltip="'恢复'" v-if="li.del" @click="li.del=false">undo</icon-btn>
+            <span class="relative opera-btns" v-else>
               <icon-btn small>more_vert</icon-btn>
               <bubble pos="left" align="center">
                 <div style="padding: 3px 10px;">
-                  <icon-btn small v-tooltip="'置顶'" :key="li.top" v-if="!li.top" @click="top(li)">vertical_align_top</icon-btn>
-                  <icon-btn small v-tooltip="'取消置顶'" :key="li.top" v-else @click="unTop(li)" class="un-top">vertical_align_top</icon-btn>
+                  <icon-btn small v-if="!li.top" v-tooltip="'置顶'" :key="li.top" @click="top(li)">vertical_align_top</icon-btn>
+                  <icon-btn small v-if="li.top" v-tooltip="'取消置顶'" :key="li.top" @click="unTop(li)" class="un-top">vertical_align_top</icon-btn>
                   <icon-btn small v-tooltip="'编辑'" @click="toEdit(li)">edit</icon-btn>
                   <icon-btn small v-tooltip="'移除'" @click="del(li)">delete</icon-btn>
                 </div>
@@ -60,8 +73,9 @@
 <script>
 import VueDatepickerLocal from 'vue-datepicker-local'
 import draggable from 'vuedraggable'
+// import uniqBy from 'lodash/uniqBy'
 
-const submitKeys = ['id', 'sortOrder', 'newTitle', 'newAbstract', 'sendDate', 'contentLayoutId', 'endDate']
+// const submitKeys = ['id', 'sortOrder', 'newTitle', 'newAbstract', 'sendDate', 'contentLayoutId', 'endDate']
 
 export default {
   name: 'works-layout',
@@ -78,8 +92,10 @@ export default {
       open: false,
       page: 1,
       size: 10,
+      add: [], // 新增项
       list: [],
-      removed: [],
+      viewList: [],
+      showDelected: true,
       edit: {
         item: null,
         title: '',
@@ -90,6 +106,10 @@ export default {
   watch: {
     open (val) {
       if (val && !this.list.length) this.getList()
+    },
+    add (val) {
+      this.viewList = val.concat(this.list)
+      this.sort()
     }
   },
   computed: {
@@ -102,14 +122,26 @@ export default {
     },
     topItem () {
       let res = {}
-      this.list.forEach(item => {
-        if (item.top) {
-          submitKeys.forEach(key => {
-            res[key] = item[key]
-          })
-        }
+      let top = null
+      this.viewList.forEach(item => {
+        if (item.top && !item.del) top = item
       })
+      if (top) {
+        res = {
+          id: top.id,
+          newTitle: top.newTitle,
+          newAbstract: top.newAbstract,
+          sortOrder: top.sortOrder,
+          type: this.item.type,
+          sendDate: top.sendDate || '',
+          endDate: top.endDate || '',
+          contentLayoutId: top.contentLayoutId || ''
+        }
+      }
       return res
+    },
+    removed () {
+      return this.list.filter(item => item.del)
     },
     result () {
       return {
@@ -117,15 +149,16 @@ export default {
         type: this.item.type,
         top: this.topItem,
         remove: this.removed.map(item => item.contentLayoutId),
-        data: this.list.map(item => {
+        data: this.viewList.filter(item => (!item.del && !item.top)).map(item => {
           return {
             id: item.id,
-            sortOrder: item.sortOrder,
             newTitle: item.newTitle,
             newAbstract: item.newAbstract,
-            sendDate: item.sendDate,
-            contentLayoutId: item.contentLayoutId,
-            endDate: item.endDate
+            sortOrder: item.sortOrder,
+            type: this.item.type,
+            sendDate: item.sendDate || '',
+            contentLayoutId: item.contentLayoutId || '',
+            endDate: item.endDate || ''
           }
         })
       }
@@ -141,27 +174,32 @@ export default {
         let len = res.data.length
         res.data.forEach((item, i) => {
           item.editSendDate = item.sendDate
+          item.editEndDate = item.endDate
           item.changed = false
+          item.del = false
           if (parseInt(item.sortOrder) > 9000000) {
             item.top = true
+            item.order = item.sortOrder = ~~(item.sortOrder)
           } else {
             item.top = false
-            item.sortOrder = len - i
+            item.order = item.sortOrder = (len - i)
           }
         })
         this.loading = false
         this.list = res.data
+        this.viewList = this.add.concat(res.data)
         this.totalPage = res.totalPage
+        this.sort()
       }).catch(e => {
         this.loading = false
         this.$toast(e.msg)
       })
     },
     top (item) {
-      this.list.forEach(item => { item.top = false })
-      let i = this.list.indexOf(item)
-      this.list.splice(i, 1)
-      this.list.unshift(item)
+      this.viewList.forEach(item => { item.top = false })
+      let i = this.viewList.indexOf(item)
+      this.viewList.splice(i, 1)
+      this.viewList.unshift(item)
       item.top = true
       this.sort()
     },
@@ -169,11 +207,18 @@ export default {
       item.top = false
       this.sort()
     },
+    del (item) {
+      if (item.new) {
+        let i = this.add.indexOf(item)
+        this.add.splice(i, 1)
+        return
+      }
+      item.del = true
+    },
     sort () {
-      let len = this.list.length
+      let len = this.viewList.length
       let res = []
-      this.list.forEach((item, i) => {
-        let order = len - i
+      this.viewList.forEach((item, i) => {
         if (item.top) {
           item.sortOrder = 9999999
           res.unshift(item)
@@ -181,22 +226,9 @@ export default {
           item.sortOrder = len - i
           res.push(item)
         }
-        this.list = res
-        if (item.sortOrder !== order) item.changed = true
+        if (item.sortOrder !== item.order && !item.new) item.changed = true
       })
-    },
-    del (item) {
-      this.$confirm({
-        title: '移除确认',
-        text: `您确定从此列表中移除以下文章吗：\n${item.newTitle}`,
-        btns: ['取消', '移除'],
-        color: 'darkorange',
-        yes: () => {
-          this.removed.push(item)
-          let i = this.list.indexOf(item)
-          this.list.splice(i, 1)
-        }
-      })
+      this.viewList = res
     },
     toEdit (item) {
       this.edit.item = item
@@ -220,7 +252,7 @@ export default {
 
 <style lang="less">
 .works-layout{
-  border-radius: 5px;margin: 2px 20px;
+  border-radius: 5px;margin: 2px 0;
   &[draggable=true] .title{background: rgb(190, 231, 255);}
   &.open{margin-bottom: 15px;margin-top: 15px;}
   .title{padding: 10px 20px;}
@@ -231,6 +263,8 @@ export default {
       background: rgba(0, 0, 0, .05);
       .icon{color: #666;}
     }
+    &.del{background: #fffbfb;color: #ad8686;text-decoration:line-through}
+    &.new{background: #f2f8ff;color: #516e8c;}
     &[draggable=true]{background: rgb(190, 231, 255);}
   }
   .date-picker-container{position: absolute;left: 0;top: 0;}

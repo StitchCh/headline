@@ -3,13 +3,34 @@
   <div class="flex" style="width: 100%;">
     <div class="left flex-item" style="width: 50%;">
       <div class="card relative">
-        <div v-if="loading" class="abs flex-center"><loading size="30"/></div>
-        <div class="f-12 c-a t-center" v-if="!data.length && !loading">暂无数据</div>
         <div class="flex-v-center card-title">
-          <div class="b blue flex-item">{{ filterChannelId ? '当前频道' : '所有频道'}}未发布</div>
-          <btn outline v-if="filterChannelId" @click="filterChannelId=false">所有文章</btn>
-          <btn outline v-else @click="filterChannelId=true">当前频道文章</btn>
+          <div class="flex-item">
+            <div class="relative" style="display:inline-block;">
+              <span class="a b blue" @click="treeBubbleShow=!treeBubbleShow">
+                {{filterChannelName}}
+                <i class="icon">keyboard_arrow_down</i>
+              </span>
+              <bubble v-if="treeBubbleShow" pos="bottom" align="start" @close="treeBubbleShow=false">
+                <div style="width: 250px;padding: 10px 0;">
+                  <div class="tree-node c-4" @click="filterChannelId = '';treeBubbleShow=false;">
+                    <div class="tree-title" style="padding-left: 20px;" :class="{'on': !filterChannelId}">所有频道文章</div>
+                  </div>
+                  <tree
+                    class="c-4"
+                    :data="channel"
+                    :activeId="filterChannelId"
+                    open-all
+                    pidTxt="channelPartentId"
+                    @select="onTreeSelect">
+                  </tree>
+                </div>
+              </bubble>
+            </div>
+          </div>
+          <input v-model="searchKey" class="f-14" type="text" placeholder="标题关键字" style="margin: 0;padding: 4px 6px;width: 150px;border:1px solid #eee;border-radius: 4px;"/>
         </div>
+        <div v-if="loading" class="abs flex-center"><loading size="30"/></div>
+        <div class="f-12 c-a t-center" v-if="!data.length && !loading" style="margin-top: 15px;">暂无数据</div>
         <ul>
           <li class="flex-v-center li-item" v-for="item in data" :key="item.id">
             <span class="flex-item li-title">{{item.title}}</span>
@@ -29,18 +50,32 @@
         />
       </div>
     </div>
+
     <div class="right" style="width: 50%;">
       <div class="card flex-item" style="margin-left: 5px;">
         <div class="flex-v-center card-title">
           <div class="b blue flex-item">已选择</div>
-          <btn >确定选取</btn>
+          <btn @click="confirm" :disabled="!checked.length">确定选取</btn>
         </div>
-        <ul>
-          <li class="flex-v-center li-item" v-for="item in checked" :key="item.id">
-            <span class="flex-item li-title">{{item.title}}</span>
-            <icon-btn small @click="unCheckItem(item)">close</icon-btn>
-          </li>
-        </ul>
+        <div class="flex">
+          <div class="layout-tab">
+            <ul style="overflow: hidden;">
+              <li class="a" v-for="item in layout"
+                :key="item.id"
+                :class="{'on': activeLayoutId === item.id}"
+                @click="activeLayoutId=item.id"
+              >{{item.layoutName}}</li>
+            </ul>
+          </div>
+          <transition-group name="slide-x" tag="ul" class="flex-item" style="overflow: hidden;">
+            <li class="flex-v-center li-item"
+              v-for="item in layoutChecked"
+              :key="item.id">
+              <span class="flex-item li-title">{{item.title}}</span>
+              <icon-btn small @click="unCheckItem(item)">close</icon-btn>
+            </li>
+          </transition-group>
+        </div>
       </div>
     </div>
   </div>
@@ -48,15 +83,30 @@
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
+
 export default {
   name: 'works-unpublished',
+  props: {
+    channel: {
+      type: Array,
+      default: () => []
+    },
+    layout: {
+      type: Array,
+      default: () => []
+    }
+  },
   data () {
     return {
+      treeBubbleShow: false,
       loading: false,
       size: 30,
       page: 1,
       totalPage: 0,
-      filterChannelId: true,
+      filterChannelId: this.$route.query.channelId,
+      searchKey: '',
+      activeLayoutId: '',
       data: [],
       checked: []
     }
@@ -65,16 +115,34 @@ export default {
     this.getList()
   },
   watch: {
-    '$route.query.channelId' () {
-      this.getList()
+    '$route.query.channelId' (id) {
+      this.filterChannelId = id
     },
     filterChannelId () {
       this.getList()
+    },
+    searchKey () {
+      this.search()
+    },
+    layout (val) {
+      if (val && val.length) this.activeLayoutId = val[0].id || ''
+      this.checked = []
     }
   },
   computed: {
     checkedId () {
-      return this.checked.map(item => item.id)
+      return this.layoutChecked.map(item => item.id)
+    },
+    filterChannelName () {
+      let res = ''
+      if (!this.filterChannelId) return '所有频道文章'
+      this.channel.forEach(item => {
+        if (item.id === this.filterChannelId) res = item.channelName
+      })
+      return res
+    },
+    layoutChecked () {
+      return this.checked.filter(item => item.layoutId === this.activeLayoutId)
     }
   },
   methods: {
@@ -84,8 +152,10 @@ export default {
         // type: type,
         pageSize: this.size,
         toPage: this.page,
-        channelId: this.$route.query.channelId,
-        filterChannelId: this.filterChannelId
+        channelId: this.filterChannelId || this.$route.query.channelId,
+        // eslint disable no-unneeded-ternary
+        filterChannelId: this.filterChannelId ? true : false,
+        title: this.searchKey
       }).then(res => {
         this.loading = false
         res.data.forEach(item => { item.checked = false })
@@ -97,11 +167,28 @@ export default {
       })
     },
     checkItem (item) {
+      if (!this.activeLayoutId) {
+        this.$toast('请选择布局')
+        return
+      }
+      item = JSON.parse(JSON.stringify(item))
+      item.layoutId = this.activeLayoutId
       this.checked.push(item)
     },
     unCheckItem (item) {
       let i = this.checked.indexOf(item)
       this.checked.splice(i, 1)
+    },
+    onTreeSelect (e) {
+      this.filterChannelId = e.id
+      this.treeBubbleShow = false
+      // console.log(this.filterChannelId)
+    },
+    search: debounce(function () {
+      this.getList()
+    }, 500),
+    confirm () {
+      this.$emit('add', this.checked)
     }
   }
 }
@@ -109,12 +196,18 @@ export default {
 
 <style lang="less">
 .works-unpublished{
-  padding: 0 20px 20px 20px;
-  .card{border-radius: 5px;box-shadow: none;margin-bottom: 15px;padding: 15px;overflow: hidden;white-space: nowrap;max-width: 100%;}
+  .card{border-radius: 5px;box-shadow: none;margin-bottom: 15px;padding: 15px;white-space: nowrap;}
   .li-item{line-height: 1em;
     &:hover{background: #eee;}
   }
   .li-title{text-overflow: ellipsis;text-overflow: ellipsis;overflow: hidden;padding: 10px;}
   .card-title{padding: 0 10px 10px;border-bottom: 1px solid #eee;}
+  .layout-tab{
+    width: 80px;border-right: 1px solid #eee;
+    li{padding: 10px;line-height: 1em;
+      &:hover{background: #eee;}
+      &.on{background: #0299ff;color: #fff;}
+    }
+  }
 }
 </style>
