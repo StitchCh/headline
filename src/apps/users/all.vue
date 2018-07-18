@@ -281,7 +281,7 @@ export default {
     vertifyLoginUserName () {
       if (this.newForm.loginUserName === '') return
       this.$http.post('/cri-cms-platform/sysUser/valident.monitor', {
-        loginUserName: this.newForm.loginUserName
+        param: this.newForm.loginUserName
       }).then(
         res => {
           console.log(res)
