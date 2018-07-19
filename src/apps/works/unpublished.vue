@@ -62,7 +62,7 @@
             <ul style="overflow: hidden;">
               <li class="a" v-for="item in layout"
                 :key="item.id"
-                :class="{'on': activeLayoutId === item.id}"
+                :class="{'on': activeLayoutId === item.id, 'disabled': item.type === '3'}"
                 @click="activeLayoutId=item.id"
               >{{item.layoutName}}</li>
             </ul>
@@ -125,7 +125,7 @@ export default {
       this.search()
     },
     layout (val) {
-      if (val && val.length) this.activeLayoutId = val[0].id || ''
+      // if (val && val.length) this.activeLayoutId = val[0].id || ''
       this.checked = []
     }
   },
@@ -205,6 +205,7 @@ export default {
   .layout-tab{
     width: 80px;border-right: 1px solid #eee;
     li{padding: 10px;line-height: 1em;
+      &.disabled{pointer-events: none;opacity: .5;}
       &:hover{background: #eee;}
       &.on{background: #0299ff;color: #fff;}
     }

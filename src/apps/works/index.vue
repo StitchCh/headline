@@ -27,7 +27,7 @@
       <account/>
     </div>
     <div class="flex-item flex-col relative" v-if="$route.query.channelId" style="background: #f4f4f4;">
-      <div v-if="loading" class="abs flex-center bg-light-rgb-2" style="z-index:10;"><loading/></div>
+      <!-- <div v-if="loading" class="abs flex-center bg-light-rgb-2" style="z-index:10;"><loading/></div> -->
       <div class="flex-item relative scroll-y" style="padding: 20px;">
         <keep-alive>
           <router-view
