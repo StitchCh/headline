@@ -7,28 +7,31 @@
     </div>
     <bubble v-if="addShow" @close="addShow=false">
       <ul class="f-14 c-5 add-select" style="padding: 10px 0;width: 200px;">
-        <li class="a flex-v-center" @click="addLayout(1)">
+        <li class="a flex-v-center" @click="addLayout('1', '幻灯片')">
           <i class="icon f-20">view_carousel</i>
           <span class="flex-item">幻灯片</span>
         </li>
-        <li class="a flex-v-center" @click="addLayout(2)">
+        <li class="a flex-v-center" @click="addLayout('2', '列表')">
           <i class="icon f-20">view_list</i>
           <span class="flex-item">列表</span>
         </li>
-        <li class="a flex-v-center" @click="addLayout(3)">
+        <li class="a flex-v-center" @click="addLayout('3', '子频道')"
+          :style="!childChannel.length ? {opacity: .5,pointerEvents: 'none'} : ''">
           <i class="icon f-20">radio</i>
           <span class="flex-item">子频道</span>
         </li>
       </ul>
     </bubble>
   </div>
-  <draggable v-model="newlayout" :options="{handle: '.drag-handle'}">
+  <draggable v-model="newlayout" @end="onDragEnd" :options="{handle: '.drag-handle'}">
     <transition-group tag="div" name="flip-list">
       <works-layout
-        v-for="item in newlayout"
+        v-for="(item, i) in newlayout"
         ref="layout"
         :key="item.id"
         :item="item"
+        :childChannel="childChannel"
+        @delete="del(i)"
       />
     </transition-group>
   </draggable>
@@ -39,12 +42,17 @@
 import draggable from 'vuedraggable'
 import WorksLayout from './layout'
 import uniqBy from 'lodash/uniqBy'
+import moment from 'moment'
 
 export default {
   name: 'works-published',
   components: { draggable, WorksLayout },
   props: {
     channel: {
+      type: Array,
+      default: () => []
+    },
+    childChannel: {
       type: Array,
       default: () => []
     },
@@ -66,9 +74,6 @@ export default {
     }
   },
   computed: {
-    result () {
-      return this.$refs.layout.map(item => item.result)
-    }
   },
   methods: {
     add (checked) {
@@ -79,8 +84,9 @@ export default {
           item.del = false
           item.top = false
           item.changed = false
-          item.editSendDate = item.sendDate
-          item.editEndDate = item.endDate
+          item.dateRange = [moment().format('YYYY-MM-DD HH:mm:ss'), moment().add(1, 'year').format('YYYY-MM-DD HH:mm:ss')]
+          // item.editSendDate = item.sendDate || moment().format('YYYY-MM-DD HH:mm:ss')
+          // item.editEndDate = item.endDate || '9999-12-30 23:59:59'
           item.sortOrder = item.order = 1
           item.key = Math.random().toString(16).replace('0.', '')
           item.newTitle = item.title
@@ -89,9 +95,35 @@ export default {
         layout.add = uniqBy(addItems.concat(layout.add), 'id')
       })
     },
-    addLayout (type) {
+    addLayout (type, name) {
+      if (!this.childChannel.length && type === '3') return
       this.addShow = false
-      console.log(type)
+      this.newlayout.unshift({
+        id: Math.random().toString(6).replace('0.', ''),
+        new: true,
+        layoutName: name,
+        orderNum: '1',
+        type
+      })
+      this.newlayout.forEach((item, i) => {
+        item.orderNum = (i + 1).toString()
+      })
+      // console.log(this.newlayout)
+    },
+    del (i) {
+      this.newlayout.splice(i, 1)
+    },
+    getIssueResult () {
+      return this.$refs.layout.map(item => item.getIssueResult())
+    },
+    getLayoutResult () {
+      return this.$refs.layout.map(item => item.getLayoutResult())
+    },
+    onDragEnd () {
+      this.newlayout.forEach((item, i) => {
+        item.orderNum = (i + 1)
+      })
+      this.$emit('dragend', this.newlayout)
     }
   }
 }

@@ -29,12 +29,15 @@
     <div class="flex-item flex-col relative" v-if="$route.query.channelId" style="background: #f4f4f4;">
       <!-- <div v-if="loading" class="abs flex-center bg-light-rgb-2" style="z-index:10;"><loading/></div> -->
       <div class="flex-item relative scroll-y" style="padding: 20px;">
+        <!-- {{childChannel}} -->
         <keep-alive>
           <router-view
             :layout="layout"
             :channel="channel"
+            :childChannel="childChannel"
             ref="published"
             @add="onAdd"
+            @dragend="$event => {layout=$event}"
           ></router-view>
         </keep-alive>
       </div>
@@ -73,6 +76,20 @@ export default {
       this.getLayout()
     }
   },
+  computed: {
+    childChannel () {
+      let res = []
+      let activeChannel = null
+      this.channel.forEach(item => {
+        if (item.id === this.$route.query.channelId) activeChannel = item
+      })
+      if (activeChannel) {
+        res = this.channel.filter(item => item.channelPartentId === activeChannel.id)
+      }
+      res.forEach(item => { item.channelId = item.id })
+      return res
+    }
+  },
   methods: {
     getChannel () {
       this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor').then(res => {
@@ -87,7 +104,7 @@ export default {
     getLayout () {
       if (!this.$route.query.channelId) return
       this.loading = true
-      this.$http.post('/cri-cms-platform/issue/getChannelLayoutList.monitor', {
+      this.$http.post('/cri-cms-platform/channel/getChannelIdToLayout.monitor', {
         channelId: this.$route.query.channelId
       }).then(res => {
         this.loading = false
@@ -112,16 +129,42 @@ export default {
       })
     },
     publish () {
-      let data = this.$refs.published.result
+      this.publishLoading = true
+      this.submitIssue(() => {
+        this.submitLayout(() => {
+          this.$toast('发布成功')
+          this.refresh()
+          this.publishLoading = false
+        })
+      })
+    },
+    submitIssue (callback) {
+      let data = this.$refs.published.getIssueResult()
       let result = { results: { data } }
       result = JSON.stringify(result)
-      this.publishLoading = true
       this.$http.post('/cri-cms-platform/issue/saveIssue.monitor', {
         issueJson: result
       }).then(res => {
+        if (callback) callback()
+      }).catch(e => {
         this.publishLoading = false
-        this.$toast('发布成功')
-        this.refresh()
+        this.$toast(e.msg)
+      })
+    },
+    submitLayout (callback) {
+      let data = this.$refs.published.getLayoutResult()
+      data.sort((a, b) => parseInt(a.orderNum) > parseInt(b.orderNum))
+      data.forEach(item => { delete item.orderNum })
+      let result = {
+        result: data.filter(item => !item.delected),
+        delLayoutId: data.filter(item => item.delected).map(item => item.id)
+      }
+      console.log(result)
+      this.$http.post('/cri-cms-platform/channel/saveChannelLayout.monitor', {
+        channelId: this.$route.query.channelId,
+        channelLayoutJson: JSON.stringify(result)
+      }).then(res => {
+        if (callback) callback()
       }).catch(e => {
         this.publishLoading = false
         this.$toast(e.msg)

@@ -12,6 +12,7 @@
     :childrenTxt="childrenTxt"
     :nameTxt="nameTxt"
     :activeId="activeId"
+    :draggable="draggable"
     @select="$emit('select', $event)"
   />
 </div>
@@ -35,6 +36,7 @@ export default {
     autoOpen: Boolean,
     openAll: Boolean,
     hideLeaf: Boolean,
+    draggable: Boolean,
     format: {
       type: Function,
       default: function (name) {

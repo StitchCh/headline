@@ -1,5 +1,5 @@
 <template>
-<div class="tree-node">
+<div class="tree-node" :draggable="draggable">
   <div class="tree-title"
     v-if="!hideLeaf || isFolder"
     :style="{paddingLeft: padding + 'px'}"
@@ -24,6 +24,7 @@
       :key="m.id"
       :model="m"
       :hideLeaf="hideLeaf"
+      :draggable="draggable"
       :openAll="openAll"
       :format="format"
       :activeId="activeId"
@@ -50,6 +51,7 @@ export default {
     hideLeaf: Boolean,
     autoOpen: Boolean,
     openAll: Boolean,
+    draggable: Boolean,
     format: Function
   },
   data () {

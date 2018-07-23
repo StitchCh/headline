@@ -92,6 +92,10 @@ export default {
       type: Array,
       default: () => []
     },
+    childChannel: {
+      type: Array,
+      default: () => []
+    },
     layout: {
       type: Array,
       default: () => []
