@@ -99,18 +99,50 @@
     <layer v-if="newShow" title="添加新角色" width="600px">
       <div class="layer-text">
         <input-box label="角色名称" v-model="newForm.rolesName"></input-box>
-        <input-box label="角色中文名称" v-model="newForm.rolesChName"></input-box>
+        <input-box label="角色中文名称" v-model="newForm.rolesCnName"></input-box>
         <div class="relative input-box">
           <label>关联菜单</label>
-          <div style="padding-left: 80px;height: 30px;line-height: 30px;">请选择 <i class="icon" style="font-size: 16px;">keyboard_arrow_down</i></div>
+          <div style="padding-left: 80px;height: 30px;line-height: 30px;cursor: pointer;" @click="openNewRoleMenu">请选择 <i class="icon" style="font-size: 16px;">keyboard_arrow_down</i></div>
         </div>
         <div class="relative input-box">
           <label>关联站点</label>
-          <div style="padding-left: 80px;height: 30px;line-height: 30px;">请选择 <i class="icon" style="font-size: 16px;">keyboard_arrow_down</i></div>
+          <div style="padding-left: 80px;height: 30px;line-height: 30px;cursor: pointer;" @click="openNewRoleSite">请选择 <i class="icon" style="font-size: 16px;">keyboard_arrow_down</i></div>
         </div>
       </div>
       <div class="layer-btns">
-        <btn flat color="#008cff" @click="newShow = false">关闭</btn>
+        <btn flat @click="newShow = false">取消</btn>
+        <btn flat color="#008cff" @click="submitNew">确定</btn>
+      </div>
+    </layer>
+
+    <layer v-if="newRoleMenuShow" title="选择菜单" width="600px">
+      <div class="layer-text">
+        <tree :data="menuList" pidTxt="pId" rootId="-1" :format="menuFormat" show-checkbox :checked-list.sync="newRoleMenuList"></tree>
+      </div>
+      <div class="layer-btns">
+        <btn flat @click="cancelNewMenu">取消</btn>
+        <btn flat color="#008cff" @click="newRoleMenuShow = false">确定</btn>
+      </div>
+    </layer>
+
+    <layer v-if="newRoleSiteShow" title="选择站点频道" width="600px">
+      <div class="layer-text flex">
+        <ul class="site-list">
+          <li v-for="item in siteList" :key="item.id" :class="{ on: item.id === newRoleSiteActive }" @click="selectNewSite(item)">{{item.name}}</li>
+        </ul>
+        <div class="channel-list">
+          <tree v-if="newRoleSiteChannelsFlag"
+                :data="newRoleSiteChannelsList"
+                pid-txt="channelPartentId"
+                name-txt="channelName"
+                :format="channelFormat"
+                show-checkbox
+                :checked-list.sync="newRoleSiteChannelsChecked"></tree>
+        </div>
+      </div>
+      <div class="layer-btns">
+        <btn flat @click="cancelNewSite">取消</btn>
+        <btn flat color="#008cff" @click="newRoleSiteShow = false">确定</btn>
       </div>
     </layer>
   </div>
@@ -139,10 +171,18 @@ export default {
       newShow: false,
       newForm: {
         rolesName: '',
-        rolesChName: '',
+        rolesCnName: '',
         app: '',
         addSiteChannels: ''
-      }
+      },
+      newRoleMenuShow: false,
+      newRoleMenuCache: '',
+      newRoleSiteShow: false,
+      newRoleSiteActive: '',
+      newRoleSiteChannelsFlag: false,
+      newRoleSiteChannelsList: [],
+      newRoleSiteChannels: [],
+      newRoleSiteChannelsCache: ''
     }
   },
   methods: {
@@ -157,6 +197,10 @@ export default {
           this.list = res.pages
           this.total = res.totalPage * 10
           this.loading = false
+        }
+      ).catch(
+        res => {
+          this.$toast(res.msg)
         }
       )
     },
@@ -186,6 +230,10 @@ export default {
           this.detail = res
           this.detailShow = true
         }
+      ).catch(
+        res => {
+          this.$toast(res.msg)
+        }
       )
     },
     selectSite (site) {
@@ -194,8 +242,92 @@ export default {
     },
 
     // 添加新角色
-    openNew () {
+    openNew () { // 初始化表单数据和缓存
+      for (let k in this.newForm) {
+        this.newForm[k] = ''
+      }
+      this.newRoleMenuCache = ''
+      this.newRoleSiteChannelsCache = ''
+      this.newRoleSiteChannels = this.siteList.map(v => {
+        return {
+          siteId: v.id,
+          channels: ''
+        }
+      })
       this.newShow = true
+    },
+    openNewRoleMenu () { // 开启角色菜单选择框，缓存当前选择状态
+      this.newRoleMenuCache = this.newForm.app
+      this.newRoleMenuShow = true
+    },
+    cancelNewMenu () { // 取消选择角色菜单，从缓存读取数据还原
+      this.newForm.app = this.newRoleMenuCache
+      this.newRoleMenuShow = false
+    },
+    openNewRoleSite () { // 开启角色站点频道选择框，缓存当前数据，初始化远程数据标识，活动标签，和站点频道列表
+      this.newRoleSiteChannelsFlag = false
+      this.newRoleSiteActive = ''
+      this.newRoleSiteChannelsList = []
+      this.newRoleSiteChannelsCache = JSON.stringify(this.newRoleSiteChannels)
+      this.newRoleSiteShow = true
+    },
+    selectNewSite (site) { // 选择站点，获取频道数据，渲染树
+      this.newRoleSiteActive = site.id
+      this.newRoleSiteChannelsFlag = false
+      this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor', { id: site.id }).then(
+        res => {
+          console.log(res)
+          this.newRoleSiteChannelsList = res.channels
+          this.newRoleSiteChannelsFlag = true
+        }
+      ).catch(
+        res => {
+          this.$toast(res.msg)
+        }
+      )
+    },
+    cancelNewSite () { // 取消选择站点频道，从缓存读取数据
+      this.newRoleSiteChannels = JSON.parse(this.newRoleSiteChannelsCache)
+      this.newRoleSiteShow = false
+    },
+    submitNew () { // 提交新角色
+      this.newForm.addSiteChannels = JSON.stringify({data: this.newRoleSiteChannels.filter(v => {
+        return v.channels !== ''
+      })})
+      this.$http.post('/cri-cms-platform/sysRoles/save.monitor', this.newForm).then(
+        res => {
+          console.log(res)
+          this.getList()
+          this.newShow = false
+        }
+      ).catch(
+        res => {
+          this.$toast(res.msg)
+        }
+      )
+    }
+  },
+  computed: {
+    newRoleMenuList: {
+      get () {
+        if (this.newForm.app === '') {
+          return []
+        }
+        return this.newForm.app.split(',')
+      },
+      set (value) {
+        this.newForm.app = value.join(',')
+      }
+    },
+    newRoleSiteChannelsChecked: {
+      get () {
+        let channels = this.newRoleSiteChannels.find(v => v.siteId === this.newRoleSiteActive).channels
+        if (channels === '') return []
+        return channels.split(',')
+      },
+      set (value) {
+        this.newRoleSiteChannels.find(v => v.siteId === this.newRoleSiteActive).channels = value.join(',')
+      }
     }
   },
   created () {
@@ -214,6 +346,13 @@ export default {
 
         this.menuList = res[1].menus
         this.siteList = res[2].sites
+
+        this.newRoleSiteChannels = this.siteList.map(v => {
+          return {
+            siteId: v.id,
+            channels: ''
+          }
+        })
 
         this.loading = false
       }

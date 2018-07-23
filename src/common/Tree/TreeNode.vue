@@ -25,6 +25,7 @@
       :model="m"
       :hideLeaf="hideLeaf"
       :openAll="openAll"
+      :nameTxt="nameTxt"
       :format="format"
       :activeId="activeId"
       @select="$emit('select', $event)"
