@@ -26,6 +26,7 @@
       :hideLeaf="hideLeaf"
       :draggable="draggable"
       :openAll="openAll"
+      :nameTxt="nameTxt"
       :format="format"
       :activeId="activeId"
       @select="$emit('select', $event)"
