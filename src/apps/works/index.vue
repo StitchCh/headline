@@ -34,7 +34,6 @@
           <router-view
             :layout="layout"
             :channel="channel"
-            :childChannel="childChannel"
             ref="published"
             @add="onAdd"
             @dragend="$event => {layout=$event}"
@@ -74,20 +73,6 @@ export default {
   watch: {
     '$route.query.channelId' () {
       this.getLayout()
-    }
-  },
-  computed: {
-    childChannel () {
-      let res = []
-      let activeChannel = null
-      this.channel.forEach(item => {
-        if (item.id === this.$route.query.channelId) activeChannel = item
-      })
-      if (activeChannel) {
-        res = this.channel.filter(item => item.channelPartentId === activeChannel.id)
-      }
-      res.forEach(item => { item.channelId = item.id })
-      return res
     }
   },
   methods: {
@@ -131,11 +116,9 @@ export default {
     publish () {
       this.publishLoading = true
       this.submitIssue(() => {
-        this.submitLayout(() => {
-          this.$toast('发布成功')
-          this.refresh()
-          this.publishLoading = false
-        })
+        this.$toast('发布成功')
+        this.refresh()
+        this.publishLoading = false
       })
     },
     submitIssue (callback) {
@@ -144,25 +127,6 @@ export default {
       result = JSON.stringify(result)
       this.$http.post('/cri-cms-platform/issue/saveIssue.monitor', {
         issueJson: result
-      }).then(res => {
-        if (callback) callback()
-      }).catch(e => {
-        this.publishLoading = false
-        this.$toast(e.msg)
-      })
-    },
-    submitLayout (callback) {
-      let data = this.$refs.published.getLayoutResult()
-      data.sort((a, b) => parseInt(a.orderNum) > parseInt(b.orderNum))
-      data.forEach(item => { delete item.orderNum })
-      let result = {
-        result: data.filter(item => !item.delected),
-        delLayoutId: data.filter(item => item.delected).map(item => item.id)
-      }
-      console.log(result)
-      this.$http.post('/cri-cms-platform/channel/saveChannelLayout.monitor', {
-        channelId: this.$route.query.channelId,
-        channelLayoutJson: JSON.stringify(result)
       }).then(res => {
         if (callback) callback()
       }).catch(e => {

@@ -5,7 +5,7 @@ function getTree (data, root, idTxt, pidTxt, childrenTxt) {
     let len = data.length
     for (let i = 0; i < len; i++) {
       if (data[i][pidTxt] === id) {
-        data[i][childrenTxt] = getNode(data[i][idTxt]) || null
+        data[i][childrenTxt] = getNode(data[i][idTxt]) || []
         node.push(data[i])
       }
     }

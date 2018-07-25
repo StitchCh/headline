@@ -43,6 +43,10 @@ export default [{
   path: '/roles',
   icon: 'icon-users'
 }, {
+  name: '频道',
+  path: '/channels',
+  icon: 'icon-channels'
+}, {
   name: '设置',
   path: '/settings',
   icon: 'icon-settings'
