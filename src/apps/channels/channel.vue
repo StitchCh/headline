@@ -2,11 +2,11 @@
 <div class="left bg-f flex-col channel-editor">
   <div class="flex-v-center" style="padding: 15px;border-bottom: 1px solid #ddd;">
     <span class="flex-item b">频道编辑</span>
-    <btn flat style="margin-right: 5px;">撤销修改</btn>
-    <btn>保存</btn>
+    <btn flat @click="refresh" style="margin-right: 5px;">撤销修改</btn>
+    <btn @click="submit">保存</btn>
   </div>
   <div class="flex-item scroll-y" style="padding: 15px;">
-    <draggable-tree :data="channelTree" draggable>
+    <draggable-tree :data="channelTree" draggable ref="draggabletree">
       <div slot-scope="{data, store}"
         class="channel-tree-item flex-v-center"
         :class="{'new': data.new, 'del': data.del, 'on': $route.query.channelId === data.id, 'edit': data.edit}"
@@ -26,6 +26,7 @@
         <icon-btn small @click.native.stop="del(data)">delete</icon-btn>
       </div>
     </draggable-tree>
+    <!-- <div>{{delChannels}}</div> -->
   </div>
 </div>
 </template>
@@ -34,13 +35,35 @@
 import { DraggableTree } from 'vue-draggable-nested-tree'
 import WorkerCode from '@/common/Tree/tree.worker.js'
 
+function getTreeData (rootNode) {
+  let res = []
+  function getData (node) {
+    let children = node.children
+    children.forEach(item => {
+      res.push({
+        id: item.new ? '' : item.id,
+        channelName: item.channelName,
+        channelPartentId: node.id,
+        channelManager: '',
+        channelIcon: ''
+      })
+      if (item.children.length) {
+        getData(item)
+      }
+    })
+  }
+  getData(rootNode)
+  return res
+}
+
 export default {
   name: 'channel-editor',
   components: { DraggableTree },
   data () {
     return {
       channels: [],
-      channelTree: []
+      channelTree: [],
+      delChannels: []
     }
   },
   created () {
@@ -73,7 +96,7 @@ export default {
     addChild (item) {
       item.open = true
       item.children.push({
-        id: Math.random().toString(16).replace('0.', ''),
+        id: Math.random().toString(16).substr(2),
         channelName: '新频道',
         editChannelName: '新频道',
         channelPartentId: item.id,
@@ -99,12 +122,36 @@ export default {
         yes: () => {
           let i = item.parent.children.indexOf(item)
           item.parent.children.splice(i, 1)
+          this.delChannels.push(item)
         }
       })
     },
     onItemClick (item) {
       if (item.new) return
       this.$router.replace(`/channels?channelId=${item.id}`)
+    },
+    submit () {
+      let tree = { id: '1', children: this.channelTree }
+      // console.log(this.channelTree)
+      let res = getTreeData(tree)
+      // res.unshift({ id: '1', channelName: '根目录', channelPartentId: '0', channelManager: '', channelIcon: '' })
+      let delChannels = getTreeData({ children: this.delChannels })
+      let result = {
+        result: res,
+        removeChannelId: delChannels.filter(item => item.id).map(item => item.id)
+      }
+      this.$http.post('/cri-cms-platform/channel/saveChannel.monitor', {
+        channelJson: JSON.stringify(result)
+      }).then(res => {
+        this.$toast('保存成功')
+        this.refresh()
+      }).catch(e => {
+        this.$toast(e.msg || e.message)
+      })
+    },
+    refresh () {
+      this.getChannels()
+      this.$emit('refresh')
     }
   }
 }

@@ -16,7 +16,7 @@ export default [{
   icon: 'icon-audios'
 }, {
   name: '专题',
-  path: '/topics',
+  path: '/special',
   icon: 'icon-special'
 }, {
   name: '直播',
@@ -26,6 +26,10 @@ export default [{
   name: '链接',
   path: '/links',
   icon: 'icon-links'
+}, {
+  name: '电商',
+  path: '/ecommerce',
+  icon: 'icon-ecommerce'
 }, {
   name: '工作台',
   path: '/works',

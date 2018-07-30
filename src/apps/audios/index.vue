@@ -1,21 +1,21 @@
 <template>
-<div class="abs bg-f flex app-gallery">
-  <af-left color="#7b5b4d" bg-color="#f3eee0" vibrant-color="#e45000" title="图集" :defaultActive="defaultActive">
-    <navigator-item icon="folder" index="all-all" @click="$router.replace('/gallery?scope=all&status=all')">全部</navigator-item>
+<div class="abs bg-f flex app-audios">
+  <af-left color="#288065" bg-color="#e0f3ed" vibrant-color="#00a773" title="音频" :defaultActive="defaultActive">
+    <navigator-item icon="folder" index="all-all" @click="$router.replace('/audios?scope=all&status=all')">全部</navigator-item>
     <!-- <navigator-item-group defaultExtended index="2" icon="face">
     <span slot="title">我的</span> -->
-    <navigator-item icon="check_circle" index="my-all" @click="$router.replace('/gallery?scope=my&status=all')">已发</navigator-item>
-    <navigator-item icon="hourglass_full" index="my-AUDITING" @click="$router.replace('/gallery?scope=my&status=AUDITING')">待审</navigator-item>
-    <navigator-item icon="error" index="my-REJECT" @click="$router.replace('/gallery?scope=my&status=REJECT')">驳回</navigator-item>
-    <navigator-item icon="class" index="my-4" @click="$router.replace('/gallery?scope=my&status=4')">草稿</navigator-item>
+    <navigator-item icon="check_circle" index="my-all" @click="$router.replace('/audios?scope=my&status=all')">已发</navigator-item>
+    <navigator-item icon="hourglass_full" index="my-AUDITING" @click="$router.replace('/audios?scope=my&status=AUDITING')">待审</navigator-item>
+    <navigator-item icon="error" index="my-REJECT" @click="$router.replace('/audios?scope=my&status=REJECT')">驳回</navigator-item>
+    <navigator-item icon="class" index="my-4" @click="$router.replace('/audios?scope=my&status=4')">草稿</navigator-item>
     <!-- </navigator-item-group> -->
-    <navigator-item icon="delete" index="3-1" @click="$router.replace('/gallery')">回收站</navigator-item>
+    <navigator-item icon="delete" index="3-1" @click="$router.replace('/audios')">回收站</navigator-item>
   </af-left>
   <af-center
-    @add="$router.push('/galleryAdd')"
+    @add="$router.push('/videoAdd')"
     :scope="$route.query.scope"
     :status="$route.query.status"
-    url="/cri-cms-platform/gallery/list.monitor"
+    url="/cri-cms-platform/audio/queryList.monitor"
     ref="afCenter">
     <div class="list-item a" slot-scope="slotProps" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.id == $route.params.id}">
       <div class="list-title flex-v-center">
@@ -45,7 +45,7 @@ import AfCenter from '@/components/app-frame/afCenter'
 import AfLeft from '@/components/app-frame/afLeft'
 
 export default {
-  name: 'app-gallery',
+  name: 'app-audios',
   components: { AfCenter, AfLeft },
   computed: {
     defaultActive () {
@@ -56,7 +56,7 @@ export default {
 </script>
 
 <style lang="less">
-.app-gallery{
-  .navigator-item.active{color: #e45000;}
+.app-audios{
+  .navigator-item.active{color: #00a773;}
 }
 </style>

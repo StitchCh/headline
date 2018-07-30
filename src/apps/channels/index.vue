@@ -6,7 +6,7 @@
     <account/>
   </div>
   <div class="flex-item flex">
-    <channel-editor @channelsLoad="onChannelsLoad"/>
+    <channel-editor @channelsLoad="onChannelsLoad" @refresh="refresh"/>
     <div class="right flex-item flex-col" v-if="$route.query.channelId">
       <div class="flex-v-center" style="padding: 15px 30px;">
         <span class="flex-item b">布局编辑</span>
@@ -132,7 +132,7 @@ export default {
     addLayout (type, name) {
       if (type === '3' && !this.activeChannelChildren.length) return
       this.layout.unshift({
-        id: Math.random().toString(16).replace('0.', ''),
+        id: Math.random().toString(16).substr(2),
         layoutName: name,
         editLayoutName: name,
         type,
@@ -200,7 +200,7 @@ export default {
       this.$router.replace({ path })
       setTimeout(() => {
         this.$router.replace({ path, query })
-      }, 10)
+      }, 100)
     }
   }
 }
