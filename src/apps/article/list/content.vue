@@ -4,7 +4,7 @@
       <no-data/>
     </div>
     <div class="art-ctn" v-else>
-      <h1 class="b">{{content.title}}</h1>
+      <h1 class="b" :style="{ color: content.titleColor }">{{content.title}}</h1>
       <div class="f-14 c-a art-info">
         <span>{{content.createDate}}</span>
         <span>作者：{{content.author}}</span>
@@ -35,7 +35,6 @@ export default {
     }
   },
   created () {
-    // console.log(this.id)
     this.getArticle()
   },
   watch: {

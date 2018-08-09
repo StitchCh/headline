@@ -18,6 +18,11 @@ export default [{
           path: ':id',
           component: resolve => require(['@/apps/article/list/content.vue'], resolve),
           props: true
+        },
+        {
+          path: ':id/statistics',
+          component: resolve => require(['@/apps/article/list/statistics.vue'], resolve),
+          props: true
         }
       ]
     },

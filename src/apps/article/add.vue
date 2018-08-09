@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="flex-item scroll-y">
-      <article-editor ref="editor"></article-editor>
+      <article-editor ref="editor" @getKeyGenerate="getKeyGenerate"></article-editor>
     </div>
   </div>
   <div class="art-options c-4 scroll-y" :style="{width: ui.optionShow ? '320px' : '0px'}">
@@ -24,19 +24,22 @@
         <span class="flex-item">{{channelNames}}</span>
         <i class="icon f-20 c-a">keyboard_arrow_down</i>
         <bubble v-if="ui.channelShow" pos="bottom" align="center" @close="ui.channelShow=false">
-          <ul class="bubble-list">
-            <li v-for="item in ui.channels" :key="item.id">
-              <check-box :text="item.channelName" :label="item.id" v-model="channelIds"/>
-            </li>
-          </ul>
+          <!--<ul class="bubble-list">-->
+            <!--<li v-for="item in ui.channels.channels" :key="item.id">-->
+              <!--<check-box :text="item.channelName" :label="item.id" v-model="channelIds"/>-->
+            <!--</li>-->
+          <!--</ul>-->
+          <div style="padding: 10px 0;width: 280px;">
+            <tree :data="ui.channels.channels" pid-txt="channelPartentId" nameTxt="channelName" show-checkbox :checked-list.sync="channelIds"></tree>
+          </div>
         </bubble>
       </div>
       <div class="option-item flex-v-center">
-        <icon-btn small v-tooltip:top="'推荐'" :class="{ isRecommnd: form.isRecommnd }" @click="form.isRecommnd = ~~!form.isRecommnd">thumb_up</icon-btn>
+        <icon-btn small v-tooltip:top="'推荐'" :class="{ active: form.isRecommnd }" @click="form.isRecommnd = ~~!form.isRecommnd">thumb_up</icon-btn>
         <span class="flex-item"></span>
-        <icon-btn small v-tooltip:top="'发布到 PC 页面'">computer</icon-btn>
-        <icon-btn small v-tooltip:top="'发布到客户端'">phone_iphone</icon-btn>
-        <icon-btn small v-tooltip:top="'发布到移动网页'">public</icon-btn>
+        <icon-btn small v-tooltip:top="'发布到 PC 页面'" :class="{ active: form.terminalPc }" @click="form.terminalPc = ~~!form.terminalPc">computer</icon-btn>
+        <icon-btn small v-tooltip:top="'发布到客户端'" :class="{ active: form.terminalApp }" @click="form.terminalApp = ~~!form.terminalApp">phone_iphone</icon-btn>
+        <icon-btn small v-tooltip:top="'发布到移动网页'" :class="{ active: form.terminalWeb }" @click="form.terminalWeb = ~~!form.terminalWeb">public</icon-btn>
       </div>
       <div style="margin: 10px 0;">
         <div class="add-photo-btn a flex-center" style="height:158px;margin-bottom: 8px;">
@@ -56,8 +59,9 @@
           <div><radio-box text="16:9 大图" style="margin: 0;" :label="3" v-model="form.thumbType"/></div>
         </div>
       </div>
-      <div class="option-item">
-        <textarea placeholder="摘要，限制 128 字。" v-model="form.abstarcts"></textarea>
+      <div class="option-item relative">
+        <textarea placeholder="摘要，限制 128 字。" v-model="form.abstarcts" rows="8"></textarea>
+        <span style="position: absolute;bottom: 3px;right: 0;" :style="{ color: form.abstarcts.length > 128 ? '#F44336' : '#999' }">{{form.abstarcts.length}} / 128</span>
       </div>
       <div class="option-item">
         <input type="text" placeholder="关键词，逗号分隔。" v-model="form.keywords"/>
@@ -174,6 +178,7 @@ export default {
       form: {
         app: 'ARTICLE',
         title: '',
+        titleColor: '',
         content: '',
         channelIds: '',
         isOpenComment: 0,
@@ -192,7 +197,13 @@ export default {
         virtualDigg: '',
         hasThumb: 0,
         thumbType: 1,
-        thumb: ''
+        thumb: '',
+        terminalPc: 0,
+        terminalApp: 0,
+        terminalWeb: 0
+      },
+      autoSaveForm: {
+
       }
     }
   },
@@ -207,7 +218,7 @@ export default {
     },
     channelNames () {
       if (!this.channelIds.length) return '选择栏目'
-      return this.channelIds.map(val => this.ui.channels.find(v => v.id === val).channelName).join('，')
+      return this.channelIds.map(val => this.ui.channels.channels.find(v => v.id === val).channelName).join('，')
     }
   },
   methods: {
@@ -229,11 +240,23 @@ export default {
         }
       )
     },
+    getKeyGenerate () {
+      this.$http.post('/cri-cms-platform/article/getKeyGenerate.monitor', { doc: this.$refs.editor.getText() }).then(
+        res => {
+          console.log(res)
+          this.form.abstarcts = res.gerenate
+          this.form.keywords = res.key.join(',')
+        }
+      )
+    },
     disabledDate (time, format) {
       return time <= new Date()
     },
+    autoSave () {
+      let { title, titleColor, content } = this.$refs.editor
+    },
     submit () {
-      let { title, content, getText } = this.$refs.editor
+      let { title, titleColor, content, getText } = this.$refs.editor
       if (!title) {
         this.$toast('请输入标题')
         return
@@ -248,6 +271,7 @@ export default {
         return
       }
       this.form.title = title
+      this.form.titleColor = titleColor
       this.form.content = content
       this.$http.post('/cri-cms-platform/article/save.monitor', this.form).then(
         res => {
@@ -277,11 +301,11 @@ export default {
   .option-item{border-bottom: 1px solid rgba(0, 0, 0, .1);padding: 12px 0;}
   .add-photo-btn{background: rgba(0, 0, 0, .06);border-radius: 5px;overflow: hidden;}
   .add-other-icon{margin-right: 10px;}
-  .bubble-list{padding: 10px 0;
-    li{padding: 5px 15px;}
-    li:hover{background: #eee;}
-  }
-  .isRecommnd {color: #018be6;}
+  /*.bubble-list{padding: 10px 0;*/
+    /*li{padding: 5px 15px;}*/
+    /*li:hover{background: #eee;}*/
+  /*}*/
+  .active {color: #018be6;}
   .datepicker::before {content: none}
 }
 </style>

@@ -25,6 +25,16 @@
       </bubble>
     </div> -->
     <div class="relative">
+      <div class="relative flex-v-center a item" v-tooltip:top="'筛选栏目'" @click="ui.channelShow=true">
+        <span>筛选</span><i class="icon c-a">keyboard_arrow_down</i>
+      </div>
+      <bubble v-if="ui.channelShow" pos="bottom" align="center" @close="ui.channelShow=false">
+        <div style="padding: 10px 0;width: 280px;">
+          <tree :data="ui.channels.channels" pid-txt="channelPartentId" nameTxt="channelName" show-checkbox :checked-list.sync="channels"></tree>
+        </div>
+      </bubble>
+    </div>
+    <div class="relative">
       <div class="relative flex-v-center a item" v-tooltip:top="'排序'" @click="ui.orderShow=true">
         <span>排序</span><i class="icon c-a">keyboard_arrow_down</i>
       </div>
@@ -40,10 +50,10 @@
         </ul>
       </bubble>
     </div>
-    <i class="icon c-a a item" v-tooltip:top="'显示移动采编内容'">directions_walk</i>
-    <i class="icon c-a a item" v-tooltip:top="'发布到 PC 网站'">computer</i>
-    <i class="icon c-a a item" v-tooltip:top="'发布到手机客户端'">phone_iphone</i>
-    <i class="icon c-a a item" v-tooltip:top="'发布到手机网站'">public</i>
+    <!--<i class="icon c-a a item" v-tooltip:top="'显示移动采编内容'">directions_walk</i>-->
+    <i class="icon c-a a item" v-tooltip:top="'发布到 PC 网站'" :class="{ active: filter.terminalPc }" @click="filter.terminalPc = ~~!filter.terminalPc || '';getList(true)">computer</i>
+    <i class="icon c-a a item" v-tooltip:top="'发布到手机客户端'" :class="{ active: filter.terminalApp }" @click="filter.terminalApp = ~~!filter.terminalApp || '';getList(true)">phone_iphone</i>
+    <i class="icon c-a a item" v-tooltip:top="'发布到手机网站'" :class="{ active: filter.terminalWeb }" @click="filter.terminalWeb = ~~!filter.terminalWeb || '';getList(true)">public</i>
   </div>
   <div v-if="ui.searchShow" class="flex-v-center search-bar c-6 f-13">
     <i class="icon f-18 c-8">search</i>
@@ -61,8 +71,9 @@
       v-model="filter.search"
       class="flex-item c-4 f-13 search-input"
       placeholder="搜索标题 回车"
-      @keydown.esc="ui.searchOptionShow=false">
-    <i class="icon f-20 c-a a" @click="ui.searchShow=false;filter.search=''">close</i>
+      @keydown.esc="cancelSearch"
+      @keydown.enter="getList(true)">
+    <i class="icon f-20 c-a a" @click="cancelSearch">close</i>
   </div>
   <list-view :list="list" class="flex-item relative" @prev="onPrev" @next="onNext" :page="filter.toPage" :totalPage="totalPage" ref="listView">
     <li slot-scope="slotProps">
@@ -79,7 +90,7 @@
 
 <script>
 import ListView from '../listView'
-import debounce from 'lodash/debounce'
+// import debounce from 'lodash/debounce'
 
 export default {
   name: 'af-center',
@@ -99,20 +110,35 @@ export default {
         channelShow: false, // 栏目
         orderShow: false, // 排序
         channels: [],
-        orderby: [{id: 'create_date', name: '日期'}, {id: 'readnum', name: '阅读'}],
-        searchby: [{id: 'title', name: '标题'}, {id: 'keywoards', name: '关键字'}, {id: 'abstracts', name: '摘要'}, {id: 'author', name: '作者'}]
+        orderby: [
+          {id: 'create_date', name: '日期'},
+          {id: 'pv', name: '阅读'},
+          {id: 'comment_count', name: '评论'},
+          {id: 'share_count', name: '分享'},
+          {id: 'digg_count', name: '点赞'}
+        ],
+        searchby: [
+          {id: 'title', name: '标题'},
+          {id: 'keywoards', name: '关键字'},
+          {id: 'abstracts', name: '摘要'},
+          {id: 'author', name: '作者'}
+        ]
       },
       filter: {
         scope: '1',
         status: 'all',
         toPage: 1,
         pageSize: 30,
-        // channelIds: '',
         orderby: 'create_date',
-        order: 'asc',
+        order: 'desc',
         searchby: 'title',
-        search: ''
-      }
+        search: '',
+        terminalPc: '',
+        terminalApp: '',
+        terminalWeb: '',
+        publishChannelId: ''
+      },
+      channels: []
     }
   },
   watch: {
@@ -124,10 +150,10 @@ export default {
         this.getList(true)
       }
     },
-    // 'filter.channelIds' () {
-    //   this.ui.channelShow = false
-    //   this.getList(true)
-    // },
+    'channels' () {
+      this.filter.publishChannelId = this.channels.join(',')
+      this.getList(true)
+    },
     'filter.orderby' () {
       this.ui.orderShow = false
       this.getList(true)
@@ -139,10 +165,10 @@ export default {
     'filter.searchby' () {
       this.ui.searchOptionShow = false
       if (this.filter.search) this.getList(true)
-    },
-    'filter.search' () {
-      this.search()
     }
+    // 'filter.search' () {
+    //   this.search()
+    // }
   },
   computed: {
     // channelName () {
@@ -197,9 +223,14 @@ export default {
         this.$toast(e.msg)
       })
     },
-    search: debounce(function () {
+    cancelSearch () {
+      this.ui.searchShow = false
+      this.filter.search = ''
       this.getList(true)
-    }, 400)
+    }
+    // search: debounce(function () {
+    //   this.getList(true)
+    // }, 400)
   }
 }
 </script>
@@ -213,6 +244,7 @@ export default {
     .item{padding: 5px;line-height: 16px;}
     .icon{font-size: 16px;}
     .item:hover{color: #666;}
+    .item.active {color: #018be6;}
   }
   .search-bar{border-bottom: 1px solid #ddd;height: 36px;padding: 0 15px;line-height: 1em;}
   .filter-bubble{
