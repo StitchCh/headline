@@ -19,6 +19,16 @@
     </div>
   </div>
   <quill-editor v-model="content" ref="editor" :options="options" @change="getKeyGenerate"/>
+
+  <layer v-if="ui.imageSelectorShow" title="选择图片"  width="800px">
+    <div class="layer-text relative" style="height: 800px;">
+      <media-photos select-mode ref="mediaPhotos"></media-photos>
+    </div>
+    <div class="layer-btns">
+      <btn flat @click="ui.imageSelectorShow = false">取消</btn>
+      <btn flat color="#008eff" @click="insertImage">选择</btn>
+    </div>
+  </layer>
 </div>
 </template>
 
@@ -27,12 +37,20 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import { quillEditor } from 'vue-quill-editor'
 import debounce from 'lodash/debounce'
+import MediaPhotos from '../medialibrary/pages/photos'
+
+const IMG_ORIGIN = 'http://60.247.77.208:58088'
 
 export default {
   name: 'article-editor',
-  components: { quillEditor },
+  components: { quillEditor, MediaPhotos },
   data () {
+    let that = this
     return {
+      ui: {
+        imageSelectorShow: false,
+        index: 0
+      },
       title: '',
       titleColorBoxShow: false,
       titleColor: '#000',
@@ -45,19 +63,42 @@ export default {
             container: [
               [{ 'header': [2, 3, 4, false] }],
               ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-              ['blockquote', 'code-block', 'link', 'image', 'video'],
+              ['blockquote', 'code-block', 'link', 'image', 'video', 'music'],
               // [{ 'header': 1 }, { 'header': 2 }], // custom button values
               [{'list': 'ordered'}, {'list': 'bullet'}],
               // [{ 'script': 'sub'}, { 'script': 'super' }], // superscript/subscript
               [{'indent': '-1'}, {'indent': '+1'}, {'align': []}], // outdent/indent
               // [{ 'direction': 'rtl' }], // text direction
-              [{'size': ['12px', false, '15px', '16px', '18px', '20px', '22px', '24px', '26px', '28px', '30px', '32px', '34px', '36px']}],
+              [{'size': ['small', false, 'large', 'huge']}],
               [{'color': []}, {'background': []}], // dropdown with defaults from theme
               ['clean'] // remove formatting button
-            ]
+            ],
+            handlers: {
+              'image' (value) {
+                if (value) {
+                  that.ui.index = this.quill.getSelection().index
+                  that.ui.imageSelectorShow = true
+                } else {
+                  this.quill.format('image', false)
+                }
+              },
+              'video' (value) {
+                if (value) {
+                  // that.ui.index = this.quill.getSelection().index
+                  // that.ui.imageSelectorShow = true
+                  that.$toast()
+                } else {
+                  this.quill.format('image', false)
+                }
+              },
+              'music' () {
+                that.$toast()
+              }
+            }
           }
         }
-      }
+      },
+      imgOrigin: IMG_ORIGIN
     }
   },
   methods: {
@@ -70,6 +111,14 @@ export default {
     changeTitleColor (color) {
       this.titleColor = color
       this.titleColorBoxShow = false
+    },
+    insertImage () {
+      let quill = this.$refs.editor.quill
+      this.$refs.mediaPhotos.selected.forEach(v => {
+        quill.insertEmbed(this.ui.index, 'image', this.imgOrigin + v.filePath + v.fileName)
+        quill.setSelection(++this.ui.index)
+      })
+      this.ui.imageSelectorShow = false
     }
   }
 }
@@ -95,23 +144,33 @@ export default {
   .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="4"]::before, .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="4"]::before{content: '四级标题'}
   .ql-snow .ql-picker.ql-header .ql-picker-label::before, .ql-snow .ql-picker.ql-header .ql-picker-item::before{content: '正文'}
 
-  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="36px"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="36px"]::before{content: '36px';font-size: 36px;}
-  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="34px"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="34px"]::before{content: '34px';font-size: 34px;}
-  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="32px"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="32px"]::before{content: '32px';font-size: 32px;}
-  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="30px"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="30px"]::before{content: '30px';font-size: 30px;}
-  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="28px"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="28px"]::before{content: '28px';font-size: 28px;}
-  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="26px"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="26px"]::before{content: '26px';font-size: 26px;}
-  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="24px"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="24px"]::before{content: '24px';font-size: 24px;}
-  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="22px"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="22px"]::before{content: '22px';font-size: 22px;}
-  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="20px"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="20px"]::before{content: '20px';font-size: 20px;}
-  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="18px"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before{content: '18px';font-size: 18px;}
-  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="16px"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16px"]::before{content: '16px';font-size: 16px;}
-  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="15px"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="15px"]::before{content: '15px';font-size: 15px;}
-  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="12px"]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="12px"]::before{content: '12px';font-size: 12px;}
-  .ql-snow .ql-picker.ql-size .ql-picker-label::before, .ql-snow .ql-picker.ql-size .ql-picker-item::before{content: '14px'}
+  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value=huge]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=huge]::before{content: '超大'}
+  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value=large]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=large]::before{content: '大号'}
+  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value=small]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=small]::before{content: '小号'}
+  .ql-snow .ql-picker.ql-size .ql-picker-label::before, .ql-snow .ql-picker.ql-size .ql-picker-item::before{content: '正常'}
   .ql-snow .ql-tooltip::before{content: '链接地址'}
   .ql-snow .ql-tooltip a.ql-action::after{content: '修改'}
   .ql-snow .ql-tooltip a.ql-remove::before{content: '删除'}
   .ql-tooltip{border-radius: 6px;}
+  .layer-ctn {max-width: 1000px;
+    .af-left{width: 280px;background: #fff;border-right: 1px solid rgba(0, 0, 0, .05);}
+    .nav-item{height: 40px;border-bottom: 1px solid #eee;line-height: 1em;padding: 0 5px 0 15px;
+      &.nav-item-folder{padding-left: 30px;}
+      &:hover{background: rgba(0, 0, 0, .05);}
+      &.on{background: #318fff;border-color: #fff;color: #fff;
+        .icon-btn{color: #fff;}
+      }
+      input{border: none;height: 36px;background: transparent;
+        &::-webkit-input-placeholder{color: #aaa;}
+      }
+      .nav-item-icon{margin-right: 15px;}
+    }
+    .search-bar input{width:200px;height: 100%;border:none;margin-left: 10px;}
+    .media-group{padding: 13px 30px;
+      ul{flex-wrap: wrap;}
+      li{margin: 0 6px 6px 0}
+    }
+    .media-group-title{padding: 15px 0;}
+  }
 }
 </style>

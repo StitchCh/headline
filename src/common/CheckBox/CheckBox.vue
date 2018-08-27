@@ -18,7 +18,7 @@ export default {
   name: 'check-box',
   props: {
     disabled: Boolean,
-    label: String,
+    label: [String, Object],
     value: [Boolean, Array],
     name: String,
     text: String

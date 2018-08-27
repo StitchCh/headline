@@ -35,7 +35,7 @@
   <div class="af-right flex-item flex-col">
     <div class="af-topbar flex-v-center">
       <div class="flex-v-center" v-if="$route.params.id">
-        <icon-btn small v-tooltip:bottom="'还原'" style="margin-right: 10px;">undo</icon-btn>
+        <icon-btn small v-tooltip:bottom="'还原'" style="margin-right: 10px;" @click="recover">undo</icon-btn>
         <icon-btn small v-tooltip:bottom="'彻底删除'">delete</icon-btn>
       </div>
       <div class="flex-item"></div>
@@ -57,6 +57,7 @@ import debounce from 'lodash/debounce'
 export default {
   name: 'recycle',
   components: { Account, ListView, VueDatepickerLocal },
+  props: [ 'id' ],
   data () {
     return {
       list: [],
@@ -94,7 +95,26 @@ export default {
     },
     search: debounce(function () {
       this.getList(true)
-    }, 400)
+    }, 400),
+    recover () {
+      this.$confirm({
+        title: '您确定要恢复此文章吗？',
+        text: '恢复后文章需要重新审核',
+        btns: ['取消', '恢复'],
+        color: 'green',
+        yes: () => {
+          this.$http.post('/cri-cms-platform/article/reduction.monitor', {
+            selectedIds: this.id
+          }).then(res => {
+            this.getList()
+            this.$router.replace({
+              path: '/article/recycle',
+              query: this.$route.query
+            })
+          })
+        }
+      })
+    }
   }
 }
 </script>

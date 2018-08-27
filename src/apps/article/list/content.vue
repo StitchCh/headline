@@ -14,7 +14,7 @@
       <div class="art-relate f-14">
         <div class="b c-8" style="margin-bottom: 10px;">相关阅读：</div>
         <ul>
-          <li v-for="item in relateContents" :key="item.id">
+          <li v-for="item in relateArticle" :key="item.id">
             <a class="a c-8" @click="toLink(item)">{{item.title}}</a>
           </li>
         </ul>
@@ -31,7 +31,7 @@ export default {
     return {
       content: {},
       article: {},
-      relateContents: []
+      relateArticle: []
     }
   },
   created () {
@@ -49,7 +49,7 @@ export default {
       }).then(res => {
         this.content = res.content || {}
         this.article = res.article || {}
-        this.relateContents = res.relateContents || []
+        this.relateArticle = res.relateArticle || []
       }).catch(e => {
         this.content = {}
         this.article = {}
@@ -71,7 +71,7 @@ export default {
   h1{line-height: 1.3em;font-size: 26px;}
   .art-ctn{max-width: 900px;margin: 0 auto;padding: 30px;}
   .art-info span{margin-right: 15px;}
-  .art-relate{margin-top: 20px;border: 1px solid #ddd;padding: 10px;border-radius: 8px;
+  .art-relate{margin-top: 20px;border: 1px solid #ddd;padding: 10px 20px;border-radius: 8px;
     li{padding: 2px 0;}
     a{text-decoration: none;}
     a:hover{text-decoration: underline;}

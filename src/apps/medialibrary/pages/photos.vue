@@ -1,6 +1,6 @@
 <template>
 <div class="abs flex-item flex media-photos">
-  <media-left-tree/>
+  <media-left-tree :select-mode="selectMode" @changeFolder="getList"/>
   <div class="flex-item flex-col">
     <div class="af-topbar flex-v-center" style="height:36px;">
       <div class="search-bar flex-v-center">
@@ -10,7 +10,7 @@
       <div class="flex-item"></div>
       <span class="f-14" v-if="selected.length" style="margin-right: 10px;">已选择 {{selected.length}} 项</span>
       <btn flat v-if="selected.length" color="#008eff" @click="cancelSelect">取消选择</btn>
-      <div class="flex-v-center opera-btns">
+      <div v-if="!selectMode" class="flex-v-center opera-btns">
         <!-- <span class="a blue">全选</span> -->
         <btn flat :disabled="!selected.length" color="#008eff" @click="del">批量删除</btn>
         <media-upload :type="0" @uploaded="onUploaded" :folder-id="$route.query.folderId || 0"/>
@@ -39,7 +39,7 @@
         </ul>
       </div>
     </div>
-    <div class="af-bottombar">
+    <div class="af-bottombar flex-center">
       <pagination :page="page" :size="size" :total="total" @change="onPageChange"></pagination>
     </div>
   </div>
@@ -58,6 +58,12 @@ const IMG_ORIGIN = 'http://60.247.77.208:58088'
 export default {
   name: 'media-photos',
   components: { MediaLeftTree, ImageEditor, MediaUpload },
+  props: {
+    selectMode: {
+      type: Boolean,
+      default: true
+    }
+  },
   data () {
     return {
       loading: false,
@@ -99,10 +105,12 @@ export default {
     }
   },
   methods: {
-    getList () {
+    getList (id) {
       this.loading = true
       let type = this.$route.meta.type
+      if (this.selectMode) type = '0'
       let folderId = this.$route.query.folderId || ''
+      if (this.selectMode) folderId = id || ''
       this.$http.post('/cri-cms-platform/media/list.monitor', {
         type,
         folderId,

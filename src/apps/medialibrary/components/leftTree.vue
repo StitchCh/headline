@@ -4,7 +4,7 @@
     <li class="flex-v-center nav-item a" @click="folderClick()" :class="{'on': !$route.query.folderId}">
       <i class="icon nav-item-icon">folder</i>
       <span class="flex-item">全部</span>
-      <icon-btn @click.native="add">add</icon-btn>
+      <icon-btn v-if="!selectMode" @click.native="add">add</icon-btn>
     </li>
     <li>
       <draggable v-model="list" @end="onDragEnd">
@@ -33,6 +33,12 @@ import draggable from 'vuedraggable'
 export default {
   name: 'media-left-tree',
   components: { draggable },
+  props: {
+    selectMode: {
+      type: Boolean,
+      default: false
+    }
+  },
   data () {
     return {
       list: [],
@@ -88,6 +94,10 @@ export default {
       })
     },
     folderClick (item) {
+      if (this.selectMode) {
+        this.$emit('changeFolder', item ? item.id : '')
+        return
+      }
       if (!item) {
         this.$router.replace(this.$route.path)
         return

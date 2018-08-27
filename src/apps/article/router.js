@@ -33,6 +33,7 @@ export default [{
     {
       path: 'recycle',
       component: resolve => require(['@/apps/article/recycle/index.vue'], resolve),
+      props: true,
       children: [
         {
           path: ':id',
@@ -47,4 +48,10 @@ export default [{
   name: 'ArticleAdd',
   component: resolve => require(['@/apps/article/add.vue'], resolve),
   meta: { level: 3, title: '添加文章', identifier: 'article_add' }
+}, {
+  path: '/articleEdit/:from/:id',
+  name: 'ArticleEdit',
+  component: resolve => require(['@/apps/article/add.vue'], resolve),
+  props: true,
+  meta: { level: 3, title: '添加文章', identifier: 'article_edit' }
 }]

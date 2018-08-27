@@ -5,20 +5,25 @@
       <account/>
     </div>
     <div class="flex-item flex-col">
-      <div class="t-center" style="padding: 15px 0;"><input class="f-14 search" type="text" placeholder="输入关键字"/></div>
+      <div class="t-center" style="padding: 15px 0;"><input class="f-14 search" type="text" placeholder="输入标题并回车" v-model="filter.searchby" @keyup.enter="getList"/></div>
       <div class="box flex-item relative scroll-y">
+        <transition name="fade">
+          <div v-if="loading" class="flex-center abs bg-f" style="z-index: 10">
+            <loading></loading>
+          </div>
+        </transition>
         <div v-if="!list.length" class="abs flex-center" style="height: 80%;">
           <no-data/>
         </div>
         <ul class="flex" ref="ul" style="flex-wrap: wrap;padding-bottom: 50px;" :style="{paddingLeft: (width - (240 * ~~((width - 80) / 240))) * 0.5 + 'px'}">
-          <li v-for="item in list" :key="item.id" class="a" @click="$router.push('/articleAdd?id='+item.id)">
+          <li v-for="item in list" :key="item.id" class="a" @click="$router.push(`/articleEdit/draft/${item.id}`)">
             <div class="cover"></div>
             <div class="flex-v-center item-info">
               <div class="flex-item" style="overflow: hidden;">
-                <div class="c-6 item-name">测试名称测试名称测试名称测试名称</div>
-                <div class="f-12 c-8">2018-09-08 18:00:08</div>
+                <div class="c-6 item-name">{{item.title}}</div>
+                <div class="f-12 c-8">{{item.createDate}}</div>
               </div>
-              <icon-btn class="c-c" @click.native="deleteItem($event, item)">delete</icon-btn>
+              <icon-btn class="c-c" @click.stop.native="deleteItem(item)">delete</icon-btn>
             </div>
           </li>
         </ul>
@@ -35,16 +40,16 @@ export default {
   components: { Account },
   data () {
     return {
+      loading: true,
       width: 0,
       list: [],
       filter: {
-        scope: 'my',
-        status: 'REJECT',
         pageSize: 30,
         toPage: 1,
-        searchby: 'title',
-        order: 'asc',
-        search: ''
+        orderby: 'create_date',
+        order: 'desc',
+        searchby: '',
+        search: 'title'
       }
     }
   },
@@ -72,19 +77,28 @@ export default {
     onResize () {
       this.width = this.$refs.ul.clientWidth
     },
-    deleteItem (e, item) {
-      e.stopPropagation()
+    deleteItem (item) {
+      let that = this
       this.$confirm({
         title: '您确定要删除此草稿吗？',
-        text: '删除后可在回收站找回。',
+        text: '删除后的草稿将无法恢复。',
         btns: ['取消', '删除'],
-        color: 'red'
+        color: 'red',
+        yes () {
+          that.$http.post('/cri-cms-platform/articleAutoSave/delete.monitor', {id: item.id}).then(
+            res => {
+              that.getList()
+            }
+          )
+        }
       })
     },
     getList (refresh) {
+      this.loading = true
       if (refresh) this.filter.toPage = 1
-      this.$http.post('/cri-cms-platform/article/list.monitor', this.filter).then(res => {
+      this.$http.post('/cri-cms-platform/articleAutoSave/listAuto.monitor', this.filter).then(res => {
         this.list = res.pages || []
+        this.loading = false
       }).catch(e => {
         console.log(e)
       })
