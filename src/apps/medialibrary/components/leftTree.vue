@@ -1,7 +1,7 @@
 <template>
 <div class="media-left-tree">
   <ul class="f-16">
-    <li class="flex-v-center nav-item a" @click="folderClick()" :class="{'on': !$route.query.folderId}">
+    <li class="flex-v-center nav-item a" @click="folderClick()" :class="{'on': selectMode ? !itemId : !$route.query.folderId}">
       <i class="icon nav-item-icon">folder</i>
       <span class="flex-item">全部</span>
       <icon-btn v-if="!selectMode" @click.native="add">add</icon-btn>
@@ -9,7 +9,7 @@
     <li>
       <draggable v-model="list" @end="onDragEnd">
         <transition-group tag="ul" name="flip-list">
-          <li v-for="item in list" :key="item.id" :data-id="item.id" :data-name="item.name" class="flex-v-center nav-item nav-item-folder a" :class="{'on': $route.query.folderId === item.id}" @click="folderClick(item)">
+          <li v-for="item in list" :key="item.id" :data-id="item.id" :data-name="item.name" class="flex-v-center nav-item nav-item-folder a" :class="{'on': selectMode ? itemId === item.id : $route.query.folderId === item.id}" @click="folderClick(item)">
             <i class="icon nav-item-icon">folder</i>
             <span class="flex-item">{{item.name}}</span>
             <icon-btn small @click.native="deleteFolder($event, item)" class="del-btn">delete</icon-btn>
@@ -37,10 +37,15 @@ export default {
     selectMode: {
       type: Boolean,
       default: false
+    },
+    type: {
+      type: [ Number, String ],
+      default: 0
     }
   },
   data () {
     return {
+      itemId: '',
       list: [],
       addFolder: {
         show: false,
@@ -54,7 +59,7 @@ export default {
   methods: {
     getList () {
       this.$http.post('/cri-cms-platform/media/index.monitor', {
-        type: this.$route.meta.type || 0
+        type: this.selectMode ? this.type : (this.$route.meta.type || 0)
       }).then(res => {
         this.list = res || []
       }).catch(e => {
@@ -95,7 +100,8 @@ export default {
     },
     folderClick (item) {
       if (this.selectMode) {
-        this.$emit('changeFolder', item ? item.id : '')
+        this.itemId = item ? item.id : ''
+        this.$emit('changeFolder', this.itemId)
         return
       }
       if (!item) {

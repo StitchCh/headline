@@ -1,6 +1,6 @@
 <template>
 <div class="abs flex-item flex media-videos">
-  <media-left-tree/>
+  <media-left-tree :select-mode="selectMode" @changeFolder="getList" type="1"/>
   <div class="flex-item flex-col">
     <div class="af-topbar flex-v-center" style="height:36px;">
       <div class="search-bar flex-v-center">
@@ -58,6 +58,12 @@ import VueDatepickerLocal from 'vue-datepicker-local'
 export default {
   name: 'media-videos',
   components: { MediaLeftTree, VueDatepickerLocal },
+  props: {
+    selectMode: {
+      type: Boolean,
+      default: false
+    }
+  },
   data () {
     return {
       stateShow: false,
@@ -79,9 +85,10 @@ export default {
     resetFilter () {
       this.filter.range = []
     },
-    getList () {
-      let type = this.$route.meta.type
+    getList (id) {
+      let type = this.selectMode ? '1' : this.$route.meta.type
       let folderId = this.$route.query.folderId || ''
+      if (this.selectMode) folderId = id || ''
       this.$http.post('/cri-cms-platform/media/list.monitor', {
         type,
         folderId,

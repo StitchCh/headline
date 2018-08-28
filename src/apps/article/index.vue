@@ -6,8 +6,8 @@
     <span slot="title">我的</span> -->
     <navigator-item icon="check_circle" index="my-all" @click="$router.replace('/article/list?scope=my&status=all')">已发</navigator-item>
     <navigator-item icon="hourglass_full" index="my-AUDITING" @click="$router.replace('/article/list?scope=my&status=AUDITING')">待审</navigator-item>
-    <navigator-item icon="error" index="my-REJECT" @click="$router.replace('/article/tile?scope=my&status=REJECT')">驳回</navigator-item>
-    <navigator-item icon="class" index="my-4" @click="$router.replace('/article/tile?scope=my&status=4')">草稿</navigator-item>
+    <navigator-item icon="error" index="my-REJECT" @click="$router.replace('/article/reject?scope=my&status=REJECT')">驳回</navigator-item>
+    <navigator-item icon="class" index="my-4" @click="$router.replace('/article/tile')">草稿</navigator-item>
     <!-- </navigator-item-group> -->
     <navigator-item icon="delete" index="3-1" @click="$router.replace('/article/recycle')">回收站</navigator-item>
   </af-left>

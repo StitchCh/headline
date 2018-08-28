@@ -32,7 +32,7 @@
             :key="item.id"
             :class="{'checked': item.checked}"
             :style="{width: item.width * 150 / item.height + 'px', height: '150px'}">
-            <i class="icon item-check a" @click="item.checked=!item.checked">check_circle</i>
+            <i class="icon item-check a" @click="selectItem(item)">check_circle</i>
             <img :src="imgOrigin + item.filePath + item.fileName" @click="onItemClick(item)">
             <div class="img-name c-f f-12">{{item.alias}}</div>
           </li>
@@ -53,7 +53,7 @@ import ImageEditor from '../components/imageEditor'
 import MediaUpload from '../components/upload'
 import debounce from 'lodash/debounce'
 
-const IMG_ORIGIN = 'http://60.247.77.208:58088'
+// const IMG_ORIGIN = 'http://60.247.77.208:58088'
 
 export default {
   name: 'media-photos',
@@ -61,7 +61,11 @@ export default {
   props: {
     selectMode: {
       type: Boolean,
-      default: true
+      default: false
+    },
+    singleSelect: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -72,7 +76,7 @@ export default {
       total: 0,
       fileList: [],
       list: [],
-      imgOrigin: IMG_ORIGIN
+      imgOrigin: ''
     }
   },
   created () {
@@ -107,8 +111,7 @@ export default {
   methods: {
     getList (id) {
       this.loading = true
-      let type = this.$route.meta.type
-      if (this.selectMode) type = '0'
+      let type = this.selectMode ? '0' : this.$route.meta.type
       let folderId = this.$route.query.folderId || ''
       if (this.selectMode) folderId = id || ''
       this.$http.post('/cri-cms-platform/media/list.monitor', {
@@ -125,6 +128,7 @@ export default {
         this.total = res.totalPage * this.size
         this.loading = false
         this.list = res.data || []
+        this.imgOrigin = res.suffix
       }).catch(e => {
         this.loading = false
         this.$toast(e.msg)
@@ -162,6 +166,10 @@ export default {
     onUploaded: debounce(function () {
       if (this.page === 1) this.getList()
     }, 1000),
+    selectItem (item) {
+      if (this.singleSelect) this.cancelSelect()
+      item.checked = !item.checked
+    },
     cancelSelect () {
       this.list.forEach(li => {
         li.data.forEach(item => {

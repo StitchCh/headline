@@ -31,6 +31,10 @@ export default [{
       component: resolve => require(['@/apps/article/tile/index.vue'], resolve)
     },
     {
+      path: 'reject',
+      component: resolve => require(['@/apps/article/reject/index.vue'], resolve)
+    },
+    {
       path: 'recycle',
       component: resolve => require(['@/apps/article/recycle/index.vue'], resolve),
       props: true,

@@ -1,6 +1,6 @@
 <template>
 <div class="abs flex-item flex media-audios">
-  <media-left-tree/>
+  <media-left-tree :select-mode="selectMode" @changeFolder="getList" type="2"/>
   <div class="flex-item flex-col">
     <div class="af-topbar flex-v-center" style="height:36px;">
       <div class="search-bar flex-v-center">
@@ -60,6 +60,12 @@ import VueDatepickerLocal from 'vue-datepicker-local'
 export default {
   name: 'media-audios',
   components: { MediaLeftTree, VueDatepickerLocal },
+  props: {
+    selectMode: {
+      type: Boolean,
+      default: false
+    }
+  },
   data () {
     return {
       stateShow: false,
@@ -71,7 +77,8 @@ export default {
   methods: {
     resetFilter () {
       this.filter.range = []
-    }
+    },
+    getList () {}
   }
 }
 </script>

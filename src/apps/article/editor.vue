@@ -29,26 +29,41 @@
       <btn flat color="#008eff" @click="insertImage">选择</btn>
     </div>
   </layer>
+
+  <layer v-if="ui.videoSelectorShow" title="选择视频"  width="800px">
+    <div class="layer-text relative" style="height: 800px;">
+      <media-videos select-mode ref="mediaVideos"></media-videos>
+    </div>
+    <div class="layer-btns">
+      <btn flat @click="ui.videoSelectorShow = false">取消</btn>
+      <btn flat color="#008eff" @click="insertVideo">选择</btn>
+    </div>
+  </layer>
 </div>
 </template>
 
 <script>
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
-import { quillEditor } from 'vue-quill-editor'
+import { Quill, quillEditor } from 'vue-quill-editor'
+import ImageResize from 'quill-image-resize-module'
 import debounce from 'lodash/debounce'
 import MediaPhotos from '../medialibrary/pages/photos'
+import MediaVideos from '../medialibrary/pages/videos'
+import MediaAudios from '../medialibrary/pages/audios'
 
-const IMG_ORIGIN = 'http://60.247.77.208:58088'
+Quill.register('modules/imageResize', ImageResize)
 
 export default {
   name: 'article-editor',
-  components: { quillEditor, MediaPhotos },
+  components: { quillEditor, MediaPhotos, MediaVideos, MediaAudios },
   data () {
     let that = this
     return {
       ui: {
         imageSelectorShow: false,
+        videoSelectorShow: false,
+        audioSelectorShow: false,
         index: 0
       },
       title: '',
@@ -63,7 +78,7 @@ export default {
             container: [
               [{ 'header': [2, 3, 4, false] }],
               ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-              ['blockquote', 'code-block', 'link', 'image', 'video', 'music'],
+              ['blockquote', 'code-block', 'link', 'image', 'video', 'audio'],
               // [{ 'header': 1 }, { 'header': 2 }], // custom button values
               [{'list': 'ordered'}, {'list': 'bullet'}],
               // [{ 'script': 'sub'}, { 'script': 'super' }], // superscript/subscript
@@ -84,21 +99,27 @@ export default {
               },
               'video' (value) {
                 if (value) {
-                  // that.ui.index = this.quill.getSelection().index
-                  // that.ui.imageSelectorShow = true
-                  that.$toast()
+                  that.ui.index = this.quill.getSelection().index
+                  that.ui.videoSelectorShow = true
                 } else {
-                  this.quill.format('image', false)
+                  this.quill.format('video', false)
                 }
               },
-              'music' () {
+              'audio' () {
                 that.$toast()
               }
             }
+          },
+          imageResize: {
+            displayStyles: {
+              backgroundColor: 'black',
+              border: 'none',
+              color: 'white'
+            },
+            modules: [ 'Resize', 'DisplaySize', 'Toolbar' ]
           }
         }
-      },
-      imgOrigin: IMG_ORIGIN
+      }
     }
   },
   methods: {
@@ -115,10 +136,13 @@ export default {
     insertImage () {
       let quill = this.$refs.editor.quill
       this.$refs.mediaPhotos.selected.forEach(v => {
-        quill.insertEmbed(this.ui.index, 'image', this.imgOrigin + v.filePath + v.fileName)
+        quill.insertEmbed(this.ui.index, 'image', this.$refs.mediaPhotos.imgOrigin + v.filePath + v.fileName)
         quill.setSelection(++this.ui.index)
       })
       this.ui.imageSelectorShow = false
+    },
+    insertVideo () {
+
     }
   }
 }
@@ -165,12 +189,22 @@ export default {
       }
       .nav-item-icon{margin-right: 15px;}
     }
-    .search-bar input{width:200px;height: 100%;border:none;margin-left: 10px;}
+    .search-bar input{width:150px;height: 100%;border:none;margin-left: 10px;}
     .media-group{padding: 13px 30px;
       ul{flex-wrap: wrap;}
       li{margin: 0 6px 6px 0}
     }
     .media-group-title{padding: 15px 0;}
+    .media-group-title{padding: 15px 0;}
+    .bubble-item{padding: 4px 15px;white-space: nowrap;cursor: pointer;}
+    .bubble-item:hover{background: rgba(0, 0, 0, .1)}
+    .datepicker{
+      &:before{content: none;}
+      input{background: transparent;border: none;padding: 0 10px;}
+    }
+    .datepicker-range{min-width: 200px;
+      .datepicker-popup{right: 0;width: 420px;}
+    }
   }
 }
 </style>

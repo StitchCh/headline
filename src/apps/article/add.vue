@@ -11,6 +11,7 @@
       <div class="flex-v-center">
         <btn big flat style="margin-right: 15px;">递交审核</btn>
         <btn big flat style="margin-right: 10px;">预览</btn>
+        <btn big flat style="margin-right: 10px;" @click="autoSave">保存草稿</btn>
         <btn big style="margin-right: 20px;" @click="submit">发布</btn>
         <icon-btn v-tooltip:bottom="'发布选项'" @click="ui.optionShow=!ui.optionShow">menu</icon-btn>
       </div>
@@ -43,16 +44,10 @@
         <icon-btn small v-tooltip:top="'发布到移动网页'" :class="{ active: form.terminalWeb }" @click="form.terminalWeb = ~~!form.terminalWeb">public</icon-btn>
       </div>
       <div style="margin: 10px 0;">
-        <div class="add-photo-btn a flex-center" style="height:158px;margin-bottom: 8px;" @click="$toast()">
-          <i class="icon f-32 c-a">add_photo_alternate</i>
-        </div>
+        <app-article-add-thumb v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
         <div v-if="form.thumbType == 2" class="flex">
-          <div class="add-photo-btn a flex-item flex-center" style="height:120px;margin-right: 8px;" @click="$toast()">
-            <i class="icon f-32 c-a">add_photo_alternate</i>
-          </div>
-          <div class="add-photo-btn a flex-item flex-center" style="height:120px;" @click="$toast()">
-            <i class="icon f-32 c-a">add_photo_alternate</i>
-          </div>
+          <app-article-add-thumb v-model="thumb.thumb2" height="80px" class="flex-item" style="margin-right: 8px;"></app-article-add-thumb>
+          <app-article-add-thumb v-model="thumb.thumb3" height="80px" class="flex-item"></app-article-add-thumb>
         </div>
         <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
           <div class="flex-item"><radio-box text="默认" :label="1" v-model="form.thumbType"/></div>
@@ -124,7 +119,7 @@
         </div>
         <app-article-add-comment v-if="form.isOpenComment" v-model="form.virtualComment"></app-article-add-comment>
       </div>
-      <app-article-add-relates :channels="ui.channels.channels" v-model="form.galleryId" title="相关图集" icon="collections" url="/cri-cms-platform/article/associate/gallery.monitor">
+      <app-article-add-relates single :channels="ui.channels.channels" v-model="form.galleryId" title="相关图集" icon="collections" url="/cri-cms-platform/article/associate/gallery.monitor">
         <template slot="afterTitle">
           <span class="flex-item"></span>
           <i class="add-gallery-setting-btn icon c-8" @click.stop="ui.gallerySettingShow = true">settings</i>
@@ -146,7 +141,7 @@
         </layer>
       </app-article-add-relates>
       <app-article-add-relates :channels="ui.channels.channels" v-model="form.relateIds" title="相关阅读" icon="book" url="/cri-cms-platform/article/associate/article.monitor"></app-article-add-relates>
-      <app-article-add-relates :channels="ui.channels.channels" v-model="form.specialId" title="相关专题" icon="assignment" url="/cri-cms-platform/article/associate/special.monitor"></app-article-add-relates>
+      <app-article-add-relates single :channels="ui.channels.channels" v-model="form.specialId" title="相关专题" icon="assignment" url="/cri-cms-platform/article/associate/special.monitor"></app-article-add-relates>
       <app-article-add-attachment v-model="form.attachmentIds" :default-list="attachmentDefaultList"></app-article-add-attachment>
       <!--<div class="option-item flex-v-center blue a">-->
         <!--<i class="icon f-20 add-other-icon">attach_file</i>-->
@@ -186,6 +181,7 @@ import SelectCardOption from '@/components/select-card/option'
 import AppArticleAddComment from './comment'
 import AppArticleAddRelates from './relates'
 import AppArticleAddAttachment from './attachment'
+import AppArticleAddThumb from './thumb'
 
 const from = {
   article: {
@@ -198,7 +194,7 @@ const from = {
 
 export default {
   name: 'app-article-add',
-  components: { ArticleEditor, VueDatepickerLocal, SelectCard, SelectCardOption, AppArticleAddComment, AppArticleAddRelates, AppArticleAddAttachment },
+  components: { ArticleEditor, VueDatepickerLocal, SelectCard, SelectCardOption, AppArticleAddComment, AppArticleAddRelates, AppArticleAddAttachment, AppArticleAddThumb },
   props: [ 'from', 'id' ],
   data () {
     return {
@@ -249,11 +245,15 @@ export default {
         terminalWeb: 0,
         attachmentIds: ''
       },
+      thumb: {
+        thumb1: null,
+        thumb2: null,
+        thumb3: null
+      },
       attachmentDefaultList: [],
       addCommentShow: false,
-      autoSaveForm: {
-        id: ''
-      }
+      autoSaveId: '',
+      autoSaveTimer: null
     }
   },
   computed: {
@@ -293,7 +293,22 @@ export default {
       return time <= new Date()
     },
     autoSave () {
-      // let { title, titleColor, content } = this.$refs.editor
+      let { title, titleColor, content } = this.$refs.editor
+      this.form.title = title
+      this.form.titleColor = titleColor
+      this.form.content = content
+      let form = {...this.form}
+      if (this.autoSaveId) form.id = this.autoSaveId
+      return this.$http.post('/cri-cms-platform/articleAutoSave/saveAuto.monitor', form).then(
+        res => {
+          this.autoSaveId = res.autoSaveId
+          this.$toast('自动保存成功')
+        }
+      ).catch(
+        res => {
+          this.$toast(res.msg || res || '保存失败')
+        }
+      )
     },
     submit () {
       let url = this.id ? '/cri-cms-platform/article/update.monitor' : '/cri-cms-platform/article/save.monitor'
@@ -335,11 +350,14 @@ export default {
   },
   created () {
     this.getChannels()
+    this.autoSaveTimer = setInterval(() => {
+      this.autoSave()
+    }, 60000)
   },
   mounted () {
     if (this.from && this.id) {
-      //
       this.ui.loading = true
+      if (this.from === 'draft') this.autoSaveId = this.id
       this.$http.post(from[this.from].getUrl, {
         id: this.id
       }).then(res => {
@@ -357,9 +375,15 @@ export default {
           this.form[k] = res.content[k]
         }
         this.form.content = res.article.content
-        this.form.channelIds = res.channelIds
+        this.form.channelIds = res.channelIds || ''
         this.form.relateIds = res.relateArticle.map(v => v.id).join(',')
-        this.form.specialId = res.relateSpecial.id
+        this.form.specialId = res.relateSpecial.id || ''
+        this.attachmentDefaultList = res.attachments
+        this.gallerySettingDisplayPosition = res.gallerySettingDisplayPosition
+        this.gallerySettingMaxWidth = res.gallerySettingMaxWidth
+        this.gallerySettingMinHeight = res.gallerySettingMinHeight
+        this.gallerySettingThumbHeight = res.gallerySettingThumbHeight
+        this.gallerySettingThumbWidth = res.gallerySettingThumbWidth
         this.ui.loading = false
         this.$nextTick(() => {
           this.$refs.editor.title = this.form.title
@@ -370,6 +394,80 @@ export default {
         console.log(e)
       })
     }
+  },
+  watch: {
+    'thumb.thumb1' (newValue) {
+      if (this.form.thumbType === 2) {
+        if (!(newValue || this.thumb.thumb2 || this.thumb.thumb3)) {
+          this.form.hasThumb = 0
+          this.form.thumb = ''
+        } else {
+          this.form.hasThumb = 1
+          this.form.thumb = JSON.stringify([ newValue, this.thumb.thumb2, this.thumb.thumb3 ])
+        }
+      } else {
+        if (!newValue) {
+          this.form.hasThumb = 0
+          this.form.thumb = ''
+        } else {
+          this.form.hasThumb = 1
+          this.form.thumb = JSON.stringify([ newValue ])
+        }
+      }
+    },
+    'thumb.thumb2' (newValue) {
+      if (!(this.thumb.thumb1 || newValue || this.thumb.thumb3)) {
+        this.form.hasThumb = 0
+        this.form.thumb = ''
+      } else {
+        this.form.hasThumb = 1
+        this.form.thumb = JSON.stringify([ this.thumb.thumb1, newValue, this.thumb.thumb3 ])
+      }
+    },
+    'thumb.thumb3' (newValue) {
+      if (!(this.thumb.thumb1 || this.thumb.thumb2 || newValue)) {
+        this.form.hasThumb = 0
+        this.form.thumb = ''
+      } else {
+        this.form.hasThumb = 1
+        this.form.thumb = JSON.stringify([ this.thumb.thumb1, this.thumb.thumb2, newValue ])
+      }
+    },
+    'form.thumbType' (newValue) {
+      if (newValue === 2) {
+        if (!(this.thumb.thumb1 || this.thumb.thumb2 || this.thumb.thumb3)) {
+          this.form.hasThumb = 0
+          this.form.thumb = ''
+        } else {
+          this.form.hasThumb = 1
+          this.form.thumb = JSON.stringify([ this.thumb.thumb1, this.thumb.thumb2, this.thumb.thumb3 ])
+        }
+      } else {
+        if (!this.thumb.thumb1) {
+          this.form.hasThumb = 0
+          this.form.thumb = ''
+        } else {
+          this.form.hasThumb = 1
+          this.form.thumb = JSON.stringify([ this.thumb.thumb1 ])
+        }
+      }
+    }
+  },
+  beforeRouteLeave (from, to, next) {
+    let that = this
+    this.$confirm({
+      title: '您确定要离开吗？',
+      text: '未保存的内容将无法恢复。',
+      btns: ['取消', '离开'],
+      color: 'red',
+      yes () {
+        clearInterval(that.autoSaveTimer)
+        next()
+      },
+      no () {
+        next(false)
+      }
+    })
   }
 }
 </script>

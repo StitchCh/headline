@@ -120,6 +120,8 @@ export default {
       if (this.single) {
         this.list.selected.splice(0, 1, this.list.unselected.splice(index, 1)[0])
         this.form.selectedIds = this.list.selected[0].id
+        this.getList()
+        return
       }
       if (this.list.selected.length === 10) {
         this.$emit('最多可添加10条')
