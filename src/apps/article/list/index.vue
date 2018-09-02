@@ -22,9 +22,9 @@
             <i v-tooltip:top="'阅读'">{{slotProps.item.pv}}</i>/<i v-tooltip:top="'评论'">{{slotProps.item.commentCount}}</i>/<i v-tooltip:top="'分享'">{{slotProps.item.shareCount}}</i>/<i v-tooltip:top="'点赞'">{{slotProps.item.diggCount}}</i>
           </span>
           <span class="flex-item"></span>
-          <i class="icon f-14 tg-icon c-a" v-if="~~slotProps.item.terminalPc">computer</i>
-          <i class="icon f-14 tg-icon c-a" v-if="~~slotProps.item.terminalApp">phone_iphone</i>
-          <i class="icon f-14 tg-icon c-a" v-if="~~slotProps.item.terminalWeb">public</i>
+          <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalPc }">computer</i>
+          <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalApp }">phone_iphone</i>
+          <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalWeb }">public</i>
         </div>
       </div>
     </af-center>
@@ -35,12 +35,6 @@
             <icon-btn small v-tooltip:bottom="'查看'">remove_red_eye</icon-btn>
           </div>
           <div class="tool-item">
-            <icon-btn small v-tooltip:bottom="'操作历史'" @click="showHistroy">schedule</icon-btn>
-          </div>
-          <div class="tool-item">
-            <icon-btn small v-tooltip:bottom="'统计'" @click="$router.push({path: `/article/list/${id}/statistics`, query: $route.query})">equalizer</icon-btn>
-          </div>
-          <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn>
           </div>
           <div class="tool-item">
@@ -49,8 +43,13 @@
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'删除'" @click="deleteArticle">delete</icon-btn>
           </div>
-          <div class="tool-item">
-            <icon-btn small v-tooltip:bottom="'二维码'"><img class="qr-icon" src="../../../assets/img/QR_code.svg"></icon-btn>
+          <div class="tool-item relative">
+            <icon-btn small v-tooltip:bottom="'二维码'" @click="ui.qrcodeShow=!ui.qrcodeShow"><img class="qr-icon" src="../../../assets/img/QR_code.svg"></icon-btn>
+            <bubble v-if="ui.qrcodeShow" @close="ui.qrcodeShow=false">
+              <div style="width: 200px;height: 200px;">
+                <img :src="qrcode(id)">
+              </div>
+            </bubble>
           </div>
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'复制并重新发布'" @click="copyArticle">file_copy</icon-btn>
@@ -59,34 +58,17 @@
         <div class="flex-item"></div>
         <account/>
       </div>
-      <div class="flex-item scroll-y">
-        <router-view/>
+      <div class="flex-item flex-col">
+        <div v-if="id" class="flex-center" style="height: 60px;">
+          <div class="tab">
+            <div class="tab-item" :class="{ on: $route.name === 'ArticleContent' }" @click="$router.replace({path: `/article/list/${id}`, query: $route.query})">内容</div>
+            <div class="tab-item" :class="{ on: $route.name === 'ArticleStatistics' }" @click="$router.replace({path: `/article/list/${id}/statistics`, query: $route.query})">统计</div>
+            <div class="tab-item" :class="{ on: $route.name === 'ArticleHistory' }" @click="$router.replace({path: `/article/list/${id}/history`, query: $route.query})">历史</div>
+          </div>
+        </div>
+        <router-view :channels="ui.channels"/>
       </div>
     </div>
-
-    <layer v-if="history.show" title="操作历史" width="600px">
-      <div class="layer-text">
-        <table>
-          <thead>
-            <th>操作</th>
-            <th>操作人</th>
-            <th>操作时间</th>
-            <th>备注</th>
-          </thead>
-          <tbody>
-            <tr v-for="operate in history.list" :key="operate.id">
-              <td>{{operate.operate}}</td>
-              <td>{{operate.operateUser}}</td>
-              <td>{{operate.operateTime}}</td>
-              <td>{{operate.remark}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="layer-btns">
-        <btn flat color="#008cff" @click="history.show = false">关闭</btn>
-      </div>
-    </layer>
   </div>
 </template>
 
@@ -100,33 +82,26 @@ export default {
   props: ['id'],
   data () {
     return {
-      list: [],
-      history: {
-        show: false,
-        id: '',
-        list: []
-      }
+      ui: {
+        channels: [],
+        qrcodeShow: false
+      },
+      list: []
     }
   },
   methods: {
+    getChannels () {
+      this.$http.post('/cri-cms-platform/article/getChannels.monitor').then(res => {
+        this.ui.channels = res || []
+      }).catch(e => {
+        this.$toast(e.msg)
+      })
+    },
     onItemClick (item) {
       this.$router.replace({
         path: `/article/list/${item.id}`,
         query: this.$route.query
       })
-    },
-    showHistroy () {
-      if (this.history.id === this.$route.params.id) {
-        this.history.show = true
-        return
-      }
-      this.history.id = this.$route.params.id
-      this.$http.post('/cri-cms-platform/article/getOperateHistroy.monitor', { contentId: this.history.id }).then(
-        res => {
-          this.history.list = res
-          this.history.show = true
-        }
-      )
     },
     copyArticle () {
       let that = this
@@ -162,7 +137,14 @@ export default {
           })
         }
       })
+    },
+    qrcode (id) {
+      let siteId = localStorage.getItem('siteId')
+      return `http://qr.liantu.com/api.php?&w=200&text=http://60.247.77.208:59098/cri-cms-api/preview?siteId=${siteId}&id=${id}`
     }
+  },
+  created () {
+    this.getChannels()
   }
 }
 </script>

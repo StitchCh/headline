@@ -9,10 +9,10 @@
       </div>
       <div class="flex-item"></div>
       <div class="flex-v-center">
-        <btn big flat style="margin-right: 15px;">递交审核</btn>
+        <!--<btn big flat style="margin-right: 15px;">递交审核</btn>-->
         <btn big flat style="margin-right: 10px;">预览</btn>
         <btn big flat style="margin-right: 10px;" @click="autoSave">保存草稿</btn>
-        <btn big style="margin-right: 20px;" @click="submit">发布</btn>
+        <btn big style="margin-right: 20px;" @click="submit">保存</btn>
         <icon-btn v-tooltip:bottom="'发布选项'" @click="ui.optionShow=!ui.optionShow">menu</icon-btn>
       </div>
     </div>
@@ -73,6 +73,16 @@
       <div class="option-item">
         <input type="text" placeholder="作者，逗号分隔" v-model="form.author">
       </div>
+      <div class="option-item flex-v-center" v-if="form.createDate !== undefined">
+        <div class="flex-item">创建时间</div>
+        <div class="relative flex-v-center a">
+          <span v-if="!form.createDate" class="flex-v-center" style="position: absolute;right: 0;">
+            <span>设置</span>
+            <i class="icon f-18 c-a">keyboard_arrow_down</i>
+          </span>
+          <vue-datepicker-local show-buttons clearable format="YYYY-MM-DD HH:mm:ss" v-model="form.createDate"></vue-datepicker-local>
+        </div>
+      </div>
       <div class="option-item">
         <input type="number" placeholder="权重，范围 0 ~ 100" v-model="form.weight">
       </div>
@@ -80,26 +90,26 @@
         <span class="flex-item">水印</span>
         <switcher mode="Number" v-model="form.isWatermarked"/>
       </div>
-      <div class="option-item flex-v-center">
-        <div class="flex-item">定时上线</div>
-        <div class="relative flex-v-center a">
-          <span v-if="!form.upLineTime" class="flex-v-center" style="position: absolute;right: 0;">
-            <span>设置</span>
-            <i class="icon f-18 c-a">keyboard_arrow_down</i>
-          </span>
-          <vue-datepicker-local show-buttons clearable format="YYYY-MM-DD HH:mm:ss" v-model="form.upLineTime"></vue-datepicker-local>
-        </div>
-      </div>
-      <div class="option-item flex-v-center">
-        <div class="flex-item">定时下线</div>
-        <div class="relative flex-v-center a">
-          <span v-if="!form.downLineTime" class="flex-v-center" style="position: absolute;right: 0;">
-            <span>设置</span>
-            <i class="icon f-18 c-a">keyboard_arrow_down</i>
-          </span>
-          <vue-datepicker-local show-buttons clearable format="YYYY-MM-DD HH:mm:ss" v-model="form.downLineTime"></vue-datepicker-local>
-        </div>
-      </div>
+      <!--<div class="option-item flex-v-center">-->
+        <!--<div class="flex-item">定时上线</div>-->
+        <!--<div class="relative flex-v-center a">-->
+          <!--<span v-if="!form.upLineTime" class="flex-v-center" style="position: absolute;right: 0;">-->
+            <!--<span>设置</span>-->
+            <!--<i class="icon f-18 c-a">keyboard_arrow_down</i>-->
+          <!--</span>-->
+          <!--<vue-datepicker-local show-buttons clearable format="YYYY-MM-DD HH:mm:ss" v-model="form.upLineTime"></vue-datepicker-local>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="option-item flex-v-center">-->
+        <!--<div class="flex-item">定时下线</div>-->
+        <!--<div class="relative flex-v-center a">-->
+          <!--<span v-if="!form.downLineTime" class="flex-v-center" style="position: absolute;right: 0;">-->
+            <!--<span>设置</span>-->
+            <!--<i class="icon f-18 c-a">keyboard_arrow_down</i>-->
+          <!--</span>-->
+          <!--<vue-datepicker-local show-buttons clearable format="YYYY-MM-DD HH:mm:ss" v-model="form.downLineTime"></vue-datepicker-local>-->
+        <!--</div>-->
+      <!--</div>-->
       <div class="option-item flex-v-center">
         <span>初始阅读量</span>
         <input class="flex-item t-right" type="number" placeholder="请输入" v-model="form.virtualPv">
@@ -174,6 +184,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import ArticleEditor from './editor'
 import VueDatepickerLocal from 'vue-datepicker-local'
 import SelectCard from '@/components/select-card/index'
@@ -205,7 +216,8 @@ export default {
         channelShow: false,
         channels: [],
         gallerySettingShow: false,
-        gallerySettingDisplayPositionShow: false
+        gallerySettingDisplayPositionShow: false,
+        submited: false
       },
       form: {
         app: 'ARTICLE',
@@ -231,8 +243,8 @@ export default {
         author: '',
         weight: '',
         isWatermarked: 0,
-        upLineTime: '',
-        downLineTime: '',
+        // upLineTime: '',
+        // downLineTime: '',
         virtualPv: '',
         virtualComment: '',
         virtualShare: '',
@@ -302,7 +314,7 @@ export default {
       return this.$http.post('/cri-cms-platform/articleAutoSave/saveAuto.monitor', form).then(
         res => {
           this.autoSaveId = res.autoSaveId
-          this.$toast('自动保存成功')
+          this.$toast('保存成功')
         }
       ).catch(
         res => {
@@ -330,13 +342,16 @@ export default {
       this.form.titleColor = titleColor
       this.form.content = content
       let form = {...this.form}
+      if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
       if (this.id) form.id = this.id
       this.$http.post(url, form).then(
         res => {
+          this.ui.submited = true
           this.$router.replace('/article/list?scope=all&status=all')
         }
       ).catch(
         res => {
+          this.$toast(res || res.msg || '保存失败')
           console.log(res)
         }
       )
@@ -361,12 +376,15 @@ export default {
       this.$http.post(from[this.from].getUrl, {
         id: this.id
       }).then(res => {
-        console.log(res)
         for (let k in this.form) {
-          if (k === 'virtualComment' || k === 'thumb') {
-            if (res.content[k] === '') continue
+          if (k === 'virtualComment') {
             this.form[k] = JSON.stringify(res.content[k])
             continue
+          }
+          if (k === 'thumb') {
+            this.thumb.thumb1 = res.content.thumb[0]
+            this.thumb.thumb2 = res.content.thumb[1]
+            this.thumb.thumb3 = res.content.thumb[2]
           }
           if (k === 'isDelete' || k === 'isOpenComment' || k === 'isOriginal' || k === 'isRecommnd' || k === 'isWatermarked' || k === 'terminalApp' || k === 'terminalPc' || k === 'terminalWeb' || k === 'hasThumb') {
             this.form[k] = Number(res.content[k])
@@ -374,16 +392,17 @@ export default {
           }
           this.form[k] = res.content[k]
         }
+        this.form.createDate = res.content.createDate
         this.form.content = res.article.content
         this.form.channelIds = res.channelIds || ''
         this.form.relateIds = res.relateArticle.map(v => v.id).join(',')
         this.form.specialId = res.relateSpecial.id || ''
         this.attachmentDefaultList = res.attachments
-        this.gallerySettingDisplayPosition = res.gallerySettingDisplayPosition
-        this.gallerySettingMaxWidth = res.gallerySettingMaxWidth
-        this.gallerySettingMinHeight = res.gallerySettingMinHeight
-        this.gallerySettingThumbHeight = res.gallerySettingThumbHeight
-        this.gallerySettingThumbWidth = res.gallerySettingThumbWidth
+        this.form.gallerySettingDisplayPosition = res.gallerySettingDisplayPosition || '1'
+        this.form.gallerySettingMaxWidth = res.gallerySettingMaxWidth || '640'
+        this.form.gallerySettingMinHeight = res.gallerySettingMinHeight || '480'
+        this.form.gallerySettingThumbHeight = res.gallerySettingThumbHeight || '80'
+        this.form.gallerySettingThumbWidth = res.gallerySettingThumbWidth || '60'
         this.ui.loading = false
         this.$nextTick(() => {
           this.$refs.editor.title = this.form.title
@@ -397,13 +416,14 @@ export default {
   },
   watch: {
     'thumb.thumb1' (newValue) {
+      console.log(newValue)
       if (this.form.thumbType === 2) {
         if (!(newValue || this.thumb.thumb2 || this.thumb.thumb3)) {
           this.form.hasThumb = 0
           this.form.thumb = ''
         } else {
           this.form.hasThumb = 1
-          this.form.thumb = JSON.stringify([ newValue, this.thumb.thumb2, this.thumb.thumb3 ])
+          this.form.thumb = [ newValue, this.thumb.thumb2, this.thumb.thumb3 ].filter(v => v).map(v => v.id).join(',')
         }
       } else {
         if (!newValue) {
@@ -411,7 +431,7 @@ export default {
           this.form.thumb = ''
         } else {
           this.form.hasThumb = 1
-          this.form.thumb = JSON.stringify([ newValue ])
+          this.form.thumb = newValue
         }
       }
     },
@@ -421,7 +441,7 @@ export default {
         this.form.thumb = ''
       } else {
         this.form.hasThumb = 1
-        this.form.thumb = JSON.stringify([ this.thumb.thumb1, newValue, this.thumb.thumb3 ])
+        this.form.thumb = [ this.thumb.thumb1, newValue, this.thumb.thumb3 ].filter(v => v).map(v => v.id).join(',')
       }
     },
     'thumb.thumb3' (newValue) {
@@ -430,7 +450,7 @@ export default {
         this.form.thumb = ''
       } else {
         this.form.hasThumb = 1
-        this.form.thumb = JSON.stringify([ this.thumb.thumb1, this.thumb.thumb2, newValue ])
+        this.form.thumb = [ this.thumb.thumb1, this.thumb.thumb2, newValue ].filter(v => v).map(v => v.id).join(',')
       }
     },
     'form.thumbType' (newValue) {
@@ -440,7 +460,7 @@ export default {
           this.form.thumb = ''
         } else {
           this.form.hasThumb = 1
-          this.form.thumb = JSON.stringify([ this.thumb.thumb1, this.thumb.thumb2, this.thumb.thumb3 ])
+          this.form.thumb = [ this.thumb.thumb1, this.thumb.thumb2, this.thumb.thumb3 ].filter(v => v).map(v => v.id).join(',')
         }
       } else {
         if (!this.thumb.thumb1) {
@@ -448,12 +468,17 @@ export default {
           this.form.thumb = ''
         } else {
           this.form.hasThumb = 1
-          this.form.thumb = JSON.stringify([ this.thumb.thumb1 ])
+          this.form.thumb = this.thumb.thumb1.id
         }
       }
     }
   },
   beforeRouteLeave (from, to, next) {
+    if (this.ui.submited) {
+      clearInterval(this.autoSaveTimer)
+      next()
+      return
+    }
     let that = this
     this.$confirm({
       title: '您确定要离开吗？',

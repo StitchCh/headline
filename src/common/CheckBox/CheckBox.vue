@@ -6,6 +6,7 @@
   :value="label"
   v-model="model"
   @change="handleChange"
+  ref="input"
   type="checkbox">
   <i></i>
   <span class="check-box-text" v-text="text"></span>

@@ -4,7 +4,7 @@
     <icon-btn class="add-btn" v-tooltip:bottom="'添加'" @click="$emit('add')">add</icon-btn>
   </div>
   <div class="flex-v-center filter-bar c-6 f-13">
-    <i class="icon c-a a item" v-tooltip:top="'推荐'">thumb_up</i>
+    <i class="icon c-a a item" :class="{ active: filter.recommend }" v-tooltip:top="'推荐'" @click="filter.recommend = ~~!filter.recommend || '';getList(true)">thumb_up</i>
     <span class="flex-item"></span>
     <i class="icon c-a a item" style="font-size:18px;" v-tooltip:top="'搜索'" @click="ui.searchShow=!ui.searchShow">search</i>
     <!-- <div class="relative">
@@ -80,7 +80,7 @@
       <slot :item="slotProps.item"></slot>
     </li>
   </list-view>
-  <div class="af-bottombar flex-v-center">
+  <div class="af-bottombar flex-center">
     <icon-btn small class="a" @click="onPrev" :disabled="filter.toPage <= 1">keyboard_arrow_left</icon-btn>
     <span class="f-14 c-6" style="margin: 0 10px;line-height: 1em;">第 {{filter.toPage}} / {{totalPage}} 页</span>
     <icon-btn small class="a" @click="onNext" :disabled="filter.toPage >= totalPage">keyboard_arrow_right</icon-btn>
@@ -103,7 +103,7 @@ export default {
   data () {
     return {
       list: [],
-      totalPage: 0,
+      totalPage: 1,
       ui: {
         searchShow: false,
         searchOptionShow: false,
@@ -136,7 +136,8 @@ export default {
         terminalPc: '',
         terminalApp: '',
         terminalWeb: '',
-        publishChannelId: ''
+        publishChannelId: '',
+        recommend: ''
       },
       channels: []
     }
@@ -163,6 +164,10 @@ export default {
       this.getList(true)
     },
     'filter.searchby' () {
+      this.ui.searchOptionShow = false
+      if (this.filter.search) this.getList(true)
+    },
+    'filter.recommend' () {
       this.ui.searchOptionShow = false
       if (this.filter.search) this.getList(true)
     }

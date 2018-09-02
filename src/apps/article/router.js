@@ -16,12 +16,20 @@ export default [{
       children: [
         {
           path: ':id',
+          name: 'ArticleContent',
           component: resolve => require(['@/apps/article/list/content.vue'], resolve),
           props: true
         },
         {
           path: ':id/statistics',
+          name: 'ArticleStatistics',
           component: resolve => require(['@/apps/article/list/statistics.vue'], resolve),
+          props: true
+        },
+        {
+          path: ':id/history',
+          name: 'ArticleHistory',
+          component: resolve => require(['@/apps/article/list/history.vue'], resolve),
           props: true
         }
       ]

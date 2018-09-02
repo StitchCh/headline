@@ -103,13 +103,19 @@ export default {
   },
   watch: {
     'form.names' () {
-      this.$emit('input', JSON.stringify(this.form))
+      let formTxt = JSON.stringify(this.form)
+      if (!this.form.names.length || !this.form.comments.length) formTxt = ''
+      this.$emit('input', formTxt)
     },
     'form.comments' () {
-      this.$emit('input', JSON.stringify(this.form))
+      let formTxt = JSON.stringify(this.form)
+      if (!this.form.names.length || !this.form.comments.length) formTxt = ''
+      this.$emit('input', formTxt)
     },
     'form.displayMinutes' () {
-      this.$emit('input', JSON.stringify(this.form))
+      let formTxt = JSON.stringify(this.form)
+      if (!this.form.names.length || !this.form.comments.length) formTxt = ''
+      this.$emit('input', formTxt)
     }
   }
 }
