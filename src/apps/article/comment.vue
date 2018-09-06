@@ -98,7 +98,8 @@ export default {
     }
   },
   created () {
-    if (this.value === '') return
+    console.log(1, this.value)
+    if (!this.value) return
     this.form = JSON.parse(this.value)
   },
   watch: {

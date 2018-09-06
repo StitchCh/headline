@@ -16,17 +16,11 @@
 </template>
 
 <script>
-import Account from '@/components/account'
 import AfLeft from '@/components/app-frame/afLeft'
 
 export default {
   name: 'app-article',
-  components: { Account, AfLeft },
-  data () {
-    return {
-      list: []
-    }
-  },
+  components: { AfLeft },
   computed: {
     defaultActive () {
       return `${this.$route.query.scope}-${this.$route.query.status}`

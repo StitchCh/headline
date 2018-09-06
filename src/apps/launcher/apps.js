@@ -8,11 +8,11 @@ export default [{
   icon: 'icon-gallery'
 }, {
   name: '视频',
-  path: '/videos',
+  path: '/video/list?scope=all&status=all',
   icon: 'icon-videos'
 }, {
   name: '音频',
-  path: '/audios',
+  path: '/audio',
   icon: 'icon-audios'
 }, {
   name: '专题',

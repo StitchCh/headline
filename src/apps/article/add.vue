@@ -83,9 +83,9 @@
           <vue-datepicker-local show-buttons clearable format="YYYY-MM-DD HH:mm:ss" v-model="form.createDate"></vue-datepicker-local>
         </div>
       </div>
-      <div class="option-item">
-        <input type="number" placeholder="权重，范围 0 ~ 100" v-model="form.weight">
-      </div>
+      <!--<div class="option-item">-->
+        <!--<input type="number" placeholder="权重，范围 0 ~ 100" v-model="form.weight">-->
+      <!--</div>-->
       <div class="option-item flex-v-center">
         <span class="flex-item">水印</span>
         <switcher mode="Number" v-model="form.isWatermarked"/>
@@ -241,7 +241,7 @@ export default {
         abstarcts: '',
         keywords: '',
         author: '',
-        weight: '',
+        // weight: '',
         isWatermarked: 0,
         // upLineTime: '',
         // downLineTime: '',
@@ -378,7 +378,11 @@ export default {
       }).then(res => {
         for (let k in this.form) {
           if (k === 'virtualComment') {
-            this.form[k] = JSON.stringify(res.content[k])
+            if (res.content[k] === '') {
+              this.form[k] = ''
+            } else {
+              this.form[k] = JSON.stringify(res.content[k])
+            }
             continue
           }
           if (k === 'thumb') {
@@ -431,7 +435,7 @@ export default {
           this.form.thumb = ''
         } else {
           this.form.hasThumb = 1
-          this.form.thumb = newValue
+          this.form.thumb = newValue.id
         }
       }
     },

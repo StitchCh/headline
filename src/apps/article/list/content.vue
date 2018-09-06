@@ -106,9 +106,6 @@
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 
-console.log(swiper)
-console.log(swiperSlide)
-
 export default {
   name: 'app-article-content',
   components: { swiper, swiperSlide },
@@ -164,9 +161,6 @@ export default {
   },
   created () {
     this.getArticle()
-  },
-  mounted () {
-
   },
   watch: {
     id () {
@@ -229,11 +223,11 @@ export default {
 <style lang="less">
 .article-content{
   h1{line-height: 1.3em;font-size: 26px;}
-  .art-abstarcts {padding: 10px 20px;font-size: 14px;background: #f3f3f3;border-radius: 8px;}
   .art-ctn{max-width: 900px;margin: 0 auto;padding: 30px;}
   .art-info {height: 50px;
     span{margin-right: 15px;}
   }
+  .art-abstarcts {padding: 10px 20px;font-size: 14px;background: #f3f3f3;border-radius: 8px;}
   .art-relate{margin-top: 20px;border: 1px solid #ddd;padding: 10px 20px;border-radius: 8px;
     li{padding: 2px 0;}
     a{text-decoration: none;}
@@ -244,7 +238,6 @@ export default {
       a {text-decoration: none;}
     }
   }
-  .art-bottom-bar {height: 40px;border-top: 1px solid rgba(0, 0, 0, .1);padding: 0 15px;}
   .gallery-top {
     .description{position: absolute;bottom: 0;width: 100%;background: rgba(255, 255, 255, .8);box-sizing: border-box;padding: 20px;opacity: 0;transition: opacity .3s}
     .swiper-slide:hover .description{opacity: 1;}
