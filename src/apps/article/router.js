@@ -36,6 +36,7 @@ export default [{
     },
     {
       path: 'tile',
+      name: 'ArticleTile',
       component: resolve => require(['@/apps/article/tile/index.vue'], resolve)
     },
     {
@@ -44,11 +45,13 @@ export default [{
     },
     {
       path: 'recycle',
+      name: 'ArticleRecycle',
       component: resolve => require(['@/apps/article/recycle/index.vue'], resolve),
       props: true,
       children: [
         {
           path: ':id',
+          name: 'ArticleRecycleContent',
           component: resolve => require(['@/apps/article/list/content.vue'], resolve),
           props: true
         }

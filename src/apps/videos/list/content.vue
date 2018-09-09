@@ -1,6 +1,10 @@
 <template>
   <div class="flex-item flex-col">
-    <div class="flex-item scroll-y">
+    <transition name="fade" mode="out-in">
+    <div v-if="loading" class="flex-item flex-center">
+      <loading></loading>
+    </div>
+    <div v-else class="flex-item scroll-y">
       <div class="relative video-content c-6">
         <div v-if="!content || !content.id" class="abs flex-center" style="height: 400px;">
           <no-data/>
@@ -14,11 +18,17 @@
             <span class="flex-item"></span>
             <img v-if="content && content.thumb" v-for="item in content.thumb" :key="item.id" :src="item.url" @click="thumbItem.url = item.url;thumbItem.show = true;" style="margin-left: 5px;height: 50px;cursor: pointer;">
           </div>
-          <p class="art-abstarcts"><strong>[摘要]</strong>{{content.abstarcts}}</p>
-
+          <p class="vdo-abstarcts"><strong>[摘要]</strong>{{content.abstarcts}}</p>
+          <div>
+            <video-player class="vjs-custom-skin"
+                          ref="videoPlayer"
+                          :options="playerOptions"
+                          :playsinline="true"></video-player>
+          </div>
         </div>
       </div>
     </div>
+    </transition>
     <div class="af-bottombar c-6 f-14">
       <div v-if="channelIds" style="padding: 0 15px;">
         <span v-for="(channel, index) in channelNames" :key="index" v-tooltip:top="'频道：' + channel">{{index !== 0 ? '，' : ''}}{{channel}}</span>
@@ -52,8 +62,13 @@
 </template>
 
 <script>
+import 'video.js/dist/video-js.css'
+import 'vue-video-player/src/custom-theme.css'
+import { videoPlayer } from 'vue-video-player'
+
 export default {
   name: 'app-video-content',
+  components: { videoPlayer },
   props: {
     id: String,
     channels: {
@@ -68,7 +83,21 @@ export default {
       thumbItem: {
         show: false,
         url: ''
-      }
+      },
+      playerOptions: {
+        height: '480',
+        language: 'zh-ch',
+        playbackRates: [0.7, 1.0, 1.5, 2.0],
+        sources: [{
+          type: '',
+          // mp4
+          src: ''
+          // webm
+          // src: "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm"
+        }],
+        poster: ''
+      },
+      loading: false
     }
   },
   computed: {
@@ -79,13 +108,20 @@ export default {
   },
   methods: {
     getVideo () {
+      this.loading = true
       this.$http.post('/cri-cms-platform/video/queryDetail.monitor', {
         id: this.id
       }).then(
         res => {
-          console.log(res)
           this.content = res.video || {}
+          if (res.video) {
+            this.playerOptions.sources[0].src = res.video.video
+            this.playerOptions.poster = res.video.thumb ? res.video.thumb[0].url || '' : ''
+          } else {
+            this.playerOptions.sources[0].src = this.playerOptions.poster = ''
+          }
           this.channelIds = res.channelIds || ''
+          this.loading = false
         }
       )
     },
@@ -112,7 +148,7 @@ export default {
   .vdo-info {height: 50px;
     span{margin-right: 15px;}
   }
-  .art-abstarcts {padding: 10px 20px;font-size: 14px;background: #f3f3f3;border-radius: 8px;}
+  .vdo-abstarcts {padding: 10px 20px;font-size: 14px;background: #f3f3f3;border-radius: 8px;}
 }
 .vdo-thumb-cover {position: fixed;left: 0;right: 0;top: 0;bottom: 0;background: rgba(0, 0, 0, .7);z-index: 99;text-align: center;
   img {max-width: 900px;margin: 50px auto;}

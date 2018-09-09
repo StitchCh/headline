@@ -16,7 +16,7 @@
           <td>{{operate.remark}}</td>
         </tr>
         <tr v-if="!list.length">
-          <td colspan="4">
+          <td colspan="4" style="padding: 50px;">
             <no-data></no-data>
           </td>
         </tr>

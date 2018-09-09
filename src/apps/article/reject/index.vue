@@ -1,12 +1,12 @@
 <template>
-  <div class="flex-item flex-col f-14 article-tile">
+  <div class="flex-item flex-col article-tile">
     <div class="af-topbar flex-v-center">
       <div class="flex-item"></div>
       <account/>
     </div>
     <div class="flex-item flex-col">
-      <div class="t-center" style="padding: 15px 0;"><input class="f-14 search" type="text" placeholder="输入标题并回车" v-model="filter.search" @keyup.enter="getList"/></div>
-      <div class="box flex-item relative scroll-y">
+      <div class="t-center" style="padding: 15px 0;"><input class="search" type="text" placeholder="输入标题并回车" v-model="filter.search" @keyup.enter="getList"/></div>
+      <div class="box flex-item relative scroll-y f-14">
         <transition name="fade">
           <div v-if="loading" class="flex-center abs bg-f" style="z-index: 10">
             <loading></loading>
@@ -17,7 +17,9 @@
         </div>
         <ul class="flex" ref="ul" style="flex-wrap: wrap;padding-bottom: 50px;" :style="{paddingLeft: (width - (240 * ~~((width - 80) / 240))) * 0.5 + 'px'}">
           <li v-for="item in list" :key="item.id" class="a" @click="$router.push('/articleAdd?id='+item.id)">
-            <div class="cover"></div>
+            <div class="cover flex-center">
+              <img v-if="item.thumb && item.thumb.length" :src="item.thumb[0].url" alt="">
+            </div>
             <div class="flex-v-center item-info">
               <div class="flex-item" style="overflow: hidden;">
                 <div class="c-6 item-name">{{item.title}}</div>
@@ -115,7 +117,9 @@ export default {
     li:hover{box-shadow: 0 0 3px 1px rgba(0, 0, 0, .05), 0 10px 30px rgba(0, 0, 0, .15);
       .icon{color: rgb(255, 115, 115);}
     }
-    .cover{width: 210px;height: 210px;background: #eee;}
+    .cover{width: 210px;height: 210px;background: #eee;
+      img{max-height: 100%;}
+    }
     .item-info{padding: 10px;}
     .item-name{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
   }

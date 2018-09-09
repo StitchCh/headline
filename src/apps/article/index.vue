@@ -7,9 +7,9 @@
     <navigator-item icon="check_circle" index="my-all" @click="$router.replace('/article/list?scope=my&status=all')">已发</navigator-item>
     <navigator-item icon="hourglass_full" index="my-AUDITING" @click="$router.replace('/article/list?scope=my&status=AUDITING')">待审</navigator-item>
     <navigator-item icon="error" index="my-REJECT" @click="$router.replace('/article/reject?scope=my&status=REJECT')">驳回</navigator-item>
-    <navigator-item icon="class" index="my-4" @click="$router.replace('/article/tile')">草稿</navigator-item>
+    <navigator-item icon="class" index="ArticleTile" @click="$router.replace('/article/tile')">草稿</navigator-item>
     <!-- </navigator-item-group> -->
-    <navigator-item icon="delete" index="3-1" @click="$router.replace('/article/recycle')">回收站</navigator-item>
+    <navigator-item icon="delete" index="ArticleRecycle" @click="$router.replace('/article/recycle')">回收站</navigator-item>
   </af-left>
   <router-view></router-view>
 </div>
@@ -23,7 +23,13 @@ export default {
   components: { AfLeft },
   computed: {
     defaultActive () {
-      return `${this.$route.query.scope}-${this.$route.query.status}`
+      let { name } = this.$route
+      name = name || ''
+      let { scope, status } = this.$route.query
+      if (scope && status) {
+        return `${scope}-${status}`
+      }
+      return name.replace('Content', '')
     }
   }
 }

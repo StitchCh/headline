@@ -191,6 +191,12 @@ export default {
     this.getChannels()
   },
   mounted () {
+    let { filter } = this
+    let query = this.$route.query
+    if (query.scope !== filter.scope || query.status !== filter.status) {
+      filter.scope = query.scope
+      filter.status = query.status
+    }
     this.getList()
   },
   methods: {
@@ -201,7 +207,7 @@ export default {
       this.$refs.listView.loading = true
       this.$http.post(this.url, filter).then(res => {
         this.$refs.listView.loading = false
-        this.totalPage = res.totalPage || 0
+        this.totalPage = res.totalPage || 1
         this.list = res.pages || []
       }).catch(e => {
         this.$refs.listView.loading = false
