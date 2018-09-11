@@ -70,7 +70,7 @@
     <input type="text"
       v-model="filter.search"
       class="flex-item c-4 f-13 search-input"
-      placeholder="搜索标题 回车"
+      :placeholder="`搜索${searchByName} 回车`"
       @keydown.esc="cancelSearch"
       @keydown.enter="getList(true)">
     <i class="icon f-20 c-a a" @click="cancelSearch">close</i>
@@ -119,7 +119,7 @@ export default {
         ],
         searchby: [
           {id: 'title', name: '标题'},
-          {id: 'keywoards', name: '关键字'},
+          {id: 'keywords', name: '关键字'},
           {id: 'abstracts', name: '摘要'},
           {id: 'author', name: '作者'}
         ]
@@ -164,10 +164,6 @@ export default {
       this.getList(true)
     },
     'filter.searchby' () {
-      this.ui.searchOptionShow = false
-      if (this.filter.search) this.getList(true)
-    },
-    'filter.recommend' () {
       this.ui.searchOptionShow = false
       if (this.filter.search) this.getList(true)
     }

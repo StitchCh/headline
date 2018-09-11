@@ -70,13 +70,13 @@ export default [
   },
   {
     path: '/videoAdd',
-    name: 'ArticleAdd',
+    name: 'VideoAdd',
     component: resolve => require(['@/apps/videos/editVideo/index.vue'], resolve),
     meta: { level: 3, title: '添加视频', identifier: 'video_add' }
   },
   {
     path: '/videoEdit/:from/:id',
-    name: 'ArticleEdit',
+    name: 'VideoEdit',
     component: resolve => require(['@/apps/videos/editVideo/index.vue'], resolve),
     props: true,
     meta: { level: 3, title: '修改视频', identifier: 'video_edit' }

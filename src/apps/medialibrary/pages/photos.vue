@@ -126,9 +126,9 @@ export default {
           })
         })
         this.total = res.totalPage * this.size
-        this.loading = false
         this.list = res.data || []
         this.imgOrigin = res.suffix
+        this.loading = false
       }).catch(e => {
         this.loading = false
         this.$toast(e.msg)
@@ -186,7 +186,7 @@ export default {
   .photos-item{height: 150px;overflow: hidden;background: #eee;min-width: 40px;
     .img-name{position: absolute;left: 0;bottom: 0;background: rgba(0, 0, 0, .7);width: 100%;line-height: 1em;padding: 6px;transform: translateY(24px);
       overflow: hidden;text-overflow: ellipsis;white-space: nowrap;transition: all .2s;}
-    img{height: 100%;width: 100%;transition: transform .2s;will-change: transform;}
+    img{height: 100%;transition: transform .2s;will-change: transform;}
     .item-check{position: absolute;right: 0;top: 0;z-index: 2;visibility: hidden;color: rgba(173, 173, 173, 0.8);padding: 3px;}
     &:hover{
       .item-check{visibility: visible;}

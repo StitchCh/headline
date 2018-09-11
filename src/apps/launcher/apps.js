@@ -31,6 +31,10 @@ export default [{
   path: '/ecommerce',
   icon: 'icon-ecommerce'
 }, {
+  name: '审核',
+  path: '/audit?scope=all&status=all',
+  icon: 'icon-todo'
+}, {
   name: '工作台',
   path: '/works',
   icon: 'icon-todo'
@@ -45,6 +49,10 @@ export default [{
 }, {
   name: '角色',
   path: '/roles',
+  icon: 'icon-users'
+}, {
+  name: '前台用户管理',
+  path: '/frontDeskUsers',
   icon: 'icon-users'
 }, {
   name: '频道',

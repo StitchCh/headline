@@ -5,8 +5,8 @@
     <div class="flex-item flex-center">
       <div class="top-tab f-18 blue flex-v-center">
         <router-link class="blue" replace to="/media" :class="{'on': $route.meta.type == 0}">图片</router-link>
-        <router-link class="blue" replace to="/media/videos" :class="{'on': $route.meta.type == 1}">视频</router-link>
-        <router-link class="blue" replace to="/media/audios" :class="{'on': $route.meta.type == 2}">音频</router-link>
+        <router-link class="blue" replace to="/media/videos" :class="{'on': $route.meta.type == 2}">视频</router-link>
+        <router-link class="blue" replace to="/media/audios" :class="{'on': $route.meta.type == 1}">音频</router-link>
       </div>
     </div>
     <account/>

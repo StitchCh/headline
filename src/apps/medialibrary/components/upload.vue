@@ -12,8 +12,8 @@
       <div class="flex-v-center" style="border-bottom: 1px solid #eee;padding: 15px;">
         <div class="flex-item"></div>
         <div class="tab">
-          <div class="tab-item" :class="{'on': tab === 1}" @click="tab = 1">网络地址</div>
           <div class="tab-item" :class="{'on': tab === 2}" @click="tab = 2">本地上传</div>
+          <div class="tab-item" :class="{'on': tab === 1, disabled: type == 2 || type == 1}" @click="(type == 2 || type == 1) ? tab = 2 : tab = 1">网络地址</div>
         </div>
         <div class="flex-item t-right">
           <icon-btn small @click="bubbleShow=false">close</icon-btn>
@@ -60,7 +60,7 @@ export default {
   data () {
     return {
       bubbleShow: false,
-      tab: 1,
+      tab: 2,
       fileList: [],
       urlLoading: false,
       picUrl: ''
@@ -118,5 +118,9 @@ export default {
 <style lang="less">
 .media-upload{
   //
+  .disabled {
+    background: rgba(0, 0, 0, .2);cursor: no-drop;
+    &:hover {color: #666;border-color: transparent;}
+  }
 }
 </style>

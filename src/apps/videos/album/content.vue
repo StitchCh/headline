@@ -37,10 +37,6 @@
                 </div>
               </li>
               <li></li>
-              <!--<video-player class="vjs-custom-skin"-->
-                            <!--ref="videoPlayer"-->
-                            <!--:options="playerOptions"-->
-                            <!--:playsinline="true"></video-player>-->
             </ul>
           </div>
         </div>
@@ -50,13 +46,8 @@
 </template>
 
 <script>
-import 'video.js/dist/video-js.css'
-import 'vue-video-player/src/custom-theme.css'
-import { videoPlayer } from 'vue-video-player'
-
 export default {
   name: 'album-content',
-  components: { videoPlayer },
   props: {
     id: String,
     channels: {

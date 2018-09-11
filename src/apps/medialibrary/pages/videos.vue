@@ -8,69 +8,113 @@
         <input type="text" class="f-14 c-6" placeholder="搜索">
       </div>
       <div class="flex-item"></div>
-      <div class="flex-v-center opera-btns">
-        <div class="relative">
-          <span class="a flex-v-center" @click="stateShow=true">
-            <span>全部状态</span>
-            <i class="icon f-18 c-a">keyboard_arrow_down</i>
-          </span>
-          <bubble v-if="stateShow" @close="stateShow=false">
-            <div style="padding: 10px 0;">
-              <div class="bubble-item">已转码</div>
-              <div class="bubble-item">转码中</div>
-              <div class="bubble-item">转码失败</div>
-            </div>
-          </bubble>
-        </div>
-        <div class="relative">
-          <span class="a relative">
-            <span v-if="!filter.range.length" class="abs flex-v-center" style="padding: 0 15px;top: 0;">
-              <span>全部时间</span>
-              <i class="icon c-a f-18">keyboard_arrow_down</i>
-            </span>
-            <vue-datepicker-local v-model="filter.range" show-buttons></vue-datepicker-local>
-          </span>
-        </div>
-        <icon-btn small @click="resetFilter" v-tooltip:bottom="'重置'">close</icon-btn>
+      <!--<div class="flex-v-center opera-btns">-->
+        <!--<div class="relative">-->
+          <!--<span class="a flex-v-center" @click="stateShow=true">-->
+            <!--<span>全部状态</span>-->
+            <!--<i class="icon f-18 c-a">keyboard_arrow_down</i>-->
+          <!--</span>-->
+          <!--<bubble v-if="stateShow" @close="stateShow=false">-->
+            <!--<div style="padding: 10px 0;">-->
+              <!--<div class="bubble-item">已转码</div>-->
+              <!--<div class="bubble-item">转码中</div>-->
+              <!--<div class="bubble-item">转码失败</div>-->
+            <!--</div>-->
+          <!--</bubble>-->
+        <!--</div>-->
+        <!--<div class="relative">-->
+          <!--<span class="a relative">-->
+            <!--<span v-if="!filter.range.length" class="abs flex-v-center" style="padding: 0 15px;top: 0;">-->
+              <!--<span>全部时间</span>-->
+              <!--<i class="icon c-a f-18">keyboard_arrow_down</i>-->
+            <!--</span>-->
+            <!--<vue-datepicker-local v-model="filter.range" show-buttons></vue-datepicker-local>-->
+          <!--</span>-->
+        <!--</div>-->
+        <!--<icon-btn small @click="resetFilter" v-tooltip:bottom="'重置'">close</icon-btn>-->
+      <!--</div>-->
+      <span class="f-14" v-if="selected.length" style="margin-right: 10px;">已选择 {{selected.length}} 项</span>
+      <btn flat v-if="selected.length" color="#008eff" @click="cancelSelect">取消选择</btn>
+      <div v-if="!selectMode" class="flex-v-center opera-btns">
+        <btn flat :disabled="!selected.length" color="#008eff" @click="del">批量删除</btn>
+        <media-upload :type="2" @uploaded="onUploaded" :folder-id="$route.query.folderId || 0"/>
       </div>
     </div>
     <div class="flex-item relative scroll-y">
-      <div v-if="!list.length" class="abs flex-center"><no-data/></div>
+      <div v-if="loading" class="abs flex-center bg-light-rgb-2" style="z-index: 20;"><loading/></div>
+      <div v-if="!list.length && !loading" class="abs flex-center"><no-data/></div>
       <div class="media-group" v-for="group in list" :key="group.date">
         <div class="media-group-title">{{group.date}}</div>
         <ul class="flex">
-          <li class="videos-item relative" v-for="item in group.data" :key="item.id">
-            <div class="videos-item-cover"></div>
-            <div class="videos-item-name f-14">李小璐曝贾乃亮陪伴少, 坦言婚前婚后反差大</div>
+          <li class="videos-item relative" v-for="item in group.data" :key="item.id" :class="{'checked': item.checked}">
+            <i class="icon item-check a" @click="selectItem(item)">check_circle</i>
+            <div class="relative hidden">
+              <div class="videos-item-cover"></div>
+              <div class="videos-item-play abs flex-center"><i class="icon a" style="font-size: 40px;">play_circle_outline</i></div>
+              <div class="videos-item-info f-12 c-f">666</div>
+            </div>
+            <div class="videos-item-name f-14">{{item.alias}}</div>
           </li>
         </ul>
       </div>
     </div>
-    <div class="af-bottombar"></div>
+    <div class="af-bottombar flex-center">
+      <pagination :page="page" :size="size" :total="total" @change="onPageChange"></pagination>
+    </div>
   </div>
 </div>
 </template>
 
 <script>
 import MediaLeftTree from '../components/leftTree'
-import VueDatepickerLocal from 'vue-datepicker-local'
+import MediaUpload from '../components/upload'
+import debounce from 'lodash/debounce'
 
 export default {
   name: 'media-videos',
-  components: { MediaLeftTree, VueDatepickerLocal },
+  components: { MediaLeftTree, MediaUpload },
   props: {
     selectMode: {
+      type: Boolean,
+      default: false
+    },
+    singleSelect: {
       type: Boolean,
       default: false
     }
   },
   data () {
     return {
-      stateShow: false,
-      list: [],
-      filter: {
-        range: []
-      }
+      loading: true,
+      // stateShow: false,
+      page: 1,
+      size: 50,
+      total: 0,
+      list: []
+      // filter: {
+      //   range: []
+      // }
+    }
+  },
+  computed: {
+    selected () {
+      let res = []
+      this.list.forEach(li => {
+        li.data.forEach(item => {
+          if (item.checked) res.push(item)
+        })
+      })
+      return res
+    },
+    allList () {
+      let res = []
+      let { list } = this
+      list.forEach(li => {
+        li.data.forEach(item => {
+          res.push(item)
+        })
+      })
+      return res
     }
   },
   created () {
@@ -82,21 +126,66 @@ export default {
     }
   },
   methods: {
-    resetFilter () {
-      this.filter.range = []
-    },
+    // resetFilter () {
+    //   this.filter.range = []
+    // },
     getList (id) {
-      let type = this.selectMode ? '1' : this.$route.meta.type
+      this.loading = true
+      let type = this.selectMode ? '2' : this.$route.meta.type
       let folderId = this.$route.query.folderId || ''
       if (this.selectMode) folderId = id || ''
       this.$http.post('/cri-cms-platform/media/list.monitor', {
         type,
         folderId,
-        toPage: 1,
-        pageSize: 30
+        toPage: this.page,
+        pageSize: this.size
       }).then(res => {
+        res.data.forEach(data => {
+          data.data.forEach(item => {
+            item.checked = false
+          })
+        })
+        this.total = res.totalPage * this.size
         this.list = res.data || []
+        console.log(this.list)
+        this.loading = false
       })
+    },
+    selectItem (item) {
+      if (this.singleSelect) this.cancelSelect()
+      item.checked = !item.checked
+    },
+    cancelSelect () {
+      this.list.forEach(li => {
+        li.data.forEach(item => {
+          item.checked = false
+        })
+      })
+    },
+    del () {
+      this.$confirm({
+        title: '删除确认',
+        text: `您确定要删除这 ${this.selected.length} 项吗？`,
+        color: 'red',
+        btns: ['取消', '删除'],
+        yes: () => {
+          this.$http.post('/cri-cms-platform/media/del.monitor', {
+            id: this.selected.map(item => item.id).toString(),
+            type: '2'
+          }).then(res => {
+            this.getList()
+          }).catch(e => {
+            this.$toast(e.msg)
+          })
+        }
+      })
+    },
+    onUploaded: debounce(function () {
+      if (this.page === 1) this.getList()
+    }, 1000),
+    onPageChange (e) {
+      this.page = parseInt(e)
+      this.getList()
     }
   }
 }
@@ -104,8 +193,22 @@ export default {
 
 <style lang="less">
 .media-videos{
-  .videos-item{width: 200px;}
-  .videos-item-cover{height: 150px;background: #eee;border-radius: 5px;overflow: hidden;}
+  .videos-item{width: 200px;
+    &:hover{
+      .item-check{visibility: visible;}
+      .videos-item-play i{opacity: 1;}
+      .videos-item-info {transform: translateY(0)}
+    }
+    &.checked{
+      .item-check{visibility: visible;color: #008eff;}
+      .videos-item-cover{transform: scale(.85);}
+    }
+  }
+  .videos-item-cover{height: 150px;background: #eee;border-radius: 5px;overflow: hidden;transition: transform .2s;will-change: transform;}
+  .videos-item-play i {opacity: 0;transition: opacity .2s;will-change: opacity;}
+  .videos-item-info {position: absolute;left: 0;bottom: 0;background: rgba(0, 0, 0, .7);width: 100%;line-height: 1em;padding: 6px;transform: translateY(24px);
+    overflow: hidden;text-overflow: ellipsis;white-space: nowrap;transition: all .2s;}
   .videos-item-name{margin-top: 5px;max-height: 46px;overflow: hidden;}
+  .item-check{position: absolute;right: 0;top: 0;z-index: 2;visibility: hidden;color: rgba(173, 173, 173, 0.8);padding: 3px;}
 }
 </style>
