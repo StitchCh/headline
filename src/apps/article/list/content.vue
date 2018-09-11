@@ -114,6 +114,10 @@ export default {
     channels: {
       type: Array,
       default: () => []
+    },
+    getUrl: {
+      type: String,
+      default: '/cri-cms-platform/article/get.monitor'
     }
   },
   data () {
@@ -169,7 +173,7 @@ export default {
   },
   methods: {
     getArticle () {
-      this.$http.post('/cri-cms-platform/article/get.monitor', {
+      this.$http.post(this.getUrl, {
         id: this.id
       }).then(res => {
         this.content = res.content || {}

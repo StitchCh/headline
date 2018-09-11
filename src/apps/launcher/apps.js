@@ -51,7 +51,7 @@ export default [{
   path: '/roles',
   icon: 'icon-users'
 }, {
-  name: '前台用户管理',
+  name: '前台用户',
   path: '/frontDeskUsers',
   icon: 'icon-users'
 }, {

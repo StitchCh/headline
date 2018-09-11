@@ -74,7 +74,7 @@
                   <i v-if="~~(slotProps.item.hasThumb)" class="icon f-16 orange">image</i>
                   <i v-if="~~(slotProps.item.isOriginal)" class="icon f-16 green">copyright</i>
                   <span class="flex-item c-6 f-14 b" :title="slotProps.item.title">{{slotProps.item.title}}</span>
-                  <i class="icon f-16" :style="{ color: ui.status[slotProps.item.auditStatus].color}">{{ui.status[slotProps.item.auditStatus].icon}}</i>
+                  <i v-if="slotProps.item.auditStatus" class="icon f-16" :style="{ color: ui.status[slotProps.item.auditStatus].color}">{{ui.status[slotProps.item.auditStatus].icon}}</i>
                 </div>
                 <div class="list-info f-12 c-8 flex-v-center">
                   <span>{{slotProps.item.createDate}}</span>
@@ -109,7 +109,7 @@
         <div class="flex-item"></div>
         <account/>
       </div>
-      <router-view :channels="ui.channels"></router-view>
+      <router-view :channels="ui.channels" getUrl="/cri-cms-platform/audit/get.monitor"></router-view>
     </div>
   </div>
 </template>

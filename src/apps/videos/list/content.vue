@@ -74,6 +74,10 @@ export default {
     channels: {
       type: Array,
       default: () => []
+    },
+    getUrl: {
+      type: String,
+      default: '/cri-cms-platform/video/queryDetail.monitor'
     }
   },
   data () {
@@ -109,7 +113,7 @@ export default {
   methods: {
     getVideo () {
       this.loading = true
-      this.$http.post('/cri-cms-platform/video/queryDetail.monitor', {
+      this.$http.post(this.getUrl, {
         id: this.id
       }).then(
         res => {
