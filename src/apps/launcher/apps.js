@@ -4,7 +4,7 @@ export default [{
   icon: 'icon-article'
 }, {
   name: '图集',
-  path: '/gallery',
+  path: '/gallery/list?scope=all&status=all',
   icon: 'icon-gallery'
 }, {
   name: '视频',
@@ -49,6 +49,10 @@ export default [{
 }, {
   name: '角色',
   path: '/roles',
+  icon: 'icon-users'
+}, {
+  name: '菜单',
+  path: '/menus',
   icon: 'icon-users'
 }, {
   name: '前台用户',
