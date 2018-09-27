@@ -49,9 +49,11 @@
           <li class="videos-item relative" v-for="item in group.data" :key="item.id" :class="{'checked': item.checked}">
             <i class="icon item-check a" @click="selectItem(item)">check_circle</i>
             <div class="relative hidden">
-              <div class="videos-item-cover"></div>
-              <div class="videos-item-play abs flex-center"><i class="icon a" style="font-size: 40px;">play_circle_outline</i></div>
-              <div class="videos-item-info f-12 c-f">666</div>
+              <div class="videos-item-cover flex-center">
+                <img :src="origin + item.thumb">
+              </div>
+              <div class="videos-item-play abs flex-center"><i class="icon a c-f" @click="onItemClick(item)">play_circle_outline</i></div>
+              <div class="videos-item-info f-12 c-f">{{item.duration | time}}</div>
             </div>
             <div class="videos-item-name f-14">{{item.alias}}</div>
           </li>
@@ -70,6 +72,8 @@ import MediaLeftTree from '../components/leftTree'
 import MediaUpload from '../components/upload'
 import debounce from 'lodash/debounce'
 
+const origin = 'http://60.247.77.208:58088'
+
 export default {
   name: 'media-videos',
   components: { MediaLeftTree, MediaUpload },
@@ -85,6 +89,7 @@ export default {
   },
   data () {
     return {
+      origin,
       loading: true,
       // stateShow: false,
       page: 1,
@@ -151,6 +156,13 @@ export default {
         this.loading = false
       })
     },
+    onItemClick (item) {
+      this.$emit('preview', {
+        type: 2,
+        list: this.allList,
+        index: this.allList.indexOf(item)
+      })
+    },
     selectItem (item) {
       if (this.singleSelect) this.cancelSelect()
       item.checked = !item.checked
@@ -204,8 +216,10 @@ export default {
       .videos-item-cover{transform: scale(.85);}
     }
   }
-  .videos-item-cover{height: 150px;background: #eee;border-radius: 5px;overflow: hidden;transition: transform .2s;will-change: transform;}
-  .videos-item-play i {opacity: 0;transition: opacity .2s;will-change: opacity;}
+  .videos-item-cover{height: 150px;background: #eee;border-radius: 5px;overflow: hidden;transition: transform .2s;will-change: transform;
+    img {max-width: 100%;max-height: 100%}
+  }
+  .videos-item-play i {opacity: 0;transition: opacity .2s;will-change: opacity;font-size: 40px;text-shadow: #000 0 0 8px;}
   .videos-item-info {position: absolute;left: 0;bottom: 0;background: rgba(0, 0, 0, .7);width: 100%;line-height: 1em;padding: 6px;transform: translateY(24px);
     overflow: hidden;text-overflow: ellipsis;white-space: nowrap;transition: all .2s;}
   .videos-item-name{margin-top: 5px;max-height: 46px;overflow: hidden;}

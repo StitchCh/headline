@@ -31,7 +31,7 @@
         </div>
         <div v-if="tab === 2">
           <upload-box
-            accept="image/png, image/jpeg, image/gif, image/jpg"
+            :accept="accept"
             btn-text="选择文件"
             multiple
             :onchange="onChange"
@@ -74,6 +74,13 @@ export default {
         if (item.status === 'uploading') res = 'uploading'
       })
       return res
+    },
+    accept () {
+      let { type } = this
+      type = parseInt(type)
+      if (type === 0) return 'image/png, image/jpeg, image/gif, image/jpg'
+      if (type === 1) return 'audio/*'
+      if (type === 2) return 'video/*'
     }
   },
   methods: {

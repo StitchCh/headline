@@ -4,16 +4,24 @@
     <div class="img-container flex-item relative" :style="{width: w+'px', height: h+'px'}">
       <transition name="fade">
         <div class="abs flex-center" v-if="type === 0 && current" style="overflow: hidden;" :key="current.id">
-          <img :src="imgOrigin+current.filePath+current.fileName" :style="imgStyle">
+          <img :src="origin+current.filePath+current.fileName" :style="imgStyle">
         </div>
       </transition>
-      <div class="abs flex">
-        <div class="flex-item relative" v-if="i !== 0">
-          <icon-btn big @click="prev()" class="img-btn img-btn-prev">keyboard_arrow_left</icon-btn>
+      <transition name="fade">
+        <div class="abs flex-center" v-if="type === 2 && current" style="overflow: hidden;" :key="current.id">
+          <div style="width: 100%;">
+            <video-player class="vjs-custom-skin"
+                          ref="videoPlayer"
+                          :options="playerOptions"
+                          :playsinline="true"></video-player>
+          </div>
         </div>
-        <div class="flex-item relative" v-if="i < list.length - 1">
-          <icon-btn big @click="next()" class="img-btn img-btn-next">keyboard_arrow_right</icon-btn>
-        </div>
+      </transition>
+      <div v-if="i !== 0" style="position: absolute;left: 0;top: 50%;transform: translateY(-50%);">
+        <icon-btn big @click="prev()" class="img-btn img-btn-prev">keyboard_arrow_left</icon-btn>
+      </div>
+      <div v-if="i < list.length - 1" style="position: absolute;right: 0;top: 50%;transform: translateY(-50%);">
+        <icon-btn big @click="next()" class="img-btn img-btn-next">keyboard_arrow_right</icon-btn>
       </div>
     </div>
     <div class="img-info c-6 f-14">
@@ -22,13 +30,13 @@
       </div>
       <div class="f-18 b file-name" :title="current.alias">{{current.alias}}</div>
       <div class="flex">
-        <a :href="imgOrigin+current.filePath+current.fileName" :download="current.alias" target="_blank">
-          <icon-btn small v-tooltip:top="'下载图片'">cloud_download</icon-btn>
+        <a :href="origin + (type == 0 ? current.filePath+current.fileName : current.video || current.audio)" :download="current.alias" target="_blank">
+          <icon-btn small v-tooltip:top="`下载${typeContent[type].text}`">cloud_download</icon-btn>
         </a>
         <icon-btn small v-tooltip:top="'复制链接地址'" @click="copyLink">link</icon-btn>
-        <input type="text" :value="imgOrigin+current.filePath+current.fileName" ref="copyInput" readonly style="width: 1px;border: none;opacity: 0;">
-        <icon-btn small v-tooltip:top="'编辑图片'">edit</icon-btn>
-        <icon-btn small v-tooltip:top="'删除图片'" @click="del">delete</icon-btn>
+        <input type="text" :value="origin+current.filePath+current.fileName" ref="copyInput" readonly style="width: 1px;border: none;opacity: 0;">
+        <icon-btn small v-tooltip:top="`编辑${typeContent[type].text}`" @click="show.imageEditor = true">edit</icon-btn>
+        <icon-btn small v-tooltip:top="`删除${typeContent[type].text}`" @click="del">delete</icon-btn>
       </div>
       <div class="flex" style="margin: 15px 0;">
         <i class="icon f-20 c-a">label</i>
@@ -51,14 +59,26 @@
       </div>
     </div>
   </div>
+  <image-editor v-if="show.imageEditor" @close="show.imageEditor = false" :src="origin+current.filePath+current.fileName"/>
 </layer>
 </template>
 
 <script>
-const IMG_ORIGIN = 'http://60.247.77.208:58088'
+import ImageEditor from '../components/imageEditor'
+import 'video.js/dist/video-js.css'
+import 'vue-video-player/src/custom-theme.css'
+import { videoPlayer } from 'vue-video-player'
+
+const ORIGIN = 'http://60.247.77.208:58088'
+const typeContent = {
+  0: { text: '图片' },
+  1: { text: '音频' },
+  2: { text: '视频' }
+}
 
 export default {
   name: 'media-preview',
+  components: { ImageEditor, videoPlayer },
   props: {
     list: {
       type: Array,
@@ -75,10 +95,14 @@ export default {
   },
   data () {
     return {
+      typeContent,
       w: 550,
       h: 500,
       i: this.index,
-      imgOrigin: IMG_ORIGIN
+      origin: ORIGIN,
+      show: {
+        imageEditor: false
+      }
     }
   },
   computed: {
@@ -95,6 +119,19 @@ export default {
         return { width: '100%', height: 'auto' }
       } else {
         return { height: '100%', width: 'auto' }
+      }
+    },
+    playerOptions () {
+      return {
+        // width: '720',
+        // height: '480',
+        language: 'zh-ch',
+        playbackRates: [0.7, 1.0, 1.5, 2.0],
+        sources: [{
+          type: '',
+          src: this.origin + this.current.video
+        }],
+        poster: this.origin + this.current.thumb
       }
     }
   },
@@ -146,8 +183,6 @@ export default {
     .icon{margin-right: 15px;}
   }
   .file-name{padding: 10px 0;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
-  .img-btn{position: absolute;top: 45%;z-index: 10;text-shadow: 2px 0 0 #fff;}
-  .img-btn-prev{left: 0;}
-  .img-btn-next{right: 0;}
+  .img-btn{text-shadow: 2px 0 0 #fff;}
 }
 </style>

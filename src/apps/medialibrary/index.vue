@@ -30,11 +30,10 @@
 import Account from '@/components/account'
 import Dock from '@/components/dock'
 import MediaPreview from './components/mediaPreview'
-import MediaUpload from './components/upload'
 
 export default {
   name: 'media-library',
-  components: { Account, Dock, MediaPreview, MediaUpload },
+  components: { Account, Dock, MediaPreview },
   data () {
     return {
       preview: {
@@ -46,9 +45,9 @@ export default {
   },
   methods: {
     onPreview (e) {
-      this.preview.show = true
       this.preview.list = e.list || []
       this.preview.index = e.index || 0
+      this.preview.show = true
     },
     onDelected (e) {
       this.$refs.routerView.getList()

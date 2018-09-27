@@ -43,7 +43,7 @@
       <pagination :page="page" :size="size" :total="total" @change="onPageChange"></pagination>
     </div>
   </div>
-  <!-- <image-editor/> -->
+   <!--<image-editor/>-->
 </div>
 </template>
 
