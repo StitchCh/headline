@@ -31,8 +31,8 @@
           <tbody>
           <tr v-for="item in list" :key="item.id" @click="openDetail(item.id)">
             <td>
-              <icon-btn v-tooltip="'展示下级'" v-if="item.sysMenuShowFlag === '1'" small @click.stop.native="showChild(item.id)">edit</icon-btn>
-              <icon-btn v-tooltip="'收起下级'" v-if="item.sysMenuShowFlag === '1'" small @click.stop.native="packupChild(item.id)">delete</icon-btn>
+              <icon-btn v-show="item.sysMenuShowFlag === '1'" v-tooltip="'收起下级'" v-if="menuChildShow[item.id]" small @click.stop.native="packupChild(item.id)">delete</icon-btn>
+              <icon-btn v-show="item.sysMenuShowFlag === '1'" v-tooltip="'展示下级'" v-else small @click.stop.native="showChild(item.id)">edit</icon-btn>
             </td>
             <td>{{item.sysMenuName}}</td>
             <td>{{item.sysMenuUrl}}</td>

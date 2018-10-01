@@ -55,8 +55,8 @@ export default [{
   path: '/menus',
   icon: 'icon-users'
 }, {
-  name: '前台用户',
-  path: '/frontDeskUsers',
+  name: '会员',
+  path: '/member',
   icon: 'icon-users'
 }, {
   name: '频道',
@@ -65,5 +65,9 @@ export default [{
 }, {
   name: '设置',
   path: '/settings',
+  icon: 'icon-settings'
+}, {
+  name: '站点',
+  path: '/site',
   icon: 'icon-settings'
 }]
