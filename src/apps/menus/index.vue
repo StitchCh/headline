@@ -143,10 +143,10 @@
         </div>
       </layer>
 
-      <select-card :value="newParentMenus" v-if="newParentMenusShow" title="选择上级菜单" width="600px" maskClick @close="newParentMenusShow = false">
+      <select-card :value="newParentMenus" multiple v-if="newParentMenusShow" title="选择上级菜单" width="600px" maskClick @close="newParentMenusShow = false">
         <select-card-option v-for="item in parentMenus" :value="item.id" :key="item.id" @click="selectNewParentMenu(item.id)">{{item.sysMenuName}}</select-card-option>
       </select-card>
-      <select-card :value="editParentMenus" v-if="editParentMenusShow" title="选择上级菜单" width="600px" maskClick @close="editParentMenusShow = false">
+      <select-card :value="editParentMenus" multiple v-if="editParentMenusShow" title="选择上级菜单" width="600px" maskClick @close="editParentMenusShow = false">
         <select-card-option v-for="item in parentMenus" :value="item.id" :key="item.id" @click="selectEditParentMenu(item.id)">{{item.sysMenuName}}</select-card-option>
       </select-card>
   </div>
