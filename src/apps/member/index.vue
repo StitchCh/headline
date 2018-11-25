@@ -17,7 +17,15 @@ import AfLeft from '@/components/app-frame/afLeft'
 
 export default {
   name: 'app-members',
-  components: {Account, AfLeft}
+  components: {Account, AfLeft},
+  computed: {
+    defaultActive () {
+      let { name } = this.$route
+      name = name || ''
+      console.log(name)
+      return name.replace('Content', '')
+    }
+  }
 }
 </script>
 

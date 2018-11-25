@@ -7,16 +7,18 @@
       <div class="card">
         <table>
           <thead>
-          <th>会员ID</th>
           <th>昵称</th>
           <th>手机</th>
+          <th>邮箱</th>
+          <th>最后登录</th>
           <th colspan="3">操作</th>
           </thead>
           <tbody>
           <tr v-for="item in list" :key="item.id" @click="openDetail(item.id)">
-            <td>{{item.id}}</td>
             <td>{{item.nickname}}</td>
             <td>{{item.mobile}}</td>
+            <td>{{item.thisTimeLoginTime}}</td>
+            <td>{{item.thisTimeLoginTime}}</td>
             <td style="width: 30px;">
               <icon-btn v-tooltip="'编辑'" small @click.stop.native="openEdit(item.id)">edit</icon-btn>
             </td>
@@ -34,6 +36,28 @@
         </div>
       </div>
     </div>
+
+    <layer v-if="detailShow" title="会员信息" width="600px" maskClick @close="detailShow = false">
+      <div class="layer-text">
+        <table>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+      <div class="layer-btns">
+        <btn flat color="#66BB6A" @click="detailShow = false">关闭</btn>
+      </div>
+    </layer>
+
+    <layer v-if="editShow" title="会员信息" width="600px">
+      <div class="layer-text">
+        asdsa
+      </div>
+      <div class="layer-btns">
+        <btn flat @click="editShow = false">取消</btn>
+        <btn flat color="#66BB6A" @click="submitEdit">提交</btn>
+      </div>
+    </layer>
   </div>
 </template>
 
@@ -44,7 +68,10 @@ export default {
     return {
       list: [],
       total: 1,
-      page: 1
+      page: 1,
+      detail: {},
+      detailShow: false,
+      editShow: false
     }
   },
   methods: {
@@ -63,6 +90,12 @@ export default {
           console.log(res)
         }
       )
+    },
+    openDetail (id) {
+      this.detailShow = true
+    },
+    openEdit () {
+
     }
   },
   created () {
@@ -73,7 +106,6 @@ export default {
       })
     ]).then(
       res => {
-        console.log(res)
         this.list = res[0].pages
         this.total = res[0].totalPage * 10
         this.loading = false
