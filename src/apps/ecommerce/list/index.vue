@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-item article-list">
     <af-center
-      @add="$router.push('/articleAdd')"
+      @add="$router.push('/ecommerceAdd')"
       :scope="$route.query.scope"
       :status="$route.query.status"
-      url="/cri-cms-platform/article/list.monitor"
+      url="/cri-cms-platform/ecommerce/list.monitor"
       ref="afCenter">
 
       <div class="list-item a" slot-scope="slotProps" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.id == $route.params.id}">
@@ -39,7 +39,7 @@
             <icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn>
           </div>
           <div class="tool-item">
-            <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/articleEdit/article/${id}`)">edit</icon-btn>
+            <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/ecommerceEdit/ecommerce/${id}`)">edit</icon-btn>
           </div>
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'删除'" @click="deleteArticle">delete</icon-btn>
@@ -64,9 +64,9 @@
       <div class="flex-item flex-col">
         <div v-if="id" class="flex-center" style="height: 60px;">
           <div class="tab">
-            <div class="tab-item" :class="{ on: $route.name === 'ArticleContent' }" @click="$router.replace({path: `/article/list/${id}`, query: $route.query})">内容</div>
-            <div class="tab-item" :class="{ on: $route.name === 'ArticleStatistics' }" @click="$router.replace({path: `/article/list/${id}/statistics`, query: $route.query})">统计</div>
-            <div class="tab-item" :class="{ on: $route.name === 'ArticleHistory' }" @click="$router.replace({path: `/article/list/${id}/history`, query: $route.query})">历史</div>
+            <div class="tab-item" :class="{ on: $route.name === 'ArticleContent' }" @click="$router.replace({path: `/ecommerce/list/${id}`, query: $route.query})">内容</div>
+            <div class="tab-item" :class="{ on: $route.name === 'ArticleStatistics' }" @click="$router.replace({path: `/ecommerce/list/${id}/statistics`, query: $route.query})">统计</div>
+            <div class="tab-item" :class="{ on: $route.name === 'ArticleHistory' }" @click="$router.replace({path: `/ecommerce/list/${id}/history`, query: $route.query})">历史</div>
           </div>
         </div>
         <router-view :channels="ui.channels"/>
@@ -94,7 +94,7 @@ export default {
   },
   methods: {
     getChannels () {
-      this.$http.post('/cri-cms-platform/article/getChannels.monitor').then(res => {
+      this.$http.post('/cri-cms-platform/ecommerce/getChannels.monitor').then(res => {
         this.ui.channels = res || []
       }).catch(e => {
         this.$toast(e.msg)
@@ -102,7 +102,7 @@ export default {
     },
     onItemClick (item) {
       this.$router.replace({
-        path: `/article/list/${item.id}`,
+        path: `/ecommerce/list/${item.id}`,
         query: this.$route.query
       })
     },
@@ -112,7 +112,7 @@ export default {
         text: '您确定要复制该文章并重新发布吗？',
         no () {},
         yes () {
-          that.$http.post('/cri-cms-platform//article/copy.monitor', {
+          that.$http.post('/cri-cms-platform/ecommerce/copy.monitor', {
             contentId: that.id
           }).then(
             res => {
@@ -129,12 +129,12 @@ export default {
         btns: ['取消', '删除'],
         color: 'red',
         yes: () => {
-          this.$http.post('/cri-cms-platform/article/delete.monitor', {
+          this.$http.post('/cri-cms-platform/ecommerce/delete.monitor', {
             id: this.$route.params.id
           }).then(res => {
             this.$refs.afCenter.getList()
             this.$router.replace({
-              path: '/article/list',
+              path: '/ecommerce/list',
               query: this.$route.query
             })
           })

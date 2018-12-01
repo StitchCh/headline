@@ -24,18 +24,18 @@ export default [{
   icon: 'icon-live'
 }, {
   name: '链接',
-  path: '/links',
+  path: '/links?scope=all&status=all',
   icon: 'icon-links'
 }, {
   name: '电商',
-  path: '/ecommerce',
+  path: '/ecommerce?scope=all&status=all',
   icon: 'icon-ecommerce'
 }, {
   name: '审核',
   path: '/audit?scope=all&status=all',
   icon: 'icon-todo'
 }, {
-  name: '工作台',
+  name: '发布',
   path: '/works',
   icon: 'icon-todo'
 }, {

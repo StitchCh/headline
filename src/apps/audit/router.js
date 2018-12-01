@@ -15,6 +15,12 @@ export default {
       name: 'AuditContentVideo',
       props: true,
       component: resolve => require(['@/apps/videos/list/content.vue'], resolve)
+    },
+    {
+      path: 'LINK/:id',
+      name: 'AuditContentVideo',
+      props: true,
+      component: resolve => require(['@/apps/links/list/content.vue'], resolve)
     }
   ]
 }

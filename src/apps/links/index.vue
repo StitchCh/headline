@@ -1,17 +1,43 @@
 <template>
-<div class="abs bg-f app-links">
-  app-links
+<div class="abs bg-f flex app-article">
+  <af-left color="#586c8e" vibrant-color="#2559cc" title="链接" :defaultActive="defaultActive">
+    <navigator-item icon="folder" index="all-all" @click="$router.replace('/links/list?scope=all&status=all')">全部</navigator-item>
+    <!-- <navigator-item-group defaultExtended index="2" icon="face">
+    <span slot="title">我的</span> -->
+    <navigator-item icon="check_circle" index="my-all" @click="$router.replace('/links/list?scope=my&status=all')">已发</navigator-item>
+    <navigator-item icon="hourglass_full" index="my-AUDITING" @click="$router.replace('/links/list?scope=my&status=AUDITING')">待审</navigator-item>
+    <navigator-item icon="error" index="my-REJECT" @click="$router.replace('/links/reject?scope=my&status=REJECT')">驳回</navigator-item>
+    <navigator-item icon="class" index="ArticleTile" @click="$router.replace('/links/tile')">草稿</navigator-item>
+    <!-- </navigator-item-group> -->
+    <navigator-item icon="delete" index="ArticleRecycle" @click="$router.replace('/links/recycle')">回收站</navigator-item>
+  </af-left>
+  <router-view></router-view>
 </div>
 </template>
 
 <script>
+import AfLeft from '@/components/app-frame/afLeft'
+
 export default {
-  name: 'app-links'
+  name: 'app-article',
+  components: { AfLeft },
+  computed: {
+    defaultActive () {
+      let { name } = this.$route
+      name = name || ''
+      let { scope, status } = this.$route.query
+      if (scope && status) {
+        return `${scope}-${status}`
+      }
+      return name.replace('Content', '')
+    }
+  }
 }
 </script>
 
 <style lang="less">
-.app-links{
-  //
+.app-article{
+  .list-item{width: auto;}
+  .navigator-item.active{background: #b8ddf3;color: #0059cc;}
 }
 </style>

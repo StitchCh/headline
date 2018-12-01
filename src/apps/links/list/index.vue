@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-item article-list">
     <af-center
-      @add="$router.push('/articleAdd')"
+      @add="$router.push('/linksAdd')"
       :scope="$route.query.scope"
       :status="$route.query.status"
-      url="/cri-cms-platform/article/list.monitor"
+      url="/cri-cms-platform/link/list.monitor"
       ref="afCenter">
 
       <div class="list-item a" slot-scope="slotProps" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.id == $route.params.id}">
@@ -28,7 +28,9 @@
           <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalWeb }">public</i>
         </div>
       </div>
+
     </af-center>
+
     <div class="flex-item flex-col">
       <div class="af-topbar flex-v-center">
         <div v-if="$route.params.id" class="content-tool flex-v-center">
@@ -39,7 +41,7 @@
             <icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn>
           </div>
           <div class="tool-item">
-            <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/articleEdit/article/${id}`)">edit</icon-btn>
+            <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/linksEdit/links/${id}`)">edit</icon-btn>
           </div>
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'删除'" @click="deleteArticle">delete</icon-btn>
@@ -64,9 +66,9 @@
       <div class="flex-item flex-col">
         <div v-if="id" class="flex-center" style="height: 60px;">
           <div class="tab">
-            <div class="tab-item" :class="{ on: $route.name === 'ArticleContent' }" @click="$router.replace({path: `/article/list/${id}`, query: $route.query})">内容</div>
-            <div class="tab-item" :class="{ on: $route.name === 'ArticleStatistics' }" @click="$router.replace({path: `/article/list/${id}/statistics`, query: $route.query})">统计</div>
-            <div class="tab-item" :class="{ on: $route.name === 'ArticleHistory' }" @click="$router.replace({path: `/article/list/${id}/history`, query: $route.query})">历史</div>
+            <div class="tab-item" :class="{ on: $route.name === 'ArticleContent' }" @click="$router.replace({path: `/links/list/${id}`, query: $route.query})">内容</div>
+            <div class="tab-item" :class="{ on: $route.name === 'ArticleStatistics' }" @click="$router.replace({path: `/links/list/${id}/statistics`, query: $route.query})">统计</div>
+            <div class="tab-item" :class="{ on: $route.name === 'ArticleHistory' }" @click="$router.replace({path: `/links/list/${id}/history`, query: $route.query})">历史</div>
           </div>
         </div>
         <router-view :channels="ui.channels"/>
@@ -94,7 +96,7 @@ export default {
   },
   methods: {
     getChannels () {
-      this.$http.post('/cri-cms-platform/article/getChannels.monitor').then(res => {
+      this.$http.post('/cri-cms-platform/link/getChannels.monitor').then(res => {
         this.ui.channels = res || []
       }).catch(e => {
         this.$toast(e.msg)
@@ -102,17 +104,17 @@ export default {
     },
     onItemClick (item) {
       this.$router.replace({
-        path: `/article/list/${item.id}`,
+        path: `/links/list/${item.id}`,
         query: this.$route.query
       })
     },
     copyArticle () {
       let that = this
       this.$confirm({
-        text: '您确定要复制该文章并重新发布吗？',
+        text: '您确定要复制该链接并重新发布吗？',
         no () {},
         yes () {
-          that.$http.post('/cri-cms-platform//article/copy.monitor', {
+          that.$http.post('/cri-cms-platform/link/copy.monitor', {
             contentId: that.id
           }).then(
             res => {
@@ -124,17 +126,17 @@ export default {
     },
     deleteArticle () {
       this.$confirm({
-        title: '您确定要删除此文章吗？',
+        title: '您确定要删除此链接吗？',
         text: `您可以从回收站中恢复。`,
         btns: ['取消', '删除'],
         color: 'red',
         yes: () => {
-          this.$http.post('/cri-cms-platform/article/delete.monitor', {
+          this.$http.post('/cri-cms-platform/link/delete.monitor', {
             id: this.$route.params.id
           }).then(res => {
             this.$refs.afCenter.getList()
             this.$router.replace({
-              path: '/article/list',
+              path: '/links/list',
               query: this.$route.query
             })
           })
