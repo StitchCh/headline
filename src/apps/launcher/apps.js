@@ -37,7 +37,7 @@ export default [{
 }, {
   name: '发布',
   path: '/works',
-  icon: 'icon-todo'
+  icon: 'icon-push'
 }, {
   name: '素材库',
   path: '/media',
@@ -45,11 +45,11 @@ export default [{
 }, {
   name: '用户',
   path: '/users',
-  icon: 'icon-users'
+  icon: 'icon-yonghu'
 }, {
   name: '角色',
   path: '/roles',
-  icon: 'icon-users'
+  icon: 'icon-user'
 }, {
   name: '菜单',
   path: '/menus',
@@ -57,7 +57,7 @@ export default [{
 }, {
   name: '会员',
   path: '/member',
-  icon: 'icon-users'
+  icon: 'icon-member'
 }, {
   name: '频道',
   path: '/channels',
@@ -69,5 +69,5 @@ export default [{
 }, {
   name: '站点',
   path: '/site',
-  icon: 'icon-settings'
+  icon: 'icon-site'
 }]
