@@ -32,33 +32,43 @@
             </div>
           </div>
           <div v-if="item.type === '2'">
+            <!--<div class="flex-v-center setting-item">-->
+              <!--<div class="flex-item">列表类型</div>-->
+              <!--<div class="flex-v-center">-->
+                <!--<radio-box v-model="item.setting.listType" label="1" text="文字"></radio-box>-->
+                <!--<radio-box v-model="item.setting.listType" label="2" text="图文"></radio-box>-->
+                <!--<radio-box v-model="item.setting.listType" label="3" text="图片"></radio-box>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="flex-v-center setting-item">-->
+              <!--<div class="flex-item">图片格式</div>-->
+              <!--<select v-model="item.setting.picword" dir="rtl">-->
+                <!--<option value="1">上图下文字</option>-->
+                <!--<option value="2">上文字下图</option>-->
+                <!--<option value="3">左图右文字</option>-->
+                <!--<option value="4">右图左文字</option>-->
+              <!--</select>-->
+            <!--</div>-->
             <div class="flex-v-center setting-item">
-              <div class="flex-item">列表类型</div>
-              <div class="flex-v-center">
-                <radio-box v-model="item.setting.listType" label="1" text="文字"></radio-box>
-                <radio-box v-model="item.setting.listType" label="2" text="图文"></radio-box>
-                <radio-box v-model="item.setting.listType" label="3" text="图片"></radio-box>
-              </div>
-            </div>
-            <div class="flex-v-center setting-item">
-              <div class="flex-item">图片格式</div>
-              <select v-model="item.setting.picword" dir="rtl">
-                <option value="1">上图下文字</option>
-                <option value="2">上文字下图</option>
-                <option value="3">左图右文字</option>
-                <option value="4">右图左文字</option>
-              </select>
-            </div>
-            <div class="flex-v-center setting-item">
-              <div class="flex-item">图文格式</div>
+              <div class="flex-item">列表布局</div>
               <select v-model="item.setting.layout" dir="rtl">
-                <option value="1">左图有标题无摘要</option>
-                <option value="2">左图有标题有摘要</option>
-                <option value="3">大图列表</option>
+                <option value="3_1">左图有标题无摘要</option>
+                <option value="3_2">左图有标题有摘要</option>
+                <option value="3_3">大图列表</option>
               </select>
             </div>
           </div>
           <div v-if="item.type === '3'">
+            <div class="flex-v-center setting-item">
+              <div class="flex-item">图片格式</div>
+                <select v-model="item.setting.layout" dir="rtl">
+                  <option value="2_4">上图下文字</option>
+                  <option value="2_5">上文字下图</option>
+                  <option value="2_3">文字</option>
+                  <option value="2_1">左图右文字</option>
+                  <option value="2_2">右图左文字</option>
+              </select>
+            </div>
             <div class="flex-v-center setting-item">
               <div class="flex-item">子频道显示数量</div>
               <input type="text" v-model="item.setting.singShowNum">
@@ -78,7 +88,29 @@
     <div class="flex" style="flex-wrap: wrap;">
       <draggable v-if="item.cl && item.cl.length">
         <transition-group name="flip-list">
-          <tag :close="channelIds.length>1" v-for="channel in item.cl" :key="channel.channelId" @close="toggleChannel(channel)">{{channel.channelName}}</tag>
+          <tag class="channelTag" :close="channelIds.length>1" v-for="channel in item.cl" :key="channel.channelId" @close="toggleChannel(channel)">
+            <!--<span v-if="item.setting.layout == 2_3">-->
+              <!--<span style="display: block;margin-bottom: 6px;">{{channel.channelName}}</span>-->
+            <!--</span>-->
+            <!--<span v-if="item.setting.layout == 2_4">-->
+              <!--<span class="tagtext">{{channel.channelName}}</span>-->
+              <!--<app-article-add-thumb class="tagimg"></app-article-add-thumb>-->
+            <!--</span>-->
+            <!--<span  v-if="item.setting.layout == 2_5">-->
+              <!--<img class="tagimg" src="../../assets/img/addindex.png"/>-->
+              <!--<app-article-add-thumb class="tagimg"></app-article-add-thumb>-->
+              <!--<span class="tagtext">{{channel.channelName}}</span>-->
+            <!--</span>-->
+            <!--<span  v-if="item.setting.layout == 2_2">-->
+              <!--<app-article-add-thumb class="tagimg" style="float: right;"></app-article-add-thumb>-->
+              <!--<span style="float: left;line-height: 50px;margin-right: 5px;" class="tagtext">{{channel.channelName}}</span>-->
+            <!--</span>-->
+            <!--v-if="item.setting.layout == 2_1"-->
+            <span>
+              <app-article-add-thumb class="tagimg" style="float: left;"></app-article-add-thumb>
+              <span style="float: right;line-height: 50px;" class="tagtext">{{channel.channelName}}</span>
+            </span>
+          </tag>
         </transition-group>
       </draggable>
     </div>
@@ -100,10 +132,11 @@
 
 <script>
 import draggable from 'vuedraggable'
+import AppArticleAddThumb from './thumb'
 
 export default {
   name: 'channel-layout',
-  components: { draggable },
+  components: { draggable, AppArticleAddThumb },
   props: {
     data: {
       type: Object,
@@ -209,6 +242,34 @@ export default {
 
 <style lang="less">
 .channel-layout{border-radius: 5px;margin: 5px 0;
+  .channelTag{
+    display: inline-block;
+    height: auto;
+    padding: 10px 20px 0px 10px;
+    line-height: 1;
+    position: relative;
+    margin-right: 10px;
+    border-radius: 4px;
+  }
+  .channelTag .close{
+    position: absolute;
+    right: 8px;
+    top: 8px;
+  }
+  .tagimg{
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  .tagimg>div{
+    height: 100%;
+  }
+  .tagtext{
+    display: block;
+    margin-bottom: 6px;
+    text-align: center;
+  }
   .title{height: 38px;padding: 0 20px;}
   .content{border-top: 1px solid #eee;padding: 12px;}
   &:last-child{border: none;}

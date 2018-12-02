@@ -10,6 +10,8 @@
     <div class="right flex-item flex-col" v-if="$route.query.channelId">
       <div class="flex-v-center" style="padding: 15px 30px;">
         <span class="flex-item b">布局编辑</span>
+        <span>是否审核</span>
+        <switcher style="transform: scale(.8);margin-right: 20px;"/>
         <btn flat style="margin-right: 5px;" @click="refresh()">撤销修改</btn>
         <btn @click="submit">保存</btn>
       </div>
@@ -25,7 +27,7 @@
                 <i class="icon f-20">view_carousel</i>
                 <span class="flex-item">幻灯片</span>
               </li>
-              <li class="a flex-v-center" @click="addLayout('2', '列表')">
+              <li :style="!liebiao ? {opacity: .5,pointerEvents: 'none'} : ''" class="a flex-v-center" @click="addLayout('2', '列表')">
                 <i class="icon f-20">view_list</i>
                 <span class="flex-item">列表</span>
               </li>
@@ -41,6 +43,16 @@
           <transition-group tag="div" name="flip-list">
             <channel-layout
               v-for="item in layout"
+              :key="item.id"
+              :data="item"
+              :activeChannelChildren="activeChannelChildren"
+              @deleteNew="onDel"/>
+          </transition-group>
+        </draggable>
+        <draggable  v-model="layout1" :options="{handle: '.handle'}">
+          <transition-group tag="div" name="flip-list">
+            <channel-layout
+              v-for="item in layout1"
               :key="item.id"
               :data="item"
               :activeChannelChildren="activeChannelChildren"
@@ -86,7 +98,9 @@ export default {
       addShow: false,
       channels: [],
       layout: [],
-      mark: 1
+      layout1:[],
+      mark: 1,
+      liebiao:true
     }
   },
   watch: {
@@ -108,6 +122,8 @@ export default {
     getLayout (channelId) {
       if (!channelId) return
       this.loading = true
+      this.layout1 = []
+      this.layout = []
       this.$http.post('/cri-cms-platform/channel/getChannelIdToLayout.monitor', {
         channelId
       }).then(res => {
@@ -123,7 +139,15 @@ export default {
           }
         })
         this.loading = false
-        this.layout = res
+        console.log(res)
+        for (let i = 0; i < res.length; i++) {
+          if (res[i].type == 2) {
+            this.liebiao = false
+            this.layout1.push(res[i])
+          } else {
+            this.layout.push(res[i])
+          }
+        }
       }).catch(e => {
         this.loading = false
         this.$toast(e.msg || e.message)
@@ -131,17 +155,32 @@ export default {
     },
     addLayout (type, name) {
       if (type === '3' && !this.activeChannelChildren.length) return
-      this.layout.unshift({
-        id: Math.random().toString(16).substr(2),
-        layoutName: name,
-        editLayoutName: name,
-        type,
-        edit: false,
-        new: true,
-        open: true,
-        setting: defaultSettings[type],
-        cl: []
-      })
+      if (type === '2') {
+        this.liebiao = false
+        this.layout1.push({
+          id: Math.random().toString(16).substr(2),
+          layoutName: name,
+          editLayoutName: name,
+          type,
+          edit: false,
+          new: true,
+          open: true,
+          setting: defaultSettings[type],
+          cl: []
+        })
+      } else {
+        this.layout.unshift({
+          id: Math.random().toString(16).substr(2),
+          layoutName: name,
+          editLayoutName: name,
+          type,
+          edit: false,
+          new: true,
+          open: true,
+          setting: defaultSettings[type],
+          cl: []
+        })
+      }
       this.addShow = false
     },
     onChannelsLoad (e) {
@@ -180,10 +219,44 @@ export default {
           delChildId: []
         }
       })
+      if (this.layout1.length != 0) {
+        var data1 = this.layout1.filter(item => !item.del).map(item => {
+          let layoutId = item.new ? '' : item.id
+          let channelId = this.$route.query.channelId
+          let setting = JSON.parse(JSON.stringify({
+            layoutId: layoutId,
+            layoutType: item.type,
+            channelId,
+            setting: item.setting
+          }))
+          let cl = item.cl.map(c => {
+            return {
+              layoutId,
+              channelId: c.channelId,
+              type: item.type
+            }
+          })
+          if (setting.setting.autoPlay !== undefined) delete setting.setting.autoPlay
+          return {
+            layoutName: item.layoutName,
+            id: layoutId,
+            layoutId: layoutId,
+            channelId,
+            type: item.type,
+            cl: cl,
+            ls: item.new ? [setting] : [],
+            delChildId: []
+          }
+        })
+      }
+      if (data1[0]) {
+        data.push(data1[0])
+      }
       let res = {
         result: data,
         delLayoutId: this.layout.filter(item => item.del).map(item => item.id)
       }
+      console.log(data)
       this.$http.post('/cri-cms-platform/channel/saveChannelLayout.monitor', {
         channelId: this.$route.query.channelId,
         channelLayoutJson: JSON.stringify(res)
