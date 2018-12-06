@@ -53,7 +53,7 @@ export default [{
 }, {
   name: '菜单',
   path: '/menus',
-  icon: 'icon-users'
+  icon: 'icon-menus'
 }, {
   name: '会员',
   path: '/member',
