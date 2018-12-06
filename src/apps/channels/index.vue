@@ -98,9 +98,9 @@ export default {
       addShow: false,
       channels: [],
       layout: [],
-      layout1:[],
+      layout1: [],
       mark: 1,
-      liebiao:true
+      liebiao: true
     }
   },
   watch: {
@@ -141,7 +141,7 @@ export default {
         this.loading = false
         console.log(res)
         for (let i = 0; i < res.length; i++) {
-          if (res[i].type == 2) {
+          if (res[i].type === 2) {
             this.liebiao = false
             this.layout1.push(res[i])
           } else {

@@ -210,7 +210,7 @@ export default {
   data () {
     return {
       article: null,
-      linkdata:{
+      linkdata: {
         link: '',
         title: '',
         titleColor: ''
@@ -259,7 +259,7 @@ export default {
         thumb: '',
         terminalPc: 0,
         terminalApp: 0,
-        terminalWeb: 0,
+        terminalWeb: 0
         // attachmentIds: ''
       },
       thumb: {
@@ -329,7 +329,7 @@ export default {
     },
     submit () {
       let url = '/cri-cms-platform/link/save.monitor'
-      let { title, titleColor,link,linkhead } = this.$refs.editor
+      let { title, titleColor, link, linkhead } = this.$refs.editor
       if (!title) {
         this.$toast('请输入标题')
         return
