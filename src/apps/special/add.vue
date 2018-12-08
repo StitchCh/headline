@@ -129,7 +129,7 @@
         </div>
         <app-article-add-comment v-if="form.isOpenComment" v-model="form.virtualComment"></app-article-add-comment>
       </div>
-      <app-article-add-relates single :channels="ui.channels.channels" v-model="form.galleryId" title="相关图集" icon="collections" url="/cri-cms-platform/ecommerce/associate/gallery.monitor">
+      <app-article-add-relates single :channels="ui.channels.channels" v-model="form.galleryId" title="相关图集" icon="collections" url="/cri-cms-platform/article/associate/gallery.monitor">
         <template slot="afterTitle">
           <span class="flex-item"></span>
           <i class="add-gallery-setting-btn icon c-8" @click.stop="ui.gallerySettingShow = true">settings</i>
@@ -150,8 +150,8 @@
           </select-card>
         </layer>
       </app-article-add-relates>
-      <app-article-add-relates :channels="ui.channels.channels" v-model="form.relateIds" title="相关阅读" icon="book" url="/cri-cms-platform/ecommerce/associate/ecommerce.monitor"></app-article-add-relates>
-      <app-article-add-relates single :channels="ui.channels.channels" v-model="form.specialId" title="相关专题" icon="assignment" url="/cri-cms-platform/ecommerce/associate/special.monitor"></app-article-add-relates>
+      <app-article-add-relates :channels="ui.channels.channels" v-model="form.relateIds" title="相关阅读" icon="book" url="/cri-cms-platform/article/associate/article.monitor"></app-article-add-relates>
+      <app-article-add-relates single :channels="ui.channels.channels" v-model="form.specialId" title="相关专题" icon="assignment" url="/cri-cms-platform/article/associate/special.monitor"></app-article-add-relates>
       <app-article-add-attachment v-model="form.attachmentIds" :default-list="attachmentDefaultList"></app-article-add-attachment>
       <!--<div class="option-item flex-v-center blue a">-->
         <!--<i class="icon f-20 add-other-icon">attach_file</i>-->
@@ -196,10 +196,10 @@ import AppArticleAddThumb from './thumb'
 
 const from = {
   article: {
-    getUrl: '/cri-cms-platform/ecommerce/get.monitor'
+    getUrl: '/cri-cms-platform/special/get.monitor'
   },
   draft: {
-    getUrl: '/cri-cms-platform/articleAutoSave/getAuto.monitor'
+    getUrl: '/cri-cms-platform/specialAutoSave/getAuto.monitor'
   }
 }
 
@@ -220,7 +220,6 @@ export default {
         submited: false
       },
       form: {
-        ecommerceUrl: '',
         app: 'ARTICLE',
         title: '',
         titleColor: '',
@@ -295,7 +294,7 @@ export default {
       if (this.from || this.id) return
       let doc = this.$refs.editor.getText()
       if (!doc.trim()) return
-      this.$http.post('/cri-cms-platform/ecommerce/getKeyGenerate.monitor', { doc }).then(
+      this.$http.post('/cri-cms-platform/article/getKeyGenerate.monitor', { doc }).then(
         res => {
           this.form.abstarcts = res.gerenate
           this.form.keywords = res.key.join(',')
@@ -305,29 +304,9 @@ export default {
     disabledDate (time, format) {
       return time <= new Date()
     },
-    autoSave () {
-      let { title, titleColor, content, ecommerceUrl } = this.$refs.editor
-      this.form.title = title
-      this.form.titleColor = titleColor
-      this.form.content = content
-      this.from.ecommerceUrl = ecommerceUrl
-      let form = {...this.form}
-      if (this.autoSaveId) form.id = this.autoSaveId
-      return this.$http.post('/cri-cms-platform/articleAutoSave/saveAuto.monitor', form).then(
-        res => {
-          this.autoSaveId = res.autoSaveId
-          this.$toast('保存成功')
-        }
-      ).catch(
-        res => {
-          this.$toast(res.msg || res || '保存失败')
-        }
-      )
-    },
     submit () {
-      let url = this.id ? '/cri-cms-platform/ecommerce/update.monitor' : '/cri-cms-platform/ecommerce/save.monitor'
-      let { title, titleColor, content, getText, ecommerceUrl } = this.$refs.editor
-      console.log(ecommerceUrl)
+      let url = this.id ? '/cri-cms-platform/article/update.monitor' : '/cri-cms-platform/article/save.monitor'
+      let { title, titleColor, content, getText } = this.$refs.editor
       if (!title) {
         this.$toast('请输入标题')
         return
@@ -337,10 +316,6 @@ export default {
         this.$toast('请输入内容')
         return
       }
-      if (!ecommerceUrl) {
-        this.$toast('请输入链接地址')
-        return
-      }
       if (!this.form.channelIds) {
         this.$toast('请选择栏目')
         return
@@ -348,14 +323,14 @@ export default {
       this.form.title = title
       this.form.titleColor = titleColor
       this.form.content = content
-      this.form.ecommerceUrl = ecommerceUrl
       let form = {...this.form}
       if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
       if (this.id) form.id = this.id
+      console.log(form)
       this.$http.post(url, form).then(
         res => {
           this.ui.submited = true
-          this.$router.replace('/ecommerce/list?scope=all&status=all')
+          this.$router.replace('/article/list?scope=all&status=all')
         }
       ).catch(
         res => {
@@ -370,12 +345,6 @@ export default {
       if (value === '1') return '正文正上方'
       if (value === '2') return '正文正下方'
     }
-  },
-  created () {
-    this.getChannels()
-    this.autoSaveTimer = setInterval(() => {
-      this.autoSave()
-    }, 60000)
   },
   mounted () {
     if (this.from && this.id) {

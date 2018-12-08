@@ -1,8 +1,8 @@
 <template>
   <div class="app-article-add-thumb">
     <div class="add-photo-btn a flex-center" :style="{ width, height }" @click="show = true">
-      <img :src="image.url" width="100%" alt="">
-      <i v-if="!image.url" class="icon f-32 c-a">add_photo_alternate</i>
+      <img v-if="image.id" :src="image.url" width="100%" alt="">
+      <i v-else class="icon f-32 c-a">add_photo_alternate</i>
     </div>
     <layer v-if="show" title="选择图片"  width="800px">
       <div class="layer-text relative" style="height: 800px;">
@@ -24,7 +24,7 @@ export default {
   components: { MediaPhotos },
   props: {
     value: {
-      // type: Object,
+      type: Object,
       default: null
     },
     width: {
@@ -52,14 +52,12 @@ export default {
         id: image ? image.id : '',
         url: image ? this.$refs.mediaPhotos.imgOrigin + image.filePath + image.fileName : ''
       }
-      let oimg = image ? this.image : image
-      this.$emit('input', oimg.url)
+      this.$emit('input', image ? this.image : image)
       this.show = false
     }
   },
   created () {
-    // if (this.value) this.image = JSON.parse(JSON.stringify(this.value))
-    if (this.value) this.image.url = this.value
+    if (this.value) this.image = JSON.parse(JSON.stringify(this.value))
   }
 }
 </script>

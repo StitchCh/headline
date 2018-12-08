@@ -120,6 +120,7 @@ export default {
         toPage: this.page,
         pageSize: this.size
       }).then(res => {
+        console.log(res)
         res.data.forEach(data => {
           data.data.forEach(item => {
             item.checked = false

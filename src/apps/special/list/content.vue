@@ -14,9 +14,6 @@
             <span class="flex-item"></span>
             <img v-if="content && content.thumb" v-for="item in content.thumb" :key="item.id" :src="item.url" @click="thumbItem.url = item.url;thumbItem.show = true;" style="margin-left: 5px;height: 50px;cursor: pointer;">
           </div>
-
-          <div style="font-weight: bold;background: #eee;padding: 10px 14px;border-radius: 5px;">电商地址：{{ecommerce.ecommerceUrl}}</div>
-
           <p class="art-abstarcts"><strong>[摘要]</strong>{{content.abstarcts}}</p>
           <div class="f-14" v-html="article.content"></div>
           <div v-if="relateArticle.length" class="art-relate f-14">
@@ -120,7 +117,7 @@ export default {
     },
     getUrl: {
       type: String,
-      default: '/cri-cms-platform/ecommerce/get.monitor'
+      default: '/cri-cms-platform/special/get.monitor'
     }
   },
   data () {
@@ -138,7 +135,6 @@ export default {
         gallerySettingThumbWidth: '80',
         gallerySettingThumbHeight: '60'
       },
-      ecommerce:{},
       relateSpecial: [],
       attachments: [],
       thumbItem: {
@@ -180,8 +176,6 @@ export default {
       this.$http.post(this.getUrl, {
         id: this.id
       }).then(res => {
-        console.log(res)
-        this.ecommerce = res.ecommerce || {}
         this.content = res.content || {}
         this.article = res.article || {}
         this.relateArticle = res.relateArticle || []
@@ -218,7 +212,7 @@ export default {
     },
     toLink (item) {
       this.$router.push({
-        path: `/ecommerce/list/${item.id}`,
+        path: `/special/list/${item.id}`,
         query: this.$route.query
       })
     },

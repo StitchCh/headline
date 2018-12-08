@@ -61,7 +61,7 @@
           <div v-if="item.type === '3'">
             <div class="flex-v-center setting-item">
               <div class="flex-item">图片格式</div>
-                <select v-model="item.setting.layout" dir="rtl">
+                <select v-model="item.setting.picword" dir="rtl">
                   <option value="2_4">上图下文字</option>
                   <option value="2_5">上文字下图</option>
                   <option value="2_3">文字</option>
@@ -89,25 +89,23 @@
       <draggable v-if="item.cl && item.cl.length">
         <transition-group name="flip-list">
           <tag class="channelTag" :close="channelIds.length>1" v-for="channel in item.cl" :key="channel.channelId" @close="toggleChannel(channel)">
-            <!--<span v-if="item.setting.layout == 2_3">-->
-              <!--<span style="display: block;margin-bottom: 6px;">{{channel.channelName}}</span>-->
-            <!--</span>-->
-            <!--<span v-if="item.setting.layout == 2_4">-->
-              <!--<span class="tagtext">{{channel.channelName}}</span>-->
-              <!--<app-article-add-thumb class="tagimg"></app-article-add-thumb>-->
-            <!--</span>-->
-            <!--<span  v-if="item.setting.layout == 2_5">-->
-              <!--<img class="tagimg" src="../../assets/img/addindex.png"/>-->
-              <!--<app-article-add-thumb class="tagimg"></app-article-add-thumb>-->
-              <!--<span class="tagtext">{{channel.channelName}}</span>-->
-            <!--</span>-->
-            <!--<span  v-if="item.setting.layout == 2_2">-->
-              <!--<app-article-add-thumb class="tagimg" style="float: right;"></app-article-add-thumb>-->
-              <!--<span style="float: left;line-height: 50px;margin-right: 5px;" class="tagtext">{{channel.channelName}}</span>-->
-            <!--</span>-->
-            <!--v-if="item.setting.layout == 2_1"-->
-            <span>
-              <app-article-add-thumb class="tagimg" style="float: left;"></app-article-add-thumb>
+            <span v-if="item.setting.picword == '2_3'">
+              <span style="display: block;margin-bottom: 6px;">{{channel.channelName}}</span>
+            </span>
+            <span v-if="item.setting.picword == '2_5'">
+              <span class="tagtext">{{channel.channelName}}</span>
+              <img v-if="channel.channelIcon" :src="channel.channelIcon" alt="" class="tagimg">
+            </span>
+            <span v-if="item.setting.picword == '2_4'">
+              <img v-if="channel.channelIcon" :src="channel.channelIcon" alt="" class="tagimg">
+              <span class="tagtext">{{channel.channelName}}</span>
+            </span>
+            <span v-if="item.setting.picword == '2_2'"  style="float: left">
+              <img v-if="channel.channelIcon" :src="channel.channelIcon" alt="" class="tagimg">
+              <span style="float: left;line-height: 50px;margin-right: 5px;" class="tagtext">{{channel.channelName}}</span>
+            </span>
+            <span v-if="item.setting.picword == '2_1'"  style="float: left">
+              <img v-if="channel.channelIcon" :src="channel.channelIcon" alt="" class="tagimg">
               <span style="float: right;line-height: 50px;" class="tagtext">{{channel.channelName}}</span>
             </span>
           </tag>
@@ -185,6 +183,7 @@ export default {
         layoutId: this.item.id,
         dataType: this.item.type
       }).then(res => {
+        console.log(res)
         this.settingLoading = false
         let setting = JSON.parse(res.setting)
         if (res.layoutType === '1') {
@@ -197,11 +196,13 @@ export default {
       })
     },
     submitSetting () {
+      console.log(this.item.setting)
       let setting = JSON.parse(JSON.stringify(this.item.setting))
       delete setting.autoPlay
       setting.layoutId = this.item.id
       setting.layoutType = this.item.type
       this.settingLoading = true
+      console.log('sybmit', setting)
       this.$http.post('cri-cms-platform/channel/saveLayoutSetting.monitor', setting).then(res => {
         this.$toast('设置保存成功')
         this.settingLoading = false
@@ -220,7 +221,7 @@ export default {
       this.item.del = true
     },
     toggleChannel (channel) {
-      // console.log(channel)
+      console.log(channel)
       let { item, channelIds } = this
       let channelId = channel.channelId || channel.id
       if (channelIds.includes(channelId)) {
@@ -261,9 +262,7 @@ export default {
     height: 50px;
     margin-bottom: 10px;
     cursor: pointer;
-  }
-  .tagimg>div{
-    height: 100%;
+    margin-right: 10px;
   }
   .tagtext{
     display: block;

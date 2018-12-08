@@ -15,10 +15,11 @@
           style="margin-right: 10px;"
           @click.stop="data.open=!data.open"
           >{{data.children && data.children.length ? (data.open ? 'folder_open' : 'folder') : 'insert_drive_file'}}</i>
-        <div class="flex-item flex-v-center" style="height: 30px;overflow:hidden;">
+        <div class="flex-item flex-v-center" style="height: 40px;overflow:hidden;">
           <span class="flex-item channel-name" v-if="!data.edit">{{data.channelName}}</span>
           <input type="text" v-else v-model="data.editChannelName" class="flex-item f-14">
         </div>
+        <app-article-add-thumb v-model="data.channelIcon"  class="tagimg" style="width: 32px;height: 32px;float: right;overflow: hidden;"></app-article-add-thumb>
         <icon-btn small v-if="!data.edit" @click.native.stop="addChild(data)">add</icon-btn>
         <icon-btn small v-if="!data.edit" @click.native.stop="data.edit = true">edit</icon-btn>
         <icon-btn small v-if="data.edit" @click.native.stop="data.edit = false;data.channelName=data.editChannelName" class="green">check</icon-btn>
@@ -34,6 +35,7 @@
 <script>
 import { DraggableTree } from 'vue-draggable-nested-tree'
 import WorkerCode from '@/common/Tree/tree.worker.js'
+import AppArticleAddThumb from './thumb'
 
 function getTreeData (rootNode) {
   let res = []
@@ -45,7 +47,7 @@ function getTreeData (rootNode) {
         channelName: item.channelName,
         channelPartentId: node.id,
         channelManager: '',
-        channelIcon: ''
+        channelIcon: item.channelIcon
       })
       if (item.children.length) {
         getData(item)
@@ -58,7 +60,7 @@ function getTreeData (rootNode) {
 
 export default {
   name: 'channel-editor',
-  components: { DraggableTree },
+  components: { DraggableTree, AppArticleAddThumb },
   data () {
     return {
       channels: [],
@@ -72,7 +74,6 @@ export default {
   methods: {
     getChannels () {
       this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor').then(res => {
-        console.log(res)
         this.channels = res.channels
         this.$emit('channelsLoad', JSON.parse(JSON.stringify(res.channels)))
         res.channels.forEach(item => {
@@ -84,6 +85,7 @@ export default {
         worker.postMessage({ data: res.channels, idTxt: 'id', pidTxt: 'channelPartentId', childrenTxt: 'children', rootId: '1' })
         worker.addEventListener('message', e => {
           this.channelTree = e.data
+          console.log(this.channelTree)
           worker.terminate()
         })
         worker.addEventListener('error', e => {
@@ -132,8 +134,9 @@ export default {
       this.$router.replace(`/channels?channelId=${item.id}`)
     },
     submit () {
+      console.log(this.channelTree)
       let tree = { id: '1', children: this.channelTree }
-      // console.log(this.channelTree)
+      console.log(this.channelTree)
       let res = getTreeData(tree)
       // res.unshift({ id: '1', channelName: '根目录', channelPartentId: '0', channelManager: '', channelIcon: '' })
       let delChannels = getTreeData({ children: this.delChannels })
@@ -141,6 +144,7 @@ export default {
         result: res,
         removeChannelId: delChannels.filter(item => item.id).map(item => item.id)
       }
+      console.log(result)
       this.$http.post('/cri-cms-platform/channel/saveChannel.monitor', {
         channelJson: JSON.stringify(result)
       }).then(res => {

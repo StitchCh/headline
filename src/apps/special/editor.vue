@@ -18,11 +18,6 @@
       </bubble>
     </div>
   </div>
-
-  <div class="urlbox">
-    <input class="urlinput" type="text" v-model="ecommerceUrl" placeholder="请添加电商地址" />
-  </div>
-
   <quill-editor v-model="content" ref="editor" :options="options" @change="getKeyGenerate"/>
 
   <layer v-if="ui.imageSelectorShow" title="选择图片"  width="800px">
@@ -72,7 +67,6 @@ export default {
         index: 0
       },
       title: '',
-      ecommerceUrl: '',
       titleColorBoxShow: false,
       titleColor: '#000',
       content: '',
@@ -159,19 +153,6 @@ export default {
   max-width: 900px;margin: 0 auto;padding: 10px;
   .title{font-size: 30px;font-weight: bold;border: none;width: 100%;background: transparent;padding: 20px 15px;color: #555;
     &::-webkit-input-placeholder{color: #aaa;}
-  }
-  .urlbox{
-    border-top: 1px solid #ddd;
-    padding: 10px 0;
-  }
-  .urlinput{
-    height: 30px;
-    font-size: 20px;
-    width: 100%;
-    box-sizing: border-box;
-    border: 0;
-    outline: none;
-    padding: 0 20px;
   }
   .title-colorpicker-btn {width: 25px;height: 25px;border: 1px solid transparent;margin: 3px;
     &:hover {border: 1px solid #000}

@@ -139,15 +139,15 @@ export default {
           }
         })
         this.loading = false
-        console.log(res)
         for (let i = 0; i < res.length; i++) {
-          if (res[i].type === 2) {
+          if (res[i].type == 2) {
             this.liebiao = false
             this.layout1.push(res[i])
           } else {
             this.layout.push(res[i])
           }
         }
+        console.log(this.layout1)
       }).catch(e => {
         this.loading = false
         this.$toast(e.msg || e.message)

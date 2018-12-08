@@ -344,6 +344,7 @@ export default {
       let form = {...this.form}
       if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
       if (this.id) form.id = this.id
+      console.log(form)
       this.$http.post(url, form).then(
         res => {
           this.ui.submited = true
