@@ -21,6 +21,7 @@
     :index="preview.index"
     :type="$route.meta.type"
     @close="preview.show=false"
+    @refresh="$refs.routerView.getList();preview.show = false;"
     @delected="onDelected"/>
 
 </div>

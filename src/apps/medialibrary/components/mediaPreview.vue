@@ -7,8 +7,18 @@
           <img :src="origin+current.filePath+current.fileName" :style="imgStyle">
         </div>
       </transition>
+      <!--<transition name="fade">-->
+        <!--<div class="abs flex-center" v-if="type === 1 && current" style="overflow: hidden;" :key="current.id">-->
+          <!--<div style="width: 100%;">-->
+            <!--<video-player class="vjs-custom-skin"-->
+                          <!--ref="videoPlayer"-->
+                          <!--:options="playerOptions"-->
+                          <!--:playsinline="true"></video-player>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</transition>-->
       <transition name="fade">
-        <div class="abs flex-center" v-if="type === 2 && current" style="overflow: hidden;" :key="current.id">
+        <div class="abs flex-center" v-if="(type === 1 || type === 2) && current" style="overflow: hidden;" :key="current.id">
           <div style="width: 100%;">
             <video-player class="vjs-custom-skin"
                           ref="videoPlayer"
@@ -35,7 +45,7 @@
         </a>
         <icon-btn small v-tooltip:top="'复制链接地址'" @click="copyLink">link</icon-btn>
         <input type="text" :value="origin+current.filePath+current.fileName" ref="copyInput" readonly style="width: 1px;border: none;opacity: 0;">
-        <icon-btn small v-tooltip:top="`编辑${typeContent[type].text}`" @click="show.imageEditor = true">edit</icon-btn>
+        <icon-btn small v-tooltip:top="`编辑${typeContent[type].text}`" @click="show.imageEditor = !type">edit</icon-btn>
         <icon-btn small v-tooltip:top="`删除${typeContent[type].text}`" @click="del">delete</icon-btn>
       </div>
       <div class="flex" style="margin: 15px 0;">
@@ -59,7 +69,7 @@
       </div>
     </div>
   </div>
-  <image-editor v-if="show.imageEditor" @close="show.imageEditor = false" :src="origin+current.filePath+current.fileName"/>
+  <image-editor v-if="show.imageEditor" @close="show.imageEditor = false" @refresh="$emit('refresh');show.imageEditor = false;" :src="origin+current.filePath+current.fileName" :current="current"/>
 </layer>
 </template>
 
@@ -129,7 +139,7 @@ export default {
         playbackRates: [0.7, 1.0, 1.5, 2.0],
         sources: [{
           type: '',
-          src: this.origin + this.current.video
+          src: this.origin + (this.current.video || this.current.audio)
         }],
         poster: this.origin + this.current.thumb
       }
@@ -151,7 +161,7 @@ export default {
         yes: () => {
           this.$http.post('/cri-cms-platform/media/del.monitor', {
             id: this.current.id,
-            type: '0'
+            type: this.type
           }).then(res => {
             this.$emit('delected')
             this.list.splice(this.i, 1)

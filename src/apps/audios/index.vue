@@ -1,5 +1,8 @@
 <template>
 <div class="abs bg-f flex app-audios">
+  <div class="abs bg-f flex-center">
+    <loading/>
+  </div>
   <af-left color="#288065" bg-color="#e0f3ed" vibrant-color="#00a773" title="音频" :defaultActive="defaultActive">
     <navigator-item icon="folder" index="all-all" @click="$router.replace('/audios?scope=all&status=all')">全部</navigator-item>
     <!-- <navigator-item-group defaultExtended index="2" icon="face">

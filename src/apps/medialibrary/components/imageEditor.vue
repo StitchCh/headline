@@ -55,7 +55,7 @@
       </div>
       <div class="layer-btns">
         <btn flat @click="$emit('close')">取消</btn>
-        <btn flat>保存</btn>
+        <btn flat @click="submit">保存</btn>
       </div>
     </div>
   </div>
@@ -70,7 +70,8 @@ import Cropper from 'cropperjs'
 export default {
   name: 'image-editor',
   props: {
-    src: String
+    src: String,
+    current: Object
   },
   data () {
     return {
@@ -213,6 +214,23 @@ export default {
     redo () {
       this.history.index++
       this.setHistory()
+    },
+    submit () {
+      let { current } = this
+      this.cropper.getCroppedCanvas().toBlob(img => {
+        let data = {
+          type: 0,
+          folderId: current.folderId,
+          file: new File([img], current.alias)
+        }
+        console.log(data)
+        this.$http.post('/cri-cms-platform/media/uploadIAU.monitor', data).then(res => {
+          console.log(res)
+          this.$emit('refresh')
+        }).catch(e => {
+          this.$toast(e.msg || `保存失败`)
+        })
+      })
     }
   }
 }
