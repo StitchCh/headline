@@ -1,6 +1,6 @@
 <template>
 <div class="abs bg-f flex app-audios">
-  <div class="abs bg-f flex-center">
+  <div class="abs bg-f flex-center" style="opacity: .8;z-index: 99">
     <loading/>
   </div>
   <af-left color="#288065" bg-color="#e0f3ed" vibrant-color="#00a773" title="音频" :defaultActive="defaultActive">

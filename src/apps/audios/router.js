@@ -1,6 +1,6 @@
 export default [
   {
-    path: '/audios',
+    path: '/audio',
     component: resolve => require(['@/apps/audios/index.vue'], resolve),
     meta: { level: 2, title: '音频', identifier: 'audio' },
     children: [
