@@ -12,10 +12,10 @@
     <navigator-item icon="delete" index="3-1" @click="$router.replace('/special')">回收站</navigator-item>
   </af-left>
   <af-center
-    @add="$router.push('/videoAdd')"
+    @add="$router.push('/specialAdd')"
     :scope="$route.query.scope"
     :status="$route.query.status"
-    url="/cri-cms-platform/special/page.monitor"
+    url="/cri-cms-platform/special/queryList.monitor"
     ref="afCenter">
     <div class="list-item a" slot-scope="slotProps" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.id == $route.params.id}">
       <div class="list-title flex-v-center">
@@ -51,7 +51,18 @@ export default {
     defaultActive () {
       return `${this.$route.query.scope}-${this.$route.query.status}`
     }
-  }
+  },
+  // mounted(){
+  //   this.$http.post('http://60.247.77.208:59099/cri-cms-platform/special/queryList.monitor',{
+  //     pageSize: 20,
+  //     toPage: 1,
+  //     siteId: 1001,
+  //     scope: 'all',
+  //     status: 'all'
+  //   }).then(res => {
+  //     console.log(res)
+  //   })
+  // }
 }
 </script>
 

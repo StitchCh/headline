@@ -201,6 +201,7 @@ export default {
       let { filter } = this
       if (refresh) filter.toPage = 1
       this.$refs.listView.loading = true
+      console.log(this.url, filter)
       this.$http.post(this.url, filter).then(res => {
         this.$refs.listView.loading = false
         this.totalPage = res.totalPage || 1

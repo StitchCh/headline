@@ -12,6 +12,8 @@
         <span class="flex-item b">布局编辑</span>
         <span>是否启用</span>
         <switcher v-model="channelState.showLocal" style="transform: scale(.8);margin-right: 20px;"/>
+        <span>是否评论</span>
+        <switcher v-model="channelState.isPingLun" style="transform: scale(.8);margin-right: 20px;"/>
         <span>是否审核</span>
         <switcher v-model="channelState.isShenHe" style="transform: scale(.8);margin-right: 20px;"/>
         <btn flat style="margin-right: 5px;" @click="refresh()">撤销修改</btn>
@@ -164,7 +166,6 @@ export default {
             item.setting.autoPlay = (item.setting.playType === 'auto')
           }
         })
-        console.log(res)
         this.loading = false
         for (let i = 0; i < res.length; i++) {
           if (res[i].type == 2) {
