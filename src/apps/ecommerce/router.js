@@ -60,12 +60,12 @@ export default [{
   path: '/ecommerceAdd',
   name: 'EcommerceAdd',
   component: resolve => require(['@/apps/ecommerce/add.vue'], resolve),
-  meta: { level: 3, title: '添加文章', identifier: 'article_add' }
+  meta: { level: 3, title: '添加电商', identifier: 'ecommerce_add' }
 }, {
   path: '/ecommerceEdit/:from/:id',
   name: 'EcommerceEdit',
   component: resolve => require(['@/apps/ecommerce/add.vue'], resolve),
   props: true,
-  meta: { level: 3, title: '添加文章', identifier: 'article_edit' }
+  meta: { level: 3, title: '修改电商', identifier: 'ecommerce_edit' }
 }
 ]

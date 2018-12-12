@@ -60,11 +60,11 @@ export default [{
   path: '/articleAdd',
   name: 'SpecialAdd',
   component: resolve => require(['@/apps/special/add.vue'], resolve),
-  meta: { level: 3, title: '添加文章', identifier: 'article_add' }
+  meta: { level: 3, title: '添加专题', identifier: 'special_add' }
 }, {
   path: '/articleEdit/:from/:id',
   name: 'SpecialEdit',
   component: resolve => require(['@/apps/special/add.vue'], resolve),
   props: true,
-  meta: { level: 3, title: '添加文章', identifier: 'article_edit' }
+  meta: { level: 3, title: '修改专题', identifier: 'special_edit' }
 }]

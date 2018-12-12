@@ -53,7 +53,7 @@
                 <img :src="origin + item.thumb">
               </div>
               <div class="videos-item-play abs flex-center"><i class="icon a c-f" @click="onItemClick(item)">play_circle_outline</i></div>
-              <div class="videos-item-info flex-v-center f-12 c-f">{{item.duration | time}}<span class="flex-item"></span><i class="status" :style="{ backgroundColor: states[item.state].color }"></i>{{states[item.state].text}}</div>
+              <div class="videos-item-info flex-v-center f-12 c-f">{{item.duration * 1000 | time}}<span class="flex-item"></span><i class="status" :style="{ backgroundColor: states[item.state].color }"></i>{{states[item.state].text}}</div>
             </div>
             <div class="videos-item-name f-14">{{item.alias}}</div>
           </li>
