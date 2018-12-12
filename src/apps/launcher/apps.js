@@ -59,6 +59,10 @@ export default [{
   path: '/member',
   icon: 'icon-member'
 }, {
+  name: '评论',
+  path: '/comment',
+  icon: 'icon-member'
+}, {
   name: '频道',
   path: '/channels',
   icon: 'icon-channels'
