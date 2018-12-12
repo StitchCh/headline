@@ -8,20 +8,20 @@
         <input type="text" class="f-14 c-6" placeholder="搜索">
       </div>
       <div class="flex-item"></div>
-      <!--<div class="flex-v-center opera-btns">-->
-        <!--<div class="relative">-->
-          <!--<span class="a flex-v-center" @click="stateShow=true">-->
-            <!--<span>全部状态</span>-->
-            <!--<i class="icon f-18 c-a">keyboard_arrow_down</i>-->
-          <!--</span>-->
-          <!--<bubble v-if="stateShow" @close="stateShow=false">-->
-            <!--<div style="padding: 10px 0;">-->
-              <!--<div class="bubble-item">已转码</div>-->
-              <!--<div class="bubble-item">转码中</div>-->
-              <!--<div class="bubble-item">转码失败</div>-->
-            <!--</div>-->
-          <!--</bubble>-->
-        <!--</div>-->
+      <div class="flex-v-center opera-btns">
+        <div class="relative">
+          <span class="a flex-v-center" @click="stateShow=true">
+            <span>全部状态</span>
+            <i class="icon f-18 c-a">keyboard_arrow_down</i>
+          </span>
+          <bubble v-if="stateShow" @close="stateShow=false">
+            <div style="padding: 10px 0;">
+              <div class="bubble-item">已转码</div>
+              <div class="bubble-item">转码中</div>
+              <div class="bubble-item">转码失败</div>
+            </div>
+          </bubble>
+        </div>
         <!--<div class="relative">-->
           <!--<span class="a relative">-->
             <!--<span v-if="!filter.range.length" class="abs flex-v-center" style="padding: 0 15px;top: 0;">-->
@@ -32,7 +32,7 @@
           <!--</span>-->
         <!--</div>-->
         <!--<icon-btn small @click="resetFilter" v-tooltip:bottom="'重置'">close</icon-btn>-->
-      <!--</div>-->
+      </div>
       <span class="f-14" v-if="selected.length" style="margin-right: 10px;">已选择 {{selected.length}} 项</span>
       <btn flat v-if="selected.length" color="#008eff" @click="cancelSelect">取消选择</btn>
       <div v-if="!selectMode" class="flex-v-center opera-btns">
@@ -46,14 +46,14 @@
       <div class="media-group" v-for="group in list" :key="group.date">
         <div class="media-group-title">{{group.date}}</div>
         <ul class="flex">
-          <li class="videos-item relative" v-for="item in group.data" :key="item.id" :class="{'checked': item.checked}">
+          <li class="videos-item relative" v-for="item in group.data" :key="item.id" :class="{'checked': item.checked}" v-if="!selectMode || item.state === 'success'">
             <i class="icon item-check a" @click="selectItem(item)">check_circle</i>
             <div class="relative hidden">
               <div class="videos-item-cover flex-center">
                 <img :src="origin + item.thumb">
               </div>
               <div class="videos-item-play abs flex-center"><i class="icon a c-f" @click="onItemClick(item)">play_circle_outline</i></div>
-              <div class="videos-item-info f-12 c-f">{{item.duration | time}}</div>
+              <div class="videos-item-info flex-v-center f-12 c-f">{{item.duration | time}}<span class="flex-item"></span><i class="status" :style="{ backgroundColor: states[item.state].color }"></i>{{states[item.state].text}}</div>
             </div>
             <div class="videos-item-name f-14">{{item.alias}}</div>
           </li>
@@ -74,6 +74,12 @@ import debounce from 'lodash/debounce'
 
 const origin = 'http://60.247.77.208:58088'
 
+const states = {
+  'success': { color: '#4caf50 ', text: '转码成功' },
+  'coding': { color: '#ffc107 ', text: '转码中' },
+  'fail': { color: '#ff5252 ', text: '转码失败' }
+}
+
 export default {
   name: 'media-videos',
   components: { MediaLeftTree, MediaUpload },
@@ -90,8 +96,9 @@ export default {
   data () {
     return {
       origin,
+      states,
       loading: true,
-      // stateShow: false,
+      stateShow: false,
       page: 1,
       size: 50,
       total: 0,
@@ -150,6 +157,7 @@ export default {
             item.checked = false
           })
         })
+        console.log(res)
         this.total = res.totalPage * this.size
         this.list = res.data || []
         console.log(this.list)
@@ -216,12 +224,13 @@ export default {
       .videos-item-cover{transform: scale(.85);}
     }
   }
-  .videos-item-cover{height: 150px;background: #eee;border-radius: 5px;overflow: hidden;transition: transform .2s;will-change: transform;
+  .videos-item-cover{height: 150px;background: #000;border-radius: 5px;overflow: hidden;transition: transform .2s;will-change: transform;
     img {max-width: 100%;max-height: 100%}
   }
   .videos-item-play i {opacity: 0;transition: opacity .2s;will-change: opacity;font-size: 40px;text-shadow: #000 0 0 8px;}
-  .videos-item-info {position: absolute;left: 0;bottom: 0;background: rgba(0, 0, 0, .7);width: 100%;line-height: 1em;padding: 6px;transform: translateY(24px);
-    overflow: hidden;text-overflow: ellipsis;white-space: nowrap;transition: all .2s;}
+  .videos-item-info {position: absolute;left: 0;bottom: 0;background: rgba(0, 0, 0, .7);width: 100%;line-height: 1em;padding: 6px;transform: translateY(24px);overflow: hidden;text-overflow: ellipsis;white-space: nowrap;transition: all .2s;
+    .status {width: 10px;height: 10px;border-radius: 5px;margin-right: 5px;}
+  }
   .videos-item-name{margin-top: 5px;max-height: 46px;overflow: hidden;}
   .item-check{position: absolute;right: 0;top: 0;z-index: 2;visibility: hidden;color: rgba(173, 173, 173, 0.8);padding: 3px;}
 }

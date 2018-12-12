@@ -14,19 +14,19 @@ export default [{
       children: [
         {
           path: ':id',
-          name: 'ArticleContent',
+          name: 'SpecialContent',
           component: resolve => require(['@/apps/special/list/content.vue'], resolve),
           props: true
         },
         {
           path: ':id/statistics',
-          name: 'ArticleStatistics',
+          name: 'SpecialStatistics',
           component: resolve => require(['@/apps/special/list/statistics.vue'], resolve),
           props: true
         },
         {
           path: ':id/history',
-          name: 'ArticleHistory',
+          name: 'SpecialHistory',
           component: resolve => require(['@/apps/special/list/history.vue'], resolve),
           props: true
         }
@@ -34,7 +34,7 @@ export default [{
     },
     {
       path: 'tile',
-      name: 'ArticleTile',
+      name: 'SpecialTile',
       component: resolve => require(['@/apps/special/tile/index.vue'], resolve)
     },
     {
@@ -43,13 +43,13 @@ export default [{
     },
     {
       path: 'recycle',
-      name: 'ArticleRecycle',
+      name: 'SpecialRecycle',
       component: resolve => require(['@/apps/special/recycle/index.vue'], resolve),
       props: true,
       children: [
         {
           path: ':id',
-          name: 'ArticleRecycleContent',
+          name: 'SpecialRecycleContent',
           component: resolve => require(['@/apps/special/list/content.vue'], resolve),
           props: true
         }
@@ -58,12 +58,12 @@ export default [{
   ]
 }, {
   path: '/articleAdd',
-  name: 'ArticleAdd',
+  name: 'SpecialAdd',
   component: resolve => require(['@/apps/special/add.vue'], resolve),
   meta: { level: 3, title: '添加文章', identifier: 'article_add' }
 }, {
   path: '/articleEdit/:from/:id',
-  name: 'ArticleEdit',
+  name: 'SpecialEdit',
   component: resolve => require(['@/apps/special/add.vue'], resolve),
   props: true,
   meta: { level: 3, title: '添加文章', identifier: 'article_edit' }

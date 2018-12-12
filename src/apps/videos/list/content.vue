@@ -63,6 +63,7 @@
 
 <script>
 import 'video.js/dist/video-js.css'
+import 'video.js/dist/lang/zh-CN'
 import 'vue-video-player/src/custom-theme.css'
 import { videoPlayer } from 'vue-video-player'
 
@@ -90,7 +91,7 @@ export default {
       },
       playerOptions: {
         height: '480',
-        language: 'zh-ch',
+        language: 'zh-CN',
         playbackRates: [0.7, 1.0, 1.5, 2.0],
         sources: [{
           type: '',

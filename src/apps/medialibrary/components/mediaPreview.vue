@@ -19,7 +19,7 @@
       <!--</transition>-->
       <transition name="fade">
         <div class="abs flex-center" v-if="(type === 1 || type === 2) && current" style="overflow: hidden;" :key="current.id">
-          <div style="width: 100%;">
+          <div style="width: 100%;height: 100%;">
             <video-player class="vjs-custom-skin"
                           ref="videoPlayer"
                           :options="playerOptions"
@@ -76,6 +76,7 @@
 <script>
 import ImageEditor from '../components/imageEditor'
 import 'video.js/dist/video-js.css'
+import 'video.js/dist/lang/zh-CN'
 import 'vue-video-player/src/custom-theme.css'
 import { videoPlayer } from 'vue-video-player'
 
@@ -133,9 +134,9 @@ export default {
     },
     playerOptions () {
       return {
-        // width: '720',
-        // height: '480',
-        language: 'zh-ch',
+        width: '550',
+        height: '500',
+        language: 'zh-CN',
         playbackRates: [0.7, 1.0, 1.5, 2.0],
         sources: [{
           type: '',

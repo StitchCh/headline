@@ -14,11 +14,10 @@ Vue.filter('filesize', value => {
 })
 
 Vue.filter('time', value => {
-  let val = parseInt(value / 1000)
-  let h = parseInt(val / 3600) + ''
-  val %= 3600
-  let m = parseInt(val / 60) + ''
-  let s = val % 60 + ''
+  let h = parseInt(value / 3600) + ''
+  value %= 3600
+  let m = parseInt(value / 60) + ''
+  let s = parseInt(value % 60) + ''
   if (h.length < 2) h = '0' + h
   if (m.length < 2) m = '0' + m
   if (s.length < 2) s = '0' + s

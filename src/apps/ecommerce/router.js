@@ -14,19 +14,19 @@ export default [{
       children: [
         {
           path: ':id',
-          name: 'ArticleContent',
+          name: 'EcommerceContent',
           component: resolve => require(['@/apps/ecommerce/list/content.vue'], resolve),
           props: true
         },
         {
           path: ':id/statistics',
-          name: 'ArticleStatistics',
+          name: 'EcommerceStatistics',
           component: resolve => require(['@/apps/ecommerce/list/statistics.vue'], resolve),
           props: true
         },
         {
           path: ':id/history',
-          name: 'ArticleHistory',
+          name: 'EcommerceHistory',
           component: resolve => require(['@/apps/ecommerce/list/history.vue'], resolve),
           props: true
         }
@@ -34,7 +34,7 @@ export default [{
     },
     {
       path: 'tile',
-      name: 'ArticleTile',
+      name: 'EcommerceTile',
       component: resolve => require(['@/apps/ecommerce/tile/index.vue'], resolve)
     },
     {
@@ -43,13 +43,13 @@ export default [{
     },
     {
       path: 'recycle',
-      name: 'ArticleRecycle',
+      name: 'EcommerceRecycle',
       component: resolve => require(['@/apps/ecommerce/recycle/index.vue'], resolve),
       props: true,
       children: [
         {
           path: ':id',
-          name: 'ArticleRecycleContent',
+          name: 'EcommerceRecycleContent',
           component: resolve => require(['@/apps/ecommerce/list/content.vue'], resolve),
           props: true
         }
@@ -58,12 +58,12 @@ export default [{
   ]
 }, {
   path: '/ecommerceAdd',
-  name: 'ArticleAdd',
+  name: 'EcommerceAdd',
   component: resolve => require(['@/apps/ecommerce/add.vue'], resolve),
   meta: { level: 3, title: '添加文章', identifier: 'article_add' }
 }, {
   path: '/ecommerceEdit/:from/:id',
-  name: 'ArticleEdit',
+  name: 'EcommerceEdit',
   component: resolve => require(['@/apps/ecommerce/add.vue'], resolve),
   props: true,
   meta: { level: 3, title: '添加文章', identifier: 'article_edit' }
