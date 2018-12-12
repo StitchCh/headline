@@ -85,7 +85,6 @@ export default {
         worker.postMessage({ data: res.channels, idTxt: 'id', pidTxt: 'channelPartentId', childrenTxt: 'children', rootId: '1' })
         worker.addEventListener('message', e => {
           this.channelTree = e.data
-          console.log(this.channelTree)
           worker.terminate()
         })
         worker.addEventListener('error', e => {

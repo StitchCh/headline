@@ -126,7 +126,7 @@ export default {
   created () {
     this.getLayout(this.$route.query.channelId)
     this.$http.post('/cri-cms-platform/channel/getChannelSetting.monitor',{
-      channelId:this.$route.query.channelId
+      channelId: this.$route.query.channelId
     }).then(res => {
       this.channelState = JSON.parse(res.setting)
       for (let item in this.channelState) {
@@ -142,7 +142,7 @@ export default {
         isPingLun: this.channelState.isPingLun ? 'true' : 'false',
         isShenHe: this.channelState.isShenHe ? 'true' : 'false'
       }).then(res => {
-        console.log(res)
+
       })
     },
     getLayout (channelId) {
@@ -164,16 +164,20 @@ export default {
             item.setting.autoPlay = (item.setting.playType === 'auto')
           }
         })
+        console.log(res)
         this.loading = false
         for (let i = 0; i < res.length; i++) {
           if (res[i].type == 2) {
-            this.liebiao = false
             this.layout1.push(res[i])
           } else {
             this.layout.push(res[i])
           }
         }
-        console.log(this.layout1)
+        if (this.layout1.length > 0) {
+          this.liebiao = false
+        } else {
+          this.liebiao = true
+        }
       }).catch(e => {
         this.loading = false
         this.$toast(e.msg || e.message)
@@ -245,6 +249,7 @@ export default {
           delChildId: []
         }
       })
+      console.log(data)
       if (this.layout1.length != 0) {
         var data1 = this.layout1.filter(item => !item.del).map(item => {
           let layoutId = item.new ? '' : item.id
@@ -278,14 +283,18 @@ export default {
       if (data1[0]) {
         data.push(data1[0])
       }
+      let delarr = this.layout.filter(item => item.del).map(item => item.id)
+      let delarr1 = this.layout1.filter(item => item.del).map(item => item.id)
       let res = {
         result: data,
-        delLayoutId: this.layout.filter(item => item.del).map(item => item.id)
+        delLayoutId: delarr.concat(delarr1)
       }
+      console.log(res)
       this.$http.post('/cri-cms-platform/channel/saveChannelLayout.monitor', {
         channelId: this.$route.query.channelId,
         channelLayoutJson: JSON.stringify(res)
       }).then(res => {
+        console.log(res)
         this.$toast('保存成功')
         this.refresh()
       }).catch(e => {
