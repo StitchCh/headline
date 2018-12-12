@@ -1,5 +1,5 @@
 <template>
-  <div class="app-members-list flex-col c-6">
+  <div class="app-comments-list flex-col c-6">
     <div class="af-topbar">
       会员
     </div>
@@ -7,20 +7,22 @@
       <div class="card">
         <table>
           <thead>
-          <th>昵称</th>
-          <th>手机</th>
-          <th>邮箱</th>
-          <th>姓名</th>
-          <th>最后登录</th>
+          <th>会员昵称</th>
+          <th>IP</th>
+          <th>标题</th>
+          <th>评论内容</th>
+          <th>时间</th>
+          <th>状态</th>
           <th colspan="3">操作</th>
           </thead>
           <tbody>
           <tr v-for="item in list" :key="item.id" @click="openDetail(item.id)">
-            <td>{{item.nickname?'-':item.nickname}}</td>
-            <td>{{item.mobile?'-':item.mobile}}</td>
-            <td>{{item.email?'-':item.email}}</td>
-            <td>{{item.trueName}}</td>
-            <td>{{item.thisTimeLoginTime}}</td>
+            <td>{{item.memberName?item.memberName:'-'}}</td>
+            <td>{{item.clientIp?item.clientIp:'-'}}</td>
+            <td>{{item.contentTitle?item.contentTitle:'-'}}</td>
+            <td>{{item.content}}</td>
+            <td>{{item.createTime}}</td>
+            <td>{{item.auditStatus == '1'?'审核通过':'审核未通过' }}</td>
             <td style="width: 30px;">
               <icon-btn v-tooltip="'编辑'" small @click.stop.native="openEdit(item.id)">edit</icon-btn>
             </td>
@@ -113,7 +115,7 @@
 
 <script>
   export default {
-    name: 'settings-user',
+    name: 'app-comment',
     data () {
       return {
         list: [],
@@ -127,7 +129,7 @@
     },
     methods: {
       getList () {
-        this.$http.post('/cri-cms-platform/member/list.monitor', {
+        this.$http.post('/cri-cms-platform/comment/list.monitor', {
           pageSize: 10,
           toPage: this.page
         }).then(
@@ -143,7 +145,7 @@
         )
       },
       openDetail (id) {
-        this.$http.post('/cri-cms-platform/member/view.monitor', {
+        this.$http.post('/cri-cms-platform/comment/get.monitor', {
           id: id
         }).then(
           res => {
@@ -171,7 +173,7 @@
     },
     created () {
       Promise.all([
-        this.$http.post('/cri-cms-platform/member/list.monitor', {
+        this.$http.post('/cri-cms-platform/comment/list.monitor', {
           pageSize: 10,
           toPage: this.page
         })
@@ -187,7 +189,7 @@
 </script>
 
 <style lang="less">
-  .app-members-list {
+  .app-comments-list {
     background: #fafafa;
     color: #666;
     .card {
