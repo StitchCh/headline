@@ -28,7 +28,7 @@
       </div>
     </draggable-tree>
     <!-- <div>{{delChannels}}</div> -->
-  </div>
+  </div>f
 </div>
 </template>
 

@@ -10,8 +10,10 @@
     <div class="right flex-item flex-col" v-if="$route.query.channelId">
       <div class="flex-v-center" style="padding: 15px 30px;">
         <span class="flex-item b">布局编辑</span>
+        <span>是否启用</span>
+        <switcher v-model="channelState.showLocal" style="transform: scale(.8);margin-right: 20px;"/>
         <span>是否审核</span>
-        <switcher style="transform: scale(.8);margin-right: 20px;"/>
+        <switcher v-model="channelState.isShenHe" style="transform: scale(.8);margin-right: 20px;"/>
         <btn flat style="margin-right: 5px;" @click="refresh()">撤销修改</btn>
         <btn @click="submit">保存</btn>
       </div>
@@ -100,7 +102,13 @@ export default {
       layout: [],
       layout1: [],
       mark: 1,
-      liebiao: true
+      liebiao: true,
+      channelState:{
+        channelId: '',
+        showLocal: false,
+        isPingLun: false,
+        isShenHe: false,
+      }
     }
   },
   watch: {
@@ -117,8 +125,26 @@ export default {
   },
   created () {
     this.getLayout(this.$route.query.channelId)
+    this.$http.post('/cri-cms-platform/channel/getChannelSetting.monitor',{
+      channelId:this.$route.query.channelId
+    }).then(res => {
+      this.channelState = JSON.parse(res.setting)
+      for (let item in this.channelState) {
+        this.channelState[item] = this.channelState[item] == 'true' ? true : false
+      }
+    })
   },
   methods: {
+    setChannel () {
+      this.$http.post('/cri-cms-platform/channel/channelSet.monitor', {
+        channelId: this.$route.query.channelId,
+        showLocal: this.channelState.showLocal ? 'true' : 'false',
+        isPingLun: this.channelState.isPingLun ? 'true' : 'false',
+        isShenHe: this.channelState.isShenHe ? 'true' : 'false'
+      }).then(res => {
+        console.log(res)
+      })
+    },
     getLayout (channelId) {
       if (!channelId) return
       this.loading = true
@@ -256,7 +282,6 @@ export default {
         result: data,
         delLayoutId: this.layout.filter(item => item.del).map(item => item.id)
       }
-      console.log(data)
       this.$http.post('/cri-cms-platform/channel/saveChannelLayout.monitor', {
         channelId: this.$route.query.channelId,
         channelLayoutJson: JSON.stringify(res)
@@ -266,6 +291,7 @@ export default {
       }).catch(e => {
         this.$toast(e.msg)
       })
+      this.setChannel()
     },
     refresh () {
       let query = this.$route.query
