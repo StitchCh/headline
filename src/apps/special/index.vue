@@ -51,18 +51,7 @@ export default {
     defaultActive () {
       return `${this.$route.query.scope}-${this.$route.query.status}`
     }
-  },
-  // mounted(){
-  //   this.$http.post('http://60.247.77.208:59099/cri-cms-platform/special/queryList.monitor',{
-  //     pageSize: 20,
-  //     toPage: 1,
-  //     siteId: 1001,
-  //     scope: 'all',
-  //     status: 'all'
-  //   }).then(res => {
-  //     console.log(res)
-  //   })
-  // }
+  }
 }
 </script>
 
