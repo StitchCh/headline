@@ -3,10 +3,10 @@
   <div class="flex-v-center af-topbar bg-f">
     <dock color="#009aff" title="频道管理"/>
     <div class="flex-item"></div>
-    <account/>
+    <account />
   </div>
   <div class="flex-item flex">
-    <channel-editor @channelsLoad="onChannelsLoad" @refresh="refresh"/>
+    <channel-editor @changeChannel="changeChannel" @channelsLoad="onChannelsLoad" @refresh="refresh"/>
     <div class="right flex-item flex-col" v-if="$route.query.channelId">
       <div class="flex-v-center" style="padding: 15px 30px;">
         <span class="flex-item b">布局编辑</span>
@@ -126,17 +126,20 @@ export default {
     }
   },
   created () {
+    if (!this.$route.query.channelId) return
     this.getLayout(this.$route.query.channelId)
-    this.$http.post('/cri-cms-platform/channel/getChannelSetting.monitor',{
-      channelId: this.$route.query.channelId
-    }).then(res => {
-      this.channelState = JSON.parse(res.setting)
-      for (let item in this.channelState) {
-        this.channelState[item] = this.channelState[item] == 'true' ? true : false
-      }
-    })
   },
   methods: {
+    changeChannel (id) {
+      this.$http.post('/cri-cms-platform/channel/getChannelSetting.monitor', {
+        channelId: id
+      }).then(res => {
+        this.channelState = JSON.parse(res.setting)
+        for (let item in this.channelState) {
+          this.channelState[item] = this.channelState[item] == 'true' ? true : false
+        }
+      })
+    },
     setChannel () {
       this.$http.post('/cri-cms-platform/channel/channelSet.monitor', {
         channelId: this.$route.query.channelId,
@@ -295,7 +298,6 @@ export default {
         channelId: this.$route.query.channelId,
         channelLayoutJson: JSON.stringify(res)
       }).then(res => {
-        console.log(res)
         this.$toast('保存成功')
         this.refresh()
       }).catch(e => {

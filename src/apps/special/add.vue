@@ -18,6 +18,36 @@
     </div>
     <div class="flex-item scroll-y">
       <article-editor ref="editor" @getKeyGenerate="getKeyGenerate"></article-editor>
+
+      <div class="setlistbox">
+        <div style="width: 80%;float: right">
+          <div class="list_content">
+            <div v-for="item in list">
+              <p class="list_content_title">{{item.name}}</p>
+              <div style="padding: 10px;">
+                <app-article-add-relates v-model="item.list" title="文章" icon="book" url="/cri-cms-platform/issue/getChannelContentList.monitor"></app-article-add-relates>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="width: 20%;float: left;padding-top: 10px;">
+            <div v-for="item in list" class="channel-tree-item flex-v-center">
+              <div class="flex-item flex-v-center" style="height: 40px;overflow:hidden;">
+                <span class="flex-item channel-name" v-if="!item.edit">{{item.name}}</span>
+                <input type="text" v-else v-model="item.name" class="flex-item f-14">
+              </div>
+              <icon-btn small v-if="item.edit" @click.native.stop="item.edit = false">add</icon-btn>
+              <icon-btn small v-if="!item.edit" @click.native.stop="item.edit = true">edit</icon-btn>
+              <icon-btn small >delete</icon-btn>
+            </div>
+            <div class="channel-tree-item flex-v-center" style="cursor: pointer;">
+              <icon-btn small style="margin-right: 10px;">add</icon-btn>
+              <span class="flex-item channel-name" style="height: 40px;line-height: 40px;">添加板块</span>
+            </div>
+        </div>
+      </div>
+
     </div>
   </div>
   <div class="art-options c-4 scroll-y" :style="{width: ui.optionShow ? '320px' : '0px'}">
@@ -55,6 +85,12 @@
           <div><radio-box text="16:9 大图" style="margin: 0;" :label="3" v-model="form.thumbType"/></div>
         </div>
       </div>
+      <div>
+        <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
+          <div class="flex-item"><radio-box text="微图模式" :label="1" v-model="form.thumbType"/></div>
+          <div class="flex-item"><radio-box text="时间轴模式" :label="2" v-model="form.thumbType"/></div>
+        </div>
+      </div>
       <div class="option-item relative">
         <textarea placeholder="摘要，限制 128 字。" v-model="form.abstarcts" rows="8"></textarea>
         <span style="position: absolute;bottom: 3px;right: 0;" :style="{ color: form.abstarcts.length > 128 ? '#F44336' : '#999' }">{{form.abstarcts.length}} / 128</span>
@@ -86,10 +122,10 @@
       <!--<div class="option-item">-->
         <!--<input type="number" placeholder="权重，范围 0 ~ 100" v-model="form.weight">-->
       <!--</div>-->
-      <div class="option-item flex-v-center">
-        <span class="flex-item">水印</span>
-        <switcher mode="Number" v-model="form.isWatermarked"/>
-      </div>
+      <!--<div class="option-item flex-v-center">-->
+        <!--<span class="flex-item">水印</span>-->
+        <!--<switcher mode="Number" v-model="form.isWatermarked"/>-->
+      <!--</div>-->
       <!--<div class="option-item flex-v-center">-->
         <!--<div class="flex-item">定时上线</div>-->
         <!--<div class="relative flex-v-center a">-->
@@ -122,37 +158,37 @@
         <span>初始点赞量</span>
         <input class="flex-item t-right" type="number" placeholder="请输入" v-model="form.virtualDigg">
       </div>
-      <div class="option-item">
-        <div class="flex-v-center">
-          <span class="flex-item">开启评论</span>
-          <switcher mode="Number" v-model="form.isOpenComment"/>
-        </div>
-        <app-article-add-comment v-if="form.isOpenComment" v-model="form.virtualComment"></app-article-add-comment>
-      </div>
-      <app-article-add-relates single :channels="ui.channels.channels" v-model="form.galleryId" title="相关图集" icon="collections" url="/cri-cms-platform/article/associate/gallery.monitor">
-        <template slot="afterTitle">
-          <span class="flex-item"></span>
-          <i class="add-gallery-setting-btn icon c-8" @click.stop="ui.gallerySettingShow = true">settings</i>
-        </template>
-        <layer v-if="ui.gallerySettingShow" :title="'图集设置'" width="800px" mask-click @close="ui.gallerySettingShow = false">
-          <div class="layer-text add-gallery-setting">
-            <ul>
-              <li><div class="flex-v-center">组图最大宽度 <span class="flex-item"></span><input type="number" placeholder="请输入" v-model="form.gallerySettingMaxWidth"></div></li>
-              <li><div class="flex-v-center">组图最小高度 <span class="flex-item"></span><input type="number" placeholder="请输入" v-model="form.gallerySettingMinHeight"></div></li>
-              <li><div class="flex-v-center">缩略图宽度 <span class="flex-item"></span><input type="number" placeholder="请输入" v-model="form.gallerySettingThumbWidth"></div></li>
-              <li><div class="flex-v-center">缩略图高度 <span class="flex-item"></span><input type="number" placeholder="请输入" v-model="form.gallerySettingThumbHeight"></div></li>
-              <li><div class="flex-v-center">显示位置 <span class="flex-item"></span><span class="a" @click="ui.gallerySettingDisplayPositionShow = true">{{form.gallerySettingDisplayPosition | gallerySettingDisplayPosition}}<i class="icon">keyboard_arrow_right</i></span></div></li>
-            </ul>
-          </div>
-          <select-card :value="form.gallerySettingDisplayPosition" v-if="ui.gallerySettingDisplayPositionShow" title="显示位置" width="600px" maskClick @close="ui.gallerySettingDisplayPositionShow = false">
-            <select-card-option value="1" @click="form.gallerySettingDisplayPosition = '1';ui.gallerySettingDisplayPositionShow = false">正文正上方</select-card-option>
-            <select-card-option value="2" @click="form.gallerySettingDisplayPosition = '2';ui.gallerySettingDisplayPositionShow = false">正文正下方</select-card-option>
-          </select-card>
-        </layer>
-      </app-article-add-relates>
-      <app-article-add-relates :channels="ui.channels.channels" v-model="form.relateIds" title="相关阅读" icon="book" url="/cri-cms-platform/article/associate/article.monitor"></app-article-add-relates>
-      <app-article-add-relates single :channels="ui.channels.channels" v-model="form.specialId" title="相关专题" icon="assignment" url="/cri-cms-platform/article/associate/special.monitor"></app-article-add-relates>
-      <app-article-add-attachment v-model="form.attachmentIds" :default-list="attachmentDefaultList"></app-article-add-attachment>
+      <!--<div class="option-item">-->
+        <!--<div class="flex-v-center">-->
+          <!--<span class="flex-item">开启评论</span>-->
+          <!--<switcher mode="Number" v-model="form.isOpenComment"/>-->
+        <!--</div>-->
+        <!--<app-article-add-comment v-if="form.isOpenComment" v-model="form.virtualComment"></app-article-add-comment>-->
+      <!--</div>-->
+      <!--<app-article-add-relates single :channels="ui.channels.channels" v-model="form.galleryId" title="相关图集" icon="collections" url="/cri-cms-platform/article/associate/gallery.monitor">-->
+        <!--<template slot="afterTitle">-->
+          <!--<span class="flex-item"></span>-->
+          <!--<i class="add-gallery-setting-btn icon c-8" @click.stop="ui.gallerySettingShow = true">settings</i>-->
+        <!--</template>-->
+        <!--<layer v-if="ui.gallerySettingShow" :title="'图集设置'" width="800px" mask-click @close="ui.gallerySettingShow = false">-->
+          <!--<div class="layer-text add-gallery-setting">-->
+            <!--<ul>-->
+              <!--<li><div class="flex-v-center">组图最大宽度 <span class="flex-item"></span><input type="number" placeholder="请输入" v-model="form.gallerySettingMaxWidth"></div></li>-->
+              <!--<li><div class="flex-v-center">组图最小高度 <span class="flex-item"></span><input type="number" placeholder="请输入" v-model="form.gallerySettingMinHeight"></div></li>-->
+              <!--<li><div class="flex-v-center">缩略图宽度 <span class="flex-item"></span><input type="number" placeholder="请输入" v-model="form.gallerySettingThumbWidth"></div></li>-->
+              <!--<li><div class="flex-v-center">缩略图高度 <span class="flex-item"></span><input type="number" placeholder="请输入" v-model="form.gallerySettingThumbHeight"></div></li>-->
+              <!--<li><div class="flex-v-center">显示位置 <span class="flex-item"></span><span class="a" @click="ui.gallerySettingDisplayPositionShow = true">{{form.gallerySettingDisplayPosition | gallerySettingDisplayPosition}}<i class="icon">keyboard_arrow_right</i></span></div></li>-->
+            <!--</ul>-->
+          <!--</div>-->
+          <!--<select-card :value="form.gallerySettingDisplayPosition" v-if="ui.gallerySettingDisplayPositionShow" title="显示位置" width="600px" maskClick @close="ui.gallerySettingDisplayPositionShow = false">-->
+            <!--<select-card-option value="1" @click="form.gallerySettingDisplayPosition = '1';ui.gallerySettingDisplayPositionShow = false">正文正上方</select-card-option>-->
+            <!--<select-card-option value="2" @click="form.gallerySettingDisplayPosition = '2';ui.gallerySettingDisplayPositionShow = false">正文正下方</select-card-option>-->
+          <!--</select-card>-->
+        <!--</layer>-->
+      <!--</app-article-add-relates>-->
+      <!--<app-article-add-relates :channels="ui.channels.channels" v-model="form.relateIds" title="相关阅读" icon="book" url="/cri-cms-platform/article/associate/article.monitor"></app-article-add-relates>-->
+      <!--<app-article-add-relates single :channels="ui.channels.channels" v-model="form.specialId" title="相关专题" icon="assignment" url="/cri-cms-platform/article/associate/special.monitor"></app-article-add-relates>-->
+      <!--<app-article-add-attachment v-model="form.attachmentIds" :default-list="attachmentDefaultList"></app-article-add-attachment>-->
       <!--<div class="option-item flex-v-center blue a">-->
         <!--<i class="icon f-20 add-other-icon">attach_file</i>-->
         <!--<span class="flex-item">添加附件</span>-->
@@ -193,6 +229,7 @@ import AppArticleAddComment from './comment'
 import AppArticleAddRelates from './relates'
 import AppArticleAddAttachment from './attachment'
 import AppArticleAddThumb from './thumb'
+import draggable from 'vuedraggable'
 
 const from = {
   article: {
@@ -205,10 +242,24 @@ const from = {
 
 export default {
   name: 'app-article-add',
-  components: { ArticleEditor, VueDatepickerLocal, SelectCard, SelectCardOption, AppArticleAddComment, AppArticleAddRelates, AppArticleAddAttachment, AppArticleAddThumb },
+  components: { ArticleEditor, draggable, VueDatepickerLocal, SelectCard, SelectCardOption, AppArticleAddComment, AppArticleAddRelates, AppArticleAddAttachment, AppArticleAddThumb },
   props: [ 'from', 'id' ],
   data () {
     return {
+      list:[
+        {
+          id: 1,
+          name: 'a',
+          edit: false,
+          list: []
+        },
+        {
+          id: 1,
+          name: 'a',
+          edit: false,
+          list: []
+        }
+      ],
       article: null,
       ui: {
         loading: false,
@@ -283,6 +334,24 @@ export default {
     }
   },
   methods: {
+    autoSave () {
+      let { title, titleColor, content } = this.$refs.editor
+      this.form.title = title
+      this.form.titleColor = titleColor
+      this.form.content = content
+      let form = {...this.form}
+      if (this.autoSaveId) form.id = this.autoSaveId
+      // return this.$http.post('/cri-cms-platform/articleAutoSave/saveAuto.monitor', form).then(
+      //   res => {
+      //     this.autoSaveId = res.autoSaveId
+      //     this.$toast('保存成功')
+      //   }
+      // ).catch(
+      //   res => {
+      //     this.$toast(res.msg || res || '保存失败')
+      //   }
+      // )
+    },
     getChannels () {
       this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor').then(res => {
         this.ui.channels = res || []
@@ -394,6 +463,7 @@ export default {
         console.log(e)
       })
     }
+    this.getChannels()
   },
   watch: {
     'thumb.thumb1' (newValue) {
@@ -484,6 +554,46 @@ export default {
     textarea, input{border: none;width: 100%;outline: none;font-size: 14px;color: #444;resize: none;background: transparent;
       &::-webkit-input-placeholder{color: #999;}
     }
+  }
+  .setlistbox{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  .additem{
+    padding: 4px 0;
+  }
+  .list_content_title{
+    background: #f3f3f3;
+    line-height: 40px;
+    padding: 0 10px;
+    margin: 0;
+    color: #333;
+  }
+  .list_content{
+    padding: 10px;
+  }
+  .channel-name{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+  .channel-tree-item{line-height: 1em;border: 1px solid rgba(0,0,0,.08);
+    margin-bottom: 10px;
+    padding: 0 7px;
+    .icon-btn{opacity: .2;}
+    input{height: 30px;background: #fff;border: 1px solid #ddd;padding: 0 5px;border-width: 0 1px;}
+    &:hover{background: rgba(0,0,0,.1);
+      .icon-btn{opacity: 1;}
+    }
+    &.edit .icon-btn{opacity: 1;}
+    &.on{background: #0299ff;color: #fff;
+      .icon{color: #fff;}
+    }
+    &.new.edit{border-color: #ddd;}
+    &.new{color: #0299ff;}
+    &.new .tree-icon{color: #93cdff;}
+    &.del{color: #ff0d0d;}
+    &.del .tree-icon{color: #ff8585;}
+    &.del .channel-name{text-decoration:line-through;}
   }
   .option-item{border-bottom: 1px solid rgba(0, 0, 0, .1);padding: 12px 0;}
   .add-photo-btn{background: rgba(0, 0, 0, .06);border-radius: 5px;overflow: hidden;}

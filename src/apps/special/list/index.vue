@@ -1,34 +1,34 @@
 <template>
   <div class="flex flex-item article-list">
-    <!--<af-center-->
-      <!--@add="$router.push('/articleAdd')"-->
-      <!--:scope="$route.query.scope"-->
-      <!--:status="$route.query.status"-->
-      <!--url="/cri-cms-platform/special/queryList.monitor"-->
-      <!--ref="afCenter">-->
+    <af-center
+      @add="$router.push('/specialAdd')"
+      :scope="$route.query.scope"
+      :status="$route.query.status"
+      url="/cri-cms-platform/special/queryList.monitor"
+      ref="afCenter">
 
-      <!--<div class="list-item a" slot-scope="slotProps" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.id == $route.params.id}">-->
-        <!--<div class="list-title flex-v-center">-->
-          <!--<i v-if="~~(slotProps.item.isRecommnd)" class="icon f-16 blue">thumb_up</i>-->
-          <!--<i v-if="~~(slotProps.item.hasThumb)" class="icon f-16 orange">image</i>-->
-          <!--<i v-if="~~(slotProps.item.isOriginal)" class="icon f-16 green">copyright</i>-->
-          <!--<span class="flex-item c-6 f-14 b">{{slotProps.item.title}}</span>-->
-        <!--</div>-->
-        <!--<div class="list-info f-12 c-8 flex-v-center">-->
-          <!--<span>{{slotProps.item.createDate}}</span>-->
-          <!--<span>{{slotProps.item.createUser}}</span>-->
-        <!--</div>-->
-        <!--<div class="list-info f-12 c-8 flex-v-center">-->
-          <!--<span class="list-info-num">-->
-            <!--<i v-tooltip:top="'阅读'">{{slotProps.item.pv}}</i>/<i v-tooltip:top="'评论'">{{slotProps.item.commentCount}}</i>/<i v-tooltip:top="'分享'">{{slotProps.item.shareCount}}</i>/<i v-tooltip:top="'点赞'">{{slotProps.item.diggCount}}</i>-->
-          <!--</span>-->
-          <!--<span class="flex-item"></span>-->
-          <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalPc }">computer</i>-->
-          <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalApp }">phone_iphone</i>-->
-          <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalWeb }">public</i>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</af-center>-->
+      <div class="list-item a" slot-scope="slotProps" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.id == $route.params.id}">
+        <div class="list-title flex-v-center">
+          <i v-if="~~(slotProps.item.isRecommnd)" class="icon f-16 blue">thumb_up</i>
+          <i v-if="~~(slotProps.item.hasThumb)" class="icon f-16 orange">image</i>
+          <i v-if="~~(slotProps.item.isOriginal)" class="icon f-16 green">copyright</i>
+          <span class="flex-item c-6 f-14 b">{{slotProps.item.title}}</span>
+        </div>
+        <div class="list-info f-12 c-8 flex-v-center">
+          <span>{{slotProps.item.createDate}}</span>
+          <span>{{slotProps.item.createUser}}</span>
+        </div>
+        <div class="list-info f-12 c-8 flex-v-center">
+          <span class="list-info-num">
+            <i v-tooltip:top="'阅读'">{{slotProps.item.pv}}</i>/<i v-tooltip:top="'评论'">{{slotProps.item.commentCount}}</i>/<i v-tooltip:top="'分享'">{{slotProps.item.shareCount}}</i>/<i v-tooltip:top="'点赞'">{{slotProps.item.diggCount}}</i>
+          </span>
+          <span class="flex-item"></span>
+          <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalPc }">computer</i>
+          <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalApp }">phone_iphone</i>
+          <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalWeb }">public</i>
+        </div>
+      </div>
+    </af-center>
     <div class="flex-item flex-col">
       <div class="af-topbar flex-v-center">
         <div v-if="$route.params.id" class="content-tool flex-v-center">
@@ -39,7 +39,7 @@
             <icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn>
           </div>
           <div class="tool-item">
-            <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/articleEdit/article/${id}`)">edit</icon-btn>
+            <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/specialEdit/special/${id}`)">edit</icon-btn>
           </div>
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'删除'" @click="deleteArticle">delete</icon-btn>
@@ -64,9 +64,9 @@
       <div class="flex-item flex-col">
         <div v-if="id" class="flex-center" style="height: 60px;">
           <div class="tab">
-            <div class="tab-item" :class="{ on: $route.name === 'ArticleContent' }" @click="$router.replace({path: `/article/list/${id}`, query: $route.query})">内容</div>
-            <div class="tab-item" :class="{ on: $route.name === 'ArticleStatistics' }" @click="$router.replace({path: `/article/list/${id}/statistics`, query: $route.query})">统计</div>
-            <div class="tab-item" :class="{ on: $route.name === 'ArticleHistory' }" @click="$router.replace({path: `/article/list/${id}/history`, query: $route.query})">历史</div>
+            <div class="tab-item" :class="{ on: $route.name === 'ArticleContent' }" @click="$router.replace({path: `/special/list/${id}`, query: $route.query})">内容</div>
+            <div class="tab-item" :class="{ on: $route.name === 'ArticleStatistics' }" @click="$router.replace({path: `/special/list/${id}/statistics`, query: $route.query})">统计</div>
+            <div class="tab-item" :class="{ on: $route.name === 'ArticleHistory' }" @click="$router.replace({path: `/special/list/${id}/history`, query: $route.query})">历史</div>
           </div>
         </div>
         <router-view :channels="ui.channels"/>
@@ -102,7 +102,7 @@ export default {
     },
     onItemClick (item) {
       this.$router.replace({
-        path: `/article/list/${item.id}`,
+        path: `/special/list/${item.id}`,
         query: this.$route.query
       })
     },

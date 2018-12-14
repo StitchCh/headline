@@ -16,7 +16,7 @@ export default [{
   icon: 'icon-audios'
 }, {
   name: '专题',
-  path: '/special',
+  path: '/special/list?scope=all&status=all',
   icon: 'icon-special'
 }, {
   name: '直播',

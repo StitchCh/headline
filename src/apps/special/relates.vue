@@ -1,5 +1,5 @@
 <template>
-  <div class="option-item add-relates">
+  <div class="option-item add-relates" style="border-bottom: 0;">
     <div class="flex-v-center blue a" @click="show = true">
       <i class="icon f-20 add-other-icon">{{icon}}</i>
       <span class="flex-item">添加{{title}}</span>
@@ -56,10 +56,10 @@
 export default {
   name: 'app-article-add-relates',
   props: {
-    value: {
-      type: String,
-      default: ''
-    },
+    // value: {
+    //   type: String,
+    //   default: ''
+    // },
     single: {
       type: Boolean,
       default: false
@@ -92,7 +92,10 @@ export default {
       form: {
         selectedIds: '',
         title: '',
-        channelId: ''
+        channelId: '1001',
+        filterChannelId: 'false',
+        pageSize: 30,
+        toPage: 1
       },
       channelShow: false,
       channelIds: []
@@ -103,7 +106,8 @@ export default {
       this.loading = true
       return this.$http.post(this.url, this.form).then(
         res => {
-          this.list = res || {}
+          console.log(res)
+          this.list.unselected = res.data || {}
           this.loading = false
         }
       ).catch(
@@ -137,7 +141,7 @@ export default {
     }
   },
   created () {
-    this.form.selectedIds = this.value
+    // this.form.selectedIds = this.value
     this.getList()
   },
   watch: {

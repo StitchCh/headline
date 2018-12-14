@@ -131,6 +131,7 @@ export default {
     onItemClick (item) {
       if (item.new) return
       this.$router.replace(`/channels?channelId=${item.id}`)
+      this.$emit('changeChannel', item.id)
     },
     submit () {
       console.log(this.channelTree)
