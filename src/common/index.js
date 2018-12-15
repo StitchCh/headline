@@ -24,7 +24,7 @@ import Toast from './Toast'
 import Tooltip from './Tooltip'
 import Tree from './Tree'
 import UploadBox from './UploadBox'
-import Navigator from './Navigator'
+import Navigator from './navigator'
 import BtnGroup from'./BtnGroup'
 
 Vue.use(Avatar)
