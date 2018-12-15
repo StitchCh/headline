@@ -19,29 +19,49 @@
     <div class="flex-item scroll-y">
       <article-editor ref="editor" @getKeyGenerate="getKeyGenerate"></article-editor>
 
+      <div style="max-width: 900px;margin: 0 auto;padding: 20px 10px;border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;">
+        <h2>选择头图</h2>
+        <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
+          <div class="flex-item"><radio-box text="单图" :label="1" v-model="form.headPicType"/></div>
+          <div class="flex-item"><radio-box text="幻灯片" :label="2" v-model="form.headPicType"/></div>
+        </div>
+        <div v-show="form.headPicType == 1" style="max-width: 300px;margin: 20px;">
+          <app-article-add-thumb v-model="headList_type1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
+        </div>
+        <div v-show="form.headPicType == 2">
+          <app-article-add-relates v-model="headList_type2" :limit="form.headPicType" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/issue/getChannelContentList.monitor"></app-article-add-relates>
+        </div>
+      </div>
+
       <div class="setlistbox">
         <div style="width: 80%;float: right">
           <div class="list_content">
             <div v-for="item in list">
-              <p class="list_content_title">{{item.name}}</p>
+              <p class="list_content_title">
+                {{item.name}}
+                <span v-if="form.listType == 2" style="float: right">
+                  时间：
+                  <vue-datepicker-local v-model="item.time" format="YYYY-MM-DD" show-buttons></vue-datepicker-local>
+                </span>
+              </p>
               <div style="padding: 10px;">
-                <app-article-add-relates v-model="item.list" title="文章" icon="book" url="/cri-cms-platform/issue/getChannelContentList.monitor"></app-article-add-relates>
+                <app-article-add-relates v-model="item.list" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/issue/getChannelContentList.monitor"></app-article-add-relates>
               </div>
             </div>
           </div>
         </div>
 
         <div style="width: 20%;float: left;padding-top: 10px;">
-            <div v-for="item in list" class="channel-tree-item flex-v-center">
+            <div v-for="(item,index) in list" class="channel-tree-item flex-v-center">
               <div class="flex-item flex-v-center" style="height: 40px;overflow:hidden;">
                 <span class="flex-item channel-name" v-if="!item.edit">{{item.name}}</span>
                 <input type="text" v-else v-model="item.name" class="flex-item f-14">
               </div>
               <icon-btn small v-if="item.edit" @click.native.stop="item.edit = false">add</icon-btn>
               <icon-btn small v-if="!item.edit" @click.native.stop="item.edit = true">edit</icon-btn>
-              <icon-btn small >delete</icon-btn>
+              <icon-btn small @click="removeList(index)" >delete</icon-btn>
             </div>
-            <div class="channel-tree-item flex-v-center" style="cursor: pointer;">
+            <div @click="addlist" class="channel-tree-item channel-tree-item1 flex-v-center" style="cursor: pointer;">
               <icon-btn small style="margin-right: 10px;">add</icon-btn>
               <span class="flex-item channel-name" style="height: 40px;line-height: 40px;">添加板块</span>
             </div>
@@ -56,39 +76,34 @@
         <span class="flex-item">{{channelNames}}</span>
         <i class="icon f-20 c-a">keyboard_arrow_down</i>
         <bubble v-if="ui.channelShow" pos="bottom" align="center" @close="ui.channelShow=false">
-          <!--<ul class="bubble-list">-->
-            <!--<li v-for="item in ui.channels.channels" :key="item.id">-->
-              <!--<check-box :text="item.channelName" :label="item.id" v-model="channelIds"/>-->
-            <!--</li>-->
-          <!--</ul>-->
           <div style="padding: 10px 0;width: 280px;">
             <tree :data="ui.channels.channels" pid-txt="channelPartentId" nameTxt="channelName" show-checkbox :checked-list.sync="channelIds"></tree>
           </div>
         </bubble>
       </div>
-      <div class="option-item flex-v-center">
-        <icon-btn small v-tooltip:top="'推荐'" :class="{ active: form.isRecommnd }" @click="form.isRecommnd = ~~!form.isRecommnd">thumb_up</icon-btn>
-        <span class="flex-item"></span>
-        <icon-btn small v-tooltip:top="'发布到 PC 页面'" :class="{ active: form.terminalPc }" @click="form.terminalPc = ~~!form.terminalPc">computer</icon-btn>
-        <icon-btn small v-tooltip:top="'发布到客户端'" :class="{ active: form.terminalApp }" @click="form.terminalApp = ~~!form.terminalApp">phone_iphone</icon-btn>
-        <icon-btn small v-tooltip:top="'发布到移动网页'" :class="{ active: form.terminalWeb }" @click="form.terminalWeb = ~~!form.terminalWeb">public</icon-btn>
-      </div>
+      <!--<div class="option-item flex-v-center">-->
+        <!--<icon-btn small v-tooltip:top="'推荐'" :class="{ active: form.isRecommnd }" @click="form.isRecommnd = ~~!form.isRecommnd">thumb_up</icon-btn>-->
+        <!--<span class="flex-item"></span>-->
+        <!--<icon-btn small v-tooltip:top="'发布到 PC 页面'" :class="{ active: form.terminalPc }" @click="form.terminalPc = ~~!form.terminalPc">computer</icon-btn>-->
+        <!--<icon-btn small v-tooltip:top="'发布到客户端'" :class="{ active: form.terminalApp }" @click="form.terminalApp = ~~!form.terminalApp">phone_iphone</icon-btn>-->
+        <!--<icon-btn small v-tooltip:top="'发布到移动网页'" :class="{ active: form.terminalWeb }" @click="form.terminalWeb = ~~!form.terminalWeb">public</icon-btn>-->
+      <!--</div>-->
       <div style="margin: 10px 0;">
         <app-article-add-thumb v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
         <div v-if="form.thumbType == 2" class="flex">
           <app-article-add-thumb v-model="thumb.thumb2" height="80px" class="flex-item" style="margin-right: 8px;"></app-article-add-thumb>
           <app-article-add-thumb v-model="thumb.thumb3" height="80px" class="flex-item"></app-article-add-thumb>
         </div>
-        <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
-          <div class="flex-item"><radio-box text="默认" :label="1" v-model="form.thumbType"/></div>
-          <div class="flex-item"><radio-box text="三图" :label="2" v-model="form.thumbType"/></div>
-          <div><radio-box text="16:9 大图" style="margin: 0;" :label="3" v-model="form.thumbType"/></div>
-        </div>
+        <!--<div class="flex-v-center" style="padding: 10px 5px 0 5px;">-->
+          <!--<div class="flex-item"><radio-box text="默认" :label="1" v-model="form.thumbType"/></div>-->
+          <!--<div class="flex-item"><radio-box text="三图" :label="2" v-model="form.thumbType"/></div>-->
+          <!--<div><radio-box text="16:9 大图" style="margin: 0;" :label="3" v-model="form.thumbType"/></div>-->
+        <!--</div>-->
       </div>
       <div>
         <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
-          <div class="flex-item"><radio-box text="微图模式" :label="1" v-model="form.thumbType"/></div>
-          <div class="flex-item"><radio-box text="时间轴模式" :label="2" v-model="form.thumbType"/></div>
+          <div class="flex-item"><radio-box text="微图模式" :label="1" v-model="form.listType"/></div>
+          <div class="flex-item"><radio-box text="时间轴模式" :label="2" v-model="form.listType"/></div>
         </div>
       </div>
       <div class="option-item relative">
@@ -119,33 +134,6 @@
           <vue-datepicker-local show-buttons clearable format="YYYY-MM-DD HH:mm:ss" v-model="form.createDate"></vue-datepicker-local>
         </div>
       </div>
-      <!--<div class="option-item">-->
-        <!--<input type="number" placeholder="权重，范围 0 ~ 100" v-model="form.weight">-->
-      <!--</div>-->
-      <!--<div class="option-item flex-v-center">-->
-        <!--<span class="flex-item">水印</span>-->
-        <!--<switcher mode="Number" v-model="form.isWatermarked"/>-->
-      <!--</div>-->
-      <!--<div class="option-item flex-v-center">-->
-        <!--<div class="flex-item">定时上线</div>-->
-        <!--<div class="relative flex-v-center a">-->
-          <!--<span v-if="!form.upLineTime" class="flex-v-center" style="position: absolute;right: 0;">-->
-            <!--<span>设置</span>-->
-            <!--<i class="icon f-18 c-a">keyboard_arrow_down</i>-->
-          <!--</span>-->
-          <!--<vue-datepicker-local show-buttons clearable format="YYYY-MM-DD HH:mm:ss" v-model="form.upLineTime"></vue-datepicker-local>-->
-        <!--</div>-->
-      <!--</div>-->
-      <!--<div class="option-item flex-v-center">-->
-        <!--<div class="flex-item">定时下线</div>-->
-        <!--<div class="relative flex-v-center a">-->
-          <!--<span v-if="!form.downLineTime" class="flex-v-center" style="position: absolute;right: 0;">-->
-            <!--<span>设置</span>-->
-            <!--<i class="icon f-18 c-a">keyboard_arrow_down</i>-->
-          <!--</span>-->
-          <!--<vue-datepicker-local show-buttons clearable format="YYYY-MM-DD HH:mm:ss" v-model="form.downLineTime"></vue-datepicker-local>-->
-        <!--</div>-->
-      <!--</div>-->
       <div class="option-item flex-v-center">
         <span>初始阅读量</span>
         <input class="flex-item t-right" type="number" placeholder="请输入" v-model="form.virtualPv">
@@ -158,57 +146,6 @@
         <span>初始点赞量</span>
         <input class="flex-item t-right" type="number" placeholder="请输入" v-model="form.virtualDigg">
       </div>
-      <!--<div class="option-item">-->
-        <!--<div class="flex-v-center">-->
-          <!--<span class="flex-item">开启评论</span>-->
-          <!--<switcher mode="Number" v-model="form.isOpenComment"/>-->
-        <!--</div>-->
-        <!--<app-article-add-comment v-if="form.isOpenComment" v-model="form.virtualComment"></app-article-add-comment>-->
-      <!--</div>-->
-      <!--<app-article-add-relates single :channels="ui.channels.channels" v-model="form.galleryId" title="相关图集" icon="collections" url="/cri-cms-platform/article/associate/gallery.monitor">-->
-        <!--<template slot="afterTitle">-->
-          <!--<span class="flex-item"></span>-->
-          <!--<i class="add-gallery-setting-btn icon c-8" @click.stop="ui.gallerySettingShow = true">settings</i>-->
-        <!--</template>-->
-        <!--<layer v-if="ui.gallerySettingShow" :title="'图集设置'" width="800px" mask-click @close="ui.gallerySettingShow = false">-->
-          <!--<div class="layer-text add-gallery-setting">-->
-            <!--<ul>-->
-              <!--<li><div class="flex-v-center">组图最大宽度 <span class="flex-item"></span><input type="number" placeholder="请输入" v-model="form.gallerySettingMaxWidth"></div></li>-->
-              <!--<li><div class="flex-v-center">组图最小高度 <span class="flex-item"></span><input type="number" placeholder="请输入" v-model="form.gallerySettingMinHeight"></div></li>-->
-              <!--<li><div class="flex-v-center">缩略图宽度 <span class="flex-item"></span><input type="number" placeholder="请输入" v-model="form.gallerySettingThumbWidth"></div></li>-->
-              <!--<li><div class="flex-v-center">缩略图高度 <span class="flex-item"></span><input type="number" placeholder="请输入" v-model="form.gallerySettingThumbHeight"></div></li>-->
-              <!--<li><div class="flex-v-center">显示位置 <span class="flex-item"></span><span class="a" @click="ui.gallerySettingDisplayPositionShow = true">{{form.gallerySettingDisplayPosition | gallerySettingDisplayPosition}}<i class="icon">keyboard_arrow_right</i></span></div></li>-->
-            <!--</ul>-->
-          <!--</div>-->
-          <!--<select-card :value="form.gallerySettingDisplayPosition" v-if="ui.gallerySettingDisplayPositionShow" title="显示位置" width="600px" maskClick @close="ui.gallerySettingDisplayPositionShow = false">-->
-            <!--<select-card-option value="1" @click="form.gallerySettingDisplayPosition = '1';ui.gallerySettingDisplayPositionShow = false">正文正上方</select-card-option>-->
-            <!--<select-card-option value="2" @click="form.gallerySettingDisplayPosition = '2';ui.gallerySettingDisplayPositionShow = false">正文正下方</select-card-option>-->
-          <!--</select-card>-->
-        <!--</layer>-->
-      <!--</app-article-add-relates>-->
-      <!--<app-article-add-relates :channels="ui.channels.channels" v-model="form.relateIds" title="相关阅读" icon="book" url="/cri-cms-platform/article/associate/article.monitor"></app-article-add-relates>-->
-      <!--<app-article-add-relates single :channels="ui.channels.channels" v-model="form.specialId" title="相关专题" icon="assignment" url="/cri-cms-platform/article/associate/special.monitor"></app-article-add-relates>-->
-      <!--<app-article-add-attachment v-model="form.attachmentIds" :default-list="attachmentDefaultList"></app-article-add-attachment>-->
-      <!--<div class="option-item flex-v-center blue a">-->
-        <!--<i class="icon f-20 add-other-icon">attach_file</i>-->
-        <!--<span class="flex-item">添加附件</span>-->
-      <!--</div>-->
-      <!--<div class="option-item flex-v-center blue a">-->
-        <!--<i class="icon f-20 add-other-icon">how_to_vote</i>-->
-        <!--<span class="flex-item">添加投票挂件</span>-->
-      <!--</div>-->
-      <!--<div class="option-item flex-v-center blue a">-->
-        <!--<i class="icon f-20  add-other-icon">link</i>-->
-        <!--<span class="flex-item">关联投票链接</span>-->
-      <!--</div>-->
-      <!--<div class="option-item flex-v-center blue a">-->
-        <!--<i class="icon f-20  add-other-icon">link</i>-->
-        <!--<span class="flex-item">关联活动报名链接</span>-->
-      <!--</div>-->
-      <!--<div class="option-item flex-v-center blue a">-->
-        <!--<i class="icon f-20  add-other-icon">movie</i>-->
-        <!--<span class="flex-item">添加视频</span>-->
-      <!--</div>-->
     </div>
   </div>
   </template>
@@ -246,20 +183,7 @@ export default {
   props: [ 'from', 'id' ],
   data () {
     return {
-      list:[
-        {
-          id: 1,
-          name: 'a',
-          edit: false,
-          list: []
-        },
-        {
-          id: 1,
-          name: 'a',
-          edit: false,
-          list: []
-        }
-      ],
+      list:[],
       article: null,
       ui: {
         loading: false,
@@ -270,43 +194,49 @@ export default {
         gallerySettingDisplayPositionShow: false,
         submited: false
       },
+      headList_type1: {},
+      headList_type2: [],
       form: {
-        app: 'ARTICLE',
+        listType: 1,
+        headPicType: 1,
+        headJson: '',
+        specialListJson: '',
+        // app: 'ARTICLE',
         title: '',
         titleColor: '',
-        content: '',
+        // content: '',
         channelIds: '',
-        galleryId: '',
-        gallerySettingMaxWidth: '640',
-        gallerySettingMinHeight: '480',
-        gallerySettingThumbWidth: '80',
-        gallerySettingThumbHeight: '60',
-        gallerySettingDisplayPosition: '1',
-        relateIds: '',
-        specialId: '',
-        isOpenComment: 0,
-        isOriginal: 0,
-        originalFrom: '',
-        originalUrl: '',
-        isRecommnd: 0,
+        // galleryId: '',
+        // gallerySettingMaxWidth: '640',
+        // gallerySettingMinHeight: '480',
+        // gallerySettingThumbWidth: '80',
+        // gallerySettingThumbHeight: '60',
+        // gallerySettingDisplayPosition: '1',
+        // relateIds: '',
+        // specialId: '',
+        // isOpenComment: 0,
+        // isOriginal: 0,
+        // originalFrom: '',
+        // originalUrl: '',
+        // isRecommnd: 0,
         abstarcts: '',
         keywords: '',
-        author: '',
-        // weight: '',
-        isWatermarked: 0,
+        // author: '',
+        weight: '',
+        // isWatermarked: 0,
         // upLineTime: '',
         // downLineTime: '',
         virtualPv: '',
-        virtualComment: '',
-        virtualShare: '',
+        // virtualComment: '',
+        // virtualShare: '',
         virtualDigg: '',
-        hasThumb: 0,
-        thumbType: 1,
+        // hasThumb: 0,
+        // thumbType: 1,
         thumb: '',
-        terminalPc: 0,
-        terminalApp: 0,
-        terminalWeb: 0,
-        attachmentIds: ''
+        // terminalPc: 0,
+        // terminalApp: 0,
+        // terminalWeb: 0,
+        // attachmentIds: ''
       },
       thumb: {
         thumb1: null,
@@ -334,13 +264,28 @@ export default {
     }
   },
   methods: {
+    removeList (index) {
+      this.list.splice(index, 1)
+    },
+    addlist () {
+      if (this.form.channelIds == '') {
+        this.$toast('请选择频道')
+        return false
+      }
+      this.list.push({
+        name: '新建板块',
+        time: '',
+        edit: false,
+        list: {}
+      })
+    },
     autoSave () {
-      let { title, titleColor, content } = this.$refs.editor
-      this.form.title = title
-      this.form.titleColor = titleColor
-      this.form.content = content
-      let form = {...this.form}
-      if (this.autoSaveId) form.id = this.autoSaveId
+      // let { title, titleColor, content } = this.$refs.editor
+      // this.form.title = title
+      // this.form.titleColor = titleColor
+      // this.form.content = content
+      // let form = {...this.form}
+      // if (this.autoSaveId) form.id = this.autoSaveId
       // return this.$http.post('/cri-cms-platform/articleAutoSave/saveAuto.monitor', form).then(
       //   res => {
       //     this.autoSaveId = res.autoSaveId
@@ -375,14 +320,9 @@ export default {
     },
     submit () {
       let url = this.id ? '/cri-cms-platform/article/update.monitor' : '/cri-cms-platform/article/save.monitor'
-      let { title, titleColor, content, getText } = this.$refs.editor
+      let { title } = this.$refs.editor
       if (!title) {
         this.$toast('请输入标题')
-        return
-      }
-      let text = getText().replace(/\s/g, '')
-      if (!text) {
-        this.$toast('请输入内容')
         return
       }
       if (!this.form.channelIds) {
@@ -390,10 +330,8 @@ export default {
         return
       }
       this.form.title = title
-      this.form.titleColor = titleColor
-      this.form.content = content
       let form = {...this.form}
-      if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
+      // if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
       if (this.id) form.id = this.id
       console.log(form)
       this.$http.post(url, form).then(
@@ -560,7 +498,11 @@ export default {
     margin: 0 auto;
     padding: 0 10px;
     box-sizing: border-box;
-    overflow: hidden;
+  }
+  .setlistbox:after{
+    content: '';
+    display: block;
+    clear: both;
   }
   .additem{
     padding: 4px 0;
@@ -568,6 +510,7 @@ export default {
   .list_content_title{
     background: #f3f3f3;
     line-height: 40px;
+    height: 40px;
     padding: 0 10px;
     margin: 0;
     color: #333;
@@ -594,6 +537,10 @@ export default {
     &.del{color: #ff0d0d;}
     &.del .tree-icon{color: #ff8585;}
     &.del .channel-name{text-decoration:line-through;}
+  }
+  .channel-tree-item1{
+    background: rgba(0,0,0,.1);
+    .icon-btn{opacity: 1;}
   }
   .option-item{border-bottom: 1px solid rgba(0, 0, 0, .1);padding: 12px 0;}
   .add-photo-btn{background: rgba(0, 0, 0, .06);border-radius: 5px;overflow: hidden;}

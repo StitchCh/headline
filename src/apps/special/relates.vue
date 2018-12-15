@@ -1,19 +1,21 @@
 <template>
   <div class="option-item add-relates" style="border-bottom: 0;">
-    <div class="flex-v-center blue a" @click="show = true">
+    <div class="flex-v-center blue a" @click="clickget">
       <i class="icon f-20 add-other-icon">{{icon}}</i>
       <span class="flex-item">添加{{title}}</span>
       <slot name="afterTitle"></slot>
     </div>
     <ul v-if="list.selected.length" style="margin-top: 10px;">
-      <li v-for="(item, index) in list.selected" :key="item.id" class="flex-v-center item" :title="item.title">
-        <span style="margin-right: 10px;">{{item.title}}</span>
-        <span class="flex-item"></span>
-        <i class="icon a" style="font-size: 18px;" @click="remove(index)">delete</i>
-      </li>
+      <draggable element="ul" :options="{ghostClass:'movelist'}" v-model="list.selected" >
+        <li v-for="(item, index) in list.selected" :key="item.id" class="flex-v-center item" :title="item.title">
+          <span style="margin-right: 10px;">{{item.title}}</span>
+          <span class="flex-item"></span>
+          <i class="icon a" style="font-size: 18px;" @click="remove(index)">delete</i>
+        </li>
+      </draggable>
     </ul>
     <slot></slot>
-    <layer v-if="show" :title="'添加' + title" width="800px" mask-click @close="show = false">
+    <layer v-show="show" :title="'添加' + title" width="800px" mask-click @close="show = false">
       <div class="layer-text bg-e relative">
         <transition name="fade">
           <div v-if="loading" class="flex-center abs bg-e" style="z-index: 10;">
@@ -53,13 +55,16 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable'
+
 export default {
   name: 'app-article-add-relates',
+  components: { draggable },
   props: {
-    // value: {
-    //   type: String,
-    //   default: ''
-    // },
+    limit: {},
+    channelId: {
+      type: String,
+    },
     single: {
       type: Boolean,
       default: false
@@ -92,21 +97,35 @@ export default {
       form: {
         selectedIds: '',
         title: '',
-        channelId: '1001',
-        filterChannelId: 'false',
+        channelId: '',
+        filterChannelId: 'true',
         pageSize: 30,
         toPage: 1
       },
       channelShow: false,
-      channelIds: []
+      channelIds: [],
+      firstclick: true
     }
   },
   methods: {
+    clickget () {
+      console.log(this.channelId)
+      if (this.channelId.length == 0) {
+        this.$toast('请选择频道')
+        return false
+      }
+      this.show = true
+      if (!this.firstclick) {
+        return false
+      }
+      this.firstclick = false
+      this.getList()
+    },
     getList () {
       this.loading = true
+      this.form.channelId = this.channelId
       return this.$http.post(this.url, this.form).then(
         res => {
-          console.log(res)
           this.list.unselected = res.data || {}
           this.loading = false
         }
@@ -127,8 +146,11 @@ export default {
         this.getList()
         return
       }
-      if (this.list.selected.length === 10) {
-        this.$emit('最多可添加10条')
+      if (this.limit && this.limit == 1 && this.list.selected.length === 1) {
+        this.$toast('最多可添加1条')
+        return
+      } else if (this.limit && this.limit == 2 && this.list.selected.length === 5) {
+        this.$toast('最多可添加5条')
         return
       }
       this.list.selected.push(this.list.unselected.splice(index, 1)[0])
@@ -142,11 +164,11 @@ export default {
   },
   created () {
     // this.form.selectedIds = this.value
-    this.getList()
+    // this.getList()
   },
   watch: {
     'form.selectedIds' () {
-      this.$emit('input', this.form.selectedIds)
+      this.$emit('input', this.list)
     },
     'channelIds' (newValue) {
       this.form.channelId = newValue.join(',')
@@ -161,6 +183,11 @@ export default {
   .item {padding: 7px 4px;
     span {overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
     i:hover{color: #F44336}
+  }
+  .movelist{
+    background: #008eff;
+    color: #008eff;
+    opacity: 0.5;
   }
   .layer-ctn {max-width: 1000px;}
   .title {margin: 10px 0;font-size: 12px;}
