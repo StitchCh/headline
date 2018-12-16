@@ -11,13 +11,13 @@
       <div class="flex-v-center">
         <!--<btn big flat style="margin-right: 15px;">递交审核</btn>-->
         <btn big flat style="margin-right: 10px;">预览</btn>
-        <btn big flat style="margin-right: 10px;" @click="autoSave">保存草稿</btn>
+        <!--<btn big flat style="margin-right: 10px;" @click="autoSave">保存草稿</btn>-->
         <btn big style="margin-right: 20px;" @click="submit">保存</btn>
         <icon-btn v-tooltip:bottom="'发布选项'" @click="ui.optionShow=!ui.optionShow">menu</icon-btn>
       </div>
     </div>
     <div class="flex-item scroll-y">
-      <article-editor ref="editor" @getKeyGenerate="getKeyGenerate"></article-editor>
+      <article-editor v-if="getif" :otitle="form.title" ref="editor" @getKeyGenerate="getKeyGenerate"></article-editor>
 
       <div style="max-width: 900px;margin: 0 auto;padding: 20px 10px;border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;">
         <h2>选择头图</h2>
@@ -29,7 +29,7 @@
           <app-article-add-thumb v-model="headList_type1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
         </div>
         <div v-show="form.headPicType == 2">
-          <app-article-add-relates v-model="headList_type2" :limit="form.headPicType" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/issue/getChannelContentList.monitor"></app-article-add-relates>
+          <app-article-add-relates v-if="getif" :limit="form.headPicType" v-model="headList_type2" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/issue/getChannelContentList.monitor"></app-article-add-relates>
         </div>
       </div>
 
@@ -45,7 +45,7 @@
                 </span>
               </p>
               <div style="padding: 10px;">
-                <app-article-add-relates v-model="item.list" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/issue/getChannelContentList.monitor"></app-article-add-relates>
+                <app-article-add-relates v-if="getif" v-model="item.list" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/issue/getChannelContentList.monitor"></app-article-add-relates>
               </div>
             </div>
           </div>
@@ -89,11 +89,11 @@
         <!--<icon-btn small v-tooltip:top="'发布到移动网页'" :class="{ active: form.terminalWeb }" @click="form.terminalWeb = ~~!form.terminalWeb">public</icon-btn>-->
       <!--</div>-->
       <div style="margin: 10px 0;">
-        <app-article-add-thumb v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
-        <div v-if="form.thumbType == 2" class="flex">
-          <app-article-add-thumb v-model="thumb.thumb2" height="80px" class="flex-item" style="margin-right: 8px;"></app-article-add-thumb>
-          <app-article-add-thumb v-model="thumb.thumb3" height="80px" class="flex-item"></app-article-add-thumb>
-        </div>
+        <app-article-add-thumb v-if="getif" v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
+        <!--<div v-if="form.thumbType == 2" class="flex">-->
+          <!--<app-article-add-thumb v-model="thumb.thumb2" height="80px" class="flex-item" style="margin-right: 8px;"></app-article-add-thumb>-->
+          <!--<app-article-add-thumb v-model="thumb.thumb3" height="80px" class="flex-item"></app-article-add-thumb>-->
+        <!--</div>-->
         <!--<div class="flex-v-center" style="padding: 10px 5px 0 5px;">-->
           <!--<div class="flex-item"><radio-box text="默认" :label="1" v-model="form.thumbType"/></div>-->
           <!--<div class="flex-item"><radio-box text="三图" :label="2" v-model="form.thumbType"/></div>-->
@@ -184,6 +184,7 @@ export default {
   data () {
     return {
       list:[],
+      getif: false,
       article: null,
       ui: {
         loading: false,
@@ -196,10 +197,13 @@ export default {
       },
       headList_type1: {},
       headList_type2: [],
+      nowDate: new Date(),
       form: {
         listType: 1,
         headPicType: 1,
         headJson: '',
+        headJsonId: '',
+        specialListId: '',
         specialListJson: '',
         // app: 'ARTICLE',
         title: '',
@@ -275,6 +279,7 @@ export default {
       this.list.push({
         name: '新建板块',
         time: '',
+        time: this.nowDate,
         edit: false,
         list: {}
       })
@@ -319,7 +324,7 @@ export default {
       return time <= new Date()
     },
     submit () {
-      let url = this.id ? '/cri-cms-platform/article/update.monitor' : '/cri-cms-platform/article/save.monitor'
+      let url = this.id ? '/cri-cms-platform/special/update.monitor' : '/cri-cms-platform/special/save.monitor'
       let { title } = this.$refs.editor
       if (!title) {
         this.$toast('请输入标题')
@@ -330,21 +335,94 @@ export default {
         return
       }
       this.form.title = title
-      let form = {...this.form}
-      // if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
-      if (this.id) form.id = this.id
-      console.log(form)
-      this.$http.post(url, form).then(
-        res => {
-          this.ui.submited = true
-          this.$router.replace('/article/list?scope=all&status=all')
+
+      let obj = {...this.form}
+
+      let jsonarr = []
+      this.list.forEach((item, index, arr) => {
+        let jsonsarr = []
+        if (item.list.selected.length == 0) {
+          this.$toast('板块内容不能为空')
+          return false
         }
-      ).catch(
+        item.list.selected.forEach((item1, index1) => {
+          jsonsarr[index1] = {
+            app: item1.app,
+            id: item1.id,
+            abstract: item1.abstract,
+            order: index1,
+            title: item1.title,
+            createDate: item1.createDate,
+            thumb: item1.thumb.indexOf('[') >= 0 ? JSON.parse(item1.thumb)[0].url : item1.thumb
+          }
+          if (obj.specialListId.indexOf(item1.id) < 0) {
+            obj.specialListId += (item1.id + ',')
+          }
+        })
+        let oDate = arr[index].time
+        jsonarr[index] = {
+          templateName: item.name,
+          templateContentListList: jsonsarr,
+          orderDate: obj.listType == 2 ? oDate.getFullYear() + '-' + (oDate.getMonth() + 1) + '-' + oDate.getDate() : ''
+        }
+      })
+
+      obj.specialListJson = JSON.stringify(jsonarr)
+
+      if (obj.headPicType == 1) {
+        let data = {
+          thumb: this.headList_type1.url
+        }
+        obj.headJson = JSON.stringify([ data ])
+      } else if (obj.headPicType == 2) {
+        let arr = []
+        this.headList_type2.selected.forEach(item => {
+          let data = {
+            app: item.app,
+            abstract: item.abstract,
+            id: item.id,
+            createDate: item.createDate,
+            thumb: item.thumb.indexOf('[') >= 0 ? JSON.parse(item.thumb)[0].url : item.thumb,
+            title: item.title
+          }
+          arr.push(data)
+          obj.headJsonId += (item.id + ',')
+        })
+        obj.headJson = JSON.stringify(arr)
+      }
+      // obj.thumb = obj.thumb.id
+
+      if (this.id) {
+        obj.specialId = this.id
+      }
+
+      console.log(obj)
+
+      this.$http.post(url, obj).then(res => {
+        this.ui.submited = true
+        this.$router.push('/special/list?scope=all&status=all')
+      }).catch(
         res => {
           this.$toast(res || res.msg || '保存失败')
           console.log(res)
         }
       )
+
+      // let form = {...this.form}
+      // if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
+      // if (this.id) form.id = this.id
+
+      // this.$http.post(url, form).then(
+      //   res => {
+      //     this.ui.submited = true
+      //     this.$router.replace('/article/list?scope=all&status=all')
+      //   }
+      // ).catch(
+      //   res => {
+      //     this.$toast(res || res.msg || '保存失败')
+      //     console.log(res)
+      //   }
+      // )
     }
   },
   filters: {
@@ -353,55 +431,97 @@ export default {
       if (value === '2') return '正文正下方'
     }
   },
-  mounted () {
+  beforeMount () {
     if (this.from && this.id) {
-      this.ui.loading = true
-      if (this.from === 'draft') this.autoSaveId = this.id
-      this.$http.post(from[this.from].getUrl, {
-        id: this.id
-      }).then(res => {
-        for (let k in this.form) {
-          if (k === 'virtualComment') {
-            if (res.content[k] === '') {
-              this.form[k] = ''
-            } else {
-              this.form[k] = JSON.stringify(res.content[k])
+      if (this.from == 'edit') {
+        this.$http.post('/cri-cms-platform/special/queryDetail.monitor', {
+          id: this.id
+        }).then(res => {
+          console.log(res)
+          this.form = res.special
+          this.form.specialListId = ''
+          this.form.headJsonId = ''
+          this.form.headJson = JSON.parse(this.form.headJson)
+          this.form.thumb = JSON.parse(res.special.thumb)
+          this.thumb.thumb1 = this.form.thumb[0]
+          console.log(this.thumb.thumb1)
+          this.form.channelIds = res.channelIds || ''
+          this.form.specialListJson = JSON.parse(this.form.specialListJson)
+          for (let i = 0; i < res.special.specialListJson.length; i++) {
+            this.list.push({
+              name: res.special.specialListJson[i].templateName,
+              time: res.special.specialListJson[i].orderDate ? res.special.specialListJson[i].orderDate : this.nowDate,
+              edit: false,
+              list: {
+                selected: res.special.specialListJson[i].templateContentListList
+              }
+            })
+          }
+          if (this.form.headPicType == 1) {
+            this.headList_type1 = {
+              url: this.form.headJson.thumb
             }
-            continue
+          } else if (this.form.headPicType == 2) {
+            this.headList_type2 = {
+              selected: this.form.headJson
+            }
           }
-          if (k === 'thumb') {
-            this.thumb.thumb1 = res.content.thumb[0]
-            this.thumb.thumb2 = res.content.thumb[1]
-            this.thumb.thumb3 = res.content.thumb[2]
-          }
-          if (k === 'isDelete' || k === 'isOpenComment' || k === 'isOriginal' || k === 'isRecommnd' || k === 'isWatermarked' || k === 'terminalApp' || k === 'terminalPc' || k === 'terminalWeb' || k === 'hasThumb') {
-            this.form[k] = Number(res.content[k])
-            continue
-          }
-          this.form[k] = res.content[k]
-        }
-        this.form.createDate = res.content.createDate
-        this.form.content = res.article.content
-        this.form.channelIds = res.channelIds || ''
-        this.form.relateIds = res.relateArticle.map(v => v.id).join(',')
-        this.form.specialId = res.relateSpecial.id || ''
-        this.attachmentDefaultList = res.attachments
-        this.form.gallerySettingDisplayPosition = res.gallerySettingDisplayPosition || '1'
-        this.form.gallerySettingMaxWidth = res.gallerySettingMaxWidth || '640'
-        this.form.gallerySettingMinHeight = res.gallerySettingMinHeight || '480'
-        this.form.gallerySettingThumbHeight = res.gallerySettingThumbHeight || '80'
-        this.form.gallerySettingThumbWidth = res.gallerySettingThumbWidth || '60'
-        this.ui.loading = false
-        this.$nextTick(() => {
-          this.$refs.editor.title = this.form.title
-          this.$refs.editor.titleColor = this.form.titleColor
-          this.$refs.editor.content = this.form.content
+          this.getif = true
+          console.log(this.list)
         })
-      }).catch(e => {
-        console.log(e)
-      })
+      }
+    } else {
+      this.getif = true
     }
     this.getChannels()
+
+    // if (this.from && this.id) {
+    //   if (this.from === 'draft') this.autoSaveId = this.id
+    //   this.$http.post(from[this.from].getUrl, {
+    //     id: this.id
+    //   }).then(res => {
+    //     for (let k in this.form) {
+    //       if (k === 'virtualComment') {
+    //         if (res.content[k] === '') {
+    //           this.form[k] = ''
+    //         } else {
+    //           this.form[k] = JSON.stringify(res.content[k])
+    //         }
+    //         continue
+    //       }
+    //       if (k === 'thumb') {
+    //         this.thumb.thumb1 = res.content.thumb[0]
+    //         this.thumb.thumb2 = res.content.thumb[1]
+    //         this.thumb.thumb3 = res.content.thumb[2]
+    //       }
+    //       if (k === 'isDelete' || k === 'isOpenComment' || k === 'isOriginal' || k === 'isRecommnd' || k === 'isWatermarked' || k === 'terminalApp' || k === 'terminalPc' || k === 'terminalWeb' || k === 'hasThumb') {
+    //         this.form[k] = Number(res.content[k])
+    //         continue
+    //       }
+    //       this.form[k] = res.content[k]
+    //     }
+    //     this.form.createDate = res.content.createDate
+    //     this.form.content = res.article.content
+    //     this.form.channelIds = res.channelIds || ''
+    //     this.form.relateIds = res.relateArticle.map(v => v.id).join(',')
+    //     this.form.specialId = res.relateSpecial.id || ''
+    //     this.attachmentDefaultList = res.attachments
+    //     this.form.gallerySettingDisplayPosition = res.gallerySettingDisplayPosition || '1'
+    //     this.form.gallerySettingMaxWidth = res.gallerySettingMaxWidth || '640'
+    //     this.form.gallerySettingMinHeight = res.gallerySettingMinHeight || '480'
+    //     this.form.gallerySettingThumbHeight = res.gallerySettingThumbHeight || '80'
+    //     this.form.gallerySettingThumbWidth = res.gallerySettingThumbWidth || '60'
+    //     this.ui.loading = false
+    //     this.$nextTick(() => {
+    //       this.$refs.editor.title = this.form.title
+    //       this.$refs.editor.titleColor = this.form.titleColor
+    //       this.$refs.editor.content = this.form.content
+    //     })
+    //   }).catch(e => {
+    //     console.log(e)
+    //   })
+    // }
+    // this.getChannels()
   },
   watch: {
     'thumb.thumb1' (newValue) {
@@ -464,7 +584,7 @@ export default {
   },
   beforeRouteLeave (from, to, next) {
     if (this.ui.submited) {
-      clearInterval(this.autoSaveTimer)
+      // clearInterval(this.autoSaveTimer)
       next()
       return
     }

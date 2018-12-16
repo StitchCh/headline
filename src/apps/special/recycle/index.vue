@@ -22,7 +22,7 @@
       @next="filter.toPage = filter.toPage >= totalPage ? totalPage : filter.toPage + 1"
       >
       <li slot-scope="slotProps">
-        <div class="list-item c-6 f-14 a" :class="{ on: slotProps.item.id === id }" @click="$router.push('/article/recycle/' + slotProps.item.id)">
+        <div class="list-item c-6 f-14 a" :class="{ on: slotProps.item.id === id }" @click="$router.push('/special/recycle/' + slotProps.item.id)">
           <div class="b" style="white-space: nowrap;overflow:hidden;text-overflow:ellipsis">{{slotProps.item.title}}</div>
           <div class="c-8 f-12" style="margin-top: 5px;">
             <span>{{slotProps.item.createDate}}</span>
@@ -89,7 +89,7 @@ export default {
   methods: {
     getList (refresh) {
       if (refresh) this.filter.toPage = 1
-      this.$http.post('/cri-cms-platform/article/getRecycle.monitor', this.filter).then(res => {
+      this.$http.post('/cri-cms-platform/special/getRecycle.monitor', this.filter).then(res => {
         this.list = res.pages || []
         this.totalPage = res.totalPage || 1
       }).catch(e => {

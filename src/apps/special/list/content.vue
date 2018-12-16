@@ -11,63 +11,49 @@
             <!--<span>{{content.createDate}}</span>-->
             <!--<span>作者：{{content.author}}</span>-->
             <!--<span>创建者：{{content.createUser}}</span>-->
-            <span class="flex-item"></span>
-            <img v-if="content && content.thumb" v-for="item in content.thumb" :key="item.id" :src="item.url" @click="thumbItem.url = item.url;thumbItem.show = true;" style="margin-left: 5px;height: 50px;cursor: pointer;">
+            <!--<span class="flex-item"></span>-->
+            <img v-if="content && content.thumb" :src="content.thumb[0].url" style="margin-left: 5px;height: 50px;">
           </div>
           <p class="art-abstarcts"><strong>[摘要]</strong>{{content.abstarcts}}</p>
           <!--<div class="f-14" v-html="article.content"></div>-->
-          <!--<div v-if="relateArticle.length" class="art-relate f-14">-->
-            <!--<div class="b c-8" style="margin-bottom: 10px;">相关阅读：</div>-->
-            <!--<ul>-->
-              <!--<li v-for="item in relateArticle" :key="item.id">-->
-                <!--<a class="a c-8" @click="toLink(item)">{{item.title}}</a>-->
-              <!--</li>-->
-            <!--</ul>-->
-          <!--</div>-->
-          <!--<div v-if="relateGallery.id" class="art-relate f-14">-->
-            <!--<div class="b c-8" style="margin-bottom: 10px;">相关图集：</div>-->
-            <!--<ul>-->
-              <!--<li>-->
-                <!--<a class="a c-8">{{relateGallery.title}}</a>-->
-              <!--</li>-->
-            <!--</ul>-->
-            <!--<div v-if="relateGalleryContent.length" style="margin-top: 10px;">-->
-              <!--<swiper :options="swiperOptionTop" class="gallery-top" :style="{ width: gallerySetting.gallerySettingMaxWidth + 'px', height: gallerySetting.gallerySettingMinHeight + 'px' }" ref="swiperTop">-->
-                <!--<swiper-slide v-for="(item, index) in relateGalleryContent" :key="item.url" class="flex-center relative" :style="{ height: gallerySetting.gallerySettingMinHeight + 'px' }">-->
-                  <!--<img :src="item.url" :style="{ 'max-width': gallerySetting.gallerySettingMaxWidth + 'px', 'max-height': gallerySetting.gallerySettingMinHeight + 'px' }">-->
-                  <!--<div class="description">-->
-                    <!--<span style="font-weight: 700;font-size: 20px;margin-right: 20px;">{{index + 1}} / {{relateGalleryContent.length}}</span>-->
-                    <!--<span>{{item.description}}</span>-->
-                  <!--</div>-->
-                <!--</swiper-slide>-->
-                <!--<div class="swiper-button-next swiper-button-white" slot="button-next"></div>-->
-                <!--<div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>-->
-              <!--</swiper>-->
-              <!--&lt;!&ndash; swiper2 Thumbs &ndash;&gt;-->
+
+          <div class="art-relate f-14">
+            <h3 class="b c-8" style="margin-bottom: 10px;margin-top: 0;color: #444;">头图：</h3>
+            <div v-if="headJson.length" style="margin-top: 10px;">
+              <swiper :options="swiperOptionTop" class="gallery-top" :style="{ width: gallerySetting.gallerySettingMaxWidth + 'px', height: gallerySetting.gallerySettingMinHeight + 'px' }" ref="swiperTop">
+                <swiper-slide v-for="(item, index) in headJson" :key="item.thumb" class="flex-center relative" :style="{ height: gallerySetting.gallerySettingMinHeight + 'px' }">
+                  <img :src="item.thumb" :style="{ 'width': gallerySetting.gallerySettingMaxWidth + 'px', 'height': gallerySetting.gallerySettingMinHeight + 'px' }">
+                  <div class="description">
+                    <span style="font-weight: 700;font-size: 20px;margin-right: 20px;">{{index + 1}} / {{headJson.length}}</span>
+                    <span>{{item.title}}</span>
+                  </div>
+                </swiper-slide>
+                <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
+                <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
+              </swiper>
+              <!-- swiper2 Thumbs -->
               <!--<swiper :options="swiperOptionThumbs" class="gallery-thumbs" :style="{ width: gallerySetting.gallerySettingMaxWidth + 'px' }" ref="swiperThumbs">-->
-                <!--<swiper-slide v-for="item in relateGalleryContent" :key="item.url" class="flex-center" :style="{ width: gallerySetting.gallerySettingThumbWidth + 'px', height: gallerySetting.gallerySettingThumbHeight + 'px' }">-->
-                  <!--<img :src="item.url" :alt="item.description" :style="{ 'max-width': gallerySetting.gallerySettingThumbWidth + 'px', 'max-height': gallerySetting.gallerySettingThumbHeight + 'px' }">-->
+                <!--<swiper-slide v-for="item in headJson" :key="item.thumb" class="flex-center" :style="{ width: gallerySetting.gallerySettingThumbWidth + 'px', height: gallerySetting.gallerySettingThumbHeight + 'px' }">-->
+                  <!--<img :src="item.thumb" :alt="item.description" :style="{ 'max-width': gallerySetting.gallerySettingThumbWidth + 'px', 'max-height': gallerySetting.gallerySettingThumbHeight + 'px' }">-->
                 <!--</swiper-slide>-->
               <!--</swiper>-->
-            <!--</div>-->
-          <!--</div>-->
-          <!--<div v-if="relateSpecial.length" class="art-relate f-14">-->
-            <!--<div class="b c-8" style="margin-bottom: 10px;">相关专题：</div>-->
-            <!--<ul>-->
-              <!--<li v-for="item in relateArticle" :key="item.id">-->
-                <!--<a class="a c-8">{{item.title}}</a>-->
-              <!--</li>-->
-            <!--</ul>-->
-          <!--</div>-->
-          <!--<div v-if="attachments.length" class="art-relate art-attachments f-14">-->
-            <!--<div class="b c-8" style="margin-bottom: 10px;">附件下载：</div>-->
-            <!--<ul>-->
-              <!--<li v-for="item in attachments" :key="item.id">-->
-                <!--<a class="a c-8 flex-v-center" :href="item.url" target="_blank" :download="item.alias">{{item.alias}}<span class="flex-item"></span>{{item.size | filesize}}-->
-                <!--</a>-->
-              <!--</li>-->
-            <!--</ul>-->
-          <!--</div>-->
+            </div>
+          </div>
+
+          <div v-if="specialListJson.length" v-for="item in specialListJson">
+            <h3 v-if="content.listType == 1" style="line-height: 40px;background: #eee;padding-left: 10px;color: #444;">{{item.templateName}}</h3>
+            <h3 v-if="content.listType == 2" style="line-height: 40px;background: #eee;padding-left: 10px;color: #444;">{{item.orderDate}}</h3>
+            <div class="art-relate f-14"  v-for="item1 in item.templateContentListList" style="overflow: hidden">
+              <div style="float: left">
+                <img :src="item1.thumb" style="width: 200px;height: 112px;" alt="">
+              </div>
+              <div style="width: calc(100% - 220px); float: right;">
+                <p style="text-align: left;height: 22px;overflow: hidden;">{{item1.title}}</p>
+                <p style="height: 44px;overflow: hidden;">{{item1.abstarcts}}</p>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -125,13 +111,13 @@ export default {
       content: {},
       article: {},
       channelIds: '',
-      relateArticle: [],
+      specialListJson: [],
       relateGallery: {},
-      relateGalleryContent: [],
+      headJson: [],
       gallerySetting: {
         gallerySettingDisplayPosition: '1',
         gallerySettingMaxWidth: '640',
-        gallerySettingMinHeight: '480',
+        gallerySettingMinHeight: '380',
         gallerySettingThumbWidth: '80',
         gallerySettingThumbHeight: '60'
       },
@@ -176,14 +162,14 @@ export default {
       this.$http.post(this.getUrl, {
         id: this.id
       }).then(res => {
-        console.log(res)
-        this.content = res || {}
+        this.content = res.special || {}
+        this.content.thumb = JSON.parse(res.special.thumb)
         // this.article = res.article || {}
-        // this.relateArticle = res.relateArticle || []
+        this.specialListJson = JSON.parse(res.special.specialListJson) || []
         // this.channelIds = res.channelIds || ''
         // this.relateArticle = res.relateArticle || []
         // this.relateGallery = res.relateGallery || {}
-        // this.relateGalleryContent = res.relateGalleryContent || []
+        this.headJson = JSON.parse(res.special.headJson) || []
         // this.swiperOptionTop.loopedSlides = this.swiperOptionThumbs.loopedSlides = this.relateGalleryContent.length
         // this.gallerySetting.gallerySettingDisplayPosition = res.gallerySettingDisplayPosition || '1'
         // this.gallerySetting.gallerySettingMaxWidth = res.gallerySettingMaxWidth || '640'

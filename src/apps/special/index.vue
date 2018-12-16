@@ -7,9 +7,9 @@
     <navigator-item icon="check_circle" index="my-all" @click="$router.replace('/special?scope=my&status=all')">已发</navigator-item>
     <!--<navigator-item icon="hourglass_full" index="my-AUDITING" @click="$router.replace('/special?scope=my&status=AUDITING')">待审</navigator-item>-->
     <!--<navigator-item icon="error" index="my-REJECT" @click="$router.replace('/special?scope=my&status=REJECT')">驳回</navigator-item>-->
-    <navigator-item icon="class" index="my-4" @click="$router.replace('/special?scope=my&status=4')">草稿</navigator-item>
+    <!--<navigator-item icon="class" index="my-4" @click="$router.replace('/special?scope=my&status=4')">草稿</navigator-item>-->
     <!-- </navigator-item-group> -->
-    <navigator-item icon="delete" index="3-1" @click="$router.replace('/special')">回收站</navigator-item>
+    <navigator-item icon="delete" index="3-1" @click="$router.replace('/special/recycle')">回收站</navigator-item>
   </af-left>
   <!--<af-center-->
     <!--@add="$router.push('/specialAdd')"-->
