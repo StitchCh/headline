@@ -39,7 +39,7 @@
             <icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn>
           </div>
           <div class="tool-item">
-            <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/specialEdit/special/${id}`)">edit</icon-btn>
+            <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/specialEdit/edit/${id}`)">edit</icon-btn>
           </div>
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'删除'" @click="deleteArticle">delete</icon-btn>
@@ -52,9 +52,9 @@
               </div>
             </bubble>
           </div>
-          <div class="tool-item">
-            <icon-btn small v-tooltip:bottom="'复制并重新发布'" @click="copyArticle">file_copy</icon-btn>
-          </div>
+          <!--<div class="tool-item">-->
+            <!--<icon-btn small v-tooltip:bottom="'复制并重新发布'" @click="copyArticle">file_copy</icon-btn>-->
+          <!--</div>-->
         </div>
         <div class="flex-item"></div>
 
@@ -129,12 +129,12 @@ export default {
         btns: ['取消', '删除'],
         color: 'red',
         yes: () => {
-          this.$http.post('/cri-cms-platform/special/delete.monitor', {
+          this.$http.post('/cri-cms-platform/special/del.monitor', {
             id: this.$route.params.id
           }).then(res => {
             this.$refs.afCenter.getList()
             this.$router.replace({
-              path: '/article/list',
+              path: '/special/list',
               query: this.$route.query
             })
           })

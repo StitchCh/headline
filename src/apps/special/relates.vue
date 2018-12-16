@@ -61,6 +61,7 @@ export default {
   name: 'app-article-add-relates',
   components: { draggable },
   props: {
+    value: {},
     limit: {},
     channelId: {
       type: String,
@@ -107,9 +108,17 @@ export default {
       firstclick: true
     }
   },
+  mounted () {
+    if (this.value.selected) {
+      this.list.selected = this.value.selected
+    }
+  },
   methods: {
     clickget () {
-      console.log(this.channelId)
+      if (!this.channelId) {
+        this.$toast('请选择频道')
+        return false
+      }
       if (this.channelId.length == 0) {
         this.$toast('请选择频道')
         return false

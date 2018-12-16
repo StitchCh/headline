@@ -35,6 +35,7 @@ Quill.register('modules/imageResize', ImageResize)
 
 export default {
   name: 'article-editor',
+  props: ['otitle'],
   components: { quillEditor, MediaPhotos, MediaVideos, MediaAudios },
   data () {
     let that = this
@@ -99,6 +100,11 @@ export default {
           }
         }
       }
+    }
+  },
+  mounted () {
+    if (this.otitle) {
+      this.title = this.otitle
     }
   },
   methods: {
