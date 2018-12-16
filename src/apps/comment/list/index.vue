@@ -22,7 +22,7 @@
             <td>{{item.contentTitle?item.contentTitle:'-'}}</td>
             <td>{{item.content}}</td>
             <td>{{item.createTime}}</td>
-            <td>{{item.auditStatus == '1'?'审核通过':'审核未通过' }}</td>
+            <td>{{item.auditStatus == '1'?'通过':'未通过' }}</td>
             <td style="width: 30px;">
               <icon-btn v-tooltip="'编辑'" small @click.stop.native="openEdit(item.id)">edit</icon-btn>
             </td>
@@ -44,72 +44,6 @@
         </div>
       </div>
     </div>
-
-    <layer v-if="detailShow" title="会员信息" width="600px" maskClick @close="detailShow = false">
-      <div class="layer-text">
-        <table>
-          <tbody>
-          <tr>
-            <th align="right">昵称</th>
-            <td>{{detail.member.nickname == '' ? '无' : detail.member.nickname }}</td>
-          </tr>
-          <tr>
-            <th align="right">真实姓名</th>
-            <td>{{detail.member.trueName == '' ? '无' : detail.member.trueName}}</td>
-          </tr>
-          <tr>
-            <th align="right">邮箱</th>
-            <td>{{detail.member.email == '' ? '无' : detail.member.email}}</td>
-          </tr>
-          <tr>
-            <th align="right">手机</th>
-            <td>{{detail.member.mobile == '' ? '无' : detail.member.mobile}}</td>
-          </tr>
-          <tr>
-            <th align="right">微信昵称</th>
-            <td>{{detail.member.nickname == '' ? '无' : detail.member.nickname}}</td>
-          </tr>
-          <tr>
-            <th align="right">所属站点</th>
-            <td>{{detail.member.registSiteId}}</td>
-          </tr>
-          <tr>
-            <th align="right">状态</th>
-            <td>{{detail.member.state == '1' ? '正常': '屏蔽'}}</td>
-          </tr>
-          <tr>
-            <th align="right">注册时间</th>
-            <td>{{detail.member.registTime}}</td>
-          </tr>
-          <tr>
-            <th align="right">注册IP</th>
-            <td>{{detail.member.registIp}}</td>
-          </tr>
-          <tr>
-            <th align="right">最后一次登录时间</th>
-            <td>{{detail.member.thisTimeLoginTime}}</td>
-          </tr>
-          <tr>
-            <th align="right">最后一次登录IP</th>
-            <td>{{detail.member.thisTimeLoginIp}}</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="layer-btns">
-        <btn flat color="#66BB6A" @click="detailShow = false">关闭</btn>
-      </div>
-    </layer>
-
-    <layer v-if="editShow" title="会员信息" width="600px">
-      <div class="layer-text">
-        asdsa
-      </div>
-      <div class="layer-btns">
-        <btn flat @click="editShow = false">取消</btn>
-        <btn flat color="#66BB6A" @click="submitEdit">提交</btn>
-      </div>
-    </layer>
   </div>
 </template>
 
