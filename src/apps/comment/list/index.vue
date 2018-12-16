@@ -20,7 +20,7 @@
             isAudit=1 这种情况auditStatus=1，这种情况表示不需要审核，直接通过
             isAudit=2 表示可以进行审核操作
             isAudit=3 表示审核操作已经做完了，auditStatus=1表示审核通过，auditStatus=0表示拒绝
-            deleteStatus=1 表示审核通过，deleteStatus=0表示拒绝
+            deleteStatus=1 表示没有删除，deleteStatus=0表示已经删除
           -->
           <tr v-for="item in list" :key="item.id" @click="openDetail(item.id)">
             <td>{{item.memberName?item.memberName:'-'}}</td>
