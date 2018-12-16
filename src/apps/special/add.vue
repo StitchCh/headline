@@ -346,10 +346,11 @@ export default {
           return false
         }
         item.list.selected.forEach((item1, index1) => {
+          console.log(item1)
           jsonsarr[index1] = {
             app: item1.app,
             id: item1.id,
-            abstract: item1.abstract,
+            abstarcts: item1.abstarcts,
             order: index1,
             title: item1.title,
             createDate: item1.createDate,
@@ -367,6 +368,8 @@ export default {
         }
       })
 
+      console.log(jsonarr)
+
       obj.specialListJson = JSON.stringify(jsonarr)
 
       if (obj.headPicType == 1) {
@@ -379,7 +382,7 @@ export default {
         this.headList_type2.selected.forEach(item => {
           let data = {
             app: item.app,
-            abstract: item.abstract,
+            abstarcts: item.abstarcts,
             id: item.id,
             createDate: item.createDate,
             thumb: item.thumb.indexOf('[') >= 0 ? JSON.parse(item.thumb)[0].url : item.thumb,
@@ -393,9 +396,9 @@ export default {
       // obj.thumb = obj.thumb.id
 
       if (this.id) {
-        obj.specialId = this.id
+        obj.specialId = obj.id
+        obj.id = this.id
       }
-
       console.log(obj)
 
       this.$http.post(url, obj).then(res => {

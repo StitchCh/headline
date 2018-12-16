@@ -166,6 +166,7 @@ export default {
         this.content.thumb = JSON.parse(res.special.thumb)
         // this.article = res.article || {}
         this.specialListJson = JSON.parse(res.special.specialListJson) || []
+        console.log(this.specialListJson)
         // this.channelIds = res.channelIds || ''
         // this.relateArticle = res.relateArticle || []
         // this.relateGallery = res.relateGallery || {}
