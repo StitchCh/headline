@@ -90,6 +90,10 @@
         <span class="flex-item">水印</span>
         <switcher mode="Number" v-model="form.isWatermarked"/>
       </div>
+      <div class="option-item flex-v-center">
+        <span class="flex-item">是否宽图</span>
+        <switcher mode="Number" v-model="form.wide"/>
+      </div>
       <!--<div class="option-item flex-v-center">-->
         <!--<div class="flex-item">定时上线</div>-->
         <!--<div class="relative flex-v-center a">-->
@@ -248,6 +252,7 @@ export default {
         author: '',
         weight: '',
         isWatermarked: 0,
+        wide: 0,
         upLineTime: '',
         downLineTime: '',
         virtualPv: '',
@@ -400,7 +405,7 @@ export default {
             this.thumb.thumb2 = res.content.thumb[1]
             this.thumb.thumb3 = res.content.thumb[2]
           }
-          if (k === 'isDelete' || k === 'isOpenComment' || k === 'isOriginal' || k === 'isRecommnd' || k === 'isWatermarked' || k === 'terminalApp' || k === 'terminalPc' || k === 'terminalWeb' || k === 'hasThumb') {
+          if (k === 'isDelete' || k === 'isOpenComment' || k === 'isOriginal' || k === 'isRecommnd' || k === 'isWatermarked' || k === 'terminalApp' || k === 'terminalPc' || k === 'terminalWeb' || k === 'hasThumb' || k === 'wide') {
             this.form[k] = Number(res.content[k])
             continue
           }
