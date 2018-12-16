@@ -7,20 +7,26 @@
       <div class="card">
         <table>
           <thead>
+          <th>会员ID</th>
           <th>昵称</th>
           <th>手机</th>
           <th>邮箱</th>
-          <th>姓名</th>
+          <th>区域</th>
           <th>最后登录</th>
-          <th colspan="3">操作</th>
+          <th>积分</th>
+          <th>状态</th>
           </thead>
           <tbody>
           <tr v-for="item in list" :key="item.id" @click="openDetail(item.id)">
-            <td>{{item.nickname?'-':item.nickname}}</td>
-            <td>{{item.mobile?'-':item.mobile}}</td>
-            <td>{{item.email?'-':item.email}}</td>
-            <td>{{item.trueName}}</td>
-            <td>{{item.thisTimeLoginTime}}</td>
+            <td>{{item.id}}</td>
+            <td>{{item.nickname}}</td>
+            <td>{{item.mobile}}</td>
+            <td>{{item.email?item.email:'-'}}</td>
+            <td>{{item.province?item.province:''}}-{{item.city?item.city:''}}</td>
+            <td>{{item.thisLoginTime}}</td>
+            <td>{{item.credits}}</td>
+            <td v-if="item.state == 1">正常</td>
+            <td v-if="item.state == 0">屏蔽</td>
             <td style="width: 30px;">
               <icon-btn v-tooltip="'编辑'" small @click.stop.native="openEdit(item.id)">edit</icon-btn>
             </td>
@@ -49,34 +55,58 @@
           <tbody>
           <tr>
             <th align="right">昵称</th>
-            <td>{{detail.member.nickname == '' ? '无' : detail.member.nickname }}</td>
+            <td>{{detail.member.nickname ? detail.member.nickname : '无'}}</td>
           </tr>
           <tr>
             <th align="right">真实姓名</th>
-            <td>{{detail.member.trueName == '' ? '无' : detail.member.trueName}}</td>
+            <td>{{detail.member.trueName ? detail.member.trueName : '无'}}</td>
+          </tr>
+          <tr>
+            <th align="right">身份证号</th>
+            <td>{{detail.member.idNo ? detail.member.idNo : '无'}}</td>
           </tr>
           <tr>
             <th align="right">邮箱</th>
-            <td>{{detail.member.email == '' ? '无' : detail.member.email}}</td>
+            <td>{{detail.member.email ? detail.member.email:'无'}}</td>
           </tr>
           <tr>
             <th align="right">手机</th>
-            <td>{{detail.member.mobile == '' ? '无' : detail.member.mobile}}</td>
+            <td>{{detail.member.mobile ? detail.member.mobile: '无'}}</td>
+          </tr>
+          <tr>
+            <th align="right">QQ昵称</th>
+            <td>{{detail.social.QQ == '' ?detail.social.QQ: '无'}}</td>
           </tr>
           <tr>
             <th align="right">微信昵称</th>
-            <td>{{detail.member.nickname == '' ? '无' : detail.member.nickname}}</td>
+            <td>{{detail.social.WECHAT?detail.social.WECHAT: '无'}}</td>
+          </tr>
+          <tr>
+            <th align="right">新浪微博</th>
+            <td>{{detail.social.SINA_WEIBO? detail.social.SINA_WEIBO :'无'}}</td>
+          </tr>
+          <tr>
+            <th align="right">GOOGLE</th>
+            <td>{{detail.social.GOOGLE ? detail.social.GOOGLE :'无'}}</td>
+          </tr>
+          <tr>
+            <th align="right">FACEBOOK</th>
+            <td>{{detail.social.FACEBOOK ?detail.social.FACEBOOK: '无'}}</td>
+          </tr>
+          <tr>
+            <th align="right">TWITER</th>
+            <td>{{detail.social.TWITER ? detail.social.TWITER:'无'}}</td>
           </tr>
           <tr>
             <th align="right">所属站点</th>
-            <td>{{detail.member.registSiteId}}</td>
+            <td>{{detail.site.name}}</td>
           </tr>
           <tr>
-            <th align="right">状态</th>
-            <td>{{detail.member.state == '1' ? '正常': '屏蔽'}}</td>
+            <th align="right">站点域名</th>
+            <td>{{detail.site.url}}</td>
           </tr>
           <tr>
-            <th align="right">注册时间</th>
+            <th align="right">创建时间</th>
             <td>{{detail.member.registTime}}</td>
           </tr>
           <tr>
@@ -85,11 +115,11 @@
           </tr>
           <tr>
             <th align="right">最后一次登录时间</th>
-            <td>{{detail.member.thisTimeLoginTime}}</td>
+            <td>{{detail.member.thisLoginTime}}</td>
           </tr>
           <tr>
             <th align="right">最后一次登录IP</th>
-            <td>{{detail.member.thisTimeLoginIp}}</td>
+            <td>{{detail.member.thisLoginIp}}</td>
           </tr>
           </tbody>
         </table>
