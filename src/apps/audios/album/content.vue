@@ -18,9 +18,9 @@
               <span class="flex-item"></span>
               <img v-if="album && album.thumb" v-for="item in content.thumb" :key="item.id" :src="item.url" @click="thumbItem.url = item.url;thumbItem.show = true;" style="margin-left: 5px;height: 50px;cursor: pointer;">
             </div>
-            <p class="album-abstarcts"><strong>[摘要]</strong>{{album.audioAbstract}}</p>
+            <p class="album-abstarcts"><strong>[摘要]</strong>{{album.videoAbstract}}</p>
             <ul class="list-view">
-              <li v-for="item in content" :key="item.id" class="list-item c-6 f-14 a flex-v-center" @click="$router.push(`/audio/list/${item.id}?scope=all&status=all`)">
+              <li v-for="item in content" :key="item.id" class="list-item c-6 f-14 a flex-v-center" @click="linkTo(item)">
                 <div class="list-thumb flex-center">
                   <img v-if="item.thumb.length" :src="item.thumb[0].url" alt="">
                 </div>
@@ -75,6 +75,10 @@ export default {
           this.loading = false
         }
       )
+    },
+    linkTo (item) {
+      this.$parent.$parent.$refs.afLeft.activeIndex = 'all-all'
+      this.$router.push(`/audio/list/${item.id}?scope=all&status=all`)
     }
   },
   created () {

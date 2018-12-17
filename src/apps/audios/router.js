@@ -80,5 +80,17 @@ export default [
     component: resolve => require(['@/apps/audios/editAudio/index.vue'], resolve),
     props: true,
     meta: { level: 3, title: '修改音频', identifier: 'audio_edit' }
+  },
+  {
+    path: '/audioAlbumEdit',
+    name: 'AudioAlbumEdit',
+    component: resolve => require(['@/apps/audios/album/edit.vue'], resolve),
+    props: true,
+    meta: { level: 3, title: '编辑专辑', identifier: 'audio_album_edit' },
+    children: [
+      {
+        path: ':id'
+      }
+    ]
   }
 ]

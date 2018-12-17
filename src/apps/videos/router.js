@@ -80,5 +80,17 @@ export default [
     component: resolve => require(['@/apps/videos/editVideo/index.vue'], resolve),
     props: true,
     meta: { level: 3, title: '修改视频', identifier: 'video_edit' }
+  },
+  {
+    path: '/videoAlbumEdit',
+    name: 'VideoAlbumEdit',
+    component: resolve => require(['@/apps/videos/album/edit.vue'], resolve),
+    props: true,
+    meta: { level: 3, title: '编辑专辑', identifier: 'video_album_edit' },
+    children: [
+      {
+        path: ':id'
+      }
+    ]
   }
 ]

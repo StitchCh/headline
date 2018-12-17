@@ -1,6 +1,6 @@
 <template>
 <div class="abs flex-item flex media-videos">
-  <media-left-tree :select-mode="selectMode" @changeFolder="getList" type="1"/>
+  <media-left-tree :select-mode="selectMode" @changeFolder="getList" type="2"/>
   <div class="flex-item flex-col">
     <div class="af-topbar flex-v-center" style="height:36px;">
       <div class="search-bar flex-v-center">

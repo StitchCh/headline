@@ -19,18 +19,26 @@
       </div>
     </div>
     <div class="selector">
-      <div class="selector-add flex-center a">
-        <i class="icon c-a" style="font-size: 80px;">audio_call</i>
+      <div v-if="!audio" class="selector-add flex-center a" @click="ui.audioSelectorShow = true">
+        <div class="relative">
+          <i class="icon c-a" style="font-size: 80px;">audiotrack</i>
+          <i class="icon c-a" style="font-size: 50px;position: absolute;left: -10px;top: 0;">add</i>
+        </div>
       </div>
-      <video-player class="vjs-custom-skin"
-                    ref="videoPlayer"
-                    :options="playerOptions"
-                    :playsinline="true"/>
+      <div v-else>
+        <video-player class="vjs-custom-skin"
+                      ref="videoPlayer"
+                      :options="playerOptions"
+                      :playsinline="true"/>
+        <div class="t-center" style="margin-top: 20px;">
+          <btn flat color="#0299ff" @click="ui.audioSelectorShow = true">重新选择</btn>
+        </div>
+      </div>
     </div>
 
     <layer v-if="ui.audioSelectorShow" title="选择视频"  width="800px">
       <div class="layer-text relative" style="height: 800px;">
-        <media-audios select-mode ref="mediaAudios"></media-audios>
+        <media-audios select-mode ref="mediaAudios" single-select/>
       </div>
       <div class="layer-btns">
         <btn flat @click="ui.audioSelectorShow = false">取消</btn>
@@ -43,17 +51,19 @@
 <script>
 import 'video.js/dist/video-js.css'
 import 'vue-video-player/src/custom-theme.css'
-import { vudioPlayer } from 'vue-video-player'
+import { videoPlayer } from 'vue-video-player'
 import MediaAudios from '../../medialibrary/pages/audios'
+
+const ORIGIN = 'http://60.247.77.208:58088'
 
 export default {
   name: 'audio-editor',
-  components: { vudioPlayer, MediaAudios },
+  components: { videoPlayer, MediaAudios },
   data () {
     return {
       ui: {
         titleColorBoxShow: false,
-        audioSelectorShow: true
+        audioSelectorShow: false
       },
       playerOptions: {
         height: '495',
@@ -66,11 +76,20 @@ export default {
         poster: ''
       },
       title: '',
+      audio: null,
       titleColor: '#000'
     }
   },
   methods: {
-    selectAudio () {}
+    changeTitleColor (color) {
+      this.titleColor = color
+      this.ui.titleColorBoxShow = false
+    },
+    selectAudio () {
+      this.audio = this.$refs.mediaAudios.selected[0]
+      this.playerOptions.sources[0].src = ORIGIN + this.audio.audio
+      this.ui.audioSelectorShow = false
+    }
   }
 }
 </script>
@@ -83,8 +102,11 @@ export default {
   .title-colorpicker-btn {width: 25px;height: 25px;border: 1px solid transparent;margin: 3px;
     &:hover {border: 1px solid #000}
   }
+  .title-color-list {width: 192px;padding: 10px;}
   .selector {width: 100%;height: 495px;
-    .selector-add {width: 100%;height: 100%;background: rgba(0, 0, 0, .06);border-radius: 10px;}
+    .selector-add {width: 100%;height: 100%;background: rgba(0, 0, 0, .06);border-radius: 10px;
+      &:hover {opacity: .8;}
+    }
   }
   .layer-ctn {max-width: 1000px;
     .af-left{width: 280px;background: #fff;border-right: 1px solid rgba(0, 0, 0, .05);}

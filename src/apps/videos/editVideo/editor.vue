@@ -19,18 +19,23 @@
       </div>
     </div>
     <div class="selector">
-      <div class="selector-add flex-center a">
+      <div v-if="!video" class="selector-add flex-center a" @click="ui.videoSelectorShow = true">
         <i class="icon c-a" style="font-size: 80px;">video_call</i>
       </div>
-      <video-player class="vjs-custom-skin"
-                    ref="videoPlayer"
-                    :options="playerOptions"
-                    :playsinline="true"></video-player>
+      <div v-else>
+        <video-player class="vjs-custom-skin"
+                      ref="videoPlayer"
+                      :options="playerOptions"
+                      :playsinline="true"/>
+        <div class="t-center" style="margin-top: 20px;">
+          <btn flat color="#0299ff" @click="ui.videoSelectorShow = true">重新选择</btn>
+        </div>
+      </div>
     </div>
 
     <layer v-if="ui.videoSelectorShow" title="选择视频"  width="800px">
       <div class="layer-text relative" style="height: 800px;">
-        <media-videos select-mode ref="mediaVideos"></media-videos>
+        <media-videos select-mode ref="mediaVideos" single-select></media-videos>
       </div>
       <div class="layer-btns">
         <btn flat @click="ui.videoSelectorShow = false">取消</btn>
@@ -46,6 +51,8 @@ import 'vue-video-player/src/custom-theme.css'
 import { videoPlayer } from 'vue-video-player'
 import MediaVideos from '../../medialibrary/pages/videos'
 
+const ORIGIN = 'http://60.247.77.208:58088'
+
 export default {
   name: 'video-editor',
   components: { videoPlayer, MediaVideos },
@@ -53,7 +60,7 @@ export default {
     return {
       ui: {
         titleColorBoxShow: false,
-        videoSelectorShow: true
+        videoSelectorShow: false
       },
       playerOptions: {
         height: '495',
@@ -66,11 +73,20 @@ export default {
         poster: ''
       },
       title: '',
+      video: null,
       titleColor: '#000'
     }
   },
   methods: {
-    selectVideo () {}
+    changeTitleColor (color) {
+      this.titleColor = color
+      this.ui.titleColorBoxShow = false
+    },
+    selectVideo () {
+      this.video = this.$refs.mediaVideos.selected[0]
+      this.playerOptions.sources[0].src = ORIGIN + this.video.video
+      this.ui.videoSelectorShow = false
+    }
   }
 }
 </script>
@@ -83,8 +99,11 @@ export default {
   .title-colorpicker-btn {width: 25px;height: 25px;border: 1px solid transparent;margin: 3px;
     &:hover {border: 1px solid #000}
   }
+  .title-color-list {width: 192px;padding: 10px;}
   .selector {width: 100%;height: 495px;
-    .selector-add {width: 100%;height: 100%;background: rgba(0, 0, 0, .06);border-radius: 10px;}
+    .selector-add {width: 100%;height: 100%;background: rgba(0, 0, 0, .06);border-radius: 10px;
+      &:hover {opacity: .8;}
+    }
   }
   .layer-ctn {max-width: 1000px;
     .af-left{width: 280px;background: #fff;border-right: 1px solid rgba(0, 0, 0, .05);}

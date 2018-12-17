@@ -23,7 +23,8 @@
             <video-player class="vjs-custom-skin"
                           ref="videoPlayer"
                           :options="playerOptions"
-                          :playsinline="true"></video-player>
+                          :playsinline="true"
+                          @ready="playerReady"></video-player>
           </div>
         </div>
       </div>
@@ -66,6 +67,9 @@ import 'video.js/dist/video-js.css'
 import 'video.js/dist/lang/zh-CN'
 import 'vue-video-player/src/custom-theme.css'
 import { videoPlayer } from 'vue-video-player'
+import 'videojs-resolution-switcher'
+
+const ORIGIN = 'http://60.247.77.208:58088'
 
 export default {
   name: 'app-video-content',
@@ -90,16 +94,16 @@ export default {
         url: ''
       },
       playerOptions: {
+        controls: true,
         height: '480',
         language: 'zh-CN',
         playbackRates: [0.7, 1.0, 1.5, 2.0],
-        sources: [{
-          type: '',
-          // mp4
-          src: ''
-          // webm
-          // src: "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm"
-        }],
+        sources: [
+          {
+            type: '',
+            src: ''
+          }
+        ],
         poster: ''
       },
       loading: false
@@ -120,7 +124,7 @@ export default {
         res => {
           this.content = res.video || {}
           if (res.video) {
-            this.playerOptions.sources[0].src = res.video.video
+            this.playerOptions.sources[0].src = ORIGIN + res.video.video
             this.playerOptions.poster = res.video.thumb ? res.video.thumb[0].url || '' : ''
           } else {
             this.playerOptions.sources[0].src = this.playerOptions.poster = ''
@@ -133,6 +137,12 @@ export default {
     getChannel (id) {
       let channel = this.channels.find(v => v.id === id)
       return channel ? channel.channelName : ''
+    },
+    playerReady (player) {
+      // console.log(player)
+      // let MenuButton = player.controlBar.addChild('MenuButton', {}, 0)
+      // console.log(MenuButton)
+      // console.log(MenuButton.children)
     }
   },
   created () {

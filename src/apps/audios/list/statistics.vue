@@ -78,7 +78,7 @@ import 'echarts/lib/component/title'
 import 'echarts/lib/component/legend'
 
 export default {
-  name: 'app-article-statistics',
+  name: 'app-audio-statistics',
   props: ['id'],
   data () {
     return {
@@ -166,7 +166,6 @@ export default {
 .audio-statistics {height: 100%;overflow: auto;
   .audio-statistics-content {
     max-width: 900px;margin: 0 auto;padding: 20px 0;
-    /*th,td {text-align: center;}*/
   }
 }
 </style>

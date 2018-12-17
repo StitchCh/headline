@@ -43,7 +43,7 @@
             <icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn>
           </div>
           <div class="tool-item">
-            <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/articleEdit/article/${id}`)">edit</icon-btn>
+            <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/audioEdit/audio/${id}`)">edit</icon-btn>
           </div>
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'删除'" @click="deleteAudio">delete</icon-btn>
@@ -57,7 +57,7 @@
             </bubble>
           </div>
           <!--<div class="tool-item">-->
-            <!--<icon-btn small v-tooltip:bottom="'复制并重新发布'" @click="copyArticle">file_copy</icon-btn>-->
+            <!--<icon-btn small v-tooltip:bottom="'复制并重新发布'" @click="copyAudio">file_copy</icon-btn>-->
           <!--</div>-->
         </div>
         <div class="flex-item"></div>
@@ -108,7 +108,7 @@ export default {
     copyAudio () {
       let that = this
       this.$confirm({
-        text: '您确定要复制该文章并重新发布吗？',
+        text: '您确定要复制该音频并重新发布吗？',
         no () {},
         yes () {
           that.$http.post('/cri-cms-platform//article/copy.monitor', {
@@ -123,7 +123,7 @@ export default {
     },
     deleteAudio () {
       this.$confirm({
-        title: '您确定要删除此视频吗？',
+        title: '您确定要删除此音频吗？',
         text: `您可以从回收站中恢复。`,
         btns: ['取消', '删除'],
         color: 'red',

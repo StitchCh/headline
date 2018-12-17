@@ -1,6 +1,6 @@
 <template>
 <div class="abs bg-f flex app-videos">
-  <af-left color="#4d6d7b" bg-color="#e0eff3" vibrant-color="#0093d4" title="视频" :defaultActive="defaultActive">
+  <af-left ref="afLeft" color="#4d6d7b" bg-color="#e0eff3" vibrant-color="#0093d4" title="视频" :defaultActive="defaultActive">
     <navigator-item icon="folder" index="all-all" @click="$router.replace('/video/list?scope=all&status=all')">全部</navigator-item>
     <navigator-item icon="album" index="VideoAlbum" @click="$router.replace('/video/album')">专辑</navigator-item>
     <!-- <navigator-item-group defaultExtended index="2" icon="face">
@@ -8,7 +8,7 @@
     <navigator-item icon="check_circle" index="my-all" @click="$router.replace('/video/list?scope=my&status=all')">已发</navigator-item>
     <navigator-item icon="hourglass_full" index="my-AUDITING" @click="$router.replace('/video/list?scope=my&status=AUDITING')">待审</navigator-item>
     <navigator-item icon="error" index="my-REJECT" @click="$router.replace('/video/list?scope=my&status=REJECT')">驳回</navigator-item>
-    <navigator-item icon="class" index="my-4" @click="$router.replace('/video/draft')">草稿</navigator-item>
+    <navigator-item icon="class" index="VideoDraft" @click="$router.replace('/video/draft')">草稿</navigator-item>
     <!-- </navigator-item-group> -->
     <navigator-item icon="delete" index="VideoRecycle" @click="$router.replace('/video/recycle')">回收站</navigator-item>
   </af-left>

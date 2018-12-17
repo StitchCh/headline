@@ -2,7 +2,7 @@
   <div class="flex-item flex album">
     <div class="flex-col album-center">
       <div class="af-topbar flex-center">
-        <icon-btn class="add-btn" v-tooltip:bottom="'添加'" @click="$router.push('/video')">add</icon-btn>
+        <icon-btn class="add-btn" v-tooltip:bottom="'添加'" @click="$router.push('/videoAlbumEdit')">add</icon-btn>
       </div>
       <div class="flex-v-center search-bar c-6 f-13">
         <i class="icon c-a f-20">search</i>
@@ -36,7 +36,7 @@
     <div class="af-right flex-item flex-col">
       <div class="af-topbar flex-v-center">
         <div class="flex-v-center" v-if="$route.params.id">
-          <icon-btn small v-tooltip:bottom="'编辑'" style="margin-right: 10px;" @click="$router.push('/video')">edit</icon-btn>
+          <icon-btn small v-tooltip:bottom="'编辑'" style="margin-right: 10px;" @click="$router.push(`/videoAlbumEdit/${id}`)">edit</icon-btn>
           <!--<icon-btn small v-tooltip:bottom="'还原'" style="margin-right: 10px;" @click="recover">undo</icon-btn>-->
           <icon-btn small v-tooltip:bottom="'删除'" @click="deleteAlbum">delete</icon-btn>
         </div>
@@ -55,7 +55,7 @@ import ListView from '@/components/listView'
 import debounce from 'lodash/debounce'
 
 export default {
-  name: 'album',
+  name: 'video-album',
   components: { Account, ListView },
   props: ['id'],
   data () {

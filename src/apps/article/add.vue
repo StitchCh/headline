@@ -301,9 +301,9 @@ export default {
         }
       )
     },
-    disabledDate (time, format) {
-      return time <= new Date()
-    },
+    // disabledDate (time, format) {
+    //   return time <= new Date()
+    // },
     autoSave () {
       let { title, titleColor, content } = this.$refs.editor
       this.form.title = title
@@ -323,7 +323,7 @@ export default {
       )
     },
     submit () {
-      let url = this.id ? '/cri-cms-platform/article/update.monitor' : '/cri-cms-platform/article/save.monitor'
+      let url = this.id && this.from === 'article' ? '/cri-cms-platform/article/update.monitor' : '/cri-cms-platform/article/save.monitor'
       let { title, titleColor, content, getText } = this.$refs.editor
       if (!title) {
         this.$toast('请输入标题')

@@ -63,8 +63,11 @@
 
 <script>
 import 'video.js/dist/video-js.css'
+import 'video.js/dist/lang/zh-CN'
 import 'vue-video-player/src/custom-theme.css'
 import { videoPlayer } from 'vue-video-player'
+
+const ORIGIN = 'http://60.247.77.208:58088'
 
 export default {
   name: 'app-audio-content',
@@ -89,16 +92,16 @@ export default {
         url: ''
       },
       playerOptions: {
+        controls: true,
         height: '480',
-        language: 'zh-ch',
+        language: 'zh-CN',
         playbackRates: [0.7, 1.0, 1.5, 2.0],
-        sources: [{
-          type: '',
-          // mp4
-          src: ''
-          // webm
-          // src: "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm"
-        }],
+        sources: [
+          {
+            type: '',
+            src: ''
+          }
+        ],
         poster: ''
       },
       loading: false
@@ -117,9 +120,10 @@ export default {
         id: this.id
       }).then(
         res => {
+          console.log(res)
           this.content = res.audio || {}
           if (res.audio) {
-            this.playerOptions.sources[0].src = res.audio.audio
+            this.playerOptions.sources[0].src = ORIGIN + res.audio.audio
             this.playerOptions.poster = res.audio.thumb ? res.audio.thumb[0].url || '' : ''
           } else {
             this.playerOptions.sources[0].src = this.playerOptions.poster = ''
