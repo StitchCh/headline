@@ -29,7 +29,7 @@
           <app-article-add-thumb v-model="headList_type1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
         </div>
         <div v-show="form.headPicType == 2">
-          <app-article-add-relates v-if="getif" :limit="form.headPicType" v-model="headList_type2" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/issue/getChannelContentList.monitor"></app-article-add-relates>
+          <app-article-add-relates v-if="getif" :limit="form.headPicType" v-model="headList_type2" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/issue/getArticList.monitor"></app-article-add-relates>
         </div>
       </div>
 
@@ -45,7 +45,7 @@
                 </span>
               </p>
               <div style="padding: 10px;">
-                <app-article-add-relates v-if="getif" v-model="item.list" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/issue/getChannelContentList.monitor"></app-article-add-relates>
+                <app-article-add-relates v-if="getif" v-model="item.list" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/issue/getArticList.monitor"></app-article-add-relates>
               </div>
             </div>
           </div>
