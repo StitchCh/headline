@@ -28,7 +28,7 @@
       </div>
     </draggable-tree>
     <!-- <div>{{delChannels}}</div> -->
-  </div>
+  </div>f
 </div>
 </template>
 
@@ -85,7 +85,6 @@ export default {
         worker.postMessage({ data: res.channels, idTxt: 'id', pidTxt: 'channelPartentId', childrenTxt: 'children', rootId: '1' })
         worker.addEventListener('message', e => {
           this.channelTree = e.data
-          console.log(this.channelTree)
           worker.terminate()
         })
         worker.addEventListener('error', e => {
@@ -132,6 +131,7 @@ export default {
     onItemClick (item) {
       if (item.new) return
       this.$router.replace(`/channels?channelId=${item.id}`)
+      this.$emit('changeChannel', item.id)
     },
     submit () {
       console.log(this.channelTree)

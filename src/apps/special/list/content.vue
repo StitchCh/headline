@@ -8,90 +8,76 @@
         <div class="art-ctn" v-else>
           <h1 class="b" :style="{ color: content.titleColor }">{{content.title}}</h1>
           <div class="f-14 c-a art-info flex-v-center">
-            <span>{{content.createDate}}</span>
-            <span>作者：{{content.author}}</span>
-            <span>创建者：{{content.createUser}}</span>
-            <span class="flex-item"></span>
-            <img v-if="content && content.thumb" v-for="item in content.thumb" :key="item.id" :src="item.url" @click="thumbItem.url = item.url;thumbItem.show = true;" style="margin-left: 5px;height: 50px;cursor: pointer;">
+            <!--<span>{{content.createDate}}</span>-->
+            <!--<span>作者：{{content.author}}</span>-->
+            <!--<span>创建者：{{content.createUser}}</span>-->
+            <!--<span class="flex-item"></span>-->
+            <img v-if="content && content.thumb" :src="content.thumb[0].url" style="margin-left: 5px;height: 50px;">
           </div>
           <p class="art-abstarcts"><strong>[摘要]</strong>{{content.abstarcts}}</p>
-          <div class="f-14" v-html="article.content"></div>
-          <div v-if="relateArticle.length" class="art-relate f-14">
-            <div class="b c-8" style="margin-bottom: 10px;">相关阅读：</div>
-            <ul>
-              <li v-for="item in relateArticle" :key="item.id">
-                <a class="a c-8" @click="toLink(item)">{{item.title}}</a>
-              </li>
-            </ul>
-          </div>
-          <div v-if="relateGallery.id" class="art-relate f-14">
-            <div class="b c-8" style="margin-bottom: 10px;">相关图集：</div>
-            <ul>
-              <li>
-                <a class="a c-8">{{relateGallery.title}}</a>
-              </li>
-            </ul>
-            <div v-if="relateGalleryContent.length" style="margin-top: 10px;">
+          <!--<div class="f-14" v-html="article.content"></div>-->
+
+          <div class="art-relate f-14">
+            <h3 class="b c-8" style="margin-bottom: 10px;margin-top: 0;color: #444;">头图：</h3>
+            <div v-if="headJson.length" style="margin-top: 10px;">
               <swiper :options="swiperOptionTop" class="gallery-top" :style="{ width: gallerySetting.gallerySettingMaxWidth + 'px', height: gallerySetting.gallerySettingMinHeight + 'px' }" ref="swiperTop">
-                <swiper-slide v-for="(item, index) in relateGalleryContent" :key="item.url" class="flex-center relative" :style="{ height: gallerySetting.gallerySettingMinHeight + 'px' }">
-                  <img :src="item.url" :style="{ 'max-width': gallerySetting.gallerySettingMaxWidth + 'px', 'max-height': gallerySetting.gallerySettingMinHeight + 'px' }">
+                <swiper-slide v-for="(item, index) in headJson" :key="item.thumb" class="flex-center relative" :style="{ height: gallerySetting.gallerySettingMinHeight + 'px' }">
+                  <img :src="item.thumb" :style="{ 'width': gallerySetting.gallerySettingMaxWidth + 'px', 'height': gallerySetting.gallerySettingMinHeight + 'px' }">
                   <div class="description">
-                    <span style="font-weight: 700;font-size: 20px;margin-right: 20px;">{{index + 1}} / {{relateGalleryContent.length}}</span>
-                    <span>{{item.description}}</span>
+                    <span style="font-weight: 700;font-size: 20px;margin-right: 20px;">{{index + 1}} / {{headJson.length}}</span>
+                    <span>{{item.title}}</span>
                   </div>
                 </swiper-slide>
                 <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
                 <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
               </swiper>
               <!-- swiper2 Thumbs -->
-              <swiper :options="swiperOptionThumbs" class="gallery-thumbs" :style="{ width: gallerySetting.gallerySettingMaxWidth + 'px' }" ref="swiperThumbs">
-                <swiper-slide v-for="item in relateGalleryContent" :key="item.url" class="flex-center" :style="{ width: gallerySetting.gallerySettingThumbWidth + 'px', height: gallerySetting.gallerySettingThumbHeight + 'px' }">
-                  <img :src="item.url" :alt="item.description" :style="{ 'max-width': gallerySetting.gallerySettingThumbWidth + 'px', 'max-height': gallerySetting.gallerySettingThumbHeight + 'px' }">
-                </swiper-slide>
-              </swiper>
+              <!--<swiper :options="swiperOptionThumbs" class="gallery-thumbs" :style="{ width: gallerySetting.gallerySettingMaxWidth + 'px' }" ref="swiperThumbs">-->
+                <!--<swiper-slide v-for="item in headJson" :key="item.thumb" class="flex-center" :style="{ width: gallerySetting.gallerySettingThumbWidth + 'px', height: gallerySetting.gallerySettingThumbHeight + 'px' }">-->
+                  <!--<img :src="item.thumb" :alt="item.description" :style="{ 'max-width': gallerySetting.gallerySettingThumbWidth + 'px', 'max-height': gallerySetting.gallerySettingThumbHeight + 'px' }">-->
+                <!--</swiper-slide>-->
+              <!--</swiper>-->
             </div>
           </div>
-          <div v-if="relateSpecial.length" class="art-relate f-14">
-            <div class="b c-8" style="margin-bottom: 10px;">相关专题：</div>
-            <ul>
-              <li v-for="item in relateArticle" :key="item.id">
-                <a class="a c-8">{{item.title}}</a>
-              </li>
-            </ul>
+
+          <div v-if="specialListJson.length" v-for="item in specialListJson">
+            <h3 v-if="content.listType == 1" style="line-height: 40px;background: #eee;padding-left: 10px;color: #444;">{{item.templateName}}</h3>
+            <h3 v-if="content.listType == 2" style="line-height: 40px;background: #eee;padding-left: 10px;color: #444;">{{item.orderDate}}</h3>
+            <div class="art-relate f-14"  v-for="item1 in item.templateContentListList" style="overflow: hidden">
+              <div style="float: left">
+                <img :src="item1.thumb" style="width: 200px;height: 112px;" alt="">
+              </div>
+              <div style="width: calc(100% - 220px); float: right;">
+                <p style="text-align: left;height: 22px;overflow: hidden;">{{item1.title}}</p>
+                <p style="height: 44px;overflow: hidden;">{{item1.abstarcts}}</p>
+              </div>
+            </div>
           </div>
-          <div v-if="attachments.length" class="art-relate art-attachments f-14">
-            <div class="b c-8" style="margin-bottom: 10px;">附件下载：</div>
-            <ul>
-              <li v-for="item in attachments" :key="item.id">
-                <a class="a c-8 flex-v-center" :href="item.url" target="_blank" :download="item.alias">{{item.alias}}<span class="flex-item"></span>{{item.size | filesize}}
-                </a>
-              </li>
-            </ul>
-          </div>
+
         </div>
       </div>
     </div>
-    <div class="af-bottombar c-6 f-14">
-      <div v-if="channelIds" style="padding: 0 15px;">
-        <span v-for="(channel, index) in channelNames" :key="index" v-tooltip:top="'频道：' + channel">{{index !== 0 ? '，' : ''}}{{channel}}</span>
-      </div>
-      <div v-if="content.keywords" style="padding: 0 15px;">
-        <span v-for="(keyword, index) in content.keywords.split(',')" :key="index" v-tooltip:top="'关键词：' + keyword">{{index !== 0 ? '，' : ''}}{{keyword}}</span>
-      </div>
-      <div v-if="content.originalFrom" style="padding: 0 15px;">
-        <span v-tooltip:top="'来源：' + content.originalFrom">{{content.originalFrom}}</span>
-      </div>
-      <div v-if="content.author" style="padding: 0 15px;">
-        <span v-tooltip:top="'作者：' + content.author">{{content.author}}</span>
-      </div>
-      <div class="flex-item"></div>
-      <div>
-        <i class="icon f-14 tg-icon c-a" :class="{ active: ~~content.isRecommnd }">thumb_up</i>
-        <i class="icon f-14 tg-icon c-a" :class="{ active: ~~content.terminalPc }">computer</i>
-        <i class="icon f-14 tg-icon c-a" :class="{ active: ~~content.terminalApp }">phone_iphone</i>
-        <i class="icon f-14 tg-icon c-a" :class="{ active: ~~content.terminalWeb }">public</i>
-      </div>
-    </div>
+    <!--<div class="af-bottombar c-6 f-14">-->
+      <!--<div v-if="channelIds" style="padding: 0 15px;">-->
+        <!--<span v-for="(channel, index) in channelNames" :key="index" v-tooltip:top="'频道：' + channel">{{index !== 0 ? '，' : ''}}{{channel}}</span>-->
+      <!--</div>-->
+      <!--<div v-if="content.keywords" style="padding: 0 15px;">-->
+        <!--<span v-for="(keyword, index) in content.keywords.split(',')" :key="index" v-tooltip:top="'关键词：' + keyword">{{index !== 0 ? '，' : ''}}{{keyword}}</span>-->
+      <!--</div>-->
+      <!--<div v-if="content.originalFrom" style="padding: 0 15px;">-->
+        <!--<span v-tooltip:top="'来源：' + content.originalFrom">{{content.originalFrom}}</span>-->
+      <!--</div>-->
+      <!--<div v-if="content.author" style="padding: 0 15px;">-->
+        <!--<span v-tooltip:top="'作者：' + content.author">{{content.author}}</span>-->
+      <!--</div>-->
+      <!--<div class="flex-item"></div>-->
+      <!--<div>-->
+        <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~content.isRecommnd }">thumb_up</i>-->
+        <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~content.terminalPc }">computer</i>-->
+        <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~content.terminalApp }">phone_iphone</i>-->
+        <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~content.terminalWeb }">public</i>-->
+      <!--</div>-->
+    <!--</div>-->
     <transition name="fade">
       <div v-if="thumbItem.show" class="art-thumb-cover scroll-y" @click="thumbItem.show = false">
         <div class="flex-center" style="min-height: 100%;">
@@ -117,7 +103,7 @@ export default {
     },
     getUrl: {
       type: String,
-      default: '/cri-cms-platform/special/get.monitor'
+      default: '/cri-cms-platform/special/queryDetail.monitor'
     }
   },
   data () {
@@ -125,13 +111,13 @@ export default {
       content: {},
       article: {},
       channelIds: '',
-      relateArticle: [],
+      specialListJson: [],
       relateGallery: {},
-      relateGalleryContent: [],
+      headJson: [],
       gallerySetting: {
         gallerySettingDisplayPosition: '1',
         gallerySettingMaxWidth: '640',
-        gallerySettingMinHeight: '480',
+        gallerySettingMinHeight: '380',
         gallerySettingThumbWidth: '80',
         gallerySettingThumbHeight: '60'
       },
@@ -176,29 +162,31 @@ export default {
       this.$http.post(this.getUrl, {
         id: this.id
       }).then(res => {
-        this.content = res.content || {}
-        this.article = res.article || {}
-        this.relateArticle = res.relateArticle || []
-        this.channelIds = res.channelIds || ''
-        this.relateArticle = res.relateArticle || []
-        this.relateGallery = res.relateGallery || {}
-        this.relateGalleryContent = res.relateGalleryContent || []
-        this.swiperOptionTop.loopedSlides = this.swiperOptionThumbs.loopedSlides = this.relateGalleryContent.length
-        this.gallerySetting.gallerySettingDisplayPosition = res.gallerySettingDisplayPosition || '1'
-        this.gallerySetting.gallerySettingMaxWidth = res.gallerySettingMaxWidth || '640'
-        this.gallerySetting.gallerySettingMinHeight = res.gallerySettingMinHeight || '480'
-        this.gallerySetting.gallerySettingThumbWidth = res.gallerySettingThumbWidth || '80'
-        this.gallerySetting.gallerySettingThumbHeight = res.gallerySettingThumbHeight || '60'
-        this.relateSpecial = res.relateSpecial || {}
-        this.attachments = res.attachments || []
-        if (this.relateGalleryContent.length) {
-          this.$nextTick(() => {
-            const swiperTop = this.$refs.swiperTop.swiper
-            const swiperThumbs = this.$refs.swiperThumbs.swiper
-            swiperTop.controller.control = swiperThumbs
-            swiperThumbs.controller.control = swiperTop
-          })
-        }
+        this.content = res.special || {}
+        this.content.thumb = JSON.parse(res.special.thumb)
+        // this.article = res.article || {}
+        this.specialListJson = JSON.parse(res.special.specialListJson) || []
+        console.log(this.specialListJson)
+        // this.channelIds = res.channelIds || ''
+        // this.relateArticle = res.relateArticle || []
+        // this.relateGallery = res.relateGallery || {}
+        this.headJson = JSON.parse(res.special.headJson) || []
+        // this.swiperOptionTop.loopedSlides = this.swiperOptionThumbs.loopedSlides = this.relateGalleryContent.length
+        // this.gallerySetting.gallerySettingDisplayPosition = res.gallerySettingDisplayPosition || '1'
+        // this.gallerySetting.gallerySettingMaxWidth = res.gallerySettingMaxWidth || '640'
+        // this.gallerySetting.gallerySettingMinHeight = res.gallerySettingMinHeight || '480'
+        // this.gallerySetting.gallerySettingThumbWidth = res.gallerySettingThumbWidth || '80'
+        // this.gallerySetting.gallerySettingThumbHeight = res.gallerySettingThumbHeight || '60'
+        // this.relateSpecial = res.relateSpecial || {}
+        // this.attachments = res.attachments || []
+        // if (this.relateGalleryContent.length) {
+        //   this.$nextTick(() => {
+        //     const swiperTop = this.$refs.swiperTop.swiper
+        //     const swiperThumbs = this.$refs.swiperThumbs.swiper
+        //     swiperTop.controller.control = swiperThumbs
+        //     swiperThumbs.controller.control = swiperTop
+        //   })
+        // }
       }).catch(e => {
         this.content = {}
         this.article = {}

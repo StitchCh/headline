@@ -3,15 +3,19 @@
   <div class="flex-v-center af-topbar bg-f">
     <dock color="#009aff" title="频道管理"/>
     <div class="flex-item"></div>
-    <account/>
+    <account />
   </div>
   <div class="flex-item flex">
-    <channel-editor @channelsLoad="onChannelsLoad" @refresh="refresh"/>
+    <channel-editor @changeChannel="changeChannel" @channelsLoad="onChannelsLoad" @refresh="refresh"/>
     <div class="right flex-item flex-col" v-if="$route.query.channelId">
       <div class="flex-v-center" style="padding: 15px 30px;">
         <span class="flex-item b">布局编辑</span>
+        <span>是否启用</span>
+        <switcher v-model="channelState.showLocal" style="transform: scale(.8);margin-right: 20px;"/>
+        <span>是否评论</span>
+        <switcher v-model="channelState.isPingLun" style="transform: scale(.8);margin-right: 20px;"/>
         <span>是否审核</span>
-        <switcher style="transform: scale(.8);margin-right: 20px;"/>
+        <switcher v-model="channelState.isShenHe" style="transform: scale(.8);margin-right: 20px;"/>
         <btn flat style="margin-right: 5px;" @click="refresh()">撤销修改</btn>
         <btn @click="submit">保存</btn>
       </div>
@@ -100,7 +104,13 @@ export default {
       layout: [],
       layout1: [],
       mark: 1,
-      liebiao: true
+      liebiao: true,
+      channelState:{
+        channelId: '',
+        showLocal: false,
+        isPingLun: false,
+        isShenHe: false,
+      }
     }
   },
   watch: {
@@ -116,9 +126,30 @@ export default {
     }
   },
   created () {
+    if (!this.$route.query.channelId) return
     this.getLayout(this.$route.query.channelId)
   },
   methods: {
+    changeChannel (id) {
+      this.$http.post('/cri-cms-platform/channel/getChannelSetting.monitor', {
+        channelId: id
+      }).then(res => {
+        this.channelState = JSON.parse(res.setting)
+        for (let item in this.channelState) {
+          this.channelState[item] = this.channelState[item] == 'true' ? true : false
+        }
+      })
+    },
+    setChannel () {
+      this.$http.post('/cri-cms-platform/channel/channelSet.monitor', {
+        channelId: this.$route.query.channelId,
+        showLocal: this.channelState.showLocal ? 'true' : 'false',
+        isPingLun: this.channelState.isPingLun ? 'true' : 'false',
+        isShenHe: this.channelState.isShenHe ? 'true' : 'false'
+      }).then(res => {
+
+      })
+    },
     getLayout (channelId) {
       if (!channelId) return
       this.loading = true
@@ -141,13 +172,16 @@ export default {
         this.loading = false
         for (let i = 0; i < res.length; i++) {
           if (res[i].type == 2) {
-            this.liebiao = false
             this.layout1.push(res[i])
           } else {
             this.layout.push(res[i])
           }
         }
-        console.log(this.layout1)
+        if (this.layout1.length > 0) {
+          this.liebiao = false
+        } else {
+          this.liebiao = true
+        }
       }).catch(e => {
         this.loading = false
         this.$toast(e.msg || e.message)
@@ -219,6 +253,7 @@ export default {
           delChildId: []
         }
       })
+      console.log(data)
       if (this.layout1.length != 0) {
         var data1 = this.layout1.filter(item => !item.del).map(item => {
           let layoutId = item.new ? '' : item.id
@@ -252,11 +287,13 @@ export default {
       if (data1[0]) {
         data.push(data1[0])
       }
+      let delarr = this.layout.filter(item => item.del).map(item => item.id)
+      let delarr1 = this.layout1.filter(item => item.del).map(item => item.id)
       let res = {
         result: data,
-        delLayoutId: this.layout.filter(item => item.del).map(item => item.id)
+        delLayoutId: delarr.concat(delarr1)
       }
-      console.log(data)
+      console.log(res)
       this.$http.post('/cri-cms-platform/channel/saveChannelLayout.monitor', {
         channelId: this.$route.query.channelId,
         channelLayoutJson: JSON.stringify(res)
@@ -266,6 +303,7 @@ export default {
       }).catch(e => {
         this.$toast(e.msg)
       })
+      this.setChannel()
     },
     refresh () {
       let query = this.$route.query

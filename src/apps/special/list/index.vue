@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-item article-list">
     <af-center
-      @add="$router.push('/articleAdd')"
+      @add="$router.push('/specialAdd')"
       :scope="$route.query.scope"
       :status="$route.query.status"
-      url="/cri-cms-platform/article/list.monitor"
+      url="/cri-cms-platform/special/queryList.monitor"
       ref="afCenter">
 
       <div class="list-item a" slot-scope="slotProps" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.id == $route.params.id}">
@@ -19,13 +19,13 @@
           <span>{{slotProps.item.createUser}}</span>
         </div>
         <div class="list-info f-12 c-8 flex-v-center">
-          <span class="list-info-num">
-            <i v-tooltip:top="'阅读'">{{slotProps.item.pv}}</i>/<i v-tooltip:top="'评论'">{{slotProps.item.commentCount}}</i>/<i v-tooltip:top="'分享'">{{slotProps.item.shareCount}}</i>/<i v-tooltip:top="'点赞'">{{slotProps.item.diggCount}}</i>
-          </span>
-          <span class="flex-item"></span>
-          <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalPc }">computer</i>
-          <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalApp }">phone_iphone</i>
-          <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalWeb }">public</i>
+          <!--<span class="list-info-num">-->
+            <!--<i v-tooltip:top="'阅读'">{{slotProps.item.pv}}</i>/<i v-tooltip:top="'评论'">{{slotProps.item.commentCount}}</i>/<i v-tooltip:top="'分享'">{{slotProps.item.shareCount}}</i>/<i v-tooltip:top="'点赞'">{{slotProps.item.diggCount}}</i>-->
+          <!--</span>-->
+          <!--<span class="flex-item"></span>-->
+          <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalPc }">computer</i>-->
+          <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalApp }">phone_iphone</i>-->
+          <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalWeb }">public</i>-->
         </div>
       </div>
     </af-center>
@@ -39,7 +39,7 @@
             <icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn>
           </div>
           <div class="tool-item">
-            <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/articleEdit/article/${id}`)">edit</icon-btn>
+            <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/specialEdit/edit/${id}`)">edit</icon-btn>
           </div>
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'删除'" @click="deleteArticle">delete</icon-btn>
@@ -52,9 +52,9 @@
               </div>
             </bubble>
           </div>
-          <div class="tool-item">
-            <icon-btn small v-tooltip:bottom="'复制并重新发布'" @click="copyArticle">file_copy</icon-btn>
-          </div>
+          <!--<div class="tool-item">-->
+            <!--<icon-btn small v-tooltip:bottom="'复制并重新发布'" @click="copyArticle">file_copy</icon-btn>-->
+          <!--</div>-->
         </div>
         <div class="flex-item"></div>
 
@@ -64,9 +64,9 @@
       <div class="flex-item flex-col">
         <div v-if="id" class="flex-center" style="height: 60px;">
           <div class="tab">
-            <div class="tab-item" :class="{ on: $route.name === 'ArticleContent' }" @click="$router.replace({path: `/article/list/${id}`, query: $route.query})">内容</div>
-            <div class="tab-item" :class="{ on: $route.name === 'ArticleStatistics' }" @click="$router.replace({path: `/article/list/${id}/statistics`, query: $route.query})">统计</div>
-            <div class="tab-item" :class="{ on: $route.name === 'ArticleHistory' }" @click="$router.replace({path: `/article/list/${id}/history`, query: $route.query})">历史</div>
+            <div class="tab-item" :class="{ on: $route.name === 'ArticleContent' }" @click="$router.replace({path: `/special/list/${id}`, query: $route.query})">内容</div>
+            <div class="tab-item" :class="{ on: $route.name === 'ArticleStatistics' }" @click="$router.replace({path: `/special/list/${id}/statistics`, query: $route.query})">统计</div>
+            <div class="tab-item" :class="{ on: $route.name === 'ArticleHistory' }" @click="$router.replace({path: `/special/list/${id}/history`, query: $route.query})">历史</div>
           </div>
         </div>
         <router-view :channels="ui.channels"/>
@@ -102,7 +102,7 @@ export default {
     },
     onItemClick (item) {
       this.$router.replace({
-        path: `/article/list/${item.id}`,
+        path: `/special/list/${item.id}`,
         query: this.$route.query
       })
     },
@@ -129,12 +129,12 @@ export default {
         btns: ['取消', '删除'],
         color: 'red',
         yes: () => {
-          this.$http.post('/cri-cms-platform/special/delete.monitor', {
+          this.$http.post('/cri-cms-platform/special/del.monitor', {
             id: this.$route.params.id
           }).then(res => {
             this.$refs.afCenter.getList()
             this.$router.replace({
-              path: '/article/list',
+              path: '/special/list',
               query: this.$route.query
             })
           })

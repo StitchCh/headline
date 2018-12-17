@@ -2,43 +2,22 @@
 <div class="article-editor">
   <div class="relative">
     <input v-model="title" class="title" type="text" placeholder="请输入标题" :style="{ color: titleColor }">
-    <div style="position: absolute;right: 20px;top: 28px;">
-      <button class="title-colorpicker-btn" @click="titleColorBoxShow = !titleColorBoxShow" :style="{ background: titleColor }"></button>
-      <bubble v-if="titleColorBoxShow" @close="titleColorBoxShow = false">
-        <div class="title-color-list">
-          <button class="title-colorpicker-btn" style="background: #000;" @click="changeTitleColor('#000')"></button>
-          <button class="title-colorpicker-btn" style="background: #F44336;" @click="changeTitleColor('#F44336')"></button>
-          <button class="title-colorpicker-btn" style="background: #FF9800;" @click="changeTitleColor('#FF9800')"></button>
-          <button class="title-colorpicker-btn" style="background: #FFEB3B;" @click="changeTitleColor('#FFEB3B')"></button>
-          <button class="title-colorpicker-btn" style="background: #4CAF50;" @click="changeTitleColor('#4CAF50')"></button>
-          <button class="title-colorpicker-btn" style="background: #00BCD4;" @click="changeTitleColor('#00BCD4')"></button>
-          <button class="title-colorpicker-btn" style="background: #2196F3;" @click="changeTitleColor('#2196F3')"></button>
-          <button class="title-colorpicker-btn" style="background: #9C27B0;" @click="changeTitleColor('#9C27B0')"></button>
-        </div>
-      </bubble>
-    </div>
+    <!--<div style="position: absolute;right: 20px;top: 28px;">-->
+      <!--<button class="title-colorpicker-btn" @click="titleColorBoxShow = !titleColorBoxShow" :style="{ background: titleColor }"></button>-->
+      <!--<bubble v-if="titleColorBoxShow" @close="titleColorBoxShow = false">-->
+        <!--<div class="title-color-list">-->
+          <!--<button class="title-colorpicker-btn" style="background: #000;" @click="changeTitleColor('#000')"></button>-->
+          <!--<button class="title-colorpicker-btn" style="background: #F44336;" @click="changeTitleColor('#F44336')"></button>-->
+          <!--<button class="title-colorpicker-btn" style="background: #FF9800;" @click="changeTitleColor('#FF9800')"></button>-->
+          <!--<button class="title-colorpicker-btn" style="background: #FFEB3B;" @click="changeTitleColor('#FFEB3B')"></button>-->
+          <!--<button class="title-colorpicker-btn" style="background: #4CAF50;" @click="changeTitleColor('#4CAF50')"></button>-->
+          <!--<button class="title-colorpicker-btn" style="background: #00BCD4;" @click="changeTitleColor('#00BCD4')"></button>-->
+          <!--<button class="title-colorpicker-btn" style="background: #2196F3;" @click="changeTitleColor('#2196F3')"></button>-->
+          <!--<button class="title-colorpicker-btn" style="background: #9C27B0;" @click="changeTitleColor('#9C27B0')"></button>-->
+        <!--</div>-->
+      <!--</bubble>-->
+    <!--</div>-->
   </div>
-  <quill-editor v-model="content" ref="editor" :options="options" @change="getKeyGenerate"/>
-
-  <layer v-if="ui.imageSelectorShow" title="选择图片"  width="800px">
-    <div class="layer-text relative" style="height: 800px;">
-      <media-photos select-mode ref="mediaPhotos"></media-photos>
-    </div>
-    <div class="layer-btns">
-      <btn flat @click="ui.imageSelectorShow = false">取消</btn>
-      <btn flat color="#008eff" @click="insertImage">选择</btn>
-    </div>
-  </layer>
-
-  <layer v-if="ui.videoSelectorShow" title="选择视频"  width="800px">
-    <div class="layer-text relative" style="height: 800px;">
-      <media-videos select-mode ref="mediaVideos"></media-videos>
-    </div>
-    <div class="layer-btns">
-      <btn flat @click="ui.videoSelectorShow = false">取消</btn>
-      <btn flat color="#008eff" @click="insertVideo">选择</btn>
-    </div>
-  </layer>
 </div>
 </template>
 
@@ -56,6 +35,7 @@ Quill.register('modules/imageResize', ImageResize)
 
 export default {
   name: 'article-editor',
+  props: ['otitle'],
   components: { quillEditor, MediaPhotos, MediaVideos, MediaAudios },
   data () {
     let that = this
@@ -120,6 +100,11 @@ export default {
           }
         }
       }
+    }
+  },
+  mounted () {
+    if (this.otitle) {
+      this.title = this.otitle
     }
   },
   methods: {
