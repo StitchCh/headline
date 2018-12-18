@@ -1,6 +1,6 @@
 <template>
-  <div class="relative video-statistics c-6">
-    <div class="video-statistics-content">
+  <div class="relative gallery-statistics c-6">
+    <div class="gallery-statistics-content">
       <div class="flex">
         <select-box v-model="days.value" :list="days.list" label="时间范围" @change="getStatistics"></select-box>
       </div>
@@ -78,7 +78,7 @@ import 'echarts/lib/component/title'
 import 'echarts/lib/component/legend'
 
 export default {
-  name: 'app-video-statistics',
+  name: 'app-gallery-statistics',
   props: ['id'],
   data () {
     return {
@@ -133,7 +133,7 @@ export default {
   },
   methods: {
     getStatistics () {
-      this.$http.post('/cri-cms-platform/video/statistics.monitor', {
+      this.$http.post('/cri-cms-platform/gallery/statistics.monitor', {
         contentId: this.id,
         days: this.days.value
       }).then(
@@ -163,8 +163,8 @@ export default {
 </script>
 
 <style lang="less">
-.video-statistics {height: 100%;overflow: auto;
-  .video-statistics-content {
+.gallery-statistics {height: 100%;overflow: auto;
+  .gallery-statistics-content {
     max-width: 900px;margin: 0 auto;padding: 20px 0;
     /*th,td {text-align: center;}*/
   }

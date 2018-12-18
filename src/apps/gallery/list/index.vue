@@ -43,22 +43,22 @@
             <icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn>
           </div>
           <div class="tool-item">
-            <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/articleEdit/article/${id}`)">edit</icon-btn>
+            <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/galleryEdit/gallery/${id}`)">edit</icon-btn>
           </div>
-          <!--<div class="tool-item">-->
-            <!--<icon-btn small v-tooltip:bottom="'删除'" @click="deleteVideo">delete</icon-btn>-->
-          <!--</div>-->
-          <!--<div class="tool-item relative">-->
-            <!--<icon-btn small v-tooltip:bottom="'二维码'" @click="ui.qrcodeShow=!ui.qrcodeShow"><img class="qr-icon" src="../../../assets/img/QR_code.svg"></icon-btn>-->
-            <!--<bubble v-if="ui.qrcodeShow" @close="ui.qrcodeShow=false">-->
-              <!--<div style="width: 200px;height: 200px;">-->
-                <!--<img :src="qrcode(id)">-->
-              <!--</div>-->
-            <!--</bubble>-->
-          <!--</div>-->
-          <!--<div class="tool-item">-->
-          <!--<icon-btn small v-tooltip:bottom="'复制并重新发布'" @click="copyArticle">file_copy</icon-btn>-->
-          <!--</div>-->
+          <div class="tool-item">
+            <icon-btn small v-tooltip:bottom="'删除'" @click="deleteGallery">delete</icon-btn>
+          </div>
+          <div class="tool-item relative">
+            <icon-btn small v-tooltip:bottom="'二维码'" @click="ui.qrcodeShow=!ui.qrcodeShow"><img class="qr-icon" src="../../../assets/img/QR_code.svg"></icon-btn>
+            <bubble v-if="ui.qrcodeShow" @close="ui.qrcodeShow=false">
+              <div style="width: 200px;height: 200px;">
+                <img :src="qrcode(id)">
+              </div>
+            </bubble>
+          </div>
+          <div class="tool-item">
+          <icon-btn small v-tooltip:bottom="'复制并重新发布'" @click="copyGallery">file_copy</icon-btn>
+          </div>
         </div>
         <div class="flex-item"></div>
         <account/>
@@ -104,6 +104,46 @@ export default {
         path: `/gallery/list/${item.id}`,
         query: this.$route.query
       })
+    },
+    copyGallery () {
+      let that = this
+      this.$confirm({
+        text: '您确定要复制该图集并重新发布吗？',
+        color: '#e45000',
+        no () {},
+        yes () {
+          that.$http.post('/cri-cms-platform//gallery/copy.monitor', {
+            contentId: that.id
+          }).then(
+            res => {
+              that.$refs.afCenter.getList()
+            }
+          )
+        }
+      })
+    },
+    deleteGallery () {
+      this.$confirm({
+        title: '您确定要删除此图集吗？',
+        text: `您可以从回收站中恢复。`,
+        btns: ['取消', '删除'],
+        color: 'red',
+        yes: () => {
+          this.$http.post('/cri-cms-platform/gallery/delete.monitor', {
+            id: this.id
+          }).then(res => {
+            this.$refs.afCenter.getList()
+            this.$router.replace({
+              path: '/gallery/list',
+              query: this.$route.query
+            })
+          })
+        }
+      })
+    },
+    qrcode (id) {
+      let siteId = localStorage.getItem('siteId')
+      return `http://qr.liantu.com/api.php?&w=200&text=http://60.247.77.208:59098/cri-cms-api/preview?siteId=${siteId}&id=${id}`
     }
   }
 }

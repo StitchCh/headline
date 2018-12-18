@@ -58,7 +58,7 @@ export default [{
   ]
 }, {
   path: '/specialAdd',
-  name: 'specialAdd',
+  name: 'SpecialAdd',
   component: resolve => require(['@/apps/special/add.vue'], resolve),
   meta: { level: 3, title: '添加专题', identifier: 'special_add' }
 }, {
