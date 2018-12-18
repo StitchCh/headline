@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     getChannels () {
-      this.$http.post('/cri-cms-platform/article/getChannels.monitor').then(res => {
+      this.$http.post('/cri-cms-platform/gallery/getChannels.monitor').then(res => {
         this.channels = res || []
       }).catch(e => {
         this.$toast(e.msg)

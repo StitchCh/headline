@@ -58,8 +58,6 @@ import { videoPlayer } from 'vue-video-player'
 import MediaVideos from '../../medialibrary/pages/videos'
 import MediaPhotos from '../../medialibrary/pages/photos'
 
-const ORIGIN = 'http://60.247.77.208:58088'
-
 export default {
   name: 'video-editor',
   components: { MediaPhotos, videoPlayer, MediaVideos },

@@ -1,5 +1,5 @@
 <template>
-  <div class="vdo-options c-4 scroll-y">
+  <div class="gallery-options c-4 scroll-y">
     <div style="width: 280px;margin: 0 20px;">
       <div class="option-item flex-v-center relative a" @click="ui.channelShow=!ui.channelShow">
         <span class="flex-item">{{channelNames}}</span>
@@ -103,7 +103,7 @@
           <!--</select-card>-->
         <!--</layer>-->
       <!--</add-relates>-->
-      <!--<add-relates :channels="ui.channels" v-model="form.relateIds" title="相关阅读" icon="book" url="/cri-cms-platform/article/associate/article.monitor"></add-relates>-->
+      <add-relates :channels="ui.channels" v-model="form.relateIds" title="相关图集" icon="collections" url="/cri-cms-platform/article/associate/gallery.monitor"></add-relates>
       <!--<add-relates single :channels="ui.channels" v-model="form.specialId" title="相关专题" icon="assignment" url="/cri-cms-platform/article/associate/special.monitor"></add-relates>-->
       <!--<add-attachment v-model="form.attachmentIds" :default-list="attachmentDefaultList"></add-attachment>-->
     </div>
@@ -118,7 +118,7 @@ import AddAttachment from '@/components/attachment'
 import AddThumb from '@/components/thumb'
 
 export default {
-  name: 'app-video-edit-option',
+  name: 'app-gallery-edit-option',
   components: { VueDatepickerLocal, AddComment, AddRelates, AddAttachment, AddThumb },
   props: [ 'res' ],
   data () {
@@ -130,7 +130,7 @@ export default {
         // gallerySettingDisplayPositionShow: false
       },
       form: {
-        app: 'VIDEO',
+        app: 'GALLERY',
         channelIds: '',
         // galleryId: '',
         // gallerySettingMaxWidth: '640',
@@ -138,7 +138,7 @@ export default {
         // gallerySettingThumbWidth: '80',
         // gallerySettingThumbHeight: '60',
         // gallerySettingDisplayPosition: '1',
-        // relateIds: '',
+        relateIds: '',
         // specialId: '',
         isOpenComment: 0,
         isOriginal: 0,
@@ -187,7 +187,7 @@ export default {
   },
   methods: {
     getChannels () {
-      this.$http.post('/cri-cms-platform/video/getChannels.monitor').then(res => {
+      this.$http.post('/cri-cms-platform/gallery/getChannels.monitor').then(res => {
         this.ui.channels = res || []
       }).catch(e => {
         console.log(e)
@@ -201,27 +201,27 @@ export default {
       console.log(res)
       for (let k in this.form) {
         if (k === 'virtualComment') {
-          if (res.video[k] === '') {
+          if (res.content[k] === '') {
             form[k] = ''
           } else {
-            form[k] = JSON.stringify(res.video[k])
+            form[k] = JSON.stringify(res.content[k])
           }
           continue
         }
         if (k === 'thumb') {
-          // this.thumb.thumb1 = res.video.thumb[0]
-          // this.thumb.thumb2 = res.video.thumb[1]
-          // this.thumb.thumb3 = res.video.thumb[2]
+          this.thumb.thumb1 = res.content.thumb[0]
+          this.thumb.thumb2 = res.content.thumb[1]
+          this.thumb.thumb3 = res.content.thumb[2]
         }
         if (k === 'isDelete' || k === 'isOpenComment' || k === 'isOriginal' || k === 'isRecommnd' || k === 'isWatermarked' || k === 'terminalApp' || k === 'terminalPc' || k === 'terminalWeb' || k === 'hasThumb') {
-          this.form[k] = Number(res.video[k])
+          this.form[k] = Number(res.content[k])
           continue
         }
-        this.form[k] = res.video[k]
+        this.form[k] = res.content[k]
       }
-      this.form.createDate = res.video.createDate
+      this.form.createDate = res.content.createDate
       this.form.channelIds = res.channelIds || ''
-      // this.form.relateIds = res.relateArticle.map(v => v.id).join(',')
+      this.form.relateIds = res.relateGallery.map(v => v.id).join(',')
       // this.form.specialId = res.relateSpecial.id || ''
       // this.attachmentDefaultList = res.attachments
       // this.form.gallerySettingDisplayPosition = res.gallerySettingDisplayPosition || '1'
@@ -233,7 +233,6 @@ export default {
   },
   watch: {
     'thumb.thumb1' (newValue) {
-      console.log(newValue)
       if (this.form.thumbType === 2) {
         if (!(newValue || this.thumb.thumb2 || this.thumb.thumb3)) {
           this.form.hasThumb = 0

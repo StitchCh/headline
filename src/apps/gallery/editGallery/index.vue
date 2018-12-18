@@ -22,7 +22,7 @@
           <gallery-editor ref="editor"/>
         </div>
       </div>
-      <!--<video-option :res="res" ref="option" :style="{ width: ui.optionShow ? '320px' : '0px' }"/>-->
+      <gallery-option :res="res" ref="option" :style="{ width: ui.optionShow ? '320px' : '0px' }"/>
     </template>
   </div>
 </template>
@@ -31,8 +31,6 @@
 import moment from 'moment'
 import GalleryEditor from './editor'
 import GalleryOption from './options'
-
-const ORIGIN = 'http://60.247.77.208:58088'
 
 const from = {
   gallery: {
@@ -71,11 +69,10 @@ export default {
           this.res = res
           this.ui.loading = false
           this.$nextTick(() => {
-            // let { editor } = this.$refs
-            // editor.title = res.video.title
-            // editor.titleColor = res.video.titleColor
-            // editor.playerOptions.sources[0].src = ORIGIN + res.video.video
-            // editor.video = res.video
+            let { editor } = this.$refs
+            editor.title = res.content.title
+            editor.titleColor = res.content.titleColor
+            editor.selected = res.gallery.content
           })
         }).catch(e => {
           console.log(e)
@@ -83,21 +80,27 @@ export default {
       }
     },
     submit () {
-      let url = this.id && this.from === 'video' ? '/cri-cms-platform/gallery/update.monitor' : '/cri-cms-platform/gallery/save.monitor'
-      let { title, titleColor, video } = this.$refs.editor
+      let url = this.id && this.from === 'gallery' ? '/cri-cms-platform/gallery/update.monitor' : '/cri-cms-platform/gallery/save.monitor'
+      let { title, titleColor, selected } = this.$refs.editor
       if (!title) {
         this.$toast('请输入标题')
         return
       }
-      if (!video) {
-        this.$toast('请选择视频')
+      if (!selected.length) {
+        this.$toast('请选择图片')
         return
       }
       if (!this.$refs.option.form.channelIds) {
         this.$toast('请选择栏目')
         return
       }
-      let form = Object.assign({title, titleColor, videoUrl: video.video}, this.$refs.option.form)
+      let content = JSON.stringify(selected.map(v => {
+        return {
+          description: v.description,
+          attachmentId: v.id
+        }
+      }))
+      let form = Object.assign({title, titleColor, content}, this.$refs.option.form)
       if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
       if (this.id) form.id = this.id
       this.$http.post(url, form).then(
@@ -113,8 +116,17 @@ export default {
       )
     },
     autoSave () {
-      let { title, titleColor, video } = this.$refs.editor
-      let form = Object.assign({title, titleColor, videoUrl: video ? video.video : ''}, this.$refs.option.form)
+      let { title, titleColor, selected } = this.$refs.editor
+      let content = ''
+      if (selected.length) {
+        content = JSON.stringify(selected.map(v => {
+          return {
+            description: v.description,
+            attachmentId: v.id
+          }
+        }))
+      }
+      let form = Object.assign({title, titleColor, content}, this.$refs.option.form)
       if (this.autoSaveId) form.id = this.autoSaveId
       return this.$http.post('/cri-cms-platform/articleAutoSave/saveAuto.monitor', form).then(
         res => {

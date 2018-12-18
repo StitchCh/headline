@@ -45,6 +45,15 @@
                 </div>
               </div>
             </div>
+
+            <div v-if="relateGallery.length" class="relate f-14">
+              <div class="b c-8" style="margin-bottom: 10px;">相关图集：</div>
+              <ul>
+                <li v-for="item in relateGallery" :key="item.id">
+                  <a class="a c-8" @click="toLink(item)">{{item.title}}</a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -99,6 +108,7 @@ export default {
     return {
       content: {},
       gallery: {},
+      relateGallery: [],
       channelIds: '',
       thumbItem: {
         show: false,
@@ -143,6 +153,7 @@ export default {
           if (res.gallery) {
             this.gallery = res.gallery
           }
+          this.relateGallery = res.relateGallery || []
           this.channelIds = res.channelIds || ''
           this.loading = false
         }
@@ -172,6 +183,11 @@ export default {
     span{margin-right: 15px;}
   }
   .abstarcts {padding: 10px 20px;font-size: 14px;background: #f3f3f3;border-radius: 8px;}
+  .relate{margin-top: 20px;border: 1px solid #ddd;padding: 10px 20px;border-radius: 8px;
+    li{padding: 2px 0;}
+    a{text-decoration: none;}
+    a:hover{text-decoration: underline;}
+  }
   .column+.column {margin-left: 12px;}
   .gallery-item {
     img {width: 100%;}
