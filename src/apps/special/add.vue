@@ -29,7 +29,7 @@
           <app-article-add-thumb v-model="headList_type1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
         </div>
         <div v-show="form.headPicType == 2">
-          <app-article-add-relates v-if="getif" :limit="form.headPicType" v-model="headList_type2" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/issue/getChannelContentList.monitor"></app-article-add-relates>
+          <app-article-add-relates v-if="getif && getif1" :channels="ui.channels.channels" :limit="form.headPicType" v-model="headList_type2" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/special/getArticList.monitor"></app-article-add-relates>
         </div>
       </div>
 
@@ -45,7 +45,7 @@
                 </span>
               </p>
               <div style="padding: 10px;">
-                <app-article-add-relates v-if="getif" v-model="item.list" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/issue/getChannelContentList.monitor"></app-article-add-relates>
+                <app-article-add-relates v-if="getif" :channels="ui.channels.channels" v-model="item.list" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/special/getArticList.monitor"></app-article-add-relates>
               </div>
             </div>
           </div>
@@ -185,6 +185,7 @@ export default {
     return {
       list:[],
       getif: false,
+      getif1: false,
       article: null,
       ui: {
         loading: false,
@@ -281,7 +282,10 @@ export default {
         time: '',
         time: this.nowDate,
         edit: false,
-        list: {}
+        list: {
+          selected: [],
+          unselected: []
+        }
       })
     },
     autoSave () {
@@ -304,6 +308,7 @@ export default {
     },
     getChannels () {
       this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor').then(res => {
+        this.getif1 = true
         this.ui.channels = res || []
       }).catch(e => {
         console.log(e)
@@ -341,6 +346,7 @@ export default {
       let jsonarr = []
       this.list.forEach((item, index, arr) => {
         let jsonsarr = []
+        console.log(item)
         if (item.list.selected.length == 0) {
           this.$toast('板块内容不能为空')
           return false
@@ -348,9 +354,8 @@ export default {
         item.list.selected.forEach((item1, index1) => {
           console.log(item1)
           jsonsarr[index1] = {
-            app: item1.app,
             id: item1.id,
-            abstarcts: item1.abstarcts,
+            abstarcts: item1.abstracts,
             order: index1,
             title: item1.title,
             createDate: item1.createDate,
@@ -368,8 +373,6 @@ export default {
         }
       })
 
-      console.log(jsonarr)
-
       obj.specialListJson = JSON.stringify(jsonarr)
 
       if (obj.headPicType == 1) {
@@ -381,8 +384,7 @@ export default {
         let arr = []
         this.headList_type2.selected.forEach(item => {
           let data = {
-            app: item.app,
-            abstarcts: item.abstarcts,
+            abstarcts: item.abstracts,
             id: item.id,
             createDate: item.createDate,
             thumb: item.thumb.indexOf('[') >= 0 ? JSON.parse(item.thumb)[0].url : item.thumb,
@@ -395,11 +397,11 @@ export default {
       }
       // obj.thumb = obj.thumb.id
 
+
       if (this.id) {
         obj.specialId = obj.id
         obj.id = this.id
       }
-      console.log(obj)
 
       this.$http.post(url, obj).then(res => {
         this.ui.submited = true
@@ -435,12 +437,12 @@ export default {
     }
   },
   beforeMount () {
+    this.getChannels()
     if (this.from && this.id) {
       if (this.from == 'edit') {
         this.$http.post('/cri-cms-platform/special/queryDetail.monitor', {
           id: this.id
         }).then(res => {
-          console.log(res)
           this.form = res.special
           this.form.specialListId = ''
           this.form.headJsonId = ''
@@ -476,7 +478,7 @@ export default {
     } else {
       this.getif = true
     }
-    this.getChannels()
+
 
     // if (this.from && this.id) {
     //   if (this.from === 'draft') this.autoSaveId = this.id
@@ -528,7 +530,6 @@ export default {
   },
   watch: {
     'thumb.thumb1' (newValue) {
-      console.log(newValue)
       if (this.form.thumbType === 2) {
         if (!(newValue || this.thumb.thumb2 || this.thumb.thumb3)) {
           this.form.hasThumb = 0

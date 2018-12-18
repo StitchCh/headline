@@ -71,8 +71,7 @@ export default {
       default: false
     },
     channels: {
-      type: Array,
-      default: () => []
+      type: Array
     },
     title: {
       type: String,
@@ -98,10 +97,10 @@ export default {
       form: {
         selectedIds: '',
         title: '',
-        channelId: '',
-        filterChannelId: 'true',
-        pageSize: 30,
-        toPage: 1
+        channelId: ''
+        // filterChannelId: 'true',
+        // pageSize: 30,
+        // toPage: 1
       },
       channelShow: false,
       channelIds: [],
@@ -132,10 +131,10 @@ export default {
     },
     getList () {
       this.loading = true
-      this.form.channelId = this.channelId
+      // this.form.channelId = this.channelId
       return this.$http.post(this.url, this.form).then(
         res => {
-          this.list.unselected = res.data || {}
+          this.list.unselected = res || {}
           this.loading = false
         }
       ).catch(
