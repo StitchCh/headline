@@ -56,9 +56,9 @@
               </div>
             </bubble>
           </div>
-          <!--<div class="tool-item">-->
-          <!--<icon-btn small v-tooltip:bottom="'复制并重新发布'" @click="copyArticle">file_copy</icon-btn>-->
-          <!--</div>-->
+          <div class="tool-item">
+          <icon-btn small v-tooltip:bottom="'复制并重新发布'" @click="copyGallery">file_copy</icon-btn>
+          </div>
         </div>
         <div class="flex-item"></div>
         <account/>
@@ -103,6 +103,22 @@ export default {
       this.$router.replace({
         path: `/gallery/list/${item.id}`,
         query: this.$route.query
+      })
+    },
+    copyArticle () {
+      let that = this
+      this.$confirm({
+        text: '您确定要复制该图集并重新发布吗？',
+        no () {},
+        yes () {
+          that.$http.post('/cri-cms-platform//gallery/copy.monitor', {
+            contentId: that.id
+          }).then(
+            res => {
+              that.$refs.afCenter.getList()
+            }
+          )
+        }
       })
     },
     deleteGallery () {
