@@ -105,10 +105,11 @@ export default {
         query: this.$route.query
       })
     },
-    copyArticle () {
+    copyGallery () {
       let that = this
       this.$confirm({
         text: '您确定要复制该图集并重新发布吗？',
+        color: '#e45000',
         no () {},
         yes () {
           that.$http.post('/cri-cms-platform//gallery/copy.monitor', {
