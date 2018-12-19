@@ -21,7 +21,7 @@
             <span class="flex-item">修改</span>
           </li>
           <li class="a flex-v-center">
-            <span class="flex-item">删除</span>
+            <span class="flex-item" @click="remove">删除</span>
           </li>
         </ul>
       </bubble>
@@ -35,6 +35,15 @@ export default {
   data () {
     return {
       addShow: false
+    }
+  },
+  methods: {
+    remove () {
+      this.$http.post('/cri-cms-platform/live/message/delete.monitor', {
+        liveMessageId: 1
+      }).then(res => {
+        console.log(res)
+      })
     }
   }
 }

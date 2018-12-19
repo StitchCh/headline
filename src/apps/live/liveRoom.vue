@@ -8,8 +8,8 @@
             <span class="f-18">返回</span>
           </div>
           <div class="flex-item"></div>
-          <div class="flex-item">直播中</div>
-          <div  class="flex-v-center a">关闭直播</div>
+          <div class="flex-item">{{liveTitle}}</div>
+          <div  class="flex-v-center a" @click="closeLive">关闭直播</div>
         </div>
 
         <div  class="flex-item scroll-y">
@@ -36,7 +36,7 @@
 
             <ul class="flex tabbox">
               <li class="tabboxon">全部</li>
-              <li>刷新</li>
+              <li @click="getLiveContentList()">刷新</li>
             </ul>
 
             <div style="max-width: 900px;margin: 0 auto;">
@@ -46,13 +46,14 @@
           </div>
 
           <div v-if="navindex == 1">
-            <div class="textareabox" style="max-width: 900px;margin: 0 auto 20px;">
-              <textarea placeholder="发聊天..."></textarea>
+            <div class="textareabox" style="max-width: 900px;margin: 0 auto 20px;overflow: hidden;">
+              <textarea placeholder="发聊天..." v-model="pinglun"></textarea>
+              <div style="float: right;" @click="pushPinglun">发送</div>
             </div>
 
             <ul class="flex tabbox">
               <li class="tabboxon">全部</li>
-              <li>刷新</li>
+              <li @click="getPinglunList()">刷新</li>
             </ul>
 
             <div style="max-width: 900px;margin: 0 auto;">
@@ -70,37 +71,34 @@
       </div>
 
       <div class="art-options c-4 scroll-y" style="width: 320px;background: #f8f8f8;">
-        <div class="btn">开始直播</div>
+        <div class="btn" @click="startLive">开始直播</div>
         <div class="rlist">
-          <span style="position: absolute;top: 14px;right: 20px;cursor: pointer;">设置</span>
           <p style="line-height: 40px;font-size: 18px;">主持人</p>
           <div class="flex" style="align-items: center">
             <div class="imgbox txbox" style="margin-right: 10px;">
-              <img src="http://60.247.77.208:58088/image/20181215/1544858411816.png" alt="">
+              <img :src="host.url" alt="">
             </div>
-            <p>123</p>
+            <p>{{host.name}}</p>
           </div>
         </div>
         <div class="rlist">
-          <span style="position: absolute;top: 14px;right: 20px;cursor: pointer;">设置</span>
+          <span style="position: absolute;top: 14px;right: 20px;cursor: pointer;" @click="userBoxShow = true">设置</span>
           <p style="line-height: 40px;font-size: 18px;">直播员</p>
-          <div class="flex" style="align-items: center;margin-bottom: 10px;">
-            <div class="imgbox txbox" style="margin-right: 10px;">
-              <img src="http://60.247.77.208:58088/image/20181215/1544858411816.png" alt="">
+          <div v-for="(item, index) in zhiboyuanList" class="flex-v-center" style="align-items: center;margin-bottom: 10px;">
+            <div class="imgbox txbox flex-item" style="margin-right: 10px;">
+              <img :src="item.thumb" alt="" @click="mediaShow = true;txChange = true;txIndex = index;">
             </div>
-            <p>123</p>
-          </div>
-          <div class="flex" style="align-items: center;margin-bottom: 10px;">
-            <div class="imgbox txbox" style="margin-right: 10px;">
-              <img src="http://60.247.77.208:58088/image/20181215/1544858411816.png" alt="">
-            </div>
-            <p>123</p>
+            <input style="width: 110px;" type="text" v-model="item.aliasName" @blur="changeZ(index)">
+            <p>
+              <check-box style="float: left;margin-right: 0;" @change="changeZ(index)" v-model="item.checked"/>
+              审核权限
+            </p>
           </div>
         </div>
 
         <div class="option-item flex-v-center">
           <span class="flex-item">是否开启弹幕</span>
-          <switcher mode="Number"/>
+          <switcher v-model="openBulletScreen" mode="Number"/>
         </div>
 
         <div class="rlist">
@@ -110,6 +108,19 @@
               <span style="padding-left: 10px;">{{index+1}}. {{item == 'LIVE' ? '直播窗口' : '聊天室'}}</span>
             </li>
           </draggable>
+        </div>
+
+        <div class="option-item flex-v-center">
+          <span>虚拟阅读量</span>
+          <input class="flex-item t-right" type="number" placeholder="请输入" v-model="virtualPv" @blur="setZhiboRoom">
+        </div>
+        <div class="option-item flex-v-center">
+          <span>虚拟评论量</span>
+          <input class="flex-item t-right" type="number" placeholder="请输入" v-model="virtualShare" @blur="setZhiboRoom">
+        </div>
+        <div class="option-item flex-v-center">
+          <span>虚拟点赞量</span>
+          <input class="flex-item t-right" type="number" placeholder="请输入" v-model="virtualDigg" @blur="setZhiboRoom">
         </div>
       </div>
 
@@ -123,6 +134,25 @@
             <btn flat color="#008eff" @click="selectImage">选择</btn>
           </div>
         </layer>
+      </div>
+
+      <div v-if="userBoxShow" class="userlist">
+        <div class="uesr_box">
+          <p class="user_box_title">选择人物</p>
+          <ul style="padding: 20px;height: 380px;overflow: auto;">
+            <li v-for="(item, index) in userList" class="flex user_list">
+              <!--<div class="imgbox">-->
+                <!--<img src="" alt="">-->
+              <!--</div>-->
+              <p>{{item.name}}</p>
+              <check-box v-model="item.checked"/>
+            </li>
+          </ul>
+          <div class="user_btnbox">
+            <span @click="userBoxShow = false;txChange = false">取消</span>
+            <span @click="setUser">确定</span>
+          </div>
+        </div>
       </div>
     </template>
   </div>
@@ -139,31 +169,225 @@ export default {
   name: 'liveRoom',
   data () {
     return {
+      pinglun: '',
+      virtualDigg: '',
+      virtualShare: '',
+      virtualPv: '',
+      userBoxShow: false,
       navindex: 0,
+      txIndex: '',
+      txChange: false,
       mediaShow: false,
+      openBulletScreen: 0,
+      liveTitle: '',
       image: {
         id: '',
         url: ''
       },
+      host: {
+        name: '',
+        url: '',
+        urlid: ''
+      },
+      liveId: '',
+      userList: [],
+      zhiboyuanList: [],
       tagOrder: ['LIVE', 'CHATROOM'],
-      imagelist: []
+      imagelist: [],
+      pinglunList:[],
+      messageList:[]
     }
   },
+  watch:{
+    'tagOrder' () {
+      this.setZhiboRoom()
+    }
+  },
+  beforeMount () {
+    this.$http.post('/cri-cms-platform/live/room.monitor', {
+      id: this.$route.query.id
+    }).then(res => {
+      console.log(res)
+      this.liveTitle = res.content.title
+      this.virtualDigg = res.content.virtualDigg
+      this.virtualShare = res.content.virtualShare
+      this.virtualPv = res.content.virtualPv
+      this.liveId = res.live.id
+      this.tagOrder = res.live.tagOrder.split(',')
+      console.log(res.live, this.tagOrder)
+      this.host = {
+        name: res.live.hostAliasName,
+        url: res.live.hostThumb.url,
+        urlid: res.live.hostThumb.id
+      }
+      this.$http.post('/cri-cms-platform/live/broadcaster/user.monitor', {
+        liveId: this.liveId
+      }).then(res => {
+        this.userList = res.users
+        for (let i = 0; i < this.userList.length; i++) {
+          this.userList[i].checked = this.userList[i].checked == 0 ? false : true
+        }
+      })
+
+      this.$http.post('/cri-cms-platform/live/broadcaster/list.monitor', {
+        liveId: this.liveId
+      }).then(res => {
+        this.zhiboyuanList = res.broadcasters
+        this.zhiboyuanList.checked = res.broadcasters.auditPermission == 0 ? false : true
+      })
+    })
+  },
   methods: {
+    pushPinglun () {
+      this.$http.post('/cri-cms-platform/live/comment/add.monitor', {
+        liveId: this.liveId,
+        content: this.pinglun
+      }).then(res => {
+        this.pinglun = ''
+        this.getPinglunList()
+        console.log(res)
+      })
+    },
+    getLiveContentList () {
+      this.$http.post('/cri-cms-platform/live/message/withdrawn.monitor', {
+        liveId: this.liveId,
+        userType: ''
+      }).then(res => {
+        console.log(res)
+        this.messageList = res
+      })
+    },
+    getPinglunList () {
+      this.$http.post('/cri-cms-platform/live/comment/refresh.monitor', {
+        liveId: this.liveId
+      }).then(res => {
+        console.log(res)
+      })
+    },
+    closeLive () {
+      this.$http.post('/cri-cms-platform/live/stop.monitor', {
+        liveId: this.liveId
+      })
+    },
+    setZhiboRoom () {
+      this.$http.post('/cri-cms-platform/live/room/update.monitor',{
+        liveId: this.liveId,
+        openBulletScreen: this.openBulletScreen,
+        hostThumb: this.host.urlid,
+        hostAliasName: this.host.name,
+        virtualDigg: this.virtualDigg,
+        virtualShare: this.virtualShare,
+        virtualPv: this.virtualPv,
+        tagOrder: this.tagOrder[0] + ',' + this.tagOrder[1]
+      }).then(res => {
+        console.log(res)
+      })
+    },
+    changeZ (index) {
+      this.txIndex = index
+      this.changeZhiboyuan()
+    },
+    setUser () {
+      let userIds = ''
+      this.userList.forEach((item) => {
+        if(item.checked){
+          userIds += item.userId + ','
+        }
+      })
+      console.log(userIds)
+      this.$http.post('/cri-cms-platform/live/broadcaster/add.monitor', {
+        liveId: this.liveId,
+        userIds: userIds
+      }).then(res => {
+        this.userBoxShow = false
+      })
+    },
+    startLive(){
+      this.$http.post('/cri-cms-platform/live/start.monitor',{
+        liveId: this.liveId
+      }).then(res => {
+        console.log('startLive', res)
+      })
+    },
+    changeZhiboyuan () {
+      this.$http.post('/cri-cms-platform/live/broadcaster/update.monitor',{
+        liveId: this.liveId,
+        userId: this.zhiboyuanList[this.txIndex].userId,
+        thumb: this.zhiboyuanList[this.txIndex].thumb,
+        aliasName: this.zhiboyuanList[this.txIndex].aliasName,
+        audit: this.zhiboyuanList[this.txIndex].checked ? 1 : 0
+      }).then(res => {
+        this.zhiboyuanList[this.txIndex] = res.broadcasters
+        console.log(this.zhiboyuanList)
+      })
+    },
     selectImage () {
       let image = this.$refs.mediaPhotos.selected[0] || null
       this.image = {
         id: image ? image.id : '',
         url: image ? this.$refs.mediaPhotos.imgOrigin + image.filePath + image.fileName : ''
       }
-      this.imagelist.push(this.image)
+      if(txChange){
+        this.zhiboyuanList[this.txIndex].thumb = this.image
+        this.changeZhiboyuan()
+      }else{
+        this.imagelist.push(this.image)
+      }
       this.mediaShow = false
+      this.txChange = false
     }
   }
 }
 </script>
 
 <style scoped>
+  input{
+    border: 0;
+    background: none;
+  }
+  .user_list{
+    line-height: 40px;
+    border-bottom: 1px solid #ddd;
+    padding: 0 10px;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+  }
+  .user_btnbox{
+    text-align: right;
+    padding: 0 20px;
+  }
+  .user_btnbox span{
+    margin-left: 20px;
+  }
+  .user_btnbox span:hover{
+    color: #002d70;
+    cursor: pointer;
+  }
+  .user_box_title{
+    text-align: center;
+    line-height: 60px;
+    font-size: 18px;
+  }
+  .userlist{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 100;
+  }
+  .uesr_box{
+    width: 400px;
+    height: 520px;
+    background: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    border-radius: 10px;
+  }
   .rlist{
     border-bottom: 1px solid rgba(0, 0, 0, .1);
     margin: 0 20px;
