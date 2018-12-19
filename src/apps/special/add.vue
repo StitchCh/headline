@@ -402,6 +402,7 @@ export default {
         obj.specialId = obj.id
         obj.id = this.id
       }
+      console.log(obj)
 
       this.$http.post(url, obj).then(res => {
         this.ui.submited = true

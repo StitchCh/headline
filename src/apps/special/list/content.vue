@@ -162,8 +162,9 @@ export default {
       this.$http.post(this.getUrl, {
         id: this.id
       }).then(res => {
+        console.log(res)
         this.content = res.special || {}
-        this.content.thumb = JSON.parse(res.special.thumb)
+        this.content.thumb = res.special.thumb
         // this.article = res.article || {}
         this.specialListJson = JSON.parse(res.special.specialListJson) || []
         console.log(this.specialListJson)
