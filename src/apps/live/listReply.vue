@@ -2,12 +2,12 @@
   <div class="list">
     <span class="huifubtn" @click="inputshow = true">回复</span>
     <div class="imgbox txbox" style="float: left;">
-      <img src="http://60.247.77.208:58088/image/20181215/1544858411816.png" alt="">
+      <img :src="data.commentUserThumb" alt="">
     </div>
     <div style="float: right;" class="textbox">
-      <p class="text_title">123</p>
-      <p class="text_content">123</p>
-      <p class="text_time">123</p>
+      <p class="text_title">{{data.commentUserName}}</p>
+      <p class="text_content">{{data.content}}</p>
+      <p class="text_time">{{data.createTime}}</p>
       <div class="inputbox" :class="{inputboxon: inputshow}">
         <input type="text" placeholder="请输入回复内容...">
       </div>
@@ -30,17 +30,23 @@
 <script>
 export default {
   name: 'listReply',
+  props: [ 'value' ],
   data () {
     return {
       addShow: false,
-      inputshow: false
+      inputshow: false,
+      data: {},
     }
+  },
+  mounted () {
+    this.data = this.value
   },
   methods: {
     remove(){
       this.$http.post('/cri-cms-platform/live/comment/delete.monitor', {
-        liveCommentId: 1
+        liveCommentId: this.data.id
       }).then(res => {
+        this.$emit('reset')
         console.log(res)
       })
     }

@@ -23,7 +23,7 @@
 
           <div v-if="navindex == 0">
             <div class="textareabox" style="max-width: 900px;margin: 0 auto 20px;">
-              <textarea placeholder="发直播..."></textarea>
+              <textarea v-model="liveContent" placeholder="发直播..."></textarea>
               <div style="margin-bottom: 10px;">
                 <i class="icon c-a" style="font-size: 50px;" @click="mediaShow = true">add_photo_alternate</i>
               </div>
@@ -32,6 +32,7 @@
                   <img :src="item.url" alt="">
                 </div>
               </div>
+              <div style="text-align: right;"><span @click="addLiveContent">发送</span></div>
             </div>
 
             <ul class="flex tabbox">
@@ -53,12 +54,13 @@
 
             <ul class="flex tabbox">
               <li class="tabboxon">全部</li>
-              <li @click="getPinglunList()">刷新</li>
+              <li @click="getPinglunList">刷新</li>
             </ul>
 
             <div style="max-width: 900px;margin: 0 auto;">
-              <listReply></listReply>
-              <listReply></listReply>
+              <div v-for="(item, index) in pinglunList">
+                <listReply :value="item" @change="data => { item = data }" @reset="getPinglunList"></listReply>
+              </div>
             </div>
           </div>
 
@@ -170,6 +172,7 @@ export default {
   data () {
     return {
       pinglun: '',
+      liveContent: '',
       virtualDigg: '',
       virtualShare: '',
       virtualPv: '',
@@ -238,6 +241,23 @@ export default {
     })
   },
   methods: {
+    addLiveContent () {
+      let mediaContent = ''
+      this.imagelist.forEach(item => {
+        mediaContent += '1:' + item.id + '|'
+      })
+      console.log(mediaContent)
+      this.$http.post('/cri-cms-platform/live/message/add.monitor', {
+        liveId: this.liveId,
+        textContent: this.liveContent,
+        mediaContent: mediaContent
+      }).then(res => {
+        console.log(res)
+        this.imagelist = []
+        this.liveContent = ''
+        this.getLiveContentList()
+      })
+    },
     pushPinglun () {
       this.$http.post('/cri-cms-platform/live/comment/add.monitor', {
         liveId: this.liveId,
@@ -261,7 +281,9 @@ export default {
       this.$http.post('/cri-cms-platform/live/comment/refresh.monitor', {
         liveId: this.liveId
       }).then(res => {
-        console.log(res)
+        this.$set(this.pinglunList, this.pinglunList, res.comments)
+        // this.pinglunList = res.comments
+        console.log(this.pinglunList)
       })
     },
     closeLive () {
@@ -327,7 +349,7 @@ export default {
         id: image ? image.id : '',
         url: image ? this.$refs.mediaPhotos.imgOrigin + image.filePath + image.fileName : ''
       }
-      if(txChange){
+      if(this.txChange){
         this.zhiboyuanList[this.txIndex].thumb = this.image
         this.changeZhiboyuan()
       }else{
