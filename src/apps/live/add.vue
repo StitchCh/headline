@@ -18,53 +18,23 @@
     </div>
     <div class="flex-item scroll-y">
       <article-editor v-if="getif" :otitle="form.title" ref="editor" @getKeyGenerate="getKeyGenerate"></article-editor>
-
-      <div style="max-width: 900px;margin: 0 auto;padding: 20px 10px;border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;">
-        <h2>选择头图</h2>
-        <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
-          <div class="flex-item"><radio-box text="单图" :label="1" v-model="form.headPicType"/></div>
-          <div class="flex-item"><radio-box text="幻灯片" :label="2" v-model="form.headPicType"/></div>
-        </div>
-        <div v-show="form.headPicType == 1" style="max-width: 300px;margin: 20px;">
-          <app-article-add-thumb v-model="headList_type1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
-        </div>
-        <div v-show="form.headPicType == 2">
-          <app-article-add-relates v-if="getif && getif1" :channels="ui.channels.channels" :limit="form.headPicType" v-model="headList_type2" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/special/getArticList.monitor"></app-article-add-relates>
-        </div>
+      <div style="margin: 0 auto;max-width: 900px;padding: 0 24px; margin-bottom: 20px;border-top: 1px solid #ddd;padding-top: 16px;">
+        <input style="height: 40px;font-size: 26px;width: 100%;border: 0;" type="text" placeholder="直播源" v-model="form.liveSource"/>
       </div>
-
-      <div class="setlistbox">
-        <div style="width: 80%;float: right">
-          <div class="list_content">
-            <div v-for="item in list">
-              <p class="list_content_title">
-                {{item.name}}
-                <span v-if="form.listType == 2" style="float: right">
-                  时间：
-                  <vue-datepicker-local v-model="item.time" format="YYYY-MM-DD" show-buttons></vue-datepicker-local>
-                </span>
-              </p>
-              <div style="padding: 10px;">
-                <app-article-add-relates v-if="getif" :channels="ui.channels.channels" v-model="item.list" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/special/getArticList.monitor"></app-article-add-relates>
-              </div>
-            </div>
+      <div style="max-width: 900px;margin: 0 auto;padding: 0 20px 10px;border-top: 1px solid #ddd;display: flex;justify-content: space-between;">
+        <div style="width: 50%;">
+          <h2>选择头图</h2>
+          <div style="max-width: 300px;margin: 20px;">
+            <app-article-add-thumb v-model="form.headThumb" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
           </div>
         </div>
-
-        <div style="width: 20%;float: left;padding-top: 10px;">
-            <div v-for="(item,index) in list" class="channel-tree-item flex-v-center">
-              <div class="flex-item flex-v-center" style="height: 40px;overflow:hidden;">
-                <span class="flex-item channel-name" v-if="!item.edit">{{item.name}}</span>
-                <input type="text" v-else v-model="item.name" class="flex-item f-14">
-              </div>
-              <icon-btn small v-if="item.edit" @click.native.stop="item.edit = false">add</icon-btn>
-              <icon-btn small v-if="!item.edit" @click.native.stop="item.edit = true">edit</icon-btn>
-              <icon-btn small @click="removeList(index)" >delete</icon-btn>
-            </div>
-            <div @click="addlist" class="channel-tree-item channel-tree-item1 flex-v-center" style="cursor: pointer;">
-              <icon-btn small style="margin-right: 10px;">add</icon-btn>
-              <span class="flex-item channel-name" style="height: 40px;line-height: 40px;">添加板块</span>
-            </div>
+        <div style="width: 50%;">
+          <h2>拖拽排序</h2>
+          <draggable element="ul" :options="{ghostClass:'movelist'}" v-model="tagOrder" >
+            <li v-for="(item, index) in tagOrder" class="flex-v-center orderitem">
+              <span style="margin-right: 10px;">{{index+1}}. {{item == 'LIVE' ? '直播窗口' : '聊天室'}}</span>
+            </li>
+          </draggable>
         </div>
       </div>
 
@@ -81,13 +51,13 @@
           </div>
         </bubble>
       </div>
-      <!--<div class="option-item flex-v-center">-->
-        <!--<icon-btn small v-tooltip:top="'推荐'" :class="{ active: form.isRecommnd }" @click="form.isRecommnd = ~~!form.isRecommnd">thumb_up</icon-btn>-->
-        <!--<span class="flex-item"></span>-->
-        <!--<icon-btn small v-tooltip:top="'发布到 PC 页面'" :class="{ active: form.terminalPc }" @click="form.terminalPc = ~~!form.terminalPc">computer</icon-btn>-->
-        <!--<icon-btn small v-tooltip:top="'发布到客户端'" :class="{ active: form.terminalApp }" @click="form.terminalApp = ~~!form.terminalApp">phone_iphone</icon-btn>-->
-        <!--<icon-btn small v-tooltip:top="'发布到移动网页'" :class="{ active: form.terminalWeb }" @click="form.terminalWeb = ~~!form.terminalWeb">public</icon-btn>-->
-      <!--</div>-->
+      <div class="option-item flex-v-center">
+        <icon-btn small v-tooltip:top="'推荐'" :class="{ active: form.isRecommnd }" @click="form.isRecommnd = ~~!form.isRecommnd">thumb_up</icon-btn>
+        <span class="flex-item"></span>
+        <icon-btn small v-tooltip:top="'发布到 PC 页面'" :class="{ active: form.terminalPc }" @click="form.terminalPc = ~~!form.terminalPc">computer</icon-btn>
+        <icon-btn small v-tooltip:top="'发布到客户端'" :class="{ active: form.terminalApp }" @click="form.terminalApp = ~~!form.terminalApp">phone_iphone</icon-btn>
+        <icon-btn small v-tooltip:top="'发布到移动网页'" :class="{ active: form.terminalWeb }" @click="form.terminalWeb = ~~!form.terminalWeb">public</icon-btn>
+      </div>
       <div style="margin: 10px 0;">
         <app-article-add-thumb v-if="getif" v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
         <!--<div v-if="form.thumbType == 2" class="flex">-->
@@ -102,28 +72,32 @@
       </div>
       <div>
         <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
-          <div class="flex-item"><radio-box text="微图模式" :label="1" v-model="form.listType"/></div>
-          <div class="flex-item"><radio-box text="时间轴模式" :label="2" v-model="form.listType"/></div>
+          <div class="flex-item"><radio-box text="图文直播" :label="'PICTURE'" v-model="form.category"/></div>
+          <div class="flex-item"><radio-box text="视频直播" :label="'VIDEO'" v-model="form.category"/></div>
+          <div class="flex-item"><radio-box text="音频直播" :label="'AUDIO'" v-model="form.category"/></div>
         </div>
       </div>
       <div class="option-item relative">
-        <textarea placeholder="摘要，限制 128 字。" v-model="form.abstarcts" rows="8"></textarea>
-        <span style="position: absolute;bottom: 3px;right: 0;" :style="{ color: form.abstarcts.length > 128 ? '#F44336' : '#999' }">{{form.abstarcts.length}} / 128</span>
+        <textarea placeholder="导语，限制 128 字。" v-model="form.introduction" rows="8"></textarea>
+        <span style="position: absolute;bottom: 3px;right: 0;" :style="{ color: form.introduction.length > 128 ? '#F44336' : '#999' }">{{form.introduction.length}} / 128</span>
       </div>
       <div class="option-item">
         <input type="text" placeholder="关键词，逗号分隔。" v-model="form.keywords"/>
       </div>
-      <div class="option-item flex-v-center">
-        <span class="flex-item">©原创声明</span>
-        <switcher mode="Number" v-model="form.isOriginal"/>
-      </div>
-      <div class="option-item flex" v-if="!form.isOriginal">
-        <input type="text" class="flex-item" placeholder="来源名称" v-model="form.originalFrom">
-        <input type="text" class="flex-item" placeholder="来源URL" v-model="form.originalUrl">
-      </div>
       <div class="option-item">
-        <input type="text" placeholder="作者，逗号分隔" v-model="form.author">
+        <input type="text" placeholder="回放地址" v-model="form.playback"/>
       </div>
+      <div class="option-item flex-v-center">
+        <span class="flex-item">是否开启弹幕</span>
+        <switcher mode="Number" v-model="form.openBulletScreen"/>
+      </div>
+      <!--<div class="option-item flex" v-if="!form.isOriginal">-->
+        <!--<input type="text" class="flex-item" placeholder="来源名称" v-model="form.originalFrom">-->
+        <!--<input type="text" class="flex-item" placeholder="来源URL" v-model="form.originalUrl">-->
+      <!--</div>-->
+      <!--<div class="option-item">-->
+        <!--<input type="text" placeholder="作者，逗号分隔" v-model="form.author">-->
+      <!--</div>-->
       <div class="option-item flex-v-center" v-if="form.createDate !== undefined">
         <div class="flex-item">创建时间</div>
         <div class="relative flex-v-center a">
@@ -135,16 +109,16 @@
         </div>
       </div>
       <div class="option-item flex-v-center">
-        <span>初始阅读量</span>
+        <span>虚拟观看数</span>
         <input class="flex-item t-right" type="number" placeholder="请输入" v-model="form.virtualPv">
       </div>
       <div class="option-item flex-v-center">
-        <span>初始分享量</span>
-        <input class="flex-item t-right" type="number" placeholder="请输入" v-model="form.virtualShare">
+        <span>虚拟点赞数</span>
+        <input class="flex-item t-right" type="number" placeholder="请输入" v-model="form.virtualDigg">
       </div>
       <div class="option-item flex-v-center">
-        <span>初始点赞量</span>
-        <input class="flex-item t-right" type="number" placeholder="请输入" v-model="form.virtualDigg">
+        <span>虚拟分享数</span>
+        <input class="flex-item t-right" type="number" placeholder="请输入" v-model="form.virtualShare">
       </div>
     </div>
   </div>
@@ -183,7 +157,7 @@ export default {
   props: [ 'from', 'id' ],
   data () {
     return {
-      list:[],
+      tagOrder: ['LIVE', 'CHATROOM'],
       getif: false,
       getif1: false,
       article: null,
@@ -200,12 +174,12 @@ export default {
       headList_type2: [],
       nowDate: new Date(),
       form: {
-        listType: 1,
-        headPicType: 1,
-        headJson: '',
-        headJsonId: '',
-        specialListId: '',
-        specialListJson: '',
+        openBulletScreen: 0,
+        headThumb: {},
+        liveSource: '',
+        tagOrder: '',
+        playback: '',
+        category: 'PICTURE',
         // app: 'ARTICLE',
         title: '',
         titleColor: '',
@@ -223,24 +197,24 @@ export default {
         // isOriginal: 0,
         // originalFrom: '',
         // originalUrl: '',
-        // isRecommnd: 0,
-        abstarcts: '',
+        isRecommnd: 0,
+        introduction: '',
         keywords: '',
         // author: '',
-        weight: '',
+        // weight: '',
         // isWatermarked: 0,
         // upLineTime: '',
         // downLineTime: '',
         virtualPv: '',
         // virtualComment: '',
-        // virtualShare: '',
+        virtualShare: '',
         virtualDigg: '',
         // hasThumb: 0,
         // thumbType: 1,
         thumb: '',
-        // terminalPc: 0,
-        // terminalApp: 0,
-        // terminalWeb: 0,
+        terminalPc: 0,
+        terminalApp: 0,
+        terminalWeb: 0,
         // attachmentIds: ''
       },
       thumb: {
@@ -269,25 +243,6 @@ export default {
     }
   },
   methods: {
-    removeList (index) {
-      this.list.splice(index, 1)
-    },
-    addlist () {
-      if (this.form.channelIds == '') {
-        this.$toast('请选择频道')
-        return false
-      }
-      this.list.push({
-        name: '新建板块',
-        time: '',
-        time: this.nowDate,
-        edit: false,
-        list: {
-          selected: [],
-          unselected: []
-        }
-      })
-    },
     autoSave () {
       // let { title, titleColor, content } = this.$refs.editor
       // this.form.title = title
@@ -329,7 +284,7 @@ export default {
       return time <= new Date()
     },
     submit () {
-      let url = this.id ? '/cri-cms-platform/special/update.monitor' : '/cri-cms-platform/special/save.monitor'
+      let url = this.id ? '/cri-cms-platform/special/update.monitor' : '/cri-cms-platform/live/save.monitor'
       let { title } = this.$refs.editor
       if (!title) {
         this.$toast('请输入标题')
@@ -342,71 +297,14 @@ export default {
       this.form.title = title
 
       let obj = {...this.form}
+      obj.tagOrder = this.tagOrder[0]
+      obj.headThumb = obj.headThumb.id
 
-      let jsonarr = []
-      this.list.forEach((item, index, arr) => {
-        let jsonsarr = []
-        console.log(item)
-        if (item.list.selected.length == 0) {
-          this.$toast('板块内容不能为空')
-          return false
-        }
-        item.list.selected.forEach((item1, index1) => {
-          console.log(item1)
-          jsonsarr[index1] = {
-            id: item1.id,
-            abstarcts: item1.abstracts,
-            order: index1,
-            title: item1.title,
-            createDate: item1.createDate,
-            thumb: item1.thumb.indexOf('[') >= 0 ? JSON.parse(item1.thumb)[0].url : item1.thumb
-          }
-          if (obj.specialListId.indexOf(item1.id) < 0) {
-            obj.specialListId += (item1.id + ',')
-          }
-        })
-        let oDate = arr[index].time
-        jsonarr[index] = {
-          templateName: item.name,
-          templateContentListList: jsonsarr,
-          orderDate: obj.listType == 2 ? oDate.getFullYear() + '-' + (oDate.getMonth() + 1) + '-' + oDate.getDate() : ''
-        }
-      })
-
-      obj.specialListJson = JSON.stringify(jsonarr)
-
-      if (obj.headPicType == 1) {
-        let data = {
-          thumb: this.headList_type1.url
-        }
-        obj.headJson = JSON.stringify([ data ])
-      } else if (obj.headPicType == 2) {
-        let arr = []
-        this.headList_type2.selected.forEach(item => {
-          let data = {
-            abstarcts: item.abstracts,
-            id: item.id,
-            createDate: item.createDate,
-            thumb: item.thumb.indexOf('[') >= 0 ? JSON.parse(item.thumb)[0].url : item.thumb,
-            title: item.title
-          }
-          arr.push(data)
-          obj.headJsonId += (item.id + ',')
-        })
-        obj.headJson = JSON.stringify(arr)
-      }
-      // obj.thumb = obj.thumb.id
-
-
-      if (this.id) {
-        obj.specialId = obj.id
-        obj.id = this.id
-      }
       console.log(obj)
 
       this.$http.post(url, obj).then(res => {
         this.ui.submited = true
-        this.$router.push('/special/list?scope=all&status=all')
+        this.$router.push('/live/list?scope=all&status=all')
       }).catch(
         res => {
           this.$toast(res || res.msg || '保存失败')
@@ -624,10 +522,19 @@ export default {
     padding: 0 10px;
     box-sizing: border-box;
   }
+  .orderitem{
+    line-height: 40px;
+  }
   .setlistbox:after{
     content: '';
     display: block;
     clear: both;
+    padding-left: 20px;
+  }
+  .movelist{
+    background: #008eff;
+    color: #008eff;
+    opacity: 0.5;
   }
   .additem{
     padding: 4px 0;

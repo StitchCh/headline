@@ -20,7 +20,7 @@ export default [{
   icon: 'icon-special'
 }, {
   name: '直播',
-  path: '/live',
+  path: '/live/list?scope=all&status=all',
   icon: 'icon-live'
 }, {
   name: '链接',
