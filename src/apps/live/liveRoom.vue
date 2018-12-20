@@ -41,8 +41,7 @@
             </ul>
 
             <div style="max-width: 900px;margin: 0 auto;">
-              <listblock></listblock>
-              <listblock></listblock>
+              <listblock v-for="(item, index) in messageList" @change="getLiveContentList" :value="item" :liveId="liveId"></listblock>
             </div>
           </div>
 
@@ -61,6 +60,9 @@
               <div v-for="(item, index) in pinglunList">
                 <listReply :value="item" @change="data => { item = data }" @reset="getPinglunList"></listReply>
               </div>
+              <!--<div v-for="(item, index) in pinglunList">-->
+                <!--<listReply :value="item"></listReply>-->
+              <!--</div>-->
             </div>
           </div>
 
@@ -127,7 +129,7 @@
       </div>
 
       <div class="app-article-add-thumb">
-        <layer v-if="mediaShow" title="选择图片" width="900px">
+        <layer v-if="mediaShow" title="选择图片" width="900px" style="z-index: 200;">
           <div class="layer-text relative" style="height: 800px;width: 900px;">
             <media-photos select-mode single-select ref="mediaPhotos"></media-photos>
           </div>
@@ -197,7 +199,7 @@ export default {
       zhiboyuanList: [],
       tagOrder: ['LIVE', 'CHATROOM'],
       imagelist: [],
-      pinglunList:[],
+      pinglunList: [],
       messageList:[]
     }
   },
@@ -231,6 +233,9 @@ export default {
           this.userList[i].checked = this.userList[i].checked == 0 ? false : true
         }
       })
+
+      this.getLiveContentList()
+      this.getPinglunList()
 
       this.$http.post('/cri-cms-platform/live/broadcaster/list.monitor', {
         liveId: this.liveId
@@ -269,20 +274,21 @@ export default {
       })
     },
     getLiveContentList () {
-      this.$http.post('/cri-cms-platform/live/message/withdrawn.monitor', {
+      this.messageList = []
+      this.$http.post('/cri-cms-platform/live/message/refresh.monitor', {
         liveId: this.liveId,
         userType: ''
       }).then(res => {
         console.log(res)
-        this.messageList = res
+        this.messageList = res.messages
       })
     },
     getPinglunList () {
+      this.pinglunList = []
       this.$http.post('/cri-cms-platform/live/comment/refresh.monitor', {
         liveId: this.liveId
       }).then(res => {
-        this.$set(this.pinglunList, this.pinglunList, res.comments)
-        // this.pinglunList = res.comments
+        this.pinglunList = res.comments
         console.log(this.pinglunList)
       })
     },

@@ -346,13 +346,11 @@ export default {
       let jsonarr = []
       this.list.forEach((item, index, arr) => {
         let jsonsarr = []
-        console.log(item)
         if (item.list.selected.length == 0) {
           this.$toast('板块内容不能为空')
           return false
         }
         item.list.selected.forEach((item1, index1) => {
-          console.log(item1)
           jsonsarr[index1] = {
             id: item1.id,
             abstarcts: item1.abstracts,
@@ -372,6 +370,8 @@ export default {
           orderDate: obj.listType == 2 ? oDate.getFullYear() + '-' + (oDate.getMonth() + 1) + '-' + oDate.getDate() : ''
         }
       })
+
+      console.log(jsonarr)
 
       obj.specialListJson = JSON.stringify(jsonarr)
 
