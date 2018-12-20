@@ -82,6 +82,7 @@
         </div>
         <add-comment v-if="form.isOpenComment" v-model="form.virtualComment"/>
       </div>
+      <relate-album v-model="form.albumId" list-url="/cri-cms-platform/audio/albumList.monitor" detail-url="/cri-cms-platform/audio/albumGet.monitor"/>
       <!--<add-relates single :channels="ui.channels" v-model="form.galleryId" title="相关图集" icon="collections" url="/cri-cms-platform/article/associate/gallery.monitor">-->
         <!--<template slot="afterTitle">-->
           <!--<span class="flex-item"></span>-->
@@ -116,10 +117,11 @@ import AddComment from '@/components/comment'
 import AddRelates from '@/components/relates'
 import AddAttachment from '@/components/attachment'
 import AddThumb from '@/components/thumb'
+import RelateAlbum from '@/components/relateAlbum'
 
 export default {
   name: 'app-audio-edit-option',
-  components: { VueDatepickerLocal, AddComment, AddRelates, AddAttachment, AddThumb },
+  components: { VueDatepickerLocal, AddComment, AddRelates, AddAttachment, AddThumb, RelateAlbum },
   props: [ 'res' ],
   data () {
     return {
@@ -158,7 +160,8 @@ export default {
         thumb: '',
         terminalPc: 0,
         terminalApp: 0,
-        terminalWeb: 0
+        terminalWeb: 0,
+        albumId: ''
         // attachmentIds: ''
       },
       thumb: {
