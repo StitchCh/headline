@@ -28,7 +28,8 @@
                 <i class="icon c-a" style="font-size: 50px;" @click="mediaShow = true">add_photo_alternate</i>
               </div>
               <div v-if="imagelist.length != 0" class="imgList">
-                <div v-for="(item,index) in imagelist" class="img_list">
+                <div v-for="(item, index) in imagelist" class="img_list">
+                  <span class="img_list_delet" @click="removeImage(index)">+</span>
                   <img :src="item.url" alt="">
                 </div>
               </div>
@@ -41,7 +42,7 @@
             </ul>
 
             <div style="max-width: 900px;margin: 0 auto;">
-              <listblock v-for="(item, index) in messageList" @change="getLiveContentList" :value="item" :liveId="liveId"></listblock>
+              <listblock v-for="(item, index) in messageList" :key="index" @change="getLiveContentList" :value="item" :liveId="liveId"></listblock>
             </div>
           </div>
 
@@ -57,7 +58,7 @@
             </ul>
 
             <div style="max-width: 900px;margin: 0 auto;">
-              <div v-for="(item, index) in pinglunList">
+              <div v-for="(item, index) in pinglunList"  :key="index">
                 <listReply :value="item" @change="data => { item = data }" @reset="getPinglunList"></listReply>
               </div>
               <!--<div v-for="(item, index) in pinglunList">-->
@@ -246,6 +247,9 @@ export default {
     })
   },
   methods: {
+    removeImage (index) {
+      this.imagelist.splice(index, 1)
+    },
     addLiveContent () {
       let mediaContent = ''
       this.imagelist.forEach(item => {
@@ -512,6 +516,28 @@ export default {
   .img_list{
     width: 60px;
     margin: 0 5px;
+    position: relative;
+  }
+  .img_list_delet{
+    display: block;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: #fff;
+    color: #333;
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+    text-align: center;
+    line-height: 17px;
+    border-radius: 50%;
+    cursor: pointer;
+    transform: rotate(45deg);
+    transition: 0.4s;
+    opacity: 0;
+  }
+  .img_list:hover .img_list_delet{
+    opacity: 1;
   }
   .img_list img{
     width: 100%;

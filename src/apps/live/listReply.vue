@@ -54,7 +54,7 @@
         <span v-if="data.audit == 2" class="fsbtn fsbtn1" @click="bohui">驳回</span>
         <i style="background: none;" class="icon" @click="addShow = true">add</i>
       </div>
-      <bubble v-if="addShow" @close="addShow=false">
+      <bubble v-if="addShow" @close="addShow=false" style="left: auto;right: -16px;">
         <ul class="f-14 c-5 add-select" style="padding: 4px 0;width: 60px;text-align: center">
           <li class="a flex-v-center">
             <span class="flex-item" @click="remove">撤回</span>

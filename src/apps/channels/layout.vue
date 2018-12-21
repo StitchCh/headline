@@ -62,8 +62,8 @@
             <div class="flex-v-center setting-item">
               <div class="flex-item">图片格式</div>
                 <select v-model="item.setting.picword" dir="rtl">
-                  <option value="2_4">上图下文字</option>
-                  <option value="2_5">上文字下图</option>
+                  <option value="2_5">上图下文字</option>
+                  <option value="2_4">上文字下图</option>
                   <option value="2_3">文字</option>
                   <option value="2_1">左图右文字</option>
                   <option value="2_2">右图左文字</option>
@@ -92,11 +92,11 @@
             <span v-if="item.setting.picword == '2_3'">
               <span style="display: block;margin-bottom: 6px;">{{channel.channelName}}</span>
             </span>
-            <span v-if="item.setting.picword == '2_5'">
+            <span v-if="item.setting.picword == '2_4'">
               <span class="tagtext">{{channel.channelName}}</span>
               <img v-if="channel.channelIcon" :src="channel.channelIcon" alt="" class="tagimg">
             </span>
-            <span v-if="item.setting.picword == '2_4'">
+            <span v-if="item.setting.picword == '2_5'">
               <img v-if="channel.channelIcon" :src="channel.channelIcon" alt="" class="tagimg">
               <span class="tagtext">{{channel.channelName}}</span>
             </span>

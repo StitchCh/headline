@@ -17,9 +17,9 @@
         <i class="icon" @click="addShow = true">add</i>
       </div>
       <bubble v-if="addShow" @close="addShow=false">
-        <ul class="f-14 c-5 add-select" style="padding: 4px 0;width: 60px;text-align: center">
+        <ul class="f-14 c-5 add-select" style="padding: 4px 0;width: 80px;text-align: center;">
           <li class="a flex-v-center">
-            <span class="flex-item" @click="toTop">置顶</span>
+            <span class="flex-item" @click="toTop">{{data.stick === '01' ? '取消置顶' : '置顶'}}</span>
           </li>
           <li class="a flex-v-center">
             <span class="flex-item" @click="change">修改</span>
@@ -39,6 +39,7 @@
         </div>
         <div v-if="imagelist.length != 0" class="imgList">
           <div v-for="(item,index) in imagelist" class="img_list">
+            <span class="img_list_delet" @click="removeImage(index)">+</span>
             <img :src="item.mediaUrl" alt="">
           </div>
         </div>
@@ -84,6 +85,9 @@ export default {
     this.data = this.value
   },
   methods: {
+    removeImage (index) {
+      this.imagelist.splice(index, 1)
+    },
     toTop () {
       this.$http.post('/cri-cms-platform/live/message/stick/toggle.monitor', {
         liveMessageId: this.data.id
@@ -156,6 +160,28 @@ export default {
   .img_list{
     width: 60px;
     margin: 0 5px;
+    position: relative;
+  }
+  .img_list_delet{
+    display: block;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: #fff;
+    color: #333;
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+    text-align: center;
+    line-height: 17px;
+    border-radius: 50%;
+    cursor: pointer;
+    transform: rotate(45deg);
+    transition: 0.4s;
+    opacity: 0;
+  }
+  .img_list:hover .img_list_delet{
+    opacity: 1;
   }
   .img_list img{
     width: 100%;
@@ -233,7 +259,12 @@ export default {
     border-color: #ddd;
   }
   .toptag{
-    padding: 0 5px;
-    border: 1px solid #f00;
+    padding: 3px 8px;
+    background: #f00;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 6px;
+    margin: 0 10px;
+    font-size: 12px;
   }
 </style>
