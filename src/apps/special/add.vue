@@ -444,17 +444,26 @@ export default {
         this.$http.post('/cri-cms-platform/special/queryDetail.monitor', {
           id: this.id
         }).then(res => {
+          console.log(res)
           this.form = res.special
           this.form.specialListId = ''
           this.form.headJsonId = ''
-          this.form.headJson = JSON.parse(this.form.headJson)
-          this.form.thumb = JSON.parse(res.special.thumb)
-          this.thumb.thumb1 = this.form.thumb[0]
-          console.log(this.thumb.thumb1)
+          if (res.special.headJson === 'object') {
+            this.form.headJson = res.special.headJson
+            console.log(res.special.headJson)
+          } else {
+            this.form.headJson = JSON.parse(res.special.headJson)
+            console.log(res.special.headJson)
+          }
+          if (res.special.thumb != '') {
+            this.form.thumb = JSON.parse(res.special.thumb)
+          }
+          this.thumb.thumb1 = res.special.thumb[0]
           this.form.channelIds = res.channelIds || ''
           this.form.specialListJson = JSON.parse(this.form.specialListJson)
           for (let i = 0; i < res.special.specialListJson.length; i++) {
             this.list.push({
+              id: res.special.specialListJson[i].id,
               name: res.special.specialListJson[i].templateName,
               time: res.special.specialListJson[i].orderDate ? res.special.specialListJson[i].orderDate : this.nowDate,
               edit: false,
@@ -479,7 +488,6 @@ export default {
     } else {
       this.getif = true
     }
-
 
     // if (this.from && this.id) {
     //   if (this.from === 'draft') this.autoSaveId = this.id
