@@ -36,10 +36,9 @@
                       <div class="b" style="white-space: nowrap;overflow:hidden;text-overflow:ellipsis">{{item.title}}</div>
                       <div class="c-8 f-12" style="white-space: nowrap;overflow:hidden;text-overflow:ellipsis;margin-top: 10px;">{{item.abstarcts}}</div>
                       <div class="c-8 f-12 flex-v-center" style="margin-top: 10px;">
-                        <span v-tooltip:top="'阅读'">{{item.pv}}</span>/<span v-tooltip:top="'评论'">{{item.commentCount}}</span>/<span v-tooltip:top="'分享'">{{item.shareCount}}</span>/<span v-tooltip:top="'点赞'">{{item.diggCount}}</span>
-                        <span class="flex-item"></span>
                         <span style="margin-right: 15px;">作者：{{item.author}}</span>
                         <span style="margin-right: 15px;">创建者：{{item.createUser}}</span>
+                        <span class="flex-item"></span>
                         <span>{{item.createDate}}</span>
                       </div>
                     </div>
@@ -54,42 +53,25 @@
 
             <layer v-if="ui.videoSelectorShow" title="选择视频"  width="800px">
               <div class="layer-text flex-col" style="height: 800px;">
-                <list-view :list="list" class="flex-item"
-                           @prev="filter.toPage = filter.toPage <= 1 ? 1 : filter.toPage - 1"
-                           @next="filter.toPage = filter.toPage >= totalPage ? totalPage : filter.toPage + 1">
+                <list-view :list="list" class="flex-item">
                   <li class="list-item flex-v-center a relative" slot-scope="slotProps" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.check}">
-                    <!--<i class="icon item-check" :class="{ check: slotProps.item.check }">check_circle</i>-->
                     <div class="list-thumb flex-center">
                       <img v-if="slotProps.item.thumb.length" :src="slotProps.item.thumb[0].url" alt="">
                     </div>
                     <div class="flex-item">
                       <div class="list-title flex-center">
-                        <i v-if="~~(slotProps.item.isRecommnd)" class="icon f-16 blue">thumb_up</i>
-                        <i v-if="~~(slotProps.item.hasThumb)" class="icon f-16 orange">image</i>
-                        <i v-if="~~(slotProps.item.isOriginal)" class="icon f-16 green">copyright</i>
                         <span class="flex-item c-6 f-14 b">{{slotProps.item.title}}</span>
                       </div>
                       <div class="list-info f-12 c-8 flex-v-center">
-                        <span>{{slotProps.item.createDate}}</span>
-                        <span>{{slotProps.item.createUser}}</span>
+                        <span>{{slotProps.item.abstracts}}</span>
                       </div>
                       <div class="list-info f-12 c-8 flex-v-center">
-                        <span class="list-info-num">
-                          <i v-tooltip:top="'阅读'">{{slotProps.item.pv}}</i>/<i v-tooltip:top="'评论'">{{slotProps.item.commentCount}}</i>/<i v-tooltip:top="'分享'">{{slotProps.item.shareCount}}</i>/<i v-tooltip:top="'点赞'">{{slotProps.item.diggCount}}</i>
-                        </span>
-                        <span class="flex-item"></span>
-                        <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalPc }">computer</i>
-                        <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalApp }">phone_iphone</i>
-                        <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalWeb }">public</i>
+                        <span>{{slotProps.item.createDate}}</span>
+                        <span>{{slotProps.item.author}}</span>
                       </div>
                     </div>
                   </li>
                 </list-view>
-                <div class="af-bottombar flex-center">
-                  <icon-btn small class="a" @click="onPrev" :disabled="filter.toPage <= 1">keyboard_arrow_left</icon-btn>
-                  <span class="f-14 c-6" style="margin: 0 10px;line-height: 1em;">第 {{filter.toPage}} / {{totalPage}} 页</span>
-                  <icon-btn small class="a" @click="onNext" :disabled="filter.toPage >= totalPage">keyboard_arrow_right</icon-btn>
-                </div>
               </div>
               <div class="layer-btns">
                 <btn flat @click="ui.videoSelectorShow = false">取消</btn>
@@ -130,10 +112,7 @@ export default {
       },
       totalPage: 1,
       filter: {
-        toPage: 1,
-        pageSize: 30,
-        scope: 'all',
-        status: 'all'
+        appName: 'VIDEO'
       },
       form: {
         title: '',
@@ -156,8 +135,6 @@ export default {
       }).then(
         res => {
           console.log(res)
-          // this.album = res.album || {}
-          // this.content = res.content || []
           this.form.title = res.album.title
           this.form.videoAbstract = res.album.videoAbstract
           this.form.thumb = res.album.thumb
@@ -173,15 +150,16 @@ export default {
     },
     getList (refresh) {
       if (refresh) this.filter.toPage = 1
-      this.$http.post('/cri-cms-platform/video/queryList.monitor', this.filter).then(res => {
-        if (res.pages.length) {
-          res.pages.forEach(val => {
+      this.$http.post('/cri-cms-platform/special/getArticList.monitor', this.filter).then(res => {
+        console.log(res)
+        if (res.length) {
+          res.forEach(val => {
             val.check = this.selected.some(v => {
               return val.id === v.id
             })
           })
         }
-        this.list = res.pages || []
+        this.list = res || []
         this.totalPage = res.totalPage || 1
       }).catch(e => {
         console.log(e)

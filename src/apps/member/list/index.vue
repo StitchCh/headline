@@ -1,10 +1,15 @@
 <template>
-  <div class="app-members-list flex-col c-6">
+  <div>
     <div class="af-topbar">
-      会员
+      <span class="f-18">全部</span>
     </div>
-    <div class="flex-item scroll-y">
-      <div class="card">
+    <div class="flex-item scroll-y bg-e relative">
+      <transition name="fade">
+        <div v-if="loading" class="abs bg-e" style="z-index: 99;">
+          <loading style="left: 50%;top: 50%;transform: translate(-50%, -50%)"></loading>
+        </div>
+      </transition>
+      <div class="setting-card f-14">
         <table>
           <thead>
           <th>会员ID</th>
@@ -44,7 +49,7 @@
           </tbody>
         </table>
         <div class="flex-center">
-          <pagination :page="page" :size="10" :total="total" @change="p => { page = p;getList(); }"></pagination>
+          <pagination :page="filter.toPage" :size="filter.pageSize" :total="total" @change="p => { filter.toPage = p;getList(); }"></pagination>
         </div>
       </div>
     </div>
@@ -142,108 +147,71 @@
 </template>
 
 <script>
-  export default {
-    name: 'settings-user',
-    data () {
-      return {
-        list: [],
-        total: 1,
-        page: 1,
-        detail: {},
-        detailShow: false,
-        editShow: false,
-        detail: {}
-      }
-    },
-    methods: {
-      getList () {
-        this.$http.post('/cri-cms-platform/member/list.monitor', {
-          pageSize: 10,
-          toPage: this.page
-        }).then(
-          res => {
-            this.list = res.pages
-            this.total = res.totalPage * 10
-            this.loading = false
-          }
-        ).catch(
-          res => {
-            console.log(res)
-          }
-        )
+export default {
+  name: 'settings-user',
+  data () {
+    return {
+      loading: false,
+      list: [],
+      filter: {
+        pageSize: 15,
+        toPage: 1
       },
-      openDetail (id) {
-        this.$http.post('/cri-cms-platform/member/view.monitor', {
-          id: id
-        }).then(
-          res => {
-            this.detailShow = true
-            this.detail = res
-          }
-        ).catch(
-          res => {
-            console.log(res)
-          }
-        )
-      },
-      openEdit (id) {
-        this.$http.post('/cri-cms-platform/member/view.monitor', {
-          id: id
-        }).then(
-          res => {
-          }
-        ).catch(
-          res => {
-            console.log(res)
-          }
-        )
-      }
-    },
-    created () {
-      Promise.all([
-        this.$http.post('/cri-cms-platform/member/list.monitor', {
-          pageSize: 10,
-          toPage: this.page
-        })
-      ]).then(
+      total: 1,
+      detail: {},
+      detailShow: false,
+      editShow: false
+    }
+  },
+  methods: {
+    getList () {
+      this.loading = true
+      this.$http.post('/cri-cms-platform/member/list.monitor', this.filter).then(
         res => {
-          this.list = res[0].pages
-          this.total = res[0].totalPage * 10
+          console.log(res)
+          this.list = res.pages
+          this.total = res.totalPage * 15
           this.loading = false
+        }
+      ).catch(
+        res => {
+          console.log(res)
+        }
+      )
+    },
+    openDetail (id) {
+      this.$http.post('/cri-cms-platform/member/view.monitor', {
+        id: id
+      }).then(
+        res => {
+          this.detailShow = true
+          this.detail = res
+        }
+      ).catch(
+        res => {
+          console.log(res)
+        }
+      )
+    },
+    openEdit (id) {
+      this.$http.post('/cri-cms-platform/member/view.monitor', {
+        id: id
+      }).then(
+        res => {
+        }
+      ).catch(
+        res => {
+          console.log(res)
         }
       )
     }
+  },
+  created () {
+    this.getList()
   }
+}
 </script>
 
 <style lang="less">
-  .app-members-list {
-    background: #fafafa;
-    color: #666;
-    .card {
-      max-width: 1440px;
-      margin: 20px auto;
-      border-radius: 6px;
-      box-shadow: 0 0 5px 1px rgba(0, 0, 0, .15);
-      padding: 20px;
-      th, td {
-        padding: 5px 10px;
-        font-size: 14px;
-      }
-      tr {
-        border-top: 1px solid #e1e1e1;
-      }
-      tr:hover {
-        background: rgba(0, 0, 0, .07);
-      }
-    }
-    .layer-text {
-      th, td {
-        padding: 5px 15px;
-      }
-      th {
-        width: 130px;
-      }
-    }
-  }
+
 </style>
