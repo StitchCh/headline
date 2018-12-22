@@ -2,6 +2,7 @@
 <div class="abs c-f flex-col app-launcher">
   <div class="top flex-v-center">
     <span class="f-20" style="font-weight: 300;">中俄头条</span>
+    <span style="margin-left: 10px;font-size: 12px;opacity: 0.6;padding-top: 8px;">当前站点：{{siteId == '1001' ? '中文站' : '俄文站'}}</span>
     <span class="flex-item"></span>
     <account/>
   </div>
@@ -30,7 +31,8 @@ export default {
     return {
       apps: [],
       height: 0,
-      ctnHeight: 0
+      ctnHeight: 0,
+      siteId: ''
     }
   },
   computed: {
@@ -40,6 +42,11 @@ export default {
     }
   },
   mounted () {
+    if (localStorage.getItem('siteId')) {
+      this.siteId = localStorage.getItem('siteId')
+    } else {
+      this.siteId = sessionStorage.getItem('siteId')
+    }
     this.apps = apps.map(item => {
       item.loading = item.show = false
       return item

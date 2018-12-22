@@ -43,7 +43,7 @@ export default [{
     // },
     {
       path: 'recycle',
-      name: 'SpecialRecycle',
+      name: 'liveRecycle',
       component: resolve => require(['@/apps/live/recycle/index.vue'], resolve),
       props: true,
       children: [
@@ -60,18 +60,17 @@ export default [{
   path: '/liveAdd',
   name: 'liveAdd',
   component: resolve => require(['@/apps/live/add.vue'], resolve),
-  meta: { level: 3, title: '添加直播', identifier: 'special_add' }
+  meta: { level: 3, title: '添加直播', identifier: 'live_add' }
 }, {
   path: '/liveRoom',
   name: 'liveRoom',
   component: resolve => require(['@/apps/live/liveRoom.vue'], resolve),
-  meta: { level: 3, title: '直播间', identifier: 'special_room' }
-},
-//   {
-//   path: '/liveEdit/:from/:id',
-//   name: 'SpecialEdit',
-//   component: resolve => require(['@/apps/live/add.vue'], resolve),
-//   props: true,
-//   meta: { level: 3, title: '修改直播', identifier: 'live_edit' }
-// }
+  meta: { level: 3, title: '直播间', identifier: 'live_room' }
+},{
+  path: '/liveEdit/:from/:id',
+  name: 'liveEdit',
+  component: resolve => require(['@/apps/live/add.vue'], resolve),
+  props: true,
+  meta: { level: 3, title: '修改直播', identifier: 'live_edit' }
+}
 ]

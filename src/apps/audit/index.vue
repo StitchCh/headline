@@ -70,6 +70,7 @@
               </div>
               <div class="flex-item">
                 <div class="list-title flex-center">
+                  <span>【{{slotProps.item.appname}}】</span>
                   <i v-if="~~(slotProps.item.isRecommnd)" class="icon f-16 blue">thumb_up</i>
                   <i v-if="~~(slotProps.item.hasThumb)" class="icon f-16 orange">image</i>
                   <i v-if="~~(slotProps.item.isOriginal)" class="icon f-16 green">copyright</i>
@@ -81,7 +82,7 @@
                   <span>{{slotProps.item.createUser}}</span>
                 </div>
                 <div class="list-info f-12 c-8 flex-v-center">
-                  <span class="list-info-num">
+                  <span v-if="slotProps.item.pv" class="list-info-num">
                     <i v-tooltip:top="'阅读'">{{slotProps.item.pv}}</i>/<i v-tooltip:top="'评论'">{{slotProps.item.commentCount}}</i>/<i v-tooltip:top="'分享'">{{slotProps.item.shareCount}}</i>/<i v-tooltip:top="'点赞'">{{slotProps.item.diggCount}}</i>
                   </span>
                   <span class="flex-item"></span>
@@ -109,7 +110,7 @@
         <div class="flex-item"></div>
         <account/>
       </div>
-      <router-view :channels="ui.channels" getUrl="/cri-cms-platform/audit/get.monitor"></router-view>
+      <router-view :channels="ui.channels"></router-view>
     </div>
   </div>
 </template>
@@ -132,6 +133,7 @@ export default {
   data () {
     return {
       ui: {
+        getUrl: '/cri-cms-platform/audit/get.monitor',
         status,
         searchOptionShow: false,
         channelShow: false, // 栏目
@@ -195,6 +197,25 @@ export default {
       this.$http.post('/cri-cms-platform/audit/list.monitor', filter).then(res => {
         console.log(res)
         this.list = res.pages || []
+        for (let i = 0; i < this.list.length; i++) {
+          if (this.list[i].app && this.list[i].app == 'SPECIAL') {
+            this.list[i].appname = '专题'
+          } else if (this.list[i].app == 'VIDEO') {
+            this.list[i].appname = '视频'
+          } else if (this.list[i].app == 'ARTICLE') {
+            this.list[i].appname = '文章'
+          } else if (this.list[i].app == 'AUDIO') {
+            this.list[i].appname = '音频'
+          } else if (this.list[i].app == 'LIVE') {
+            this.list[i].appname = '直播'
+          } else if (this.list[i].app == 'ECOMMERCE') {
+            this.list[i].appname = '电商'
+          } else if (this.list[i].app == 'LINK') {
+            this.list[i].appname = '连接'
+          } else if (this.list[i].app == 'GALLERY') {
+            this.list[i].appname = '图集'
+          }
+        }
         this.ui.totalPage = res.totalPage || 1
         this.$refs.listView.loading = false
       }).catch(e => {

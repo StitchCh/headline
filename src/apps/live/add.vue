@@ -25,14 +25,14 @@
         <div style="width: 50%;">
           <h2>选择头图</h2>
           <div style="max-width: 300px;margin: 20px;">
-            <app-article-add-thumb v-model="form.headThumb" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
+            <app-article-add-thumb v-if="getif" v-model="form.headThumb" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
           </div>
         </div>
         <div style="width: 50%;">
           <h2>拖拽排序</h2>
           <draggable element="ul" :options="{ghostClass:'movelist'}" v-model="tagOrder" >
             <li v-for="(item, index) in tagOrder" class="flex-v-center orderitem">
-              <span style="margin-right: 10px;">{{index+1}}. {{item == 'LIVE' ? '直播窗口' : '聊天室'}}</span>
+              <span style="margin-right: 10px;">{{index+1}}. {{item === 'LIVE' ? '直播窗口' : '聊天室'}}</span>
             </li>
           </draggable>
         </div>
@@ -284,7 +284,8 @@ export default {
       return time <= new Date()
     },
     submit () {
-      let url = this.id ? '/cri-cms-platform/special/update.monitor' : '/cri-cms-platform/live/save.monitor'
+      let url = this.id ? '/cri-cms-platform/live/update.monitor' : '/cri-cms-platform/live/save.monitor'
+
       let { title } = this.$refs.editor
       if (!title) {
         this.$toast('请输入标题')
@@ -299,6 +300,10 @@ export default {
       let obj = {...this.form}
       obj.tagOrder = this.tagOrder[0]
       obj.headThumb = obj.headThumb.id
+
+      if (this.id) {
+        obj.id = this.id
+      }
 
       console.log(obj)
 
@@ -339,39 +344,28 @@ export default {
     this.getChannels()
     if (this.from && this.id) {
       if (this.from == 'edit') {
-        this.$http.post('/cri-cms-platform/special/queryDetail.monitor', {
+        this.$http.post('/cri-cms-platform/live/get.monitor', {
           id: this.id
         }).then(res => {
-          this.form = res.special
-          this.form.specialListId = ''
-          this.form.headJsonId = ''
-          this.form.headJson = JSON.parse(this.form.headJson)
-          this.form.thumb = JSON.parse(res.special.thumb)
-          this.thumb.thumb1 = this.form.thumb[0]
-          console.log(this.thumb.thumb1)
-          this.form.channelIds = res.channelIds || ''
-          this.form.specialListJson = JSON.parse(this.form.specialListJson)
-          for (let i = 0; i < res.special.specialListJson.length; i++) {
-            this.list.push({
-              name: res.special.specialListJson[i].templateName,
-              time: res.special.specialListJson[i].orderDate ? res.special.specialListJson[i].orderDate : this.nowDate,
-              edit: false,
-              list: {
-                selected: res.special.specialListJson[i].templateContentListList
-              }
-            })
-          }
-          if (this.form.headPicType == 1) {
-            this.headList_type1 = {
-              url: this.form.headJson.thumb
-            }
-          } else if (this.form.headPicType == 2) {
-            this.headList_type2 = {
-              selected: this.form.headJson
-            }
-          }
+          this.form.channelIds = res.channelIds
+          this.tagOrder = res.live.tagOrder.split(',')
+          this.form.title = res.content.title
+          this.form.contentId = res.live.contentId
+          this.form.virtualDigg = res.content.virtualDigg
+          this.form.virtualPv = res.content.virtualPv
+          this.form.virtualShare = res.content.virtualShare
+          this.form.openBulletScreen = res.content.openBulletScreen
+          this.form.introduction = res.live.introduction
+          this.form.playback = res.content.playback
+          this.form.keywords = res.content.keywords
+          this.form.headThumb = res.live.headThumb[0]
+          this.thumb.thumb1 = res.content.thumb[0]
+          this.form.terminalPc = res.content.terminalPc
+          this.form.terminalApp = res.content.terminalApp
+          this.form.terminalWeb = res.content.terminalWeb
+          this.form.category = res.live.category
+        
           this.getif = true
-          console.log(this.list)
         })
       }
     } else {

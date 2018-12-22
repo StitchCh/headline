@@ -19,25 +19,25 @@
           <span>{{slotProps.item.createUser}}</span>
         </div>
         <div class="list-info f-12 c-8 flex-v-center">
-          <!--<span class="list-info-num">-->
-            <!--<i v-tooltip:top="'阅读'">{{slotProps.item.pv}}</i>/<i v-tooltip:top="'评论'">{{slotProps.item.commentCount}}</i>/<i v-tooltip:top="'分享'">{{slotProps.item.shareCount}}</i>/<i v-tooltip:top="'点赞'">{{slotProps.item.diggCount}}</i>-->
-          <!--</span>-->
-          <!--<span class="flex-item"></span>-->
-          <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalPc }">computer</i>-->
-          <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalApp }">phone_iphone</i>-->
-          <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalWeb }">public</i>-->
+          <!-- <span class="list-info-num">
+            <i v-tooltip:top="'阅读'">{{slotProps.item.virtualPv}}</i>/<i v-tooltip:top="'评论'">{{slotProps.item.commentCount}}</i>/<i v-tooltip:top="'分享'">{{slotProps.item.virtualShare}}</i>/<i v-tooltip:top="'点赞'">{{slotProps.item.diggCount}}</i>
+          </span> -->
+          <span class="flex-item"></span>
+          <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalPc }">computer</i>
+          <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalApp }">phone_iphone</i>
+          <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalWeb }">public</i>
         </div>
       </div>
     </af-center>
     <div class="flex-item flex-col">
       <div class="af-topbar flex-v-center">
         <div v-if="$route.params.id" class="content-tool flex-v-center">
-          <div class="tool-item">
+          <!-- <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'查看'">remove_red_eye</icon-btn>
           </div>
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn>
-          </div>
+          </div> -->
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/liveEdit/edit/${id}`)">edit</icon-btn>
           </div>
