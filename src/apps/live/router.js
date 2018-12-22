@@ -14,19 +14,19 @@ export default [{
       children: [
         {
           path: ':id',
-          name: 'SpecialContent',
+          name: 'LiveContent',
           component: resolve => require(['@/apps/live/list/content.vue'], resolve),
           props: true
         },
         {
           path: ':id/statistics',
-          name: 'SpecialStatistics',
+          name: 'LiveStatistics',
           component: resolve => require(['@/apps/live/list/statistics.vue'], resolve),
           props: true
         },
         {
           path: ':id/history',
-          name: 'SpecialHistory',
+          name: 'LiveHistory',
           component: resolve => require(['@/apps/live/list/history.vue'], resolve),
           props: true
         }
@@ -49,7 +49,7 @@ export default [{
       children: [
         {
           path: ':id',
-          name: 'SpecialRecycleContent',
+          name: 'LiveRecycleContent',
           component: resolve => require(['@/apps/live/list/content.vue'], resolve),
           props: true
         }
