@@ -21,6 +21,36 @@ export default {
       name: 'AuditContentLink',
       props: true,
       component: resolve => require(['@/apps/links/list/content.vue'], resolve)
+    },
+    {
+      path: 'SPECIAL/:id',
+      name: 'AuditContentSpecial',
+      props: true,
+      component: resolve => require(['@/apps/special/list/content.vue'], resolve)
+    },
+    {
+      path: 'AUDIO/:id',
+      name: 'AuditContentAudio',
+      props: true,
+      component: resolve => require(['@/apps/audios/list/content.vue'], resolve)
+    },
+    {
+      path: 'LIVE/:id',
+      name: 'AuditContentLive',
+      props: true,
+      component: resolve => require(['@/apps/live/list/content.vue'], resolve)
+    },
+    {
+      path: 'ECOMMERCE/:id',
+      name: 'AuditContentEcommerce',
+      props: true,
+      component: resolve => require(['@/apps/ecommerce/list/content.vue'], resolve)
+    },
+    {
+      path: 'GALLERY/:id',
+      name: 'AuditContentGallery',
+      props: true,
+      component: resolve => require(['@/apps/gallery/list/content.vue'], resolve)
     }
   ]
 }

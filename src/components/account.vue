@@ -8,6 +8,7 @@
     <bubble v-if="menuShow" class="c-6" pos="bottom" align="center" @close="menuShow=false">
       <div class="account-menu">
         <div class="menu-item t-center a">修改密码</div>
+        <div class="menu-item t-center a" @click="$router.push('/chooseSite')">切换站点</div>
         <div class="menu-item t-center a" @click="logoutShow=true;menuShow=false;">注销</div>
       </div>
     </bubble>

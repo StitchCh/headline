@@ -26,7 +26,8 @@
           <div class="flex-item"><radio-box text="幻灯片" :label="2" v-model="form.headPicType"/></div>
         </div>
         <div v-show="form.headPicType == 1" style="max-width: 300px;margin: 20px;">
-          <app-article-add-thumb v-model="headList_type1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
+        
+          <app-article-add-thumb v-if="getif" v-model="headList_type1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
         </div>
         <div v-show="form.headPicType == 2">
           <app-article-add-relates v-if="getif && getif1" :channels="ui.channels.channels" :limit="form.headPicType" v-model="headList_type2" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/special/getArticList.monitor"></app-article-add-relates>
@@ -81,13 +82,13 @@
           </div>
         </bubble>
       </div>
-      <!--<div class="option-item flex-v-center">-->
-        <!--<icon-btn small v-tooltip:top="'推荐'" :class="{ active: form.isRecommnd }" @click="form.isRecommnd = ~~!form.isRecommnd">thumb_up</icon-btn>-->
-        <!--<span class="flex-item"></span>-->
-        <!--<icon-btn small v-tooltip:top="'发布到 PC 页面'" :class="{ active: form.terminalPc }" @click="form.terminalPc = ~~!form.terminalPc">computer</icon-btn>-->
-        <!--<icon-btn small v-tooltip:top="'发布到客户端'" :class="{ active: form.terminalApp }" @click="form.terminalApp = ~~!form.terminalApp">phone_iphone</icon-btn>-->
-        <!--<icon-btn small v-tooltip:top="'发布到移动网页'" :class="{ active: form.terminalWeb }" @click="form.terminalWeb = ~~!form.terminalWeb">public</icon-btn>-->
-      <!--</div>-->
+      <div class="option-item flex-v-center">
+        <icon-btn small v-tooltip:top="'推荐'" :class="{ active: form.isRecommnd }" @click="form.isRecommnd = ~~!form.isRecommnd">thumb_up</icon-btn>
+        <span class="flex-item"></span>
+        <icon-btn small v-tooltip:top="'发布到 PC 页面'" :class="{ active: form.terminalPc }" @click="form.terminalPc = ~~!form.terminalPc">computer</icon-btn>
+        <icon-btn small v-tooltip:top="'发布到客户端'" :class="{ active: form.terminalApp }" @click="form.terminalApp = ~~!form.terminalApp">phone_iphone</icon-btn>
+        <icon-btn small v-tooltip:top="'发布到移动网页'" :class="{ active: form.terminalWeb }" @click="form.terminalWeb = ~~!form.terminalWeb">public</icon-btn>
+      </div>
       <div style="margin: 10px 0;">
         <app-article-add-thumb v-if="getif" v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
         <!--<div v-if="form.thumbType == 2" class="flex">-->
@@ -223,7 +224,7 @@ export default {
         // isOriginal: 0,
         // originalFrom: '',
         // originalUrl: '',
-        // isRecommnd: 0,
+        isRecommnd: 0,
         abstarcts: '',
         keywords: '',
         // author: '',
@@ -238,9 +239,9 @@ export default {
         // hasThumb: 0,
         // thumbType: 1,
         thumb: '',
-        // terminalPc: 0,
-        // terminalApp: 0,
-        // terminalWeb: 0,
+        terminalPc: 0,
+        terminalApp: 0,
+        terminalWeb: 0,
         // attachmentIds: ''
       },
       thumb: {
@@ -265,6 +266,7 @@ export default {
     },
     channelNames () {
       if (!this.channelIds.length) return '选择栏目'
+      // console.log(this.ui.channels.channels.find)
       return this.channelIds.map(val => this.ui.channels.channels.find(v => v.id === val).channelName).join('，')
     }
   },
@@ -455,15 +457,17 @@ export default {
             this.form.headJson = JSON.parse(res.special.headJson)
             console.log(res.special.headJson)
           }
+        
           if (res.special.thumb != '') {
             this.form.thumb = JSON.parse(res.special.thumb)
           }
           this.thumb.thumb1 = res.special.thumb[0]
+
+          console.log(this.headList_type1,this.thumb.thumb1)
           this.form.channelIds = res.channelIds || ''
           this.form.specialListJson = JSON.parse(this.form.specialListJson)
           for (let i = 0; i < res.special.specialListJson.length; i++) {
             this.list.push({
-              id: res.special.specialListJson[i].id,
               name: res.special.specialListJson[i].templateName,
               time: res.special.specialListJson[i].orderDate ? res.special.specialListJson[i].orderDate : this.nowDate,
               edit: false,
@@ -472,9 +476,10 @@ export default {
               }
             })
           }
+          
           if (this.form.headPicType == 1) {
             this.headList_type1 = {
-              url: this.form.headJson.thumb
+              url: this.form.headJson[0].thumb
             }
           } else if (this.form.headPicType == 2) {
             this.headList_type2 = {

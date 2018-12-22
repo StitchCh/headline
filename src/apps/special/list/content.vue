@@ -108,6 +108,8 @@ export default {
   },
   data () {
     return {
+      showid: '',
+      getif: false,
       content: {},
       article: {},
       channelIds: '',
@@ -162,16 +164,15 @@ export default {
       this.$http.post(this.getUrl, {
         id: this.id
       }).then(res => {
-
+        console.log(res)
         this.content = res.special || {}
-        this.content.thumb = res.special.thumb
+        this.content.thumb = JSON.parse(res.special.thumb)
         // this.article = res.article || {}
         this.specialListJson = JSON.parse(res.special.specialListJson) || []
         // this.channelIds = res.channelIds || ''
         // this.relateArticle = res.relateArticle || []
         // this.relateGallery = res.relateGallery || {}
         this.headJson = JSON.parse(res.special.headJson) || []
-        console.log(this.headJson)
         // this.swiperOptionTop.loopedSlides = this.swiperOptionThumbs.loopedSlides = this.relateGalleryContent.length
         // this.gallerySetting.gallerySettingDisplayPosition = res.gallerySettingDisplayPosition || '1'
         // this.gallerySetting.gallerySettingMaxWidth = res.gallerySettingMaxWidth || '640'
@@ -188,7 +189,9 @@ export default {
         //     swiperThumbs.controller.control = swiperTop
         //   })
         // }
+        this.getif = true
       }).catch(e => {
+        this.getif = true
         this.content = {}
         this.article = {}
         this.relateArticle = []

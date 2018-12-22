@@ -72,6 +72,7 @@ export default {
           localStorage.removeItem('siteId')
           sessionStorage.token = res.token
         }
+        sessionStorage.previewUrl = res.previewUrl
         this.$router.replace('/chooseSite')
       }).catch(e => {
         this.showError(e)

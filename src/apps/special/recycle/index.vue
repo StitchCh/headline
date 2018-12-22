@@ -40,7 +40,7 @@
     <div class="af-topbar flex-v-center">
       <div class="flex-v-center" v-if="$route.params.id">
         <icon-btn small v-tooltip:bottom="'还原'" style="margin-right: 10px;" @click="recover">undo</icon-btn>
-        <icon-btn small v-tooltip:bottom="'彻底删除'">delete</icon-btn>
+        <!-- <icon-btn small v-tooltip:bottom="'彻底删除'">delete</icon-btn> -->
       </div>
       <div class="flex-item"></div>
       <account/>

@@ -17,11 +17,11 @@
 
           <!--<div class="f-14" v-html="article.content"></div>-->
 
-          <div style="margin-bottom: 20px;">
-            <img src="" alt="">
-          </div>
-
           <p class="art-abstarcts" style="margin-bottom: 20px;"><strong>[导语]</strong>{{content.abstarcts}}</p>
+
+          <div style="margin-bottom: 20px;max-height: 400px;overflow: hidden;">
+            <img :src="content.headimg" alt="" style="width: 100%;">
+          </div>
 
           <div class="initbtn" @click="inRoom">进入直播</div>
 
@@ -143,30 +143,9 @@ export default {
       }).then(res => {
         console.log(res)
         this.content = res.content || {}
-        // this.content.thumb = JSON.parse(res.special.thumb)
-        // this.article = res.article || {}
-        // this.specialListJson = JSON.parse(res.special.specialListJson) || []
-        // console.log(this.specialListJson)
-        // this.channelIds = res.channelIds || ''
-        // this.relateArticle = res.relateArticle || []
-        // this.relateGallery = res.relateGallery || {}
-        // this.headJson = JSON.parse(res.special.headJson) || []
-        // this.swiperOptionTop.loopedSlides = this.swiperOptionThumbs.loopedSlides = this.relateGalleryContent.length
-        // this.gallerySetting.gallerySettingDisplayPosition = res.gallerySettingDisplayPosition || '1'
-        // this.gallerySetting.gallerySettingMaxWidth = res.gallerySettingMaxWidth || '640'
-        // this.gallerySetting.gallerySettingMinHeight = res.gallerySettingMinHeight || '480'
-        // this.gallerySetting.gallerySettingThumbWidth = res.gallerySettingThumbWidth || '80'
-        // this.gallerySetting.gallerySettingThumbHeight = res.gallerySettingThumbHeight || '60'
-        // this.relateSpecial = res.relateSpecial || {}
-        // this.attachments = res.attachments || []
-        // if (this.relateGalleryContent.length) {
-        //   this.$nextTick(() => {
-        //     const swiperTop = this.$refs.swiperTop.swiper
-        //     const swiperThumbs = this.$refs.swiperThumbs.swiper
-        //     swiperTop.controller.control = swiperThumbs
-        //     swiperThumbs.controller.control = swiperTop
-        //   })
-        // }
+        this.content.abstarcts = res.live.introduction
+        this.content.headimg = res.live.hostThumb.url
+
       }).catch(e => {
         this.content = {}
         this.article = {}

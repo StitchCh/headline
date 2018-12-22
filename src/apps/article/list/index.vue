@@ -32,12 +32,12 @@
     <div class="flex-item flex-col">
       <div class="af-topbar flex-v-center">
         <div v-if="$route.params.id" class="content-tool flex-v-center">
-          <div class="tool-item">
+          <!-- <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'查看'">remove_red_eye</icon-btn>
           </div>
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn>
-          </div>
+          </div> -->
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/articleEdit/article/${id}`)">edit</icon-btn>
           </div>
@@ -142,8 +142,10 @@ export default {
       })
     },
     qrcode (id) {
-      let siteId = localStorage.getItem('siteId')
-      return `http://qr.liantu.com/api.php?&w=200&text=http://60.247.77.208:59098/cri-cms-api/preview?siteId=${siteId}&id=${id}`
+      let siteId = sessionStorage.getItem('siteId')
+      let previewUrl = sessionStorage.getItem('previewUrl')
+      console.log(`${previewUrl}?siteId=${siteId}&previewId=${id}`)
+      return `${previewUrl}?siteId=${siteId}&previewId=${id}`
     }
   },
   created () {

@@ -9,6 +9,7 @@
 
       <div class="list-item a" slot-scope="slotProps" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.id == $route.params.id}">
         <div class="list-title flex-v-center">
+        <!-- {{slotProps.item.isRecommnd || 'und'}} -->
           <i v-if="~~(slotProps.item.isRecommnd)" class="icon f-16 blue">thumb_up</i>
           <i v-if="~~(slotProps.item.hasThumb)" class="icon f-16 orange">image</i>
           <i v-if="~~(slotProps.item.isOriginal)" class="icon f-16 green">copyright</i>
@@ -22,22 +23,22 @@
           <!--<span class="list-info-num">-->
             <!--<i v-tooltip:top="'阅读'">{{slotProps.item.pv}}</i>/<i v-tooltip:top="'评论'">{{slotProps.item.commentCount}}</i>/<i v-tooltip:top="'分享'">{{slotProps.item.shareCount}}</i>/<i v-tooltip:top="'点赞'">{{slotProps.item.diggCount}}</i>-->
           <!--</span>-->
-          <!--<span class="flex-item"></span>-->
-          <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalPc }">computer</i>-->
-          <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalApp }">phone_iphone</i>-->
-          <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalWeb }">public</i>-->
+          <span class="flex-item"></span>
+          <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalPc }">computer</i>
+          <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalApp }">phone_iphone</i>
+          <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalWeb }">public</i>
         </div>
       </div>
     </af-center>
     <div class="flex-item flex-col">
       <div class="af-topbar flex-v-center">
         <div v-if="$route.params.id" class="content-tool flex-v-center">
-          <div class="tool-item">
+          <!-- <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'查看'">remove_red_eye</icon-btn>
           </div>
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn>
-          </div>
+          </div> -->
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/specialEdit/edit/${id}`)">edit</icon-btn>
           </div>

@@ -1,7 +1,7 @@
 <template>
   <div class="app-article-add-thumb">
     <div class="add-photo-btn a flex-center" :style="{ width, height }" @click="show = true">
-      <img v-if="image.id" :src="image.url" width="100%" alt="">
+      <img v-if="image.url" :src="image.url" width="100%" alt="">
       <i v-else class="icon f-32 c-a">add_photo_alternate</i>
     </div>
     <layer v-if="show" title="选择图片"  width="800px">
@@ -58,6 +58,7 @@ export default {
   },
   created () {
     if (this.value) this.image = JSON.parse(JSON.stringify(this.value))
+    console.log(this.value)
   }
 }
 </script>
