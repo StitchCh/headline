@@ -10,7 +10,7 @@
       <div class="flex-item"></div>
       <div class="flex-v-center">
         <!--<btn big flat style="margin-right: 15px;">递交审核</btn>-->
-        <btn big flat style="margin-right: 10px;">预览</btn>
+        <!-- <btn big flat style="margin-right: 10px;">预览</btn> -->
         <!--<btn big flat style="margin-right: 10px;" @click="autoSave">保存草稿</btn>-->
         <btn big style="margin-right: 20px;" @click="submit">保存</btn>
         <icon-btn v-tooltip:bottom="'发布选项'" @click="ui.optionShow=!ui.optionShow">menu</icon-btn>
@@ -298,14 +298,12 @@ export default {
       this.form.title = title
 
       let obj = {...this.form}
-      obj.tagOrder = this.tagOrder[0]
+      obj.tagOrder = this.tagOrder.join(',')
       obj.headThumb = obj.headThumb.id
 
       if (this.id) {
         obj.id = this.id
       }
-
-      console.log(obj)
 
       this.$http.post(url, obj).then(res => {
         this.ui.submited = true
@@ -313,7 +311,6 @@ export default {
       }).catch(
         res => {
           this.$toast(res || res.msg || '保存失败')
-          console.log(res)
         }
       )
 

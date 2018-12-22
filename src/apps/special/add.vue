@@ -10,7 +10,7 @@
       <div class="flex-item"></div>
       <div class="flex-v-center">
         <!--<btn big flat style="margin-right: 15px;">递交审核</btn>-->
-        <btn big flat style="margin-right: 10px;">预览</btn>
+        <!-- <btn big flat style="margin-right: 10px;">预览</btn> -->
         <!--<btn big flat style="margin-right: 10px;" @click="autoSave">保存草稿</btn>-->
         <btn big style="margin-right: 20px;" @click="submit">保存</btn>
         <icon-btn v-tooltip:bottom="'发布选项'" @click="ui.optionShow=!ui.optionShow">menu</icon-btn>
@@ -458,11 +458,11 @@ export default {
             console.log(res.special.headJson)
           }
         
-          if (res.special.thumb != '') {
+          if (res.special.thumb) {
             this.form.thumb = JSON.parse(res.special.thumb)
+            this.thumb.thumb1 = res.special.thumb[0]
           }
-          this.thumb.thumb1 = res.special.thumb[0]
-
+          
           console.log(this.headList_type1,this.thumb.thumb1)
           this.form.channelIds = res.channelIds || ''
           this.form.specialListJson = JSON.parse(this.form.specialListJson)
@@ -477,11 +477,11 @@ export default {
             })
           }
           
-          if (this.form.headPicType == 1) {
+          if (this.form.headPicType == 1 && this.form.headJson.length != 0) {
             this.headList_type1 = {
               url: this.form.headJson[0].thumb
             }
-          } else if (this.form.headPicType == 2) {
+          } else if (this.form.headPicType == 2 && this.form.headJson.length != 0) {
             this.headList_type2 = {
               selected: this.form.headJson
             }

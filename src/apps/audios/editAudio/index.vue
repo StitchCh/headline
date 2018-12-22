@@ -12,7 +12,7 @@
           </div>
           <div class="flex-item"></div>
           <div class="flex-v-center">
-            <btn big flat style="margin-right: 10px;">预览</btn>
+            <!-- <btn big flat style="margin-right: 10px;">预览</btn> -->
             <btn big flat style="margin-right: 10px;" @click="autoSave">保存草稿</btn>
             <btn big style="margin-right: 20px;" @click="submit">保存</btn>
             <icon-btn v-tooltip:bottom="'发布选项'" @click="ui.optionShow=!ui.optionShow">menu</icon-btn>

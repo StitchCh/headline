@@ -10,14 +10,14 @@
       <div class="flex-item"></div>
       <div class="flex-v-center">
         <!--<btn big flat style="margin-right: 15px;">递交审核</btn>-->
-        <btn big flat style="margin-right: 10px;">预览</btn>
+        <!-- <btn big flat style="margin-right: 10px;">预览</btn> -->
         <btn big flat style="margin-right: 10px;" @click="autoSave">保存草稿</btn>
         <btn big style="margin-right: 20px;" @click="submit">保存</btn>
         <icon-btn v-tooltip:bottom="'发布选项'" @click="ui.optionShow=!ui.optionShow">menu</icon-btn>
       </div>
     </div>
     <div class="flex-item scroll-y">
-      <article-editor ref="editor" @getKeyGenerate="getKeyGenerate"></article-editor>
+      <article-editor ref="editor" v-if="getif" :url="form.ecommerceUrl" @getKeyGenerate="getKeyGenerate"></article-editor>
     </div>
   </div>
   <div class="art-options c-4 scroll-y" :style="{width: ui.optionShow ? '320px' : '0px'}">
@@ -49,11 +49,11 @@
           <app-article-add-thumb v-model="thumb.thumb2" height="80px" class="flex-item" style="margin-right: 8px;"></app-article-add-thumb>
           <app-article-add-thumb v-model="thumb.thumb3" height="80px" class="flex-item"></app-article-add-thumb>
         </div>
-        <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
+        <!-- <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
           <div class="flex-item"><radio-box text="默认" :label="1" v-model="form.thumbType"/></div>
           <div class="flex-item"><radio-box text="三图" :label="2" v-model="form.thumbType"/></div>
           <div><radio-box text="16:9 大图" style="margin: 0;" :label="3" v-model="form.thumbType"/></div>
-        </div>
+        </div> -->
       </div>
       <div class="option-item relative">
         <textarea placeholder="摘要，限制 128 字。" v-model="form.abstarcts" rows="8"></textarea>
@@ -86,10 +86,10 @@
       <!--<div class="option-item">-->
         <!--<input type="number" placeholder="权重，范围 0 ~ 100" v-model="form.weight">-->
       <!--</div>-->
-      <div class="option-item flex-v-center">
+      <!-- <div class="option-item flex-v-center">
         <span class="flex-item">水印</span>
         <switcher mode="Number" v-model="form.isWatermarked"/>
-      </div>
+      </div> -->
       <!--<div class="option-item flex-v-center">-->
         <!--<div class="flex-item">定时上线</div>-->
         <!--<div class="relative flex-v-center a">-->
@@ -195,7 +195,7 @@ import AppArticleAddAttachment from './attachment'
 import AppArticleAddThumb from './thumb'
 
 const from = {
-  article: {
+  ecommerce: {
     getUrl: '/cri-cms-platform/ecommerce/get.monitor'
   },
   draft: {
@@ -219,6 +219,7 @@ export default {
         gallerySettingDisplayPositionShow: false,
         submited: false
       },
+      getif: false,
       form: {
         ecommerceUrl: '',
         app: 'ARTICLE',
@@ -381,9 +382,11 @@ export default {
     if (this.from && this.id) {
       this.ui.loading = true
       if (this.from === 'draft') this.autoSaveId = this.id
+        console.log(this.from)
       this.$http.post(from[this.from].getUrl, {
         id: this.id
       }).then(res => {
+        console.log(res)
         for (let k in this.form) {
           if (k === 'virtualComment') {
             if (res.content[k] === '') {
@@ -404,8 +407,9 @@ export default {
           }
           this.form[k] = res.content[k]
         }
+        this.form.ecommerceUrl = res.ecommerce.ecommerceUrl
         this.form.createDate = res.content.createDate
-        this.form.content = res.article.content
+        this.form.content = res.ecommerce.content
         this.form.channelIds = res.channelIds || ''
         this.form.relateIds = res.relateArticle.map(v => v.id).join(',')
         this.form.specialId = res.relateSpecial.id || ''
@@ -421,9 +425,13 @@ export default {
           this.$refs.editor.titleColor = this.form.titleColor
           this.$refs.editor.content = this.form.content
         })
+        this.getif = true
       }).catch(e => {
         console.log(e)
+        this.getif = true
       })
+    } else {
+      this.getif = true
     }
   },
   watch: {

@@ -12,7 +12,7 @@
           </div>
           <div class="flex-item"></div>
           <div class="flex-v-center">
-            <btn big flat style="margin-right: 10px;">预览</btn>
+            <!-- <btn big flat style="margin-right: 10px;">预览</btn> -->
             <btn big flat style="margin-right: 10px;" @click="autoSave">保存草稿</btn>
             <btn big style="margin-right: 20px;" @click="submit">保存</btn>
             <icon-btn v-tooltip:bottom="'发布选项'" @click="ui.optionShow=!ui.optionShow">menu</icon-btn>
@@ -103,6 +103,7 @@ export default {
       let form = Object.assign({title, titleColor, content}, this.$refs.option.form)
       if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
       if (this.id) form.id = this.id
+
       this.$http.post(url, form).then(
         res => {
           this.ui.submited = true

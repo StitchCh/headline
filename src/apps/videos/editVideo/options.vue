@@ -23,11 +23,11 @@
           <add-thumb v-model="thumb.thumb2" height="80px" class="flex-item" style="margin-right: 8px;"/>
           <add-thumb v-model="thumb.thumb3" height="80px" class="flex-item"/>
         </div>
-        <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
+        <!-- <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
           <div class="flex-item"><radio-box text="默认" :label="1" v-model="form.thumbType"/></div>
           <div class="flex-item"><radio-box text="三图" :label="2" v-model="form.thumbType"/></div>
           <div><radio-box text="16:9 大图" style="margin: 0;" :label="3" v-model="form.thumbType"/></div>
-        </div>
+        </div> -->
       </div>
       <div class="option-item relative">
         <textarea placeholder="摘要，限制 128 字。" v-model="form.abstarcts" rows="8"></textarea>
@@ -58,10 +58,10 @@
         </div>
       </div>
 
-      <div class="option-item flex-v-center">
+      <!-- <div class="option-item flex-v-center">
         <span class="flex-item">水印</span>
         <switcher mode="Number" v-model="form.isWatermarked"/>
-      </div>
+      </div> -->
 
       <div class="option-item flex-v-center">
         <span>初始阅读量</span>

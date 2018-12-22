@@ -251,6 +251,9 @@ export default {
   .imgbox{
     overflow: hidden;
   }
+  .imgbox>img{
+    width:100%;
+  }
   .inputboxon{
     height: 67px;
   }

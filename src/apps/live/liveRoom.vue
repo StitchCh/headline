@@ -9,7 +9,7 @@
           </div>
           <div class="flex-item"></div>
           <div class="flex-item">{{liveTitle}}</div>
-          <div  class="flex-v-center a" @click="closeLive">关闭直播</div>
+          <!-- <div  class="flex-v-center a" @click="closeLive">关闭直播</div> -->
         </div>
 
         <div  class="flex-item scroll-y">
@@ -17,7 +17,7 @@
             <div class="tab">
               <div class="tab-item" :class="{on : navindex == 0}" @click="navindex = 0">直播</div>
               <div class="tab-item" :class="{on : navindex == 1}" @click="navindex = 1">聊天室</div>
-              <div class="tab-item" :class="{on : navindex == 2}" @click="navindex = 2">直播管理</div>
+              <!-- <div class="tab-item" :class="{on : navindex == 2}" @click="navindex = 2">直播管理</div> -->
             </div>
           </div>
 
@@ -76,22 +76,28 @@
       </div>
 
       <div class="art-options c-4 scroll-y" style="width: 320px;background: #f8f8f8;">
-        <div class="btn" @click="startLive">开始直播</div>
+        <div v-if="status == '0'" class="btn" @click="startLive">开始直播</div>
+        <div v-if="status == '1'" class="btn1" @click="closeLive">结束直播</div>
+        <div v-if="status == '2'" class="btn2">直播已关闭</div>
         <div class="rlist">
           <p style="line-height: 40px;font-size: 18px;">主持人</p>
           <div class="flex" style="align-items: center">
-            <div class="imgbox txbox" style="margin-right: 10px;">
-              <img :src="host.url" alt="">
+            <div class="imgbox txbox" style="margin-right: 10px;" @click="mediaShow = true;zbChange = true;">
+              <img v-if="!host.url" src="../../../static/img/icon-user.png">
+              <img v-if="host.url" :src="host.url" alt="">
             </div>
-            <p>{{host.name}}</p>
+            <!-- <p>{{host.name}}</p> -->
+            <input type="" v-model="host.name" name="" @blur="setZhiboRoom">
           </div>
         </div>
         <div class="rlist">
           <span style="position: absolute;top: 14px;right: 20px;cursor: pointer;" @click="userBoxShow = true">设置</span>
           <p style="line-height: 40px;font-size: 18px;">直播员</p>
           <div v-for="(item, index) in zhiboyuanList" class="flex-v-center" style="align-items: center;margin-bottom: 10px;">
-            <div class="imgbox txbox flex-item" style="margin-right: 10px;">
-              <img :src="item.thumb" alt="" @click="mediaShow = true;txChange = true;txIndex = index;">
+            <div class="imgbox txbox" style="margin-right: 10px;">
+              <img v-if="!item.thumb.url" src="../../../static/img/icon-user.png" @click="mediaShow = true;txChange = true;txIndex = index;">
+
+              <img v-if="item.thumb.url" :src="item.thumb.url" @click="mediaShow = true;txChange = true;txIndex = index;">
             </div>
             <input style="width: 110px;" type="text" v-model="item.aliasName" @blur="changeZ(index)">
             <p>
@@ -174,6 +180,7 @@ export default {
   name: 'liveRoom',
   data () {
     return {
+      status: 0,
       pinglun: '',
       liveContent: '',
       virtualDigg: '',
@@ -183,6 +190,7 @@ export default {
       navindex: 0,
       txIndex: '',
       txChange: false,
+      zbChange: false,
       mediaShow: false,
       openBulletScreen: 0,
       liveTitle: '',
@@ -214,6 +222,7 @@ export default {
       id: this.$route.query.id
     }).then(res => {
       console.log(res)
+      this.status = res.live.status
       this.liveTitle = res.content.title
       this.virtualDigg = res.content.virtualDigg
       this.virtualShare = res.content.virtualShare
@@ -242,6 +251,7 @@ export default {
         liveId: this.liveId
       }).then(res => {
         this.zhiboyuanList = res.broadcasters
+        console.log(this.zhiboyuanList)
         this.zhiboyuanList.checked = res.broadcasters.auditPermission == 0 ? false : true
       })
     })
@@ -299,6 +309,12 @@ export default {
     closeLive () {
       this.$http.post('/cri-cms-platform/live/stop.monitor', {
         liveId: this.liveId
+      }).then(res => {
+        this.$http.post('/cri-cms-platform/live/room.monitor', {
+          id: this.$route.query.id
+        }).then(res => {
+          this.status = res.live.status
+        })
       })
     },
     setZhiboRoom () {
@@ -326,26 +342,35 @@ export default {
           userIds += item.userId + ','
         }
       })
-      console.log(userIds)
       this.$http.post('/cri-cms-platform/live/broadcaster/add.monitor', {
         liveId: this.liveId,
         userIds: userIds
       }).then(res => {
         this.userBoxShow = false
+        this.$http.post('/cri-cms-platform/live/broadcaster/list.monitor', {
+          liveId: this.liveId
+        }).then(res => {
+          this.zhiboyuanList = res.broadcasters
+          this.zhiboyuanList.checked = res.broadcasters.auditPermission == 0 ? false : true
+        })
       })
     },
     startLive(){
       this.$http.post('/cri-cms-platform/live/start.monitor',{
         liveId: this.liveId
       }).then(res => {
-        console.log('startLive', res)
+        this.$http.post('/cri-cms-platform/live/room.monitor', {
+          id: this.$route.query.id
+        }).then(res => {
+          this.status = res.live.status
+        })
       })
     },
     changeZhiboyuan () {
       this.$http.post('/cri-cms-platform/live/broadcaster/update.monitor',{
         liveId: this.liveId,
         userId: this.zhiboyuanList[this.txIndex].userId,
-        thumb: this.zhiboyuanList[this.txIndex].thumb,
+        thumb: this.zhiboyuanList[this.txIndex].thumb.id,
         aliasName: this.zhiboyuanList[this.txIndex].aliasName,
         audit: this.zhiboyuanList[this.txIndex].checked ? 1 : 0
       }).then(res => {
@@ -360,9 +385,15 @@ export default {
         url: image ? this.$refs.mediaPhotos.imgOrigin + image.filePath + image.fileName : ''
       }
       if(this.txChange){
-        this.zhiboyuanList[this.txIndex].thumb = this.image
+        console.log(this.zhiboyuanList)
+        this.zhiboyuanList[this.txIndex].thumb.url = this.image.url
+        this.zhiboyuanList[this.txIndex].thumb.id = this.image.id
         this.changeZhiboyuan()
-      }else{
+      } else if (this.zbChange) {
+        this.host.url = this.image.url
+        this.host.urlid = this.image.id
+        this.setZhiboRoom()
+      } else{
         this.imagelist.push(this.image)
       }
       this.mediaShow = false
@@ -434,6 +465,25 @@ export default {
     color: #fff;
     text-align: center;
     cursor: pointer;
+    border-radius: 6px;
+  }
+  .btn1{
+    width: 180px;
+    margin: 20px auto;
+    line-height: 40px;
+    background: #f00;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 6px;
+  }
+  .btn2{
+    width: 180px;
+    margin: 20px auto;
+    line-height: 40px;
+    background: #ccc;
+    color: #fff;
+    text-align: center;
     border-radius: 6px;
   }
   .option-item{

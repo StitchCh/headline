@@ -254,6 +254,9 @@ export default {
   .imgbox{
     overflow: hidden;
   }
+  .imgbox>img{
+    width:100%;
+  }
   .listdele{
     background: #eee;
     border-color: #ddd;
