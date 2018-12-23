@@ -20,30 +20,32 @@
           <th>最后登录</th>
           <th>积分</th>
           <th>状态</th>
+          <th colspan="2">操作</th>
           </thead>
           <tbody>
-          <tr v-for="item in list" :key="item.id" @click="openDetail(item.id)">
+          <tr v-for="item in list" :key="item.id">
             <td>{{item.id}}</td>
             <td>{{item.nickname}}</td>
             <td>{{item.mobile}}</td>
-            <td>{{item.email?item.email:'-'}}</td>
-            <td>{{item.province?item.province:''}}-{{item.city?item.city:''}}</td>
+            <td>{{item.email || '--' }}</td>
+            <td>
+              <span v-if="item.province || item.city">{{item.province || ''}}{{item.province && item.city ? '-' : ''}}{{item.city || ''}}</span>
+              <span v-else>--</span>
+            </td>
             <td>{{item.thisLoginTime}}</td>
             <td>{{item.credits}}</td>
-            <td v-if="item.state == 1">正常</td>
-            <td v-if="item.state == 0">屏蔽</td>
-            <td style="width: 30px;">
-              <icon-btn v-tooltip="'编辑'" small @click.stop.native="openEdit(item.id)">edit</icon-btn>
+            <td class="relative">
+              <span class="a state" @click.stop="item.stateShow = !item.stateShow">{{item.state | state}} <i class="icon"></i></span>
+              <bubble v-if="item.stateShow">
+                <div v-if="item.state === '0'" class="a stateBox">正常</div>
+                <div v-if="item.state === '1'" class="a stateBox">屏蔽</div>
+              </bubble>
             </td>
             <td style="width: 30px;">
-              <icon-btn v-tooltip="'查看'" small @click.stop.native="openDetail(item.id)">
-                info
-              </icon-btn>
+              <icon-btn v-tooltip="'编辑'" small @click="openEdit(item)">edit</icon-btn>
             </td>
             <td style="width: 30px;">
-              <icon-btn v-tooltip="'审核'" v-if="item.userStatus === '01'" small @click.stop.native="auditUser(item.id)">
-                find_in_page
-              </icon-btn>
+              <icon-btn v-tooltip="'查看'" small @click="openDetail(item.id)">info</icon-btn>
             </td>
           </tr>
           </tbody>
@@ -60,47 +62,51 @@
           <tbody>
           <tr>
             <th align="right">昵称</th>
-            <td>{{detail.member.nickname ? detail.member.nickname : '无'}}</td>
+            <td>{{detail.member.nickname || '--'}}</td>
           </tr>
           <tr>
             <th align="right">真实姓名</th>
-            <td>{{detail.member.trueName ? detail.member.trueName : '无'}}</td>
+            <td>{{detail.member.trueName || '--'}}</td>
           </tr>
           <tr>
             <th align="right">身份证号</th>
-            <td>{{detail.member.idNo ? detail.member.idNo : '无'}}</td>
+            <td>{{detail.member.idNo || '--'}}</td>
           </tr>
           <tr>
             <th align="right">邮箱</th>
-            <td>{{detail.member.email ? detail.member.email:'无'}}</td>
+            <td>{{detail.member.email || '--'}}</td>
           </tr>
           <tr>
             <th align="right">手机</th>
-            <td>{{detail.member.mobile ? detail.member.mobile: '无'}}</td>
+            <td>{{detail.member.mobile || '--'}}</td>
+          </tr>
+          <tr>
+            <th align="right">地址</th>
+            <td>{{detail.member.address || '--'}}</td>
           </tr>
           <tr>
             <th align="right">QQ昵称</th>
-            <td>{{detail.social.QQ == '' ?detail.social.QQ: '无'}}</td>
+            <td>{{detail.social.QQ || '--'}}</td>
           </tr>
           <tr>
             <th align="right">微信昵称</th>
-            <td>{{detail.social.WECHAT?detail.social.WECHAT: '无'}}</td>
+            <td>{{detail.social.WECHAT || '--'}}</td>
           </tr>
           <tr>
             <th align="right">新浪微博</th>
-            <td>{{detail.social.SINA_WEIBO? detail.social.SINA_WEIBO :'无'}}</td>
+            <td>{{detail.social.SINA_WEIBO || '--'}}</td>
           </tr>
           <tr>
             <th align="right">GOOGLE</th>
-            <td>{{detail.social.GOOGLE ? detail.social.GOOGLE :'无'}}</td>
+            <td>{{detail.social.GOOGLE || '--'}}</td>
           </tr>
           <tr>
             <th align="right">FACEBOOK</th>
-            <td>{{detail.social.FACEBOOK ?detail.social.FACEBOOK: '无'}}</td>
+            <td>{{detail.social.FACEBOOK || '--'}}</td>
           </tr>
           <tr>
             <th align="right">TWITER</th>
-            <td>{{detail.social.TWITER ? detail.social.TWITER:'无'}}</td>
+            <td>{{detail.social.TWITER || '--'}}</td>
           </tr>
           <tr>
             <th align="right">所属站点</th>
@@ -130,17 +136,18 @@
         </table>
       </div>
       <div class="layer-btns">
-        <btn flat color="#66BB6A" @click="detailShow = false">关闭</btn>
+        <btn flat color="#008cff" @click="detailShow = false">关闭</btn>
       </div>
     </layer>
 
-    <layer v-if="editShow" title="会员信息" width="600px">
+    <layer v-if="editShow" title="修改会员信息" width="600px">
       <div class="layer-text">
-        asdsa
+        <input-box v-model="form.nickname" label="昵称"/>
+        <input-box v-model="form.address" label="地址"/>
       </div>
       <div class="layer-btns">
         <btn flat @click="editShow = false">取消</btn>
-        <btn flat color="#66BB6A" @click="submitEdit">提交</btn>
+        <btn flat color="#008cff" @click="submitEdit">提交</btn>
       </div>
     </layer>
   </div>
@@ -148,7 +155,7 @@
 
 <script>
 export default {
-  name: 'settings-user',
+  name: 'settings-member',
   data () {
     return {
       loading: false,
@@ -159,16 +166,27 @@ export default {
       },
       total: 1,
       detail: {},
+      form: {
+        id: '',
+        nickname: '',
+        address: ''
+      },
       detailShow: false,
       editShow: false
     }
   },
   methods: {
+    open (item) {
+      console.log(666)
+      item.stateShow = true
+    },
     getList () {
       this.loading = true
       this.$http.post('/cri-cms-platform/member/list.monitor', this.filter).then(
         res => {
-          console.log(res)
+          res.pages.forEach(v => {
+            v.stateShow = false
+          })
           this.list = res.pages
           this.total = res.totalPage * 15
           this.loading = false
@@ -180,34 +198,57 @@ export default {
       )
     },
     openDetail (id) {
-      this.$http.post('/cri-cms-platform/member/view.monitor', {
-        id: id
-      }).then(
+      this.$http.post('/cri-cms-platform/member/view.monitor', { id }).then(
         res => {
-          this.detailShow = true
           this.detail = res
+          this.detailShow = true
         }
-      ).catch(
-        res => {
-          console.log(res)
+      ).catch(console.log)
+    },
+    openEdit (item) {
+      this.form.id = item.id
+      this.form.nickname = item.nickname
+      this.form.address = item.address
+      this.editShow = true
+    },
+    submitEdit () {
+      this.$http.post('/cri-cms-platform/member/update.monitor', this.form).then(
+        () => {
+          this.getList()
+          this.editShow = false
         }
       )
     },
-    openEdit (id) {
-      this.$http.post('/cri-cms-platform/member/view.monitor', {
-        id: id
-      }).then(
-        res => {
-        }
-      ).catch(
-        res => {
-          console.log(res)
-        }
-      )
+    changeState (id, e) {
+      console.log(e.target.value)
+      let url = {
+        '1': 1
+      }
+    },
+    stateBoxOff () {
+      this.list.forEach(v => {
+        v.stateShow = false
+      })
+    }
+  },
+  filters: {
+    state (value) {
+      if (!value) return value
+      let list = {
+        '1': '正常',
+        '0': '屏蔽'
+      }
+      return list[value]
     }
   },
   created () {
     this.getList()
+  },
+  mounted () {
+    document.addEventListener('click', this.stateBoxOff)
+  },
+  beforeDestroy () {
+    document.removeEventListener('click', this.stateBoxOff)
   }
 }
 </script>

@@ -37,9 +37,16 @@ export default {
     .member-content {
       .setting-card {max-width: 1440px;margin: 20px auto;border-radius: 10px;padding: 20px;background: #fff;
         th,td {padding: 5px 10px;}
-        tr {border-top: 1px solid #e1e1e1;cursor: pointer;}
+        tr {border-top: 1px solid #e1e1e1;}
         tr:hover {background: rgba(0, 0, 0, .05);}
       }
+
+      .layer-text {
+        th, td {padding: 5px 15px;}
+        th {width: 150px;}
+      }
+      /*.state {color: #008cff;border-bottom: 1px dashed #008cff;}*/
+      .stateBox {width: 60px;padding: 10px 0;text-align: center;}
     }
   }
 </style>

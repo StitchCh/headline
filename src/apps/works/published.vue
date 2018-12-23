@@ -57,7 +57,7 @@ export default {
           item.sortOrder = item.order = 1
           item.key = Math.random().toString(16).replace('0.', '')
           item.newTitle = item.title
-          item.newAbstract = item.abstracts || ''
+          item.newAbstract = item.abstarcts || ''
         })
         layout.add = uniqBy(addItems.concat(layout.add), 'id')
       })
