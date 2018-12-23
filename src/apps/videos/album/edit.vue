@@ -151,7 +151,6 @@ export default {
     getList (refresh) {
       if (refresh) this.filter.toPage = 1
       this.$http.post('/cri-cms-platform/special/getArticList.monitor', this.filter).then(res => {
-        console.log(res)
         if (res.length) {
           res.forEach(val => {
             val.check = this.selected.some(v => {
@@ -160,6 +159,11 @@ export default {
           })
         }
         this.list = res || []
+        for (let i = 0; i < this.list.length; i++) {
+          if (this.list[i].thumb) {
+            this.list[i].thumb = JSON.parse(this.list[i].thumb)
+          }
+        }
         this.totalPage = res.totalPage || 1
       }).catch(e => {
         console.log(e)
@@ -196,10 +200,10 @@ export default {
         this.$toast('请输入标题')
         return
       }
-      if (!this.form.videoAbstract) {
-        this.$toast('请输入摘要')
-        return
-      }
+      // if (!this.form.videoAbstract) {
+      //   this.$toast('请输入摘要')
+      //   return
+      // }
       if (!this.thumb) {
         this.$toast('请选择封面')
         return

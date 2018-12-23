@@ -162,6 +162,11 @@ export default {
           })
         }
         this.list = res || []
+        for (let i = 0; i < this.list.length; i++) {
+          if (this.list[i].thumb) {
+            this.list[i].thumb = JSON.parse(this.list[i].thumb)
+          }
+        }
         this.totalPage = res.totalPage || 1
       }).catch(e => {
         console.log(e)
@@ -198,10 +203,10 @@ export default {
         this.$toast('请输入标题')
         return
       }
-      if (!this.form.videoAbstract) {
-        this.$toast('请输入摘要')
-        return
-      }
+      // if (!this.form.videoAbstract) {
+      //   this.$toast('请输入摘要')
+      //   return
+      // }
       if (!this.thumb) {
         this.$toast('请选择封面')
         return

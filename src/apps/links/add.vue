@@ -340,7 +340,7 @@ export default {
       // )
     },
     submit () {
-      let url = '/cri-cms-platform/link/save.monitor'
+      let url = this.id ? '/cri-cms-platform/link/update.monitor' : '/cri-cms-platform/link/save.monitor'
       let { title, titleColor, link, linkhead } = this.$refs.editor
       if (!title) {
         this.$toast('请输入标题')

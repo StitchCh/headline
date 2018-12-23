@@ -335,7 +335,7 @@ export default {
     submit () {
       let url = this.id ? '/cri-cms-platform/ecommerce/update.monitor' : '/cri-cms-platform/ecommerce/save.monitor'
       let { title, titleColor, content, getText, ecommerceUrl } = this.$refs.editor
-      console.log(ecommerceUrl)
+      console.log(content)
       if (!title) {
         this.$toast('请输入标题')
         return
