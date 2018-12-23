@@ -60,7 +60,7 @@ export default [{
   icon: 'icon-member'
 }, {
   name: '评论',
-  path: '/comment',
+  path: '/comment/list',
   icon: 'icon-member'
 }, {
   name: '频道',
