@@ -104,6 +104,8 @@ export default {
       if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
       if (this.id) form.id = this.id
 
+      console.log(this.$refs.option.form.thumb)
+
       console.log(form)
 
       this.$http.post(url, form).then(

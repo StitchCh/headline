@@ -170,7 +170,7 @@ export default {
         if (res.special.thumb) {
           this.content.thumb = JSON.parse(res.special.thumb)
         }
-      
+
         // this.article = res.article || {}
         this.specialListJson = JSON.parse(res.special.specialListJson) || []
         // this.channelIds = res.channelIds || ''

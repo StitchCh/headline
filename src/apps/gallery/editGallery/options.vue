@@ -224,17 +224,6 @@ export default {
       this.form.channelIds = res.channelIds || ''
       this.form.relateIds = res.relateGallery.map(v => v.id).join(',')
 
-      console.log(this.thumb)
-      if (!(this.thumb.thumb2 || this.thumb.thumb3)) {
-        this.form.hasThumb = 0
-        this.form.thumb = ''
-      } else {
-        this.form.hasThumb = 1
-        this.form.thumb = [ this.thumb.thumb1, this.thumb.thumb2, this.thumb.thumb3 ].filter(v => v).map(v => v.id).join(',')
-      }
-
-      console.log(this.form.thumb)
-
       // this.form.specialId = res.relateSpecial.id || ''
       // this.attachmentDefaultList = res.attachments
       // this.form.gallerySettingDisplayPosition = res.gallerySettingDisplayPosition || '1'
@@ -282,25 +271,26 @@ export default {
         this.form.thumb = [ this.thumb.thumb1, this.thumb.thumb2, newValue ].filter(v => v).map(v => v.id).join(',')
       }
     },
-    'form.thumbType' (newValue) {
-      if (newValue === 2) {
-        if (!(this.thumb.thumb1 || this.thumb.thumb2 || this.thumb.thumb3)) {
-          this.form.hasThumb = 0
-          this.form.thumb = ''
-        } else {
-          this.form.hasThumb = 1
-          this.form.thumb = [ this.thumb.thumb1, this.thumb.thumb2, this.thumb.thumb3 ].filter(v => v).map(v => v.id).join(',')
-        }
-      } else {
-        if (!this.thumb.thumb1) {
-          this.form.hasThumb = 0
-          this.form.thumb = ''
-        } else {
-          this.form.hasThumb = 1
-          this.form.thumb = this.thumb.thumb1.id
-        }
-      }
-    }
+    // 'form.thumbType' (newValue) {
+    //   if (newValue === 2) {
+    //     if (!(this.thumb.thumb1 || this.thumb.thumb2 || this.thumb.thumb3)) {
+    //       this.form.hasThumb = 0
+    //       this.form.thumb = ''
+    //     } else {
+    //       this.form.hasThumb = 1
+    //       this.form.thumb = [ this.thumb.thumb1, this.thumb.thumb2, this.thumb.thumb3 ].filter(v => v).map(v => v.id).join(',')
+    //     }
+    //   } else {
+    //     if (!this.thumb.thumb1) {
+    //       this.form.hasThumb = 0
+    //       this.form.thumb = ''
+    //     } else {
+    //       this.form.hasThumb = 1
+    //       this.form.thumb = this.thumb.thumb1.id
+    //     }
+    //   }
+    //   console.log('4', this.form.thumb)
+    // }
   }
 }
 </script>
