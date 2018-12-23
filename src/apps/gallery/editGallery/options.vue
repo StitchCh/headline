@@ -209,6 +209,7 @@ export default {
           continue
         }
         if (k === 'thumb') {
+          console.log('a')
           this.thumb.thumb1 = res.content.thumb[0]
           this.thumb.thumb2 = res.content.thumb[1]
           this.thumb.thumb3 = res.content.thumb[2]
@@ -222,6 +223,18 @@ export default {
       this.form.createDate = res.content.createDate
       this.form.channelIds = res.channelIds || ''
       this.form.relateIds = res.relateGallery.map(v => v.id).join(',')
+
+      console.log(this.thumb)
+      if (!(this.thumb.thumb2 || this.thumb.thumb3)) {
+        this.form.hasThumb = 0
+        this.form.thumb = ''
+      } else {
+        this.form.hasThumb = 1
+        this.form.thumb = [ this.thumb.thumb1, this.thumb.thumb2, this.thumb.thumb3 ].filter(v => v).map(v => v.id).join(',')
+      }
+
+      console.log(this.form.thumb)
+
       // this.form.specialId = res.relateSpecial.id || ''
       // this.attachmentDefaultList = res.attachments
       // this.form.gallerySettingDisplayPosition = res.gallerySettingDisplayPosition || '1'

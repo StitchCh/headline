@@ -29,16 +29,16 @@
         <textarea v-if="selected.length" v-model="selected[activeIndex].description" rows="4" placeholder="在此处输入图片说明"/>
       </div>
       <div class="flex pic-list">
-        <div class="pic-item flex-center a relative" :class="{ active: activeIndex === index }" v-for="(item, index) in selected" :key="item.id" @click="activeIndex = index">
-          <i class="icon" @click.stop="deleteItem(index)">cancel</i>
-          <img :src="item.url" alt="">
-        </div>
-        <!-- <draggable style="width: 100%;" element="div" :options="{ ghostClass: 'movelist'}" v-model="selected" >
+        <!--<div class="pic-item flex-center a relative" :class="{ active: activeIndex === index }" v-for="(item, index) in selected" :key="item.id" @click="activeIndex = index">-->
+          <!--<i class="icon" @click.stop="deleteItem(index)">cancel</i>-->
+          <!--<img :src="item.url" alt="">-->
+        <!--</div>-->
+        <draggable style="width: 100%;" element="div" :options="{ ghostClass: 'movelist'}" v-model="selected" >
           <div style="display: inline-block;" class="pic-item flex-center a relative" :class="{ active: activeIndex === index }" v-for="(item, index) in selected" :key="item.id" @click="activeIndex = index">
             <i class="icon" @click.stop="deleteItem(index)">cancel</i>
             <img :src="item.url" alt="">
           </div>
-        </draggable> -->
+        </draggable>
         <div class="pic-item flex-center add-btn a" @click="ui.photoSelectorShow = true">
           <i class="icon">add_photo_alternate</i>添加图片
         </div>

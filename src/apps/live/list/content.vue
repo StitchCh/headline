@@ -81,6 +81,7 @@ export default {
   },
   data () {
     return {
+      getif: false,
       content: {},
       article: {},
       channelIds: '',
@@ -143,10 +144,10 @@ export default {
       this.$http.post(this.getUrl, {
         id: this.id
       }).then(res => {
+        console.log(res.live)
         this.content = res.content || {}
         this.content.abstarcts = res.live.introduction
-        this.content.headimg = res.live.hostThumb.url
-
+        this.content.headimg = res.live.headThumb[0].url
       }).catch(e => {
         this.content = {}
         this.article = {}

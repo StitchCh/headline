@@ -55,6 +55,12 @@
           <div><radio-box text="16:9 大图" style="margin: 0;" :label="3" v-model="form.thumbType"/></div>
         </div> -->
       </div>
+      <div class="option-item">
+        <div class="flex-v-center">
+          <span class="flex-item">显示头图</span>
+          <switcher mode="Number" v-model="form.hasThumb"/>
+        </div>
+      </div>
       <div class="option-item relative">
         <textarea placeholder="摘要，限制 128 字。" v-model="form.abstarcts" rows="8"></textarea>
         <span style="position: absolute;bottom: 3px;right: 0;" :style="{ color: form.abstarcts.length > 128 ? '#F44336' : '#999' }">{{form.abstarcts.length}} / 128</span>
@@ -222,6 +228,7 @@ export default {
       form: {
         app: 'ARTICLE',
         title: '',
+        hasThumb: 1,
         titleColor: '',
         content: '',
         channelIds: '',
@@ -249,7 +256,6 @@ export default {
         virtualComment: '',
         virtualShare: '',
         virtualDigg: '',
-        hasThumb: 0,
         thumbType: 1,
         thumb: '',
         terminalPc: 0,
