@@ -63,6 +63,12 @@ export default {
       this.loading = true
       let { loginName, password } = this
       this.$http.post('/cri-cms-platform/login.monitor', { loginName, password }).then(res => {
+        if (!res) {
+          this.error.message = '您输入的账号或密码不正确。'
+          this.error.show = true
+          this.loading = false
+          return
+        }
         if (this.keepLogin) {
           sessionStorage.removeItem('token')
           sessionStorage.removeItem('siteId')

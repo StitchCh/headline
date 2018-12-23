@@ -5,7 +5,7 @@
       <li class="c-6 t-center a page-btn f-14" v-if="page > 1" @click="$emit('prev')">上一页</li>
       <slot v-for="item in list" :item="item"></slot>
       <li class="c-6 t-center a page-btn f-14" v-if="page < totalPage" @click="$emit('next')">下一页</li>
-      <li v-if="page >= totalPage && list.length" class="c-a f-12 t-center">没有更多了</li>
+      <!--<li v-if="page >= totalPage && list.length" class="c-a f-12 t-center">没有更多了</li>-->
     </ul>
   </div>
   <div v-if="!list.length" class="abs flex-center"><no-data/></div>
