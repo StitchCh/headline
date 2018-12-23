@@ -1,6 +1,6 @@
 <template>
 <div class="abs bg-f flex app-work">
-  <af-left bg-color="#fafafa" vibrant-color="#008cff" title="工作台" style="width: 220px;">
+  <af-left bg-color="#fafafa" vibrant-color="#008cff" title="发布" style="width: 220px;">
     <div class="f-12 c-8" style="padding: 3px 20px;">频道列表</div>
     <tree
       class="c-4"
