@@ -47,6 +47,10 @@ export default {
       }
       /*.state {color: #008cff;border-bottom: 1px dashed #008cff;}*/
       .stateBox {width: 60px;padding: 10px 0;text-align: center;}
+      .state i {
+        transition: transform .2s;
+        &.active {transform: rotate(180deg)}
+      }
     }
   }
 </style>

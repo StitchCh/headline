@@ -35,10 +35,10 @@
             <td>{{item.thisLoginTime}}</td>
             <td>{{item.credits}}</td>
             <td class="relative">
-              <span class="a state" @click.stop="item.stateShow = !item.stateShow">{{item.state | state}} <i class="icon"></i></span>
+              <span class="a state" @click.stop="item.stateShow = !item.stateShow">{{item.state | state}} <i class="icon" :class="{ active: item.stateShow }">keyboard_arrow_down</i></span>
               <bubble v-if="item.stateShow">
-                <div v-if="item.state === '0'" class="a stateBox">正常</div>
-                <div v-if="item.state === '1'" class="a stateBox">屏蔽</div>
+                <div v-if="item.state === '0'" class="a stateBox" @click="enable(item.id)">正常</div>
+                <div v-if="item.state === '1'" class="a stateBox" @click="disable(item.id)">屏蔽</div>
               </bubble>
             </td>
             <td style="width: 30px;">
@@ -219,16 +219,24 @@ export default {
         }
       )
     },
-    changeState (id, e) {
-      console.log(e.target.value)
-      let url = {
-        '1': 1
-      }
-    },
     stateBoxOff () {
       this.list.forEach(v => {
         v.stateShow = false
       })
+    },
+    enable (id) {
+      this.$http.post('/cri-cms-platform/member/enable.monitor', { id }).then(
+        () => {
+          this.getList()
+        }
+      ).catch(console.log)
+    },
+    disable (id) {
+      this.$http.post('/cri-cms-platform/member/disable.monitor', { id }).then(
+        () => {
+          this.getList()
+        }
+      ).catch(console.log)
     }
   },
   filters: {
