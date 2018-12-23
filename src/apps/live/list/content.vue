@@ -6,7 +6,9 @@
           <no-data/>
         </div>
         <div class="art-ctn" v-else>
-          <h1 class="b" :style="{ color: content.titleColor }">{{content.title}}</h1>
+          <h1 class="b" :style="{ color: content.titleColor }">
+            {{content.title}}
+          </h1>
           <div class="f-14 c-a art-info flex-v-center">
             <!--<span>{{content.createDate}}</span>-->
             <!--<span>作者：{{content.author}}</span>-->
@@ -79,6 +81,7 @@ export default {
   },
   data () {
     return {
+      getif: false,
       content: {},
       article: {},
       channelIds: '',
@@ -141,11 +144,10 @@ export default {
       this.$http.post(this.getUrl, {
         id: this.id
       }).then(res => {
-        console.log(res)
+        console.log(res.live)
         this.content = res.content || {}
         this.content.abstarcts = res.live.introduction
-        this.content.headimg = res.live.hostThumb.url
-
+        this.content.headimg = res.live.headThumb[0].url
       }).catch(e => {
         this.content = {}
         this.article = {}

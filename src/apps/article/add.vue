@@ -10,7 +10,7 @@
       <div class="flex-item"></div>
       <div class="flex-v-center">
         <!--<btn big flat style="margin-right: 15px;">递交审核</btn>-->
-        <btn big flat style="margin-right: 10px;">预览</btn>
+        <!-- <btn big flat style="margin-right: 10px;">预览</btn> -->
         <btn big flat style="margin-right: 10px;" @click="autoSave">保存草稿</btn>
         <btn big style="margin-right: 20px;" @click="submit">保存</btn>
         <icon-btn v-tooltip:bottom="'发布选项'" @click="ui.optionShow=!ui.optionShow">menu</icon-btn>
@@ -44,15 +44,21 @@
         <icon-btn small v-tooltip:top="'发布到移动网页'" :class="{ active: form.terminalWeb }" @click="form.terminalWeb = ~~!form.terminalWeb">public</icon-btn>
       </div>
       <div style="margin: 10px 0;">
-        <app-article-add-thumb v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
+        <app-article-add-thumb scale v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
         <div v-if="form.thumbType == 2" class="flex">
-          <app-article-add-thumb v-model="thumb.thumb2" height="80px" class="flex-item" style="margin-right: 8px;"></app-article-add-thumb>
-          <app-article-add-thumb v-model="thumb.thumb3" height="80px" class="flex-item"></app-article-add-thumb>
+          <app-article-add-thumb scale v-model="thumb.thumb2" height="80px" class="flex-item" style="margin-right: 8px;"></app-article-add-thumb>
+          <app-article-add-thumb scale v-model="thumb.thumb3" height="80px" class="flex-item"></app-article-add-thumb>
         </div>
-        <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
+        <!-- <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
           <div class="flex-item"><radio-box text="默认" :label="1" v-model="form.thumbType"/></div>
           <div class="flex-item"><radio-box text="三图" :label="2" v-model="form.thumbType"/></div>
           <div><radio-box text="16:9 大图" style="margin: 0;" :label="3" v-model="form.thumbType"/></div>
+        </div> -->
+      </div>
+      <div class="option-item">
+        <div class="flex-v-center">
+          <span class="flex-item">显示头图</span>
+          <switcher mode="Number" v-model="form.hasThumb"/>
         </div>
       </div>
       <div class="option-item relative">
@@ -86,10 +92,10 @@
       <!--<div class="option-item">-->
         <!--<input type="number" placeholder="权重，范围 0 ~ 100" v-model="form.weight">-->
       <!--</div>-->
-      <div class="option-item flex-v-center">
+      <!-- <div class="option-item flex-v-center">
         <span class="flex-item">水印</span>
         <switcher mode="Number" v-model="form.isWatermarked"/>
-      </div>
+      </div> -->
       <!--<div class="option-item flex-v-center">-->
         <!--<div class="flex-item">定时上线</div>-->
         <!--<div class="relative flex-v-center a">-->
@@ -222,6 +228,7 @@ export default {
       form: {
         app: 'ARTICLE',
         title: '',
+        hasThumb: 1,
         titleColor: '',
         content: '',
         channelIds: '',
@@ -249,7 +256,6 @@ export default {
         virtualComment: '',
         virtualShare: '',
         virtualDigg: '',
-        hasThumb: 0,
         thumbType: 1,
         thumb: '',
         terminalPc: 0,

@@ -13,7 +13,7 @@
         <div class="flex-item">
           <div class="list-title flex-center">
             <i v-if="~~(slotProps.item.isRecommnd)" class="icon f-16 blue">thumb_up</i>
-            <i v-if="~~(slotProps.item.hasThumb)" class="icon f-16 orange">image</i>
+            <!-- <i v-if="~~(slotProps.item.hasThumb)" class="icon f-16 orange">image</i> -->
             <i v-if="~~(slotProps.item.isOriginal)" class="icon f-16 green">copyright</i>
             <span class="flex-item c-6 f-14 b">{{slotProps.item.title}}</span>
           </div>

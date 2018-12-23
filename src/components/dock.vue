@@ -49,7 +49,10 @@ export default {
   },
   methods: {
     toApp (app) {
-      if (app.path === this.$route.path) return
+      if (app.path.split('?')[0] === this.$route.path) {
+        this.show = false
+        return
+      }
       app.loading = true
       setTimeout(() => {
         this.$router.push(app.path)

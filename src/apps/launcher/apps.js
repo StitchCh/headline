@@ -12,7 +12,7 @@ export default [{
   icon: 'icon-videos'
 }, {
   name: '音频',
-  path: '/audio',
+  path: '/audio/list?scope=all&status=all',
   icon: 'icon-audios'
 }, {
   name: '专题',
@@ -73,5 +73,9 @@ export default [{
 }, {
   name: '站点',
   path: '/site',
+  icon: 'icon-site'
+}, {
+  name: '采集',
+  path: '/collection',
   icon: 'icon-site'
 }]

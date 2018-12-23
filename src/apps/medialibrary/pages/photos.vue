@@ -5,14 +5,37 @@
     <div class="af-topbar flex-v-center" style="height:36px;">
       <div class="search-bar flex-v-center">
         <i class="icon f-20 c-a">search</i>
-        <input type="text" class="f-14 c-6" placeholder="搜索">
+        <input style="width: 100px;margin-right: 10px;" v-model="secrchName" type="text" class="f-14 c-6" placeholder="输入图片名称">
+        <span style="cursor: pointer;color: #0299ff;" @click="getList">搜索</span>
       </div>
       <div class="flex-item"></div>
       <span class="f-14" v-if="selected.length" style="margin-right: 10px;">已选择 {{selected.length}} 项</span>
       <btn flat v-if="selected.length" color="#008eff" @click="cancelSelect">取消选择</btn>
-      <div v-if="!selectMode" class="flex-v-center opera-btns">
+      <div class="relative" style="padding: 0 4px;">
+        <p @click="scaleshow = true" style="cursor: pointer;color: #0299ff;">筛选</p>
+        <bubble v-if="scaleshow" @close="scaleshow = false">
+          <ul class="f-14 c-5" style="padding: 4px 0;width: 60px;text-align: center;line-height: 24px;">
+            <li class="a flex-v-center listhover" @click="setScale('all')">
+              <span class="flex-item">全部</span>
+            </li>
+            <li class="a flex-v-center listhover" @click="setScale('16:9')">
+              <span class="flex-item">16:9</span>
+            </li>
+            <li class="a flex-v-center listhover" @click="setScale('4:3')">
+              <span class="flex-item">4:3</span>
+            </li>
+            <li class="a flex-v-center listhover" @click="setScale('1:1')">
+              <span class="flex-item">1:1</span>
+            </li>
+            <li class="a flex-v-center listhover" @click="setScale('其他')">
+              <span class="flex-item">其他</span>
+            </li>
+          </ul>
+        </bubble>
+      </div>
+      <div class="flex-v-center opera-btns">
         <!-- <span class="a blue">全选</span> -->
-        <btn flat :disabled="!selected.length" color="#008eff" @click="del">批量删除</btn>
+        <btn flat :disabled="!selected.length" color="#008eff" @click="del">删除</btn>
         <media-upload :type="0" @uploaded="onUploaded" :folder-id="$route.query.folderId || 0"/>
         <!-- <span class="a blue"></span> -->
         <!-- <label>
@@ -35,6 +58,7 @@
             <i class="icon item-check a" @click="selectItem(item)">check_circle</i>
             <img :src="imgOrigin + item.filePath + item.fileName" @click="onItemClick(item)">
             <div class="img-name c-f f-12">{{item.alias}}</div>
+            <p class="photos-scale">{{item.scale}}</p>
           </li>
         </ul>
       </div>
@@ -59,6 +83,10 @@ export default {
   name: 'media-photos',
   components: { MediaLeftTree, ImageEditor, MediaUpload },
   props: {
+    scale: {
+      type: Boolean,
+      default: false
+    },
     selectMode: {
       type: Boolean,
       default: false
@@ -70,13 +98,16 @@ export default {
   },
   data () {
     return {
+      secrchName: '',
+      scaleshow: false,
       loading: false,
       page: 1,
       size: 50,
       total: 0,
       fileList: [],
       list: [],
-      imgOrigin: ''
+      imgOrigin: '',
+      scaleType: ''
     }
   },
   created () {
@@ -118,7 +149,9 @@ export default {
         type,
         folderId,
         toPage: this.page,
-        pageSize: this.size
+        pageSize: this.size,
+        scale: this.scaleType,
+        alias: this.secrchName
       }).then(res => {
         console.log(res)
         res.data.forEach(data => {
@@ -134,6 +167,11 @@ export default {
         this.loading = false
         this.$toast(e.msg)
       })
+    },
+    setScale (type) {
+      this.scaleType = type == 'all' ? '' : type
+      this.getList()
+      this.scaleshow = false
     },
     onPageChange (e) {
       this.page = parseInt(e)
@@ -184,6 +222,9 @@ export default {
 
 <style lang="less">
 .media-photos{
+  .listhover:hover{
+    background: #eee;
+  }
   .photos-item{height: 150px;overflow: hidden;background: #eee;min-width: 40px;
     .img-name{position: absolute;left: 0;bottom: 0;background: rgba(0, 0, 0, .7);width: 100%;line-height: 1em;padding: 6px;transform: translateY(24px);
       overflow: hidden;text-overflow: ellipsis;white-space: nowrap;transition: all .2s;}
@@ -196,6 +237,18 @@ export default {
     &.checked{
       .item-check{visibility: visible;color: #008eff;}
       img{transform: scale(.85);}
+    }
+    .photos-scale{
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      z-index: 50;
+      line-height: 20px;
+      padding: 0 4px;
+      border-radius: 0 0 4px 0;
+      margin: 0;
     }
   }
 }

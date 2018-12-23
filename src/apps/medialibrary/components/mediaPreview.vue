@@ -48,10 +48,10 @@
         <icon-btn small v-tooltip:top="`编辑${typeContent[type].text}`" @click="show.imageEditor = !type">edit</icon-btn>
         <icon-btn small v-tooltip:top="`删除${typeContent[type].text}`" @click="del">delete</icon-btn>
       </div>
-      <div class="flex" style="margin: 15px 0;">
-        <i class="icon f-20 c-a">label</i>
-        <textarea class="flex-item f-14" placeholder="输入标签，多个逗号隔开" style="height: 40px;"></textarea>
-      </div>
+      <!--<div class="flex" style="margin: 15px 0;">-->
+        <!--<i class="icon f-20 c-a">label</i>-->
+        <!--<textarea class="flex-item f-14" placeholder="输入标签，多个逗号隔开" style="height: 40px;"></textarea>-->
+      <!--</div>-->
       <div class="flex-v-center info-item">
         <i class="icon f-20 c-a">insert_drive_file</i>
         <span class="flex-item">

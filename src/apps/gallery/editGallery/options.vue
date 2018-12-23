@@ -18,15 +18,15 @@
         <icon-btn small v-tooltip:top="'发布到移动网页'" :class="{ active: form.terminalWeb }" @click="form.terminalWeb = ~~!form.terminalWeb">public</icon-btn>
       </div>
       <div style="margin: 10px 0;">
-        <add-thumb v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"/>
+        <add-thumb scale v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"/>
         <div v-if="form.thumbType == 2" class="flex">
-          <add-thumb v-model="thumb.thumb2" height="80px" class="flex-item" style="margin-right: 8px;"/>
-          <add-thumb v-model="thumb.thumb3" height="80px" class="flex-item"/>
+          <add-thumb scale v-model="thumb.thumb2" height="80px" class="flex-item" style="margin-right: 8px;"/>
+          <add-thumb scale v-model="thumb.thumb3" height="80px" class="flex-item"/>
         </div>
         <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
-          <div class="flex-item"><radio-box text="默认" :label="1" v-model="form.thumbType"/></div>
-          <div class="flex-item"><radio-box text="三图" :label="2" v-model="form.thumbType"/></div>
-          <div><radio-box text="16:9 大图" style="margin: 0;" :label="3" v-model="form.thumbType"/></div>
+          <!-- <div class="flex-item"><radio-box text="默认" :label="1" v-model="form.thumbType"/></div> -->
+          <!-- <div class="flex-item"><radio-box text="三图" :label="2" v-model="form.thumbType"/></div> -->
+          <!-- <div><radio-box text="16:9 大图" style="margin: 0;" :label="3" v-model="form.thumbType"/></div> -->
         </div>
       </div>
       <div class="option-item relative">
@@ -58,10 +58,10 @@
         </div>
       </div>
 
-      <div class="option-item flex-v-center">
+      <!-- <div class="option-item flex-v-center">
         <span class="flex-item">水印</span>
         <switcher mode="Number" v-model="form.isWatermarked"/>
-      </div>
+      </div> -->
 
       <div class="option-item flex-v-center">
         <span>初始阅读量</span>
@@ -154,7 +154,7 @@ export default {
         virtualShare: '',
         virtualDigg: '',
         hasThumb: 0,
-        thumbType: 1,
+        thumbType: 2,
         thumb: '',
         terminalPc: 0,
         terminalApp: 0,
@@ -209,6 +209,7 @@ export default {
           continue
         }
         if (k === 'thumb') {
+          console.log('a')
           this.thumb.thumb1 = res.content.thumb[0]
           this.thumb.thumb2 = res.content.thumb[1]
           this.thumb.thumb3 = res.content.thumb[2]
@@ -222,6 +223,7 @@ export default {
       this.form.createDate = res.content.createDate
       this.form.channelIds = res.channelIds || ''
       this.form.relateIds = res.relateGallery.map(v => v.id).join(',')
+
       // this.form.specialId = res.relateSpecial.id || ''
       // this.attachmentDefaultList = res.attachments
       // this.form.gallerySettingDisplayPosition = res.gallerySettingDisplayPosition || '1'
@@ -269,25 +271,26 @@ export default {
         this.form.thumb = [ this.thumb.thumb1, this.thumb.thumb2, newValue ].filter(v => v).map(v => v.id).join(',')
       }
     },
-    'form.thumbType' (newValue) {
-      if (newValue === 2) {
-        if (!(this.thumb.thumb1 || this.thumb.thumb2 || this.thumb.thumb3)) {
-          this.form.hasThumb = 0
-          this.form.thumb = ''
-        } else {
-          this.form.hasThumb = 1
-          this.form.thumb = [ this.thumb.thumb1, this.thumb.thumb2, this.thumb.thumb3 ].filter(v => v).map(v => v.id).join(',')
-        }
-      } else {
-        if (!this.thumb.thumb1) {
-          this.form.hasThumb = 0
-          this.form.thumb = ''
-        } else {
-          this.form.hasThumb = 1
-          this.form.thumb = this.thumb.thumb1.id
-        }
-      }
-    }
+    // 'form.thumbType' (newValue) {
+    //   if (newValue === 2) {
+    //     if (!(this.thumb.thumb1 || this.thumb.thumb2 || this.thumb.thumb3)) {
+    //       this.form.hasThumb = 0
+    //       this.form.thumb = ''
+    //     } else {
+    //       this.form.hasThumb = 1
+    //       this.form.thumb = [ this.thumb.thumb1, this.thumb.thumb2, this.thumb.thumb3 ].filter(v => v).map(v => v.id).join(',')
+    //     }
+    //   } else {
+    //     if (!this.thumb.thumb1) {
+    //       this.form.hasThumb = 0
+    //       this.form.thumb = ''
+    //     } else {
+    //       this.form.hasThumb = 1
+    //       this.form.thumb = this.thumb.thumb1.id
+    //     }
+    //   }
+    //   console.log('4', this.form.thumb)
+    // }
   }
 }
 </script>

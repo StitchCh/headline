@@ -10,7 +10,7 @@
       <div class="flex-item"></div>
       <div class="flex-v-center">
         <!--<btn big flat style="margin-right: 15px;">递交审核</btn>-->
-        <btn big flat style="margin-right: 10px;">预览</btn>
+        <!-- <btn big flat style="margin-right: 10px;">预览</btn> -->
         <!--<btn big flat style="margin-right: 10px;" @click="autoSave">保存草稿</btn>-->
         <btn big style="margin-right: 20px;" @click="submit">保存</btn>
         <icon-btn v-tooltip:bottom="'发布选项'" @click="ui.optionShow=!ui.optionShow">menu</icon-btn>
@@ -26,7 +26,7 @@
           <div class="flex-item"><radio-box text="幻灯片" :label="2" v-model="form.headPicType"/></div>
         </div>
         <div v-show="form.headPicType == 1" style="max-width: 300px;margin: 20px;">
-        
+
           <app-article-add-thumb v-if="getif" v-model="headList_type1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
         </div>
         <div v-show="form.headPicType == 2">
@@ -90,7 +90,7 @@
         <icon-btn small v-tooltip:top="'发布到移动网页'" :class="{ active: form.terminalWeb }" @click="form.terminalWeb = ~~!form.terminalWeb">public</icon-btn>
       </div>
       <div style="margin: 10px 0;">
-        <app-article-add-thumb v-if="getif" v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
+        <app-article-add-thumb scale v-if="getif" v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
         <!--<div v-if="form.thumbType == 2" class="flex">-->
           <!--<app-article-add-thumb v-model="thumb.thumb2" height="80px" class="flex-item" style="margin-right: 8px;"></app-article-add-thumb>-->
           <!--<app-article-add-thumb v-model="thumb.thumb3" height="80px" class="flex-item"></app-article-add-thumb>-->
@@ -457,11 +457,11 @@ export default {
             this.form.headJson = JSON.parse(res.special.headJson)
             console.log(res.special.headJson)
           }
-        
-          if (res.special.thumb != '') {
+
+          if (res.special.thumb) {
             this.form.thumb = JSON.parse(res.special.thumb)
+            this.thumb.thumb1 = res.special.thumb[0]
           }
-          this.thumb.thumb1 = res.special.thumb[0]
 
           console.log(this.headList_type1,this.thumb.thumb1)
           this.form.channelIds = res.channelIds || ''
@@ -476,12 +476,12 @@ export default {
               }
             })
           }
-          
-          if (this.form.headPicType == 1) {
+
+          if (this.form.headPicType == 1 && this.form.headJson.length != 0) {
             this.headList_type1 = {
               url: this.form.headJson[0].thumb
             }
-          } else if (this.form.headPicType == 2) {
+          } else if (this.form.headPicType == 2 && this.form.headJson.length != 0) {
             this.headList_type2 = {
               selected: this.form.headJson
             }
