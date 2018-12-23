@@ -373,8 +373,6 @@ export default {
         }
       })
 
-      console.log(jsonarr)
-
       obj.specialListJson = JSON.stringify(jsonarr)
 
       if (obj.headPicType == 1) {
@@ -399,12 +397,10 @@ export default {
       }
       // obj.thumb = obj.thumb.id
 
-
       if (this.id) {
         obj.specialId = obj.id
         obj.id = this.id
       }
-      console.log(obj)
 
       this.$http.post(url, obj).then(res => {
         this.ui.submited = true
