@@ -26,7 +26,7 @@
           <div class="flex-item"><radio-box text="幻灯片" :label="2" v-model="form.headPicType"/></div>
         </div>
         <div v-show="form.headPicType == 1" style="max-width: 300px;margin: 20px;">
-        
+
           <app-article-add-thumb v-if="getif" v-model="headList_type1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
         </div>
         <div v-show="form.headPicType == 2">
@@ -90,7 +90,7 @@
         <icon-btn small v-tooltip:top="'发布到移动网页'" :class="{ active: form.terminalWeb }" @click="form.terminalWeb = ~~!form.terminalWeb">public</icon-btn>
       </div>
       <div style="margin: 10px 0;">
-        <app-article-add-thumb v-if="getif" v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
+        <app-article-add-thumb scale v-if="getif" v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
         <!--<div v-if="form.thumbType == 2" class="flex">-->
           <!--<app-article-add-thumb v-model="thumb.thumb2" height="80px" class="flex-item" style="margin-right: 8px;"></app-article-add-thumb>-->
           <!--<app-article-add-thumb v-model="thumb.thumb3" height="80px" class="flex-item"></app-article-add-thumb>-->
@@ -457,12 +457,12 @@ export default {
             this.form.headJson = JSON.parse(res.special.headJson)
             console.log(res.special.headJson)
           }
-        
+
           if (res.special.thumb) {
             this.form.thumb = JSON.parse(res.special.thumb)
             this.thumb.thumb1 = res.special.thumb[0]
           }
-          
+
           console.log(this.headList_type1,this.thumb.thumb1)
           this.form.channelIds = res.channelIds || ''
           this.form.specialListJson = JSON.parse(this.form.specialListJson)
@@ -476,7 +476,7 @@ export default {
               }
             })
           }
-          
+
           if (this.form.headPicType == 1 && this.form.headJson.length != 0) {
             this.headList_type1 = {
               url: this.form.headJson[0].thumb

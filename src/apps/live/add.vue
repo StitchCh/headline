@@ -59,7 +59,7 @@
         <icon-btn small v-tooltip:top="'发布到移动网页'" :class="{ active: form.terminalWeb }" @click="form.terminalWeb = ~~!form.terminalWeb">public</icon-btn>
       </div>
       <div style="margin: 10px 0;">
-        <app-article-add-thumb v-if="getif" v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
+        <app-article-add-thumb scale v-if="getif" v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
         <!--<div v-if="form.thumbType == 2" class="flex">-->
           <!--<app-article-add-thumb v-model="thumb.thumb2" height="80px" class="flex-item" style="margin-right: 8px;"></app-article-add-thumb>-->
           <!--<app-article-add-thumb v-model="thumb.thumb3" height="80px" class="flex-item"></app-article-add-thumb>-->
@@ -361,7 +361,7 @@ export default {
           this.form.terminalApp = res.content.terminalApp
           this.form.terminalWeb = res.content.terminalWeb
           this.form.category = res.live.category
-        
+
           this.getif = true
         })
       }

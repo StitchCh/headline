@@ -18,10 +18,10 @@
         <icon-btn small v-tooltip:top="'发布到移动网页'" :class="{ active: form.terminalWeb }" @click="form.terminalWeb = ~~!form.terminalWeb">public</icon-btn>
       </div>
       <div style="margin: 10px 0;">
-        <add-thumb v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"/>
+        <add-thumb scale v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"/>
         <div v-if="form.thumbType == 2" class="flex">
-          <add-thumb v-model="thumb.thumb2" height="80px" class="flex-item" style="margin-right: 8px;"/>
-          <add-thumb v-model="thumb.thumb3" height="80px" class="flex-item"/>
+          <add-thumb scale v-model="thumb.thumb2" height="80px" class="flex-item" style="margin-right: 8px;"/>
+          <add-thumb scale v-model="thumb.thumb3" height="80px" class="flex-item"/>
         </div>
         <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
           <!-- <div class="flex-item"><radio-box text="默认" :label="1" v-model="form.thumbType"/></div> -->

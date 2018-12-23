@@ -1,28 +1,42 @@
 <template>
   <div class="app-article-add-thumb">
     <div class="add-photo-btn a flex-center" :style="{ width, height }" @click="show = true">
-      <img v-if="image.url" :src="image.url" width="100%" alt="">
+      <img v-if="image.id" :src="image.url" width="100%" alt="">
       <i v-else class="icon f-32 c-a">add_photo_alternate</i>
     </div>
     <layer v-if="show" title="选择图片"  width="800px">
       <div class="layer-text relative" style="height: 800px;">
-        <media-photos select-mode single-select ref="mediaPhotos"></media-photos>
+        <media-photos select-mode single-select ref="mediaPhotos"  @preview="onPreview"></media-photos>
       </div>
       <div class="layer-btns">
         <btn flat @click="show = false">取消</btn>
         <btn flat color="#008eff" @click="selectImage">选择</btn>
       </div>
     </layer>
+
+    <media-preview
+      v-if="preview.show"
+      :list="preview.list"
+      :index="preview.index"
+      :type="$route.meta.type"
+      @close="preview.show=false"
+      @refresh="$refs.mediaPhotos.getList();preview.show = false;"
+      @delected="onDelected"/>
   </div>
 </template>
 
 <script>
 import MediaPhotos from '../medialibrary/pages/photos'
+import MediaPreview from '../medialibrary/components/mediaPreview'
 
 export default {
   name: 'app-article-add-thumb',
-  components: { MediaPhotos },
+  components: { MediaPhotos, MediaPreview },
   props: {
+    scale: {
+      type: Boolean,
+      default: false
+    },
     value: {
       type: Object,
       default: null
@@ -42,23 +56,42 @@ export default {
       image: {
         id: '',
         url: ''
+      },
+      preview: {
+        show: false,
+        list: [],
+        index: 0
       }
     }
   },
   methods: {
+    onDelected (e) {
+      this.$refs.mediaPhotos.getList()
+    },
     selectImage () {
       let image = this.$refs.mediaPhotos.selected[0] || null
+      if (this.scale) {
+        console.log(image.scale == sessionStorage.imageratio)
+        if (image.scale != sessionStorage.imageratio) {
+          this.$toast('请选择比例为' + sessionStorage.imageratio + '的图片')
+          return false
+        }
+      }
       this.image = {
         id: image ? image.id : '',
         url: image ? this.$refs.mediaPhotos.imgOrigin + image.filePath + image.fileName : ''
       }
       this.$emit('input', image ? this.image : image)
       this.show = false
-    }
+    },
+    onPreview (e) {
+      this.preview.list = e.list || []
+      this.preview.index = e.index || 0
+      this.preview.show = true
+    },
   },
   created () {
     if (this.value) this.image = JSON.parse(JSON.stringify(this.value))
-    console.log(this.value)
   }
 }
 </script>
