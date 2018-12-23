@@ -74,4 +74,8 @@ export default [{
   name: '站点',
   path: '/site',
   icon: 'icon-site'
+}, {
+  name: '采集',
+  path: '/collection',
+  icon: 'icon-site'
 }]
