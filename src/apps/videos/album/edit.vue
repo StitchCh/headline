@@ -84,11 +84,11 @@
       <div class="album-options c-4 scroll-y" :style="{ width: ui.optionShow ? '320px' : '0px' }">
         <div style="width: 280px;margin: 0 20px;">
           <p>添加封面</p>
-          <add-thumb v-model="thumb" height="160px" style="margin-bottom: 8px;"></add-thumb>
-          <div class="option-item relative">
-            <textarea placeholder="摘要，限制 128 字。" v-model="form.videoAbstract" rows="8"></textarea>
-            <span style="position: absolute;bottom: 3px;right: 0;" :style="{ color: form.videoAbstract.length > 128 ? '#F44336' : '#999' }">{{form.videoAbstract.length}} / 128</span>
-          </div>
+          <add-thumb scale v-model="thumb" height="160px" style="margin-bottom: 8px;"></add-thumb>
+          <!--<div class="option-item relative">-->
+            <!--<textarea placeholder="摘要，限制 128 字。" v-model="form.videoAbstract" rows="8"></textarea>-->
+            <!--<span style="position: absolute;bottom: 3px;right: 0;" :style="{ color: form.videoAbstract.length > 128 ? '#F44336' : '#999' }">{{form.videoAbstract.length}} / 128</span>-->
+          <!--</div>-->
         </div>
       </div>
     </template>

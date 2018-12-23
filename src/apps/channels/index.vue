@@ -253,7 +253,6 @@ export default {
           delChildId: []
         }
       })
-      console.log(data)
       if (this.layout1.length != 0) {
         var data1 = this.layout1.filter(item => !item.del).map(item => {
           let layoutId = item.new ? '' : item.id
@@ -284,7 +283,7 @@ export default {
           }
         })
       }
-      if (data1[0]) {
+      if (data1 && data1[0]) {
         data.push(data1[0])
       }
       let delarr = this.layout.filter(item => item.del).map(item => item.id)
