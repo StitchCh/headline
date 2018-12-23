@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="af-topbar">
-      <span class="f-18">全部</span>
+      <span class="f-18">{{title}}</span>
     </div>
     <div class="flex-item scroll-y bg-e relative">
       <transition name="fade">
@@ -66,6 +66,15 @@ export default {
         { text: '待审', icon: 'hourglass_full', color: '#ffc107' },
         { text: '驳回', icon: 'error', color: '#ff5252' }
       ]
+    }
+  },
+  computed: {
+    title () {
+      let { query } = this.$route
+      if (query.audit === '2') return '待审'
+      if (query.audit === '3') return '已审'
+      if (query.delete === '0') return '已删除'
+      return '全部'
     }
   },
   methods: {
