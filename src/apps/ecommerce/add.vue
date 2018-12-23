@@ -389,7 +389,6 @@ export default {
     if (this.from && this.id) {
       this.ui.loading = true
       if (this.from === 'draft') this.autoSaveId = this.id
-        console.log(this.from)
       this.$http.post(from[this.from].getUrl, {
         id: this.id
       }).then(res => {

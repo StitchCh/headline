@@ -46,7 +46,7 @@
                   <li></li>
                 </ul>
                 <div class="t-center" style="margin-top: 20px;">
-                  <btn flat color="#0299ff" @click="ui.videoSelectorShow = true">重新选择</btn>
+                  <btn flat color="#0299ff" @click="ui.videoSelectorShow = true;getList(true)">重新选择</btn>
                 </div>
               </div>
             </div>
@@ -74,7 +74,7 @@
                 </list-view>
               </div>
               <div class="layer-btns">
-                <btn flat @click="ui.videoSelectorShow = false">取消</btn>
+                <btn flat @click="clearList">取消</btn>
                 <btn flat color="#008eff" @click="selectVideo">选择</btn>
               </div>
             </layer>
@@ -128,13 +128,16 @@ export default {
     }
   },
   methods: {
+    clearList () {
+      this.ui.videoSelectorShow = false
+      this.selected = this.videoList.map(v => v)
+    },
     getAlbum () {
       this.ui.loading = true
       this.$http.post('/cri-cms-platform/video/albumGet.monitor', {
         id: this.id
       }).then(
         res => {
-          console.log(res)
           this.form.title = res.album.title
           this.form.videoAbstract = res.album.videoAbstract
           this.form.thumb = res.album.thumb
@@ -143,6 +146,9 @@ export default {
             url: res.album.thumb
           }
           this.selected = res.content
+          for (let i = 0; i < res.content.length; i++) {
+            this.selected[i].thumb = JSON.parse(this.selected[i].thumb)
+          }
           this.videoList = this.selected.map(v => v)
           this.ui.loading = false
         }
@@ -151,10 +157,12 @@ export default {
     getList (refresh) {
       if (refresh) this.filter.toPage = 1
       this.$http.post('/cri-cms-platform/special/getArticList.monitor', this.filter).then(res => {
+        console.log(res,this.selected)
         if (res.length) {
           res.forEach(val => {
             val.check = this.selected.some(v => {
-              return val.id === v.id
+              let oid = v.contentLayoutId || v.id
+              return val.id === oid
             })
           })
         }
@@ -196,6 +204,7 @@ export default {
       this.ui.videoSelectorShow = false
     },
     submit () {
+      let url = this.id ? '/cri-cms-platform/video/albumUpdate.monitor' : '/cri-cms-platform/video/albumSave.monitor'
       if (!this.form.title) {
         this.$toast('请输入标题')
         return
@@ -209,9 +218,15 @@ export default {
         return
       }
       this.form.thumb = this.thumb.url
-      this.form.contentId = this.selected.map(v => v.id).join(',')
+      console.log(this.selected)
+      if (this.id) {
+        this.form.contentId = this.selected.map(v => v.contentLayoutId || v.id).join(',')
+      } else {
+        this.form.contentId = this.selected.map(v => v.id).join(',')
+      }
+
       if (this.id) this.form.id = this.id
-      this.$http.post('/cri-cms-platform/video/albumSave.monitor', this.form).then(
+      this.$http.post(url, this.form).then(
         res => {
           let url = '/video/album'
           if (this.id) url += `/${this.id}`
