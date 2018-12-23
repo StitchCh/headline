@@ -60,8 +60,8 @@ export default [{
   icon: 'icon-member'
 }, {
   name: '评论',
-  path: '/comment',
-  icon: 'icon-member'
+  path: '/comment/list',
+  icon: 'icon-comment'
 }, {
   name: '频道',
   path: '/channels',
@@ -77,5 +77,5 @@ export default [{
 }, {
   name: '采集',
   path: '/collection',
-  icon: 'icon-site'
+  icon: 'icon-collection'
 }]

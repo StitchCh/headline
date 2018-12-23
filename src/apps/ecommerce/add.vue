@@ -335,7 +335,7 @@ export default {
     submit () {
       let url = this.id ? '/cri-cms-platform/ecommerce/update.monitor' : '/cri-cms-platform/ecommerce/save.monitor'
       let { title, titleColor, content, getText, ecommerceUrl } = this.$refs.editor
-      console.log(ecommerceUrl)
+      console.log(content)
       if (!title) {
         this.$toast('请输入标题')
         return
@@ -389,7 +389,6 @@ export default {
     if (this.from && this.id) {
       this.ui.loading = true
       if (this.from === 'draft') this.autoSaveId = this.id
-        console.log(this.from)
       this.$http.post(from[this.from].getUrl, {
         id: this.id
       }).then(res => {

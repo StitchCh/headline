@@ -40,7 +40,7 @@
     <div class="af-topbar flex-v-center">
       <div class="flex-v-center" v-if="$route.params.id">
         <icon-btn small v-tooltip:bottom="'还原'" style="margin-right: 10px;" @click="recover">undo</icon-btn>
-        <!--<icon-btn small v-tooltip:bottom="'彻底删除'" @click="clearRecyle">delete</icon-btn>-->
+        <icon-btn small v-tooltip:bottom="'彻底删除'" @click="clearRecyle">delete</icon-btn>
       </div>
       <div class="flex-item"></div>
       <account/>
@@ -95,10 +95,11 @@ export default {
         btns: ['取消', '确定'],
         color: 'red',
         yes () {
-          othis.$http.post('/cri-cms-platform/clearRecyle.monitor', {
+          othis.$http.post('/cri-cms-platform/live/clearRecyle.monitor', {
             id: othis.id
           }).then(res => {
             othis.getList()
+            othis.$router.push({path: '/live/recycle'})
           })
         },
         no () {

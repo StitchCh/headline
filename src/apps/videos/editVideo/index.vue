@@ -63,6 +63,7 @@ export default {
     getVideo () {
       if (this.from && this.id) {
         this.ui.loading = true
+        console.log(this.from)
         if (this.from === 'draft') this.autoSaveId = this.id
         this.$http.post(from[this.from].getUrl, {
           id: this.id,

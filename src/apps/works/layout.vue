@@ -236,9 +236,10 @@ export default {
       this.viewList = res
     },
     toEdit (item) {
+      console.log(item)
       this.edit.item = item
       this.edit.title = item.newTitle || ''
-      this.edit.abstarcts = item.newAbstract || ''
+      this.edit.abstarcts = item.newAbstract || item.abstarcts || ''
     },
     submitEdit () {
       let { item, title, abstarcts } = this.edit

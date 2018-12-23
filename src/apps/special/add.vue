@@ -442,24 +442,18 @@ export default {
         this.$http.post('/cri-cms-platform/special/queryDetail.monitor', {
           id: this.id
         }).then(res => {
-          console.log(res)
           this.form = res.special
           this.form.specialListId = ''
           this.form.headJsonId = ''
           if (res.special.headJson === 'object') {
             this.form.headJson = res.special.headJson
-            console.log(res.special.headJson)
           } else {
             this.form.headJson = JSON.parse(res.special.headJson)
-            console.log(res.special.headJson)
           }
-
           if (res.special.thumb) {
             this.form.thumb = JSON.parse(res.special.thumb)
             this.thumb.thumb1 = res.special.thumb[0]
           }
-
-          console.log(this.headList_type1,this.thumb.thumb1)
           this.form.channelIds = res.channelIds || ''
           this.form.specialListJson = JSON.parse(this.form.specialListJson)
           for (let i = 0; i < res.special.specialListJson.length; i++) {
@@ -472,7 +466,6 @@ export default {
               }
             })
           }
-
           if (this.form.headPicType == 1 && this.form.headJson.length != 0) {
             this.headList_type1 = {
               url: this.form.headJson[0].thumb
@@ -489,54 +482,6 @@ export default {
     } else {
       this.getif = true
     }
-
-    // if (this.from && this.id) {
-    //   if (this.from === 'draft') this.autoSaveId = this.id
-    //   this.$http.post(from[this.from].getUrl, {
-    //     id: this.id
-    //   }).then(res => {
-    //     for (let k in this.form) {
-    //       if (k === 'virtualComment') {
-    //         if (res.content[k] === '') {
-    //           this.form[k] = ''
-    //         } else {
-    //           this.form[k] = JSON.stringify(res.content[k])
-    //         }
-    //         continue
-    //       }
-    //       if (k === 'thumb') {
-    //         this.thumb.thumb1 = res.content.thumb[0]
-    //         this.thumb.thumb2 = res.content.thumb[1]
-    //         this.thumb.thumb3 = res.content.thumb[2]
-    //       }
-    //       if (k === 'isDelete' || k === 'isOpenComment' || k === 'isOriginal' || k === 'isRecommnd' || k === 'isWatermarked' || k === 'terminalApp' || k === 'terminalPc' || k === 'terminalWeb' || k === 'hasThumb') {
-    //         this.form[k] = Number(res.content[k])
-    //         continue
-    //       }
-    //       this.form[k] = res.content[k]
-    //     }
-    //     this.form.createDate = res.content.createDate
-    //     this.form.content = res.article.content
-    //     this.form.channelIds = res.channelIds || ''
-    //     this.form.relateIds = res.relateArticle.map(v => v.id).join(',')
-    //     this.form.specialId = res.relateSpecial.id || ''
-    //     this.attachmentDefaultList = res.attachments
-    //     this.form.gallerySettingDisplayPosition = res.gallerySettingDisplayPosition || '1'
-    //     this.form.gallerySettingMaxWidth = res.gallerySettingMaxWidth || '640'
-    //     this.form.gallerySettingMinHeight = res.gallerySettingMinHeight || '480'
-    //     this.form.gallerySettingThumbHeight = res.gallerySettingThumbHeight || '80'
-    //     this.form.gallerySettingThumbWidth = res.gallerySettingThumbWidth || '60'
-    //     this.ui.loading = false
-    //     this.$nextTick(() => {
-    //       this.$refs.editor.title = this.form.title
-    //       this.$refs.editor.titleColor = this.form.titleColor
-    //       this.$refs.editor.content = this.form.content
-    //     })
-    //   }).catch(e => {
-    //     console.log(e)
-    //   })
-    // }
-    // this.getChannels()
   },
   watch: {
     'thumb.thumb1' (newValue) {
