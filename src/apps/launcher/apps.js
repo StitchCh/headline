@@ -56,7 +56,7 @@ export default [{
   icon: 'icon-menus'
 }, {
   name: '会员',
-  path: '/member',
+  path: '/member/list',
   icon: 'icon-member'
 }, {
   name: '评论',

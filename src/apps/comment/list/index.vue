@@ -9,7 +9,7 @@
           <loading style="left: 50%;top: 50%;transform: translate(-50%, -50%)"/>
         </div>
       </transition>
-      <div>
+      <div v-if="list.length">
         <div class="setting-card f-14" v-for="item in list" :key="item.id">
           <div class="flex-v-center comment-item-info">
             <strong class="f-16">{{item.contentTitle}}</strong>
@@ -26,12 +26,15 @@
           <div class="comment-item-info pre-wrap">{{item.content}}</div>
           <div v-if="item.deleteStatus === '1'" class="flex comment-item-info">
             <span class="flex-item"></span>
-            <icon-btn color="#4caf50" style="margin-right: 5px;" v-if="item.isAudit === '2' || (item.isAudit === '3' && item.auditStatus === '0')" @click="pass(item.id)">check_circle</icon-btn>
-            <icon-btn color="#ff5252" style="margin-right: 5px;" v-if="item.isAudit === '2' || (item.isAudit === '3' && item.auditStatus === '1')" @click="reject(item.id)">error</icon-btn>
-            <icon-btn style="margin-right: 5px;" @click="openEdit(item)">edit</icon-btn>
-            <icon-btn color="#D81B60" @click="deleteItem(item.id)">delete</icon-btn>
+            <icon-btn v-tooltip="'通过'" color="#4caf50" style="margin-right: 5px;" v-if="item.isAudit === '2' || (item.isAudit === '3' && item.auditStatus === '0')" @click="pass(item.id)">check_circle</icon-btn>
+            <icon-btn v-tooltip="'驳回'" color="#ff5252" style="margin-right: 5px;" v-if="item.isAudit === '2' || (item.isAudit === '3' && item.auditStatus === '1')" @click="reject(item.id)">error</icon-btn>
+            <icon-btn v-tooltip="'修改评论'" style="margin-right: 5px;" @click="openEdit(item)">edit</icon-btn>
+            <icon-btn v-tooltip="'删除'" color="#D81B60" @click="deleteItem(item.id)">delete</icon-btn>
           </div>
         </div>
+      </div>
+      <div class="abs flex-center" v-else>
+        <no-data/>
       </div>
     </div>
 
@@ -80,7 +83,6 @@ export default {
   methods: {
     getList () {
       this.loading = true
-      console.log(this.$route.query)
       this.$http.post('/cri-cms-platform/comment/list.monitor', this.$route.query).then(
         res => {
           console.log(res)
