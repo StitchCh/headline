@@ -15,11 +15,11 @@
       <div class="setting-card f-14">
         <table>
           <thead>
-            <th>关键词</th>
-            <th>来源</th>
+            <th style="width: 100px;">关键词</th>
+            <th style="width: 100px;">来源</th>
             <th>标题</th>
             <th>连接</th>
-            <th>采集日期</th>
+            <th style="width: 100px;">采集日期</th>
           </thead>
           <tbody>
             <tr v-for="(item,index) in list" :key="index"  @click="openUrl(item.url)">
@@ -97,6 +97,8 @@ export default {
       th,
       td {
         padding: 5px 10px;
+        overflow: hidden;
+        white-space: nowrap;
       }
       tr {
         border-top: 1px solid #e1e1e1;
