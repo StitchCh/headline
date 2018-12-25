@@ -135,6 +135,7 @@ export default {
       border-radius: 10px;
       padding: 20px;
       background: #fff;
+      overflow: auto;
       th,
       td {
         padding: 5px 10px;
