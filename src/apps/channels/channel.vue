@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     getChannels () {
-      this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor').then(res => {
+      this.$http.post('/cri-cms-platform/channel/getChannels.monitor').then(res => {
         this.channels = res.channels
         this.$emit('channelsLoad', JSON.parse(JSON.stringify(res.channels)))
         res.channels.forEach(item => {

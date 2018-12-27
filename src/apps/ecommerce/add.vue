@@ -32,7 +32,7 @@
             <!--</li>-->
           <!--</ul>-->
           <div style="padding: 10px 0;width: 280px;">
-            <tree :data="ui.channels.channels" pid-txt="channelPartentId" nameTxt="channelName" show-checkbox :checked-list.sync="channelIds"></tree>
+            <tree :data="ui.channels" pid-txt="channelPartentId" nameTxt="channelName" show-checkbox :checked-list.sync="channelIds"></tree>
           </div>
         </bubble>
       </div>
@@ -135,7 +135,7 @@
         </div>
         <app-article-add-comment v-if="form.isOpenComment" v-model="form.virtualComment"></app-article-add-comment>
       </div>
-      <app-article-add-relates single :channels="ui.channels.channels" v-model="form.galleryId" title="相关图集" icon="collections" url="/cri-cms-platform/ecommerce/associate/gallery.monitor">
+      <app-article-add-relates single :channels="ui.channels" v-model="form.galleryId" title="相关图集" icon="collections" url="/cri-cms-platform/ecommerce/associate/gallery.monitor">
         <template slot="afterTitle">
           <span class="flex-item"></span>
           <i class="add-gallery-setting-btn icon c-8" @click.stop="ui.gallerySettingShow = true">settings</i>
@@ -156,8 +156,8 @@
           </select-card>
         </layer>
       </app-article-add-relates>
-      <app-article-add-relates :channels="ui.channels.channels" v-model="form.relateIds" title="相关阅读" icon="book" url="/cri-cms-platform/ecommerce/associate/ecommerce.monitor"></app-article-add-relates>
-      <app-article-add-relates single :channels="ui.channels.channels" v-model="form.specialId" title="相关专题" icon="assignment" url="/cri-cms-platform/ecommerce/associate/special.monitor"></app-article-add-relates>
+      <app-article-add-relates :channels="ui.channels" v-model="form.relateIds" title="相关阅读" icon="book" url="/cri-cms-platform/ecommerce/associate/ecommerce.monitor"></app-article-add-relates>
+      <app-article-add-relates single :channels="ui.channels" v-model="form.specialId" title="相关专题" icon="assignment" url="/cri-cms-platform/ecommerce/associate/special.monitor"></app-article-add-relates>
       <app-article-add-attachment v-model="form.attachmentIds" :default-list="attachmentDefaultList"></app-article-add-attachment>
       <!--<div class="option-item flex-v-center blue a">-->
         <!--<i class="icon f-20 add-other-icon">attach_file</i>-->
@@ -288,12 +288,12 @@ export default {
     },
     channelNames () {
       if (!this.channelIds.length) return '选择栏目'
-      return this.channelIds.map(val => this.ui.channels.channels.find(v => v.id === val).channelName).join('，')
+      return this.channelIds.map(val => this.ui.channels.find(v => v.id === val).channelName).join('，')
     }
   },
   methods: {
     getChannels () {
-      this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor').then(res => {
+      this.$http.post('/cri-cms-platform/ecommerce/getChannels.monitor').then(res => {
         this.ui.channels = res || []
       }).catch(e => {
         console.log(e)

@@ -22,7 +22,7 @@
 
 <script>
 import Account from '@/components/account'
-import apps from './apps'
+// import apps from './apps'
 
 export default {
   name: 'app-launcher',
@@ -47,16 +47,19 @@ export default {
     } else {
       this.siteId = sessionStorage.getItem('siteId')
     }
+    var apps = this.$store.state.account.menu
     this.apps = apps.map(item => {
       item.loading = item.show = false
       return item
     })
     window.addEventListener('resize', this.onResize)
     let i = 0
+    let othis = this
     function show () {
       setTimeout(() => {
         if (i >= apps.length) return
-        apps[i].show = true
+        othis.apps[i].show = true
+        othis.apps.splice(i, 1, othis.apps[i])
         i += 1
         show()
       }, 30)
@@ -76,6 +79,12 @@ export default {
       this.ctnHeight = this.$refs.content.clientHeight
     },
     toApp (app) {
+      if (app.path === 'yvqing') {
+        this.$http.post('/cri-cms-platform/YQToken/getToken.monitor').then(res => {
+          window.open(res.forwordUrl)
+        })
+        return false
+      }
       app.loading = true
       setTimeout(() => {
         app.loading = false

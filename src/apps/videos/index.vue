@@ -5,7 +5,7 @@
     <navigator-item icon="album" index="VideoAlbum" @click="$router.replace('/video/album')">专辑</navigator-item>
     <!-- <navigator-item-group defaultExtended index="2" icon="face">
     <span slot="title">我的</span> -->
-    <navigator-item icon="check_circle" index="my-all" @click="$router.replace('/video/list?scope=my&status=all')">已发</navigator-item>
+    <navigator-item icon="check_circle" index="my-all" @click="$router.replace('/video/list?scope=my&status=PASS')">已审</navigator-item>
     <navigator-item icon="hourglass_full" index="my-AUDITING" @click="$router.replace('/video/list?scope=my&status=AUDITING')">待审</navigator-item>
     <navigator-item icon="error" index="my-REJECT" @click="$router.replace('/video/list?scope=my&status=REJECT')">驳回</navigator-item>
     <navigator-item icon="class" index="VideoDraft" @click="$router.replace('/video/draft')">草稿</navigator-item>

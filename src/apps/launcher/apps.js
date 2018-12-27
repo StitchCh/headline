@@ -44,7 +44,7 @@ export default [{
   icon: 'icon-media'
 }, {
   name: '用户',
-  path: '/users',
+  path: '/users/all',
   icon: 'icon-yonghu'
 }, {
   name: '角色',
@@ -78,4 +78,8 @@ export default [{
   name: '采集',
   path: '/collection',
   icon: 'icon-collection'
+}, {
+  name: '舆情',
+  path: 'yvqing',
+  icon: 'icon-yvqing'
 }]

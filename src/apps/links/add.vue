@@ -32,7 +32,7 @@
             <!--</li>-->
           <!--</ul>-->
           <div style="padding: 10px 0;width: 280px;">
-            <tree :data="ui.channels.channels" pid-txt="channelPartentId" nameTxt="channelName" show-checkbox :checked-list.sync="channelIds"></tree>
+            <tree :data="ui.channels" pid-txt="channelPartentId" nameTxt="channelName" show-checkbox :checked-list.sync="channelIds"></tree>
           </div>
         </bubble>
       </div>
@@ -296,12 +296,12 @@ export default {
     },
     channelNames () {
       if (!this.channelIds.length) return '选择栏目'
-      return this.channelIds.map(val => this.ui.channels.channels.find(v => v.id === val).channelName).join('，')
+      return this.channelIds.map(val => this.ui.channels.find(v => v.id === val).channelName).join('，')
     }
   },
   methods: {
     getChannels () {
-      this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor').then(res => {
+      this.$http.post('/cri-cms-platform/link/getChannels.monitor').then(res => {
         this.ui.channels = res || []
       }).catch(e => {
         console.log(e)

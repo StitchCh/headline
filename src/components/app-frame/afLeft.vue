@@ -39,7 +39,7 @@ export default {
     },
     title: {
       type: String,
-      default: 'CCPT'
+      default: 'CCTP'
     },
     defaultActive: String
   },

@@ -1,6 +1,12 @@
 import Vue from 'vue'
 
-const state = {}
+const state = {
+  menu: []
+}
+
+if (sessionStorage.menu) {
+  state.menu = JSON.parse(sessionStorage.menu)
+}
 
 const mutations = {
   LOGIN (state, userinfo) {
@@ -11,6 +17,10 @@ const mutations = {
   },
   LOGOUT (state) {
     for (let key in state) state[key] = ''
+  },
+  setMenu (state, data) {
+    state.menu = data
+    sessionStorage.menu = JSON.stringify(data)
   }
 }
 

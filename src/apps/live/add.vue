@@ -47,7 +47,7 @@
         <i class="icon f-20 c-a">keyboard_arrow_down</i>
         <bubble v-if="ui.channelShow" pos="bottom" align="center" @close="ui.channelShow=false">
           <div style="padding: 10px 0;width: 280px;">
-            <tree :data="ui.channels.channels" pid-txt="channelPartentId" nameTxt="channelName" show-checkbox :checked-list.sync="channelIds"></tree>
+            <tree :data="ui.channels" pid-txt="channelPartentId" nameTxt="channelName" show-checkbox :checked-list.sync="channelIds"></tree>
           </div>
         </bubble>
       </div>
@@ -239,7 +239,7 @@ export default {
     },
     channelNames () {
       if (!this.channelIds.length) return '选择栏目'
-      return this.channelIds.map(val => this.ui.channels.channels.find(v => v.id === val).channelName).join('，')
+      return this.channelIds.map(val => this.ui.channels.find(v => v.id === val).channelName).join('，')
     }
   },
   methods: {
@@ -262,7 +262,7 @@ export default {
       // )
     },
     getChannels () {
-      this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor').then(res => {
+      this.$http.post('/cri-cms-platform/live/getChannels.monitor').then(res => {
         this.getif1 = true
         this.ui.channels = res || []
       }).catch(e => {
