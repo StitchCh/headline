@@ -23,9 +23,9 @@
             <div class="b f-14 flex-center">
               <div class="flex-item">
                 <div>{{error.message}}</div>
-                <div v-if="error.isPasswordError" class="f-12">忘记密码请使用密码找回功能。</div>
+                <!--<div v-if="error.isPasswordError" class="f-12">忘记密码请使用密码找回功能。</div>-->
               </div>
-              <btn v-if="error.isPasswordError" flat big @click="$router.push('/findPassword')">找回密码</btn>
+              <!--<btn v-if="error.isPasswordError" flat big @click="$router.push('/findPassword')">找回密码</btn>-->
             </div>
           </bubble>
         </div>
@@ -60,6 +60,9 @@ export default {
   },
   mounted () {
     this.keydownFun(13, this.login)
+    if (this.$route.params.setPassword) {
+      this.$toast('密码修改成功，请重新登录')
+    }
   },
   methods: {
     login () {
@@ -67,6 +70,7 @@ export default {
       let { loginName, password } = this
       this.$http.post('/cri-cms-platform/login.monitor', { loginName, password }).then(res => {
         this.$store.commit('setMenu', res.mainMenuList)
+        console.log(res)
         if (!res) {
           this.error.message = '您输入的账号或密码不正确。'
           this.error.show = true
@@ -83,6 +87,9 @@ export default {
           sessionStorage.token = res.token
         }
         sessionStorage.previewUrl = res.previewUrl
+        if (res.isFirstLogin === 'true') {
+          this.$store.commit('setFirstLogin', true)
+        }
         this.$router.replace('/chooseSite')
       }).catch(e => {
         this.showError(e)

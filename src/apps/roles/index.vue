@@ -19,6 +19,7 @@
       <div class="setting-card f-14">
         <table>
           <thead>
+            <th>序号</th>
             <th>用户ID</th>
             <th>角色名称</th>
             <th>角色中文名</th>
@@ -27,7 +28,8 @@
             <th colspan="2">操作</th>
           </thead>
           <tbody>
-            <tr v-for="item in list" :key="item.id" @click="openDetail(item.id)">
+            <tr v-for="(item, index) in list" :key="item.id" @click="openDetail(item.id)">
+              <td>{{index+1}}</td>
               <td>{{item.id}}</td>
               <td>{{item.rolesName}}</td>
               <td>{{item.rolesCnName}}</td>

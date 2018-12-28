@@ -1,7 +1,8 @@
 import Vue from 'vue'
 
 const state = {
-  menu: []
+  menu: [],
+  firstLogin: false
 }
 
 if (sessionStorage.menu) {
@@ -21,6 +22,9 @@ const mutations = {
   setMenu (state, data) {
     state.menu = data
     sessionStorage.menu = JSON.stringify(data)
+  },
+  setFirstLogin (data) {
+    state.firstLogin = data
   }
 }
 
