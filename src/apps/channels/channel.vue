@@ -19,12 +19,12 @@
           <span class="flex-item channel-name" v-if="!data.edit">{{data.channelName}}</span>
           <input type="text" v-else v-model="data.editChannelName" class="flex-item f-14">
         </div>
-        <app-article-add-thumb v-model="data.channelIcon"  class="tagimg" style="width: 32px;height: 32px;float: right;overflow: hidden;"></app-article-add-thumb>
+        <app-article-add-thumb v-if="data.channelPartentId != 0" v-model="data.channelIcon"  class="tagimg" style="width: 32px;height: 32px;float: right;overflow: hidden;"></app-article-add-thumb>
         <icon-btn small v-if="!data.edit" @click.native.stop="addChild(data)">add</icon-btn>
-        <icon-btn small v-if="!data.edit" @click.native.stop="data.edit = true">edit</icon-btn>
-        <icon-btn small v-if="data.edit" @click.native.stop="data.edit = false;data.channelName=data.editChannelName" class="green">check</icon-btn>
-        <icon-btn small v-if="data.edit" @click.native.stop="data.edit = false;data.editChannelName=data.channelName">close</icon-btn>
-        <icon-btn small @click.native.stop="del(data)">delete</icon-btn>
+        <icon-btn small v-if="!data.edit && data.channelPartentId != 0" @click.native.stop="data.edit = true">edit</icon-btn>
+        <icon-btn small v-if="data.edit && data.channelPartentId != 0" @click.native.stop="data.edit = false;data.channelName=data.editChannelName" class="green">check</icon-btn>
+        <icon-btn small v-if="data.edit && data.channelPartentId != 0" @click.native.stop="data.edit = false;data.editChannelName=data.channelName">close</icon-btn>
+        <icon-btn small v-if="data.channelPartentId != 0" @click.native.stop="del(data)">delete</icon-btn>
       </div>
     </draggable-tree>
     <!-- <div>{{delChannels}}</div> -->
@@ -73,19 +73,20 @@ export default {
   },
   methods: {
     getChannels () {
-      this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor').then(res => {
-        this.channels = res.channels
-        this.$emit('channelsLoad', JSON.parse(JSON.stringify(res.channels)))
-        res.channels.forEach(item => {
+      this.$http.post('/cri-cms-platform/channel/getChannels.monitor').then(res => {
+        this.channels = res
+        this.$emit('channelsLoad', JSON.parse(JSON.stringify(res)))
+        res.forEach(item => {
           item.edit = false
           item.del = false
           item.editChannelName = item.channelName
         })
         const worker = new WorkerCode()
-        worker.postMessage({ data: res.channels, idTxt: 'id', pidTxt: 'channelPartentId', childrenTxt: 'children', rootId: '1' })
+        worker.postMessage({ data: res, idTxt: 'id', pidTxt: 'channelPartentId', childrenTxt: 'children', rootId: '0' })
         worker.addEventListener('message', e => {
           this.channelTree = e.data
           worker.terminate()
+          console.log(this.channelTree)
         })
         worker.addEventListener('error', e => {
           this.$toast(e.msg || e.message)
@@ -134,8 +135,7 @@ export default {
       this.$emit('changeChannel', item.id)
     },
     submit () {
-      console.log(this.channelTree)
-      let tree = { id: '1', children: this.channelTree }
+      let tree = { id: '0', children: this.channelTree }
       console.log(this.channelTree)
       let res = getTreeData(tree)
       // res.unshift({ id: '1', channelName: '根目录', channelPartentId: '0', channelManager: '', channelIcon: '' })

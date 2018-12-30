@@ -9,21 +9,24 @@
           <loading style="left: 50%;top: 50%;transform: translate(-50%, -50%)"></loading>
         </div>
       </transition>
-      <div class="setting-card f-14">
+      <div class="setting-card f-14" style="position: relative;">
         <table>
           <thead>
+          <th>序号</th>
           <th>会员ID</th>
           <th>昵称</th>
           <th>手机</th>
           <th>邮箱</th>
           <th>区域</th>
+          <th>注册时间</th>
           <th>最后登录</th>
           <th>积分</th>
           <th>状态</th>
           <th colspan="2">操作</th>
           </thead>
           <tbody>
-          <tr v-for="item in list" :key="item.id">
+          <tr v-for="(item, index) in list" :key="item.id">
+            <td>{{index+1}}</td>
             <td>{{item.id}}</td>
             <td>{{item.nickname}}</td>
             <td>{{item.mobile}}</td>
@@ -32,6 +35,7 @@
               <span v-if="item.province || item.city">{{item.province || ''}}{{item.province && item.city ? '-' : ''}}{{item.city || ''}}</span>
               <span v-else>--</span>
             </td>
+            <td>{{item.registTime}}</td>
             <td>{{item.thisLoginTime}}</td>
             <td>{{item.credits}}</td>
             <td class="relative">
@@ -53,6 +57,7 @@
         <div class="flex-center">
           <pagination :page="filter.toPage" :size="filter.pageSize" :total="total" @change="p => { filter.toPage = p;getList(); }"></pagination>
         </div>
+        <p style="position: absolute;right: 20px;bottom: 0px;">会员总数：{{totalRowsAmount}}</p>
       </div>
     </div>
 
@@ -172,7 +177,8 @@ export default {
         address: ''
       },
       detailShow: false,
-      editShow: false
+      editShow: false,
+      totalRowsAmount: ''
     }
   },
   methods: {
@@ -184,10 +190,12 @@ export default {
       this.loading = true
       this.$http.post('/cri-cms-platform/member/list.monitor', this.filter).then(
         res => {
+          console.log(res)
           res.pages.forEach(v => {
             v.stateShow = false
           })
           this.list = res.pages
+          this.totalRowsAmount = res.totalRowsAmount
           this.total = res.totalPage * 15
           this.loading = false
         }

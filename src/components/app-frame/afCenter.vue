@@ -30,7 +30,7 @@
       </div>
       <bubble v-if="ui.channelShow" pos="bottom" align="center" @close="ui.channelShow=false">
         <div style="padding: 10px 0;width: 280px;">
-          <tree :data="ui.channels.channels" pid-txt="channelPartentId" nameTxt="channelName" show-checkbox :checked-list.sync="channels"></tree>
+          <tree :data="ui.channels" pid-txt="channelPartentId" nameTxt="channelName" show-checkbox :checked-list.sync="channels"></tree>
         </div>
       </bubble>
     </div>
@@ -224,7 +224,7 @@ export default {
       this.getList()
     },
     getChannels () {
-      this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor').then(res => {
+      this.$http.post('/cri-cms-platform/common/getChannels.monitor').then(res => {
         this.ui.channels = res || []
       }).catch(e => {
         this.$toast(e.msg)

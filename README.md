@@ -1,4 +1,4 @@
-# ccpt
+# CCTP
 
 > A Vue.js project
 

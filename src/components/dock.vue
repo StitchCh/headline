@@ -2,7 +2,7 @@
 <div class="relative c-6 dock">
   <div class="flex-v-center" @click="show=true" style="cursor: pointer;">
     <img class="dock-logo" src="../assets/img/dock-logo.png" :style="{filter: `drop-shadow(97px 0 0 ${color})`}">
-    <span class="f-18" :style="{color}">{{title || 'CCPT'}}</span>
+    <span class="f-18" :style="{color}">{{title || 'CCTP'}}</span>
     <i class="icon f-20" :style="{color}" style="margin-left: 5px;">keyboard_arrow_down</i>
   </div>
   <bubble v-if="show" align="start" @close="show=false">

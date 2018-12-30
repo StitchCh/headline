@@ -22,10 +22,11 @@
         :options="{handle: '.can-drag'}">
         <transition-group tag="ul" name="flip-list">
           <li class="item flex-v-center"
-            v-for="li in viewList"
+            v-for="(li, index) in viewList"
             v-if="!(li.del && !showDelected)"
             :key="li.contentLayoutId || li.key"
             :class="{'del': li.del, 'new': li.new, 'can-drag': !li.top}">
+            <span style="width: 30px;">{{index+1}}</span>
             <span class="f-12 fix-top" v-if="li.top">置顶</span>
             <span class="flex-item item-title">{{li.newTitle}}</span>
             <span class="f-12 c-5">

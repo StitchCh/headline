@@ -2,7 +2,7 @@
 <div class="abs bg-f flex app-gallery">
   <af-left color="#7b5b4d" bg-color="#f3eee0" vibrant-color="#e45000" title="图集" :defaultActive="defaultActive">
     <navigator-item icon="folder" index="all-all" @click="$router.replace('/gallery?scope=all&status=all')">全部</navigator-item>
-    <navigator-item icon="check_circle" index="my-all" @click="$router.replace('/gallery?scope=my&status=all')">已发</navigator-item>
+    <navigator-item icon="check_circle" index="my-all" @click="$router.replace('/gallery?scope=my&status=PASS')">已审</navigator-item>
     <navigator-item icon="hourglass_full" index="my-AUDITING" @click="$router.replace('/gallery?scope=my&status=AUDITING')">待审</navigator-item>
     <navigator-item icon="error" index="my-REJECT" @click="$router.replace('/gallery?scope=my&status=REJECT')">驳回</navigator-item>
     <navigator-item icon="class" index="GalleryDraft" @click="$router.replace('/gallery/draft')">草稿</navigator-item>

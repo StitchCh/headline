@@ -52,7 +52,7 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((to) => {
-  document.title = to.meta.title || 'CCPT'
+  document.title = to.meta.title || 'CCTP'
   let token = localStorage.token || sessionStorage.token
   let siteId = localStorage.siteId || sessionStorage.siteId
   if (!siteId && !(to.name === 'Login' || to.name === 'ChooseSite' || to.name === 'FindPassword')) {

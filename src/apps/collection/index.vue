@@ -15,19 +15,19 @@
       <div class="setting-card f-14">
         <table>
           <thead>
-            <th>关键词</th>
-            <th>来源</th>
-            <th>标题</th>
-            <th>连接</th>
-            <th>采集日期</th>
+            <th style="width: 100px;"><p>关键词</p></th>
+            <th style="width: 100px;"><p>来源</p></th>
+            <th style="width: calc(50% - 150px);"><p>标题</p></th>
+            <th style="width: calc(50% - 150px);"><p>连接</p></th>
+            <th style="width: 100px;"><p>采集日期</p></th>
           </thead>
           <tbody>
             <tr v-for="(item,index) in list" :key="index"  @click="openUrl(item.url)">
-              <td>{{item.keyWord}}</td>
-              <td>{{item.source}}</td>
-              <td>{{item.title}}</td>
-              <td>{{item.url}}</td>
-              <td>{{item.createDate}}</td>
+              <td style="width: 100px;"><p>{{item.keyWord}}</p></td>
+              <td style="width: 100px;"><p>{{item.source}}</p></td>
+              <td style="width: calc(50% - 150px);"><p>{{item.title}}</p></td>
+              <td style="width: calc(50% - 150px);"><p>{{item.url}}</p></td>
+              <td style="width: 100px;"><p>{{item.createDate}}</p></td>
             </tr>
           </tbody>
         </table>
@@ -98,6 +98,13 @@ export default {
       td {
         padding: 5px 10px;
       }
+      th>p, td>p{
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        margin: 0;
+        max-width: 480px;
+      }
       tr {
         border-top: 1px solid #e1e1e1;
         cursor: pointer;
@@ -128,6 +135,7 @@ export default {
       border-radius: 10px;
       padding: 20px;
       background: #fff;
+      overflow: auto;
       th,
       td {
         padding: 5px 10px;

@@ -26,6 +26,14 @@ axios.interceptors.response.use(function (response) {
   if (response.data) {
     let code = parseInt(response.data.code)
     if (code === 1) return (response.data.result || response.data.results)
+    if (code === -2001) {
+      Vue.prototype.$toast(response.data.msg)
+      return
+    }
+    if (code === -1001) {
+      Vue.prototype.$toast(response.data.msg)
+      return
+    }
     if (code === 1002 || code === 1001) {
       router.replace('/login')
       sessionStorage.removeItem('token')
@@ -43,6 +51,28 @@ axios.interceptors.response.use(function (response) {
 })
 
 Vue.prototype.$http = axios
+
+Vue.prototype.keydownFun = function (nub, fun) {
+  let gettype = Object.prototype.toString
+  let arrtrue = gettype.call(nub) === '[object Array]' ? true : false
+  if (typeof nub === 'number') {
+    nub = nub + ''
+  }
+  if (arrtrue){
+    for (let i = 0; i < nub.length; i++) {
+      if (typeof nub[i] === 'string') {
+        nub[i] = parseInt(nub[i])
+      }
+    }
+  }
+  document.onkeydown = function(){
+    if (nub === 'all') {
+      fun()
+    } else if (nub.indexOf(event.keyCode) >= 0) {
+      fun()
+    }
+  }
+}
 
 /* eslint-disable no-new */
 new Vue({
