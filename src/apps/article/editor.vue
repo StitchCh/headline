@@ -205,7 +205,7 @@ export default {
   },
   methods: {
     getText () {
-      return this.editor.getPlainTxt()
+      return this.editor.getContentTxt()
       // return this.$refs.editor.quill.getText()
     },
     // getKeyGenerate: debounce(function () {
@@ -241,7 +241,7 @@ export default {
           url: origin + v.audio
         }
       })
-      if (selected.length) this.editor.execCommand('music', selected)
+      if (selected.length) this.editor.execCommand('insertvideo', selected, 'upload')
       this.ui.audioSelectorShow = false
     },
     ready (UE) {

@@ -105,6 +105,10 @@
 <script>
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
+import 'video.js/dist/video-js.css'
+import 'video.js/dist/lang/zh-CN'
+import 'vue-video-player/src/custom-theme.css'
+import 'video.js'
 
 export default {
   name: 'app-article-content',
@@ -165,6 +169,9 @@ export default {
   },
   created () {
     this.getArticle()
+  },
+  mounted () {
+
   },
   watch: {
     id () {
