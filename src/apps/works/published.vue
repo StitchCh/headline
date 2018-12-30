@@ -51,7 +51,8 @@ export default {
           item.del = false
           item.top = false
           item.changed = false
-          item.dateRange = [moment().format('YYYY-MM-DD HH:mm:ss'), moment().add(1, 'year').format('YYYY-MM-DD HH:mm:ss')]
+          item.timeing = 0
+          item.dateRange = [moment().format('YYYY-MM-DD HH:mm:ss'), '3000-12-31 24:00:00']
           // item.editSendDate = item.sendDate || moment().format('YYYY-MM-DD HH:mm:ss')
           // item.editEndDate = item.endDate || '9999-12-30 23:59:59'
           item.sortOrder = item.order = 1

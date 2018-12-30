@@ -49,11 +49,11 @@
           <app-article-add-thumb scale v-model="thumb.thumb2" height="80px" class="flex-item" style="margin-right: 8px;"></app-article-add-thumb>
           <app-article-add-thumb scale v-model="thumb.thumb3" height="80px" class="flex-item"></app-article-add-thumb>
         </div>
-        <!-- <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
+        <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
           <div class="flex-item"><radio-box text="默认" :label="1" v-model="form.thumbType"/></div>
           <div class="flex-item"><radio-box text="三图" :label="2" v-model="form.thumbType"/></div>
           <div><radio-box text="16:9 大图" style="margin: 0;" :label="3" v-model="form.thumbType"/></div>
-        </div> -->
+        </div>
       </div>
       <div class="option-item">
         <div class="flex-v-center">
@@ -383,6 +383,7 @@ export default {
       this.$http.post(from[this.from].getUrl, {
         id: this.id
       }).then(res => {
+        console.log(res)
         for (let k in this.form) {
           if (k === 'virtualComment') {
             if (res.content[k] === '') {
@@ -420,6 +421,7 @@ export default {
           this.$refs.editor.titleColor = this.form.titleColor
           this.$refs.editor.content = this.form.content
         })
+        console.log(this.form.hasThumb)
       }).catch(e => {
         console.log(e)
       })
@@ -427,58 +429,45 @@ export default {
   },
   watch: {
     'thumb.thumb1' (newValue) {
-      console.log(newValue)
       if (this.form.thumbType === 2) {
         if (!(newValue || this.thumb.thumb2 || this.thumb.thumb3)) {
-          this.form.hasThumb = 0
           this.form.thumb = ''
         } else {
-          this.form.hasThumb = 1
           this.form.thumb = [ newValue, this.thumb.thumb2, this.thumb.thumb3 ].filter(v => v).map(v => v.id).join(',')
         }
       } else {
         if (!newValue) {
-          this.form.hasThumb = 0
           this.form.thumb = ''
         } else {
-          this.form.hasThumb = 1
           this.form.thumb = newValue.id
         }
       }
     },
     'thumb.thumb2' (newValue) {
       if (!(this.thumb.thumb1 || newValue || this.thumb.thumb3)) {
-        this.form.hasThumb = 0
         this.form.thumb = ''
       } else {
-        this.form.hasThumb = 1
         this.form.thumb = [ this.thumb.thumb1, newValue, this.thumb.thumb3 ].filter(v => v).map(v => v.id).join(',')
       }
     },
     'thumb.thumb3' (newValue) {
       if (!(this.thumb.thumb1 || this.thumb.thumb2 || newValue)) {
-        this.form.hasThumb = 0
         this.form.thumb = ''
       } else {
-        this.form.hasThumb = 1
         this.form.thumb = [ this.thumb.thumb1, this.thumb.thumb2, newValue ].filter(v => v).map(v => v.id).join(',')
       }
     },
     'form.thumbType' (newValue) {
       if (newValue === 2) {
         if (!(this.thumb.thumb1 || this.thumb.thumb2 || this.thumb.thumb3)) {
-          this.form.hasThumb = 0
           this.form.thumb = ''
         } else {
-          this.form.hasThumb = 1
           this.form.thumb = [ this.thumb.thumb1, this.thumb.thumb2, this.thumb.thumb3 ].filter(v => v).map(v => v.id).join(',')
         }
       } else {
         if (!this.thumb.thumb1) {
-          this.form.hasThumb = 0
           this.form.thumb = ''
         } else {
-          this.form.hasThumb = 1
           this.form.thumb = this.thumb.thumb1.id
         }
       }

@@ -9,6 +9,7 @@
 
       <div class="list-item a" slot-scope="slotProps" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.id == $route.params.id}">
         <div class="list-title flex-v-center">
+          <img v-if="slotProps.item.hasThumb == 1" src="../../../../static/head_img.png" alt="" style="width: 20px;margin-right: 10px;">
           <i v-if="~~(slotProps.item.isRecommnd)" class="icon f-16 blue">thumb_up</i>
           <!-- <i v-if="~~(slotProps.item.hasThumb)" class="icon f-16 orange">image</i> -->
           <i v-if="~~(slotProps.item.isOriginal)" class="icon f-16 green">copyright</i>

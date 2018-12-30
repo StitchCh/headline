@@ -1,5 +1,5 @@
 <template>
-<layer class="image-editor" width="700px">
+<div class="image-editor">
   <div class="content flex">
     <div class="tool-bar flex-center">
       <div style="padding: 12px;">
@@ -15,7 +15,7 @@
         <icon-btn v-tooltip:bottom="'恢复'" :disabled="history.index === history.list.length - 1" @click="redo">redo</icon-btn>
         <!-- <icon-btn v-tooltip:right="'涂鸦'">brush</icon-btn>
         <icon-btn v-tooltip:right="'文字'">text_fields</icon-btn> -->
-        <!-- <icon-btn v-tooltip:right="'水印'">branding_watermark</icon-btn> -->
+         <icon-btn v-tooltip:right="'水印'" @click="watermark = !watermark">branding_watermark</icon-btn>
       </div>
     </div>
     <transition name="fade">
@@ -50,7 +50,13 @@
       </div>
     </transition>
     <div class="flex-item flex-col">
-      <div class="flex-item flex-center">
+      <div ref="imgbox" class="flex-item flex-center" style="position: relative">
+        <div class="watermark_box"
+             :style="{top: watermarkData.top + 'px', left: watermarkData.left + 'px', width: watermarkData.width + 'px'}"
+             @mousedown="watermarkDown"
+        >
+          <img ref="watermark_img" ondragstart="return false;" v-if="watermark" src="http://60.247.77.208:59099/static/img/icon-live.png" alt="" style="width: 100%;">
+        </div>
         <img style="max-width: 100%;" :src="src" ref="cropper"/>
       </div>
       <div class="layer-btns">
@@ -59,7 +65,8 @@
       </div>
     </div>
   </div>
-</layer>
+  <canvas style="position: fixed;top: 0px;left: 0px;z-index: -10;" ref="mycanvasbox"></canvas>
+</div>
 </template>
 
 <script>
@@ -75,7 +82,21 @@ export default {
   },
   data () {
     return {
+      watermarkData: {
+        top: 0,
+        left: 0,
+        width: 40,
+        x: 0,
+        y: 0
+      },
+      imgboxData: {
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0
+      },
       toolActive: '',
+      watermark: false,
       optionActive: '',
       cropper: null,
       // crop: {
@@ -85,7 +106,8 @@ export default {
       history: {
         index: -1,
         list: []
-      }
+      },
+      mycanvas: null
       // rotate: {
       //   move: false,
       //   deg: 0,
@@ -96,6 +118,12 @@ export default {
     }
   },
   mounted () {
+    this.imgboxData = {
+      x: this.$refs.imgbox.offsetLeft,
+      y: this.$refs.imgbox.offsetTop,
+      width: this.$refs.imgbox.offsetWidth,
+      height: this.$refs.imgbox.offsetHeight
+    }
     this.init()
   //   window.addEventListener('mousedown', this.onRotateStart)
   //   window.addEventListener('mousemove', this.onRotate)
@@ -109,6 +137,25 @@ export default {
   //   window.addEventListener('resize', this.onWindowResize)
   },
   methods: {
+    watermarkDown (event) {
+      this.watermarkData.x = event.clientX - this.watermarkData.left
+      this.watermarkData.y = event.clientY - this.watermarkData.top
+      document.body.onmousemove = (event) => {
+        let oTop = event.clientY - this.watermarkData.y <= 0 ? 0 : event.clientY - this.watermarkData.y
+        let oLeft = event.clientX - this.watermarkData.x <= 0 ? 0 : event.clientX - this.watermarkData.x
+        if (oTop >= this.imgboxData.height - 40) {
+          oTop = this.imgboxData.height - 40
+        }
+        if (oLeft >= this.imgboxData.width - 40) {
+          oLeft = this.imgboxData.width - 40
+        }
+        this.watermarkData.left = oLeft
+        this.watermarkData.top = oTop
+      }
+      document.body.onmouseup = () => {
+        document.body.onmousemove = null
+      }
+    },
     init () {
       this.cropper = new Cropper(this.$refs.cropper, {
         viewMode: 1,
@@ -217,6 +264,16 @@ export default {
     },
     submit () {
       let { current } = this
+      console.log(this.cropper.getCanvasData().width, this.cropper.getCanvasData().height)
+      this.$refs.mycanvasbox.width = this.cropper.getCroppedCanvas().width
+      this.$refs.mycanvasbox.height = this.cropper.getCroppedCanvas().height
+      this.mycanvas = this.$refs.mycanvasbox.getContext("2d")
+      this.mycanvas.drawImage(this.cropper.getCroppedCanvas(), 0, 0)
+      var imgObj = new Image()
+      imgObj.src = 'http://60.247.77.208:59099/static/img/icon-live.png'
+      imgObj.onload = () => {
+        this.mycanvas.drawImage(imgObj, this.watermarkData.top, this.watermarkData.left, 40, 40)
+      }
       this.cropper.getCroppedCanvas().toBlob(img => {
         let data = {
           type: 0,
@@ -238,9 +295,14 @@ export default {
 
 <style lang="less">
 .image-editor{
+  .watermark_box{
+    width: 40px;
+    z-index:100;
+    position: absolute;
+  }
   position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: 20;background: rgba(0, 0, 0, .9);
   .layer-ctn{max-width: 800px!important;}
-  .content{height: 500px;}
+  .content{height: 500px;width: 700px;position: absolute;top: 0px;left: 0px;right: 0px;bottom: 0px;margin: auto;background: #fff;border-radius: 10px;}
   .tool-bar{width: 60px;border-right: 1px solid rgba(0, 0, 0, .1);}
   .option-bar{position: absolute;left: 60px;top: 0;height: 100%;z-index: 10;border-right: 1px solid rgba(0, 0, 0, .1);
     background: rgba(255, 255, 255, .7);

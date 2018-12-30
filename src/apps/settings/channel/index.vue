@@ -81,10 +81,10 @@ export default {
   methods: {
     getChannels () {
       this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor').then(res => {
-        res.channels.forEach(item => {
+        res.forEach(item => {
           item.name = item.channelName
         })
-        this.channels = res.channels
+        this.channels = res
       }).catch(e => {
         this.$toast(e.msg)
       })

@@ -275,6 +275,9 @@ export default {
 
 <style lang="less">
 .article-editor{max-width: 900px;margin: 0 auto;padding: 10px;
+  .flex-v-center{
+    font-size: 14px !important;
+  }
   .title{font-size: 30px;font-weight: bold;border: none;width: 100%;background: transparent;padding: 20px 15px;color: #555;
     &::-webkit-input-placeholder{color: #aaa;}
   }

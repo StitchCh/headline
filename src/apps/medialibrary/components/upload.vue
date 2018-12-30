@@ -36,6 +36,7 @@
             multiple
             :onchange="onChange"
             :file-list="fileList"
+            :datalength="datalength"
           ></upload-box>
         </div>
       </div>
@@ -63,7 +64,8 @@ export default {
       tab: 2,
       fileList: [],
       urlLoading: false,
-      picUrl: ''
+      picUrl: '',
+      datalength: '0%'
     }
   },
   computed: {
@@ -92,7 +94,16 @@ export default {
         file: file.source
       }
       file.status = 'uploading'
-      this.$http.post('/cri-cms-platform/media/uploadIAU.monitor', data).then(res => {
+      // console.log(this.fileList.indexOf(file))
+      let config = {
+        onUploadProgress: progressEvent => {
+          let complete = (progressEvent.loaded / progressEvent.total * 100 | 0) + '%'
+          file.datalength = complete
+          this.fileList.splice(this.fileList.indexOf(file), 1, file)
+          console.log(complete)
+        }
+      }
+      this.$http.post('/cri-cms-platform/media/uploadIAU.monitor', data, config).then(res => {
         file.status = 'done'
         this.$emit('uploaded')
         setTimeout(() => {

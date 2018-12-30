@@ -13,16 +13,19 @@
   <div class="flex-item flex-col" style="overflow: hidden;">
     <div class="af-topbar flex-v-center" style="background:rgb(244, 244, 244);">
       <div style="width: 150px;margin-left: 5px;" v-if="$route.query.channelId">
-        <div v-show="$route.name === 'works-published'">
+        <div v-if="$route.name === 'works-published'">
           <btn @click="publish">发布</btn>
           <btn flat @click="refresh">撤销更改</btn>
         </div>
+        <div v-if="$route.name != 'works-published'">
+          <btn @click="onTab('/works')">返回</btn>
+        </div>
       </div>
       <div class="flex-item flex-center">
-        <div class="tab" v-if="$route.query.channelId">
-          <div class="tab-item" :class="{'on': $route.name==='works-published'}" @click="onTab('/works')">已发布</div>
-          <div class="tab-item" :class="{'on': $route.name==='works-unpublished'}" @click="onTab('/works/unpublished')">未发布</div>
-        </div>
+        <!--<div class="tab" v-if="$route.query.channelId">-->
+          <!--<div class="tab-item" :class="{'on': $route.name==='works-published'}" @click="onTab('/works')">已发布</div>-->
+          <!--<div class="tab-item" :class="{'on': $route.name==='works-unpublished'}" @click="onTab('/works/unpublished')">未发布</div>-->
+        <!--</div>-->
       </div>
       <account/>
     </div>

@@ -16,11 +16,10 @@
           <div class="flex-center" style="height: 60px;">
             <div class="tab">
               <div class="tab-item" :class="{on : navindex == 0}" @click="navindex = 0">直播</div>
-              <div class="tab-item" :class="{on : navindex == 1}" @click="navindex = 1">聊天室</div>
+              <div v-if="tagOrder.length > 1" class="tab-item" :class="{on : navindex == 1}" @click="navindex = 1">聊天室</div>
               <!-- <div class="tab-item" :class="{on : navindex == 2}" @click="navindex = 2">直播管理</div> -->
             </div>
           </div>
-
           <div v-if="navindex == 0">
             <div class="textareabox" style="max-width: 900px;margin: 0 auto 20px;">
               <textarea v-model="liveContent" placeholder="发直播..."></textarea>
@@ -121,18 +120,18 @@
           </draggable>
         </div>
 
-        <div class="option-item flex-v-center">
-          <span>虚拟阅读量</span>
-          <input class="flex-item t-right" type="number" placeholder="请输入" v-model="virtualPv" @blur="setZhiboRoom">
-        </div>
-        <div class="option-item flex-v-center">
-          <span>虚拟评论量</span>
-          <input class="flex-item t-right" type="number" placeholder="请输入" v-model="virtualShare" @blur="setZhiboRoom">
-        </div>
-        <div class="option-item flex-v-center">
-          <span>虚拟点赞量</span>
-          <input class="flex-item t-right" type="number" placeholder="请输入" v-model="virtualDigg" @blur="setZhiboRoom">
-        </div>
+        <!--<div class="option-item flex-v-center">-->
+          <!--<span>虚拟阅读量</span>-->
+          <!--<input class="flex-item t-right" type="number" placeholder="请输入" v-model="virtualPv" @blur="setZhiboRoom">-->
+        <!--</div>-->
+        <!--<div class="option-item flex-v-center">-->
+          <!--<span>虚拟评论量</span>-->
+          <!--<input class="flex-item t-right" type="number" placeholder="请输入" v-model="virtualShare" @blur="setZhiboRoom">-->
+        <!--</div>-->
+        <!--<div class="option-item flex-v-center">-->
+          <!--<span>虚拟点赞量</span>-->
+          <!--<input class="flex-item t-right" type="number" placeholder="请输入" v-model="virtualDigg" @blur="setZhiboRoom">-->
+        <!--</div>-->
       </div>
 
       <div class="app-article-add-thumb">

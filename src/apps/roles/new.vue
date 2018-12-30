@@ -102,7 +102,7 @@ export default {
       this.ui.roleSiteFlag = false
       this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor', { id }).then(
         res => {
-          this.ui.channels = res.channels
+          this.ui.channels = res
           this.ui.roleSiteFlag = true
         }
       ).catch(

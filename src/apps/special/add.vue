@@ -26,8 +26,8 @@
           <div class="flex-item"><radio-box text="幻灯片" :label="2" v-model="form.headPicType"/></div>
         </div>
         <div v-show="form.headPicType == 1" style="max-width: 300px;margin: 20px;">
-
           <app-article-add-thumb v-if="getif" v-model="headList_type1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
+          <p style="font-size: 12px;color: #f00;">建议择尺寸为16：9的图片作为头图</p>
         </div>
         <div v-show="form.headPicType == 2">
           <app-article-add-relates v-if="getif && getif1" :channels="ui.channels.channels" :limit="form.headPicType" v-model="headList_type2" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/special/getArticList.monitor"></app-article-add-relates>
@@ -37,7 +37,7 @@
       <div class="setlistbox">
         <div style="width: 80%;float: right">
           <div class="list_content">
-            <div v-for="item in list">
+            <div v-for="(item, index) in list" v-show="moble_index == index">
               <p class="list_content_title">
                 {{item.name}}
                 <span v-if="form.listType == 2" style="float: right">
@@ -53,7 +53,7 @@
         </div>
 
         <div style="width: 20%;float: left;padding-top: 10px;">
-            <div v-for="(item,index) in list" class="channel-tree-item flex-v-center">
+            <div v-for="(item,index) in list" @click="moble_index = index" class="channel-tree-item flex-v-center">
               <div class="flex-item flex-v-center" style="height: 40px;overflow:hidden;">
                 <span class="flex-item channel-name" v-if="!item.edit">{{item.name}}</span>
                 <input type="text" v-else v-model="item.name" class="flex-item f-14">
@@ -184,7 +184,8 @@ export default {
   props: [ 'from', 'id' ],
   data () {
     return {
-      list:[],
+      moble_index: 0,
+      list: [],
       getif: false,
       getif1: false,
       article: null,
@@ -332,7 +333,7 @@ export default {
     },
     submit () {
       let url = this.id ? '/cri-cms-platform/special/update.monitor' : '/cri-cms-platform/special/save.monitor'
-      let { title } = this.$refs.editor
+      let { title, titleColor } = this.$refs.editor
       if (!title) {
         this.$toast('请输入标题')
         return
@@ -342,6 +343,7 @@ export default {
         return
       }
       this.form.title = title
+      this.form.titleColor = titleColor
 
       let obj = {...this.form}
 
