@@ -54,8 +54,10 @@
         <div class="watermark_box"
              :style="{top: watermarkData.top + 'px', left: watermarkData.left + 'px', width: watermarkData.width + 'px'}"
              @mousedown="watermarkDown"
+             v-if="watermark"
         >
-          <img ref="watermark_img" ondragstart="return false;" v-if="watermark" src="http://60.247.77.208:59099/static/img/icon-live.png" alt="" style="width: 100%;">
+          <img ref="watermark_img" ondragstart="return false;" src="http://60.247.77.208:58088/icon/icon.png" alt="" style="width: 100%;">
+          <div @mousedown="watermarkResize" style="width: 10px;height: 10px;position: absolute;right: -5px;bottom: -5px;border-radius: 50%;background: #00a0e9;cursor: nwse-resize;"></div>
         </div>
         <img style="max-width: 100%;" :src="src" ref="cropper"/>
       </div>
@@ -65,7 +67,7 @@
       </div>
     </div>
   </div>
-  <canvas style="position: fixed;top: 0px;left: 0px;z-index: -10;" ref="mycanvasbox"></canvas>
+  <!--<canvas style="position: fixed;top: 0px;left: 0px;z-index: -10;" ref="mycanvasbox"></canvas>-->
 </div>
 </template>
 
@@ -137,17 +139,28 @@ export default {
   //   window.addEventListener('resize', this.onWindowResize)
   },
   methods: {
+    watermarkResize (event) {
+      event.stopPropagation()
+      console.log(this.watermarkData.width, event.clientX , this.watermarkData.x)
+      let ox = event.clientX - this.watermarkData.width
+      document.body.onmousemove = (event) => {
+        this.watermarkData.width = event.clientX - ox
+      }
+      document.body.onmouseup = () => {
+        document.body.onmousemove = null
+      }
+    },
     watermarkDown (event) {
       this.watermarkData.x = event.clientX - this.watermarkData.left
       this.watermarkData.y = event.clientY - this.watermarkData.top
       document.body.onmousemove = (event) => {
         let oTop = event.clientY - this.watermarkData.y <= 0 ? 0 : event.clientY - this.watermarkData.y
         let oLeft = event.clientX - this.watermarkData.x <= 0 ? 0 : event.clientX - this.watermarkData.x
-        if (oTop >= this.imgboxData.height - 40) {
-          oTop = this.imgboxData.height - 40
+        if (oTop >= this.imgboxData.height - this.watermarkData.width) {
+          oTop = this.imgboxData.height - this.watermarkData.width
         }
-        if (oLeft >= this.imgboxData.width - 40) {
-          oLeft = this.imgboxData.width - 40
+        if (oLeft >= this.imgboxData.width - this.watermarkData.width) {
+          oLeft = this.imgboxData.width - this.watermarkData.width
         }
         this.watermarkData.left = oLeft
         this.watermarkData.top = oTop
@@ -264,30 +277,73 @@ export default {
     },
     submit () {
       let { current } = this
-      console.log(this.cropper.getCanvasData().width, this.cropper.getCanvasData().height)
-      this.$refs.mycanvasbox.width = this.cropper.getCroppedCanvas().width
-      this.$refs.mycanvasbox.height = this.cropper.getCroppedCanvas().height
-      this.mycanvas = this.$refs.mycanvasbox.getContext("2d")
-      this.mycanvas.drawImage(this.cropper.getCroppedCanvas(), 0, 0)
-      var imgObj = new Image()
-      imgObj.src = 'http://60.247.77.208:59099/static/img/icon-live.png'
-      imgObj.onload = () => {
-        this.mycanvas.drawImage(imgObj, this.watermarkData.top, this.watermarkData.left, 40, 40)
-      }
-      this.cropper.getCroppedCanvas().toBlob(img => {
-        let data = {
-          type: 0,
-          folderId: current.folderId,
-          file: new File([img], current.alias)
+      let canvasData = {
+        w: this.cropper.getCroppedCanvas().width,
+        h: this.cropper.getCroppedCanvas().height,
+        ratio: 0,
+        ratioValue: {
+          w: 0,
+          h: 0
         }
-        console.log(data)
-        this.$http.post('/cri-cms-platform/media/uploadIAU.monitor', data).then(res => {
-          console.log(res)
-          this.$emit('refresh')
-        }).catch(e => {
-          this.$toast(e.msg || `保存失败`)
+      }
+      if (this.watermark) {
+        let canvas = document.createElement("canvas")
+        canvas.width = canvasData.w
+        canvas.height = canvasData.h
+        this.mycanvas = canvas.getContext("2d")
+        let imgObj1 = new Image()
+        imgObj1.src = this.cropper.getCroppedCanvas().toDataURL("image/png")
+        imgObj1.onload = () => {
+          this.mycanvas.drawImage(imgObj1, 0, 0)
+          let imgObj = new Image()
+          imgObj.src = 'http://60.247.77.208:58088/icon/icon.png'
+          imgObj.setAttribute('crossorigin', 'anonymous')
+          imgObj.onload = () => {
+            if (canvasData.w / canvasData.h >= this.imgboxData.width / this.imgboxData.height) {
+              canvasData.ratio = this.imgboxData.width / canvasData.w
+              canvasData.ratioValue = {
+                w: this.imgboxData.width,
+                h: canvasData.ratio * canvasData.h
+              }
+            } else {
+              canvasData.ratio = this.imgboxData.height / canvasData.h
+              canvasData.ratioValue = {
+                w: canvasData.ratio * canvasData.w,
+                h: this.imgboxData.height
+              }
+            }
+            this.mycanvas.drawImage(imgObj, (this.watermarkData.left - (this.imgboxData.width - canvasData.ratioValue.w) / 2) / canvasData.ratio, (this.watermarkData.top - (this.imgboxData.height - canvasData.ratioValue.h) / 2) / canvasData.ratio, this.watermarkData.width / canvasData.ratio, this.watermarkData.width / canvasData.ratio)
+            let img = canvas.toDataURL("image/png")
+            let data = {
+              type: 0,
+              folderId: current.folderId,
+              file: new File([img], current.alias)
+            }
+            console.log(data)
+            this.$http.post('/cri-cms-platform/media/uploadIAU.monitor', data).then(res => {
+              console.log(res)
+              this.$emit('refresh')
+            }).catch(e => {
+              this.$toast(e.msg || `保存失败`)
+            })
+          }
+        }
+      } else {
+        this.cropper.getCroppedCanvas().toBlob(img => {
+          let data = {
+            type: 0,
+            folderId: current.folderId,
+            file: new File([img], current.alias)
+          }
+          console.log(data)
+          this.$http.post('/cri-cms-platform/media/uploadIAU.monitor', data).then(res => {
+            console.log(res)
+            this.$emit('refresh')
+          }).catch(e => {
+            this.$toast(e.msg || `保存失败`)
+          })
         })
-      })
+      }
     }
   }
 }
@@ -299,6 +355,7 @@ export default {
     width: 40px;
     z-index:100;
     position: absolute;
+    border: 1px solid #00a0e9;
   }
   position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: 20;background: rgba(0, 0, 0, .9);
   .layer-ctn{max-width: 800px!important;}
