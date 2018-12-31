@@ -1,6 +1,6 @@
 <template>
   <layer :title="title" :width="width" :maskClick="maskClick" :side="side" :transparent="transparent" @close="$emit('close')">
-    <ul>
+    <ul style="overflow: auto;max-height: 600px;">
       <slot></slot>
     </ul>
   </layer>

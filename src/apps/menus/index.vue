@@ -111,7 +111,7 @@
           <input-box label="图标" v-show="newForm.sysMenuShowFlag === '1'" v-model="newForm.sysMenuIcon"></input-box>
           <div class="relative input-box">
             <label>上级菜单</label>
-            <div style="padding-left: 50px;">
+            <div style="padding-left: 80px;">
               <tag v-for="item in newParentMenus" :key="item" small>{{getNewMenu(item)}}</tag>
               <icon-btn small @click="getNewParentMenus">edit</icon-btn>
             </div>

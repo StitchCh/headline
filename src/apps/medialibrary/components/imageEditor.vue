@@ -56,7 +56,7 @@
              @mousedown="watermarkDown"
              v-if="watermark"
         >
-          <img ref="watermark_img" ondragstart="return false;" src="http://60.247.77.208:59099/static/img/icon-channels.png" alt="" style="width: 100%;">
+          <img ref="watermark_img" ondragstart="return false;" src="http://localhost:8081/static/img/icon-comment.png" alt="" style="width: 100%;">
           <div @mousedown="watermarkResize" style="width: 10px;height: 10px;position: absolute;right: -5px;bottom: -5px;border-radius: 50%;background: #00a0e9;cursor: nwse-resize;"></div>
         </div>
         <img style="max-width: 100%;" :src="src" ref="cropper"/>
@@ -296,7 +296,7 @@ export default {
         imgObj1.onload = () => {
           this.mycanvas.drawImage(imgObj1, 0, 0)
           let imgObj = new Image()
-          imgObj.src = 'http://60.247.77.208:59099/static/img/icon-channels.png'
+          imgObj.src = 'http://localhost:8081/static/img/icon-comment.png'
           imgObj.setAttribute('crossorigin', 'anonymous')
           imgObj.onload = () => {
             if (canvasData.w / canvasData.h >= this.imgboxData.width / this.imgboxData.height) {
