@@ -130,7 +130,7 @@ export default {
         btns: ['取消', '删除'],
         color: 'red',
         yes: () => {
-          this.$http.post('/cri-cms-platform/vote/del.monitor', {
+          this.$http.post('/cri-cms-platform/vote/delete.monitor', {
             id: this.$route.params.id
           }).then(res => {
             this.$refs.afCenter.getList()

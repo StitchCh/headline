@@ -19,57 +19,55 @@
     <div class="flex-item scroll-y">
       <article-editor v-if="getif" :otitle="form.title" ref="editor" @getKeyGenerate="getKeyGenerate"></article-editor>
 
-      <div style="max-width: 900px;margin: 0 auto;padding: 20px 10px;border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;">
+      <div style="max-width: 900px;margin: 0 auto;padding: 20px 10px;">
         <h2>选择头图</h2>
-        <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
-          <div class="flex-item"><radio-box text="单图" :label="1" v-model="form.headPicType"/></div>
-          <div class="flex-item"><radio-box text="幻灯片" :label="2" v-model="form.headPicType"/></div>
-        </div>
-        <div v-show="form.headPicType == 1" style="max-width: 300px;margin: 20px;">
-          <app-article-add-thumb v-if="getif" v-model="headList_type1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
+        <div style="max-width: 300px;margin: 20px;">
+          <app-article-add-thumb v-model="form.headThumb" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
           <p style="font-size: 12px;color: #f00;">建议择尺寸为16：9的图片作为头图</p>
         </div>
-        <div v-show="form.headPicType == 2">
-          <app-article-add-relates v-if="getif && getif1" :channels="ui.channels.channels" :limit="form.headPicType" v-model="headList_type2" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/special/getArticList.monitor"></app-article-add-relates>
-        </div>
       </div>
-
-      <div class="setlistbox">
-        <div style="width: 80%;float: right">
-          <div class="list_content">
-            <div v-for="(item, index) in list" v-show="moble_index == index">
-              <p class="list_content_title">
-                {{item.name}}
-                <span v-if="form.listType == 2" style="float: right">
-                  时间：
-                  <vue-datepicker-local v-model="item.time" format="YYYY-MM-DD" show-buttons></vue-datepicker-local>
-                </span>
-              </p>
-              <div style="padding: 10px;">
-                <app-article-add-relates v-if="getif" :channels="ui.channels.channels" v-model="item.list" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/special/getArticList.monitor"></app-article-add-relates>
+      <div v-if="form.templateType == 1" class="listbox">
+        <draggable element="ul" :options="{ghostClass:'movelist'}" v-model="form.options">
+          <li v-for="(item, index) in form.options" class="listType1">
+            <div>
+              <span style="width: 30px;display: inline-block;">{{index + 1}}</span>
+              <div v-if="form.templateStyle == 2" style="margin-right: 10px;display: inline-block;width: 80px;transform: translateY(4px);">
+                <app-article-add-thumb v-model="item.thumb" height="40px"></app-article-add-thumb>
               </div>
+              <span>标题</span>
+              <input type="text" v-model="item.title">
+              <span>链接</span>
+              <input style="width: 200px;" type="text" v-model="item.link">
+              <span>起始票数</span>
+              <input type="number" v-model="item.virtualVotes" min="0">
+              <icon-btn small style="float: right" @click="removeList(index)">delete</icon-btn>
             </div>
-          </div>
-        </div>
-
-        <div style="width: 20%;float: left;padding-top: 10px;">
-            <div v-for="(item,index) in list" @click="moble_index = index" class="channel-tree-item flex-v-center">
-              <div class="flex-item flex-v-center" style="height: 40px;overflow:hidden;">
-                <span class="flex-item channel-name" v-if="!item.edit">{{item.name}}</span>
-                <input type="text" v-else v-model="item.name" class="flex-item f-14">
-              </div>
-              <icon-btn small v-if="item.edit" @click.native.stop="item.edit = false">add</icon-btn>
-              <icon-btn small v-if="!item.edit" @click.native.stop="item.edit = true">edit</icon-btn>
-              <icon-btn small @click="removeList(index)" >delete</icon-btn>
-            </div>
-            <div @click="addlist" class="channel-tree-item channel-tree-item1 flex-v-center" style="cursor: pointer;">
-              <icon-btn small style="margin-right: 10px;">add</icon-btn>
-              <span class="flex-item channel-name" style="height: 40px;line-height: 40px;">添加板块</span>
-            </div>
-        </div>
+          </li>
+        </draggable>
       </div>
-
+      <div v-if="form.templateType == 2" class="listbox" style="overflow: hidden;">
+        <draggable element="ul" :options="{ghostClass:'movelist'}" v-model="form.options">
+          <li v-for="(item, index) in form.options" class="listType2">
+            <div>
+              <div style="margin-bottom: 6px;">
+                <app-article-add-thumb v-model="item.thumb" height="100px" style="margin-bottom: 8px;"></app-article-add-thumb>
+              </div>
+              <span>标题</span>
+              <input style="width: 100%;" type="text" v-model="item.title">
+              <span>链接</span>
+              <input style="width: 100%;" type="text" v-model="item.link">
+              <span v-if="form.templateStyle == 3">描述</span>
+              <textarea v-if="form.templateStyle == 3" v-model="item.description" style="width: 100%;resize: none;height: 40px;outline: none;"></textarea>
+              <span>起始票数</span>
+              <input style="width: 100%;text-align: right;" type="number" v-model="item.virtualVotes" min="0">
+              <icon-btn class="listtype2_remove" small style="float: right" @click="removeList(index)">delete</icon-btn>
+            </div>
+          </li>
+        </draggable>
+      </div>
     </div>
+    <div class="listaddbtn">
+      <span style="margin-right: 10px;font-size: 16px;" @click="addList">添加</span><icon-btn small @click="addList">add</icon-btn></div>
   </div>
   <div class="art-options c-4 scroll-y" :style="{width: ui.optionShow ? '320px' : '0px'}">
     <div style="width: 280px;margin: 0 20px;">
@@ -89,7 +87,7 @@
         <icon-btn small v-tooltip:top="'发布到客户端'" :class="{ active: form.terminalApp }" @click="form.terminalApp = ~~!form.terminalApp">phone_iphone</icon-btn>
         <icon-btn small v-tooltip:top="'发布到移动网页'" :class="{ active: form.terminalWeb }" @click="form.terminalWeb = ~~!form.terminalWeb">public</icon-btn>
       </div>
-      <div style="margin: 10px 0;">
+      <div style="margin: 10px 0 0 0;">
         <app-article-add-thumb scale v-if="getif" v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
         <!--<div v-if="form.thumbType == 2" class="flex">-->
           <!--<app-article-add-thumb v-model="thumb.thumb2" height="80px" class="flex-item" style="margin-right: 8px;"></app-article-add-thumb>-->
@@ -101,51 +99,106 @@
           <!--<div><radio-box text="16:9 大图" style="margin: 0;" :label="3" v-model="form.thumbType"/></div>-->
         <!--</div>-->
       </div>
-      <div>
-        <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
-          <div class="flex-item"><radio-box text="微图模式" :label="1" v-model="form.listType"/></div>
-          <div class="flex-item"><radio-box text="时间轴模式" :label="2" v-model="form.listType"/></div>
+      <div class="option-item">
+        <p style="margin-top: 0;">投票类型</p>
+        <div class="flex-v-center" style="padding: 0px 5px 0 5px;">
+          <div class="flex-item"><radio-box text="普通投票" :label="1" v-model="form.templateType"/></div>
+          <div class="flex-item"><radio-box text="评选投票" :label="2" v-model="form.templateType"/></div>
         </div>
       </div>
-      <div class="option-item relative">
-        <textarea placeholder="摘要，限制 128 字。" v-model="form.abstarcts" rows="8"></textarea>
-        <span style="position: absolute;bottom: 3px;right: 0;" :style="{ color: form.abstarcts.length > 128 ? '#F44336' : '#999' }">{{form.abstarcts.length}} / 128</span>
+      <div class="option-item flex">
+        <span class="flex-item">模板样式</span>
+        <div class="relative" style="padding: 0 4px;width: 150px;">
+          <p @click="scaleshow1 = true" style="cursor: pointer;text-align: right;margin: 0;">{{scaleshow1List[form.templateStyle-1]}}</p>
+          <bubble v-if="scaleshow1" @close="scaleshow1 = false">
+            <ul class="f-14 c-5" style="padding: 4px 0;width: 130px;text-align: center;line-height: 24px;">
+              <li v-for="(item, index) in scaleshow1List" v-if="(form.templateType == 1 && index != 2) || (form.templateType == 2 && index != 0)" class="a flex-v-center listhover" @click="setScale1(index+1)">
+                <span class="flex-item">{{item}}</span>
+              </li>
+            </ul>
+          </bubble>
+        </div>
+      </div>
+      <div class="option-item">
+        <p style="margin-top: 0;">选择类型</p>
+        <div class="flex-v-center" style="padding: 0px 5px 0 5px;">
+          <div class="flex-item"><radio-box text="单选" :label="1" v-model="form.category"/></div>
+          <div class="flex-item"><radio-box text="多选" :label="2" v-model="form.category"/></div>
+        </div>
+        <div v-if="form.category == 2" style="padding-top: 10px;">
+          <input style="width: 150px;" v-model="form.maxVotes" placeholder="最多选项" type="number" min="0">
+          <span style="margin-right: 20px;">强制选满</span>
+          <switcher mode="Number" v-model="form.voteAll"/>
+        </div>
+      </div>
+      <div class="option-item">
+        <span class="flex-item">周期</span>
+        <input style="width: 220px;text-align: right" v-model="form.cycle" type="number" min="0">
+        <span>天</span>
+      </div>
+      <div class="option-item">
+        <span class="flex-item">周期投票次数</span>
+        <input style="width: 164px;text-align: right" v-model="form.cycleCount" type="number" min="0">
+        <span>次</span>
+      </div>
+      <div class="option-item flex">
+        <span class="flex-item">同IP投票时间间隔</span>
+        <div class="relative" style="padding: 0 4px;width: 100px;">
+          <p @click="scaleshow = true" style="cursor: pointer;text-align: right;margin: 0;">{{scaleshowList[form.ipLimitInterval-1]}}</p>
+          <bubble v-if="scaleshow" @close="scaleshow = false">
+            <ul class="f-14 c-5" style="padding: 4px 0;width: 100px;text-align: center;line-height: 24px;">
+              <li v-for="(item, index) in scaleshowList" class="a flex-v-center listhover" @click="setScale(index+1)">
+                <span class="flex-item">{{item}}</span>
+              </li>
+            </ul>
+          </bubble>
+        </div>
+      </div>
+      <div class="option-item flex-v-center">
+        <div class="flex-item">开始时间</div>
+        <div class="relative flex-v-center a">
+          <span class="flex-v-center" style="position: absolute;right: 0;">
+            <span>设置</span>
+            <i class="icon f-18 c-a">keyboard_arrow_down</i>
+          </span>
+          <vue-datepicker-local show-buttons clearable format="YYYY-MM-DD HH:mm:ss" v-model="form.startTime"></vue-datepicker-local>
+        </div>
+      </div>
+      <div class="option-item flex-v-center">
+        <div class="flex-item">截止时间</div>
+        <div class="relative flex-v-center a">
+          <span class="flex-v-center" style="position: absolute;right: 0;">
+            <span>设置</span>
+            <i class="icon f-18 c-a">keyboard_arrow_down</i>
+          </span>
+          <vue-datepicker-local show-buttons clearable format="YYYY-MM-DD HH:mm:ss" v-model="form.endTime"></vue-datepicker-local>
+        </div>
+      </div>
+      <div class="option-item">
+        <p style="margin-top: 0;">显示结果</p>
+        <div class="flex-v-center" style="padding: 0px 5px 0 5px;">
+          <div class="flex-item"><radio-box text="投票后" :label="1" v-model="form.showResultCategory"/></div>
+          <div class="flex-item"><radio-box text="截止时间后" :label="2" v-model="form.showResultCategory"/></div>
+        </div>
       </div>
       <div class="option-item">
         <input type="text" placeholder="关键词，逗号分隔。" v-model="form.keywords"/>
       </div>
       <div class="option-item flex-v-center">
-        <span class="flex-item">©原创声明</span>
-        <switcher mode="Number" v-model="form.isOriginal"/>
-      </div>
-      <div class="option-item flex" v-if="!form.isOriginal">
-        <input type="text" class="flex-item" placeholder="来源名称" v-model="form.originalFrom">
-        <input type="text" class="flex-item" placeholder="来源URL" v-model="form.originalUrl">
-      </div>
-      <div class="option-item">
-        <input type="text" placeholder="作者，逗号分隔" v-model="form.author">
-      </div>
-      <div class="option-item flex-v-center" v-if="form.createDate !== undefined">
-        <div class="flex-item">创建时间</div>
-        <div class="relative flex-v-center a">
-          <span v-if="!form.createDate" class="flex-v-center" style="position: absolute;right: 0;">
-            <span>设置</span>
-            <i class="icon f-18 c-a">keyboard_arrow_down</i>
-          </span>
-          <vue-datepicker-local show-buttons clearable format="YYYY-MM-DD HH:mm:ss" v-model="form.createDate"></vue-datepicker-local>
-        </div>
+        <span class="flex-item">会员登录投票</span>
+        <switcher mode="Number" v-model="form.memberLoginLimit"/>
       </div>
       <div class="option-item flex-v-center">
         <span>初始阅读量</span>
-        <input class="flex-item t-right" type="number" placeholder="请输入" v-model="form.virtualPv">
+        <input class="flex-item t-right" type="number" min="0" placeholder="请输入" v-model="form.virtualPv">
       </div>
       <div class="option-item flex-v-center">
         <span>初始分享量</span>
-        <input class="flex-item t-right" type="number" placeholder="请输入" v-model="form.virtualShare">
+        <input class="flex-item t-right" type="number" min="0" placeholder="请输入" v-model="form.virtualShare">
       </div>
       <div class="option-item flex-v-center">
         <span>初始点赞量</span>
-        <input class="flex-item t-right" type="number" placeholder="请输入" v-model="form.virtualDigg">
+        <input class="flex-item t-right" type="number" min="0" placeholder="请输入" v-model="form.virtualDigg">
       </div>
     </div>
   </div>
@@ -171,10 +224,10 @@ import draggable from 'vuedraggable'
 
 const from = {
   article: {
-    getUrl: '/cri-cms-platform/special/get.monitor'
+    getUrl: '/cri-cms-platform/vote/get.monitor'
   },
   draft: {
-    getUrl: '/cri-cms-platform/specialAutoSave/getAuto.monitor'
+    getUrl: '/cri-cms-platform/voteAutoSave/getAuto.monitor'
   }
 }
 
@@ -185,7 +238,11 @@ export default {
   data () {
     return {
       moble_index: 0,
-      list: [],
+      list1: [],
+      scaleshow1List: ['标题', '标题加图片', '标题加图片加描述'],
+      scaleshowList: ['不限制', '五分钟后', '半小时后', '1小时后', '3小时后', '12小时后', '一天后'],
+      scaleshow: false,
+      scaleshow1: false,
       getif: false,
       getif1: false,
       article: null,
@@ -202,48 +259,35 @@ export default {
       headList_type2: [],
       nowDate: new Date(),
       form: {
+        maxVotes: 2,
+        cycle: 1,
+        voteAll: 1,
+        content: '',
+        cycleCount: 1,
+        memberLoginLimit: 1,
+        showResultCategory: 1,
+        headThumb: {},
+        templateStyle: 1,
+        templateType: 1,
+        ipLimitInterval: 1,
+        startTime: new Date(),
+        endTime: '',
+        category: 1,
         listType: 1,
         headPicType: 1,
-        headJson: '',
-        headJsonId: '',
-        specialListId: '',
-        specialListJson: '',
-        // app: 'ARTICLE',
         title: '',
         titleColor: '',
-        // content: '',
         channelIds: '',
-        // galleryId: '',
-        // gallerySettingMaxWidth: '640',
-        // gallerySettingMinHeight: '480',
-        // gallerySettingThumbWidth: '80',
-        // gallerySettingThumbHeight: '60',
-        // gallerySettingDisplayPosition: '1',
-        // relateIds: '',
-        // specialId: '',
-        // isOpenComment: 0,
-        // isOriginal: 0,
-        // originalFrom: '',
-        // originalUrl: '',
         isRecommnd: 0,
         abstarcts: '',
         keywords: '',
-        // author: '',
-        weight: '',
-        // isWatermarked: 0,
-        // upLineTime: '',
-        // downLineTime: '',
         virtualPv: '',
-        // virtualComment: '',
-        // virtualShare: '',
         virtualDigg: '',
-        // hasThumb: 0,
-        // thumbType: 1,
         thumb: '',
+        options: [],
         terminalPc: 0,
         terminalApp: 0,
-        terminalWeb: 0,
-        // attachmentIds: ''
+        terminalWeb: 0
       },
       thumb: {
         thumb1: null,
@@ -272,24 +316,27 @@ export default {
     }
   },
   methods: {
-    removeList (index) {
-      this.list.splice(index, 1)
-    },
-    addlist () {
-      if (this.form.channelIds == '') {
-        this.$toast('请选择频道')
-        return false
-      }
-      this.list.push({
-        name: '新建板块',
-        time: '',
-        time: this.nowDate,
-        edit: false,
-        list: {
-          selected: [],
-          unselected: []
-        }
+    addList () {
+      this.form.options.push({
+        title: '',
+        thumb: {},
+        link: '',
+        description: '',
+        virtualVotes: 0,
+        width: 120,
+        height: 160
       })
+    },
+    setScale1 (data) {
+      this.form.templateStyle = data
+      this.scaleshow1 = false
+    },
+    setScale (data) {
+      this.form.ipLimitInterval = data
+      this.scaleshow = false
+    },
+    removeList (index) {
+      this.form.options.splice(index, 1)
     },
     autoSave () {
       // let { title, titleColor, content } = this.$refs.editor
@@ -321,7 +368,7 @@ export default {
       if (this.from || this.id) return
       let doc = this.$refs.editor.getText()
       if (!doc.trim()) return
-      this.$http.post('/cri-cms-platform/article/getKeyGenerate.monitor', { doc }).then(
+      this.$http.post('/cri-cms-platform/vote/getKeyGenerate.monitor', { doc }).then(
         res => {
           this.form.abstarcts = res.gerenate
           this.form.keywords = res.key.join(',')
@@ -332,8 +379,8 @@ export default {
       return time <= new Date()
     },
     submit () {
-      let url = this.id ? '/cri-cms-platform/special/update.monitor' : '/cri-cms-platform/special/save.monitor'
-      let { title, titleColor } = this.$refs.editor
+      let url = this.id ? '/cri-cms-platform/vote/update.monitor' : '/cri-cms-platform/vote/save.monitor'
+      let { title, titleColor, content } = this.$refs.editor
       if (!title) {
         this.$toast('请输入标题')
         return
@@ -342,71 +389,26 @@ export default {
         this.$toast('请选择栏目')
         return
       }
+      if (!content) {
+        this.$toast('请输入投票说明')
+        return
+      }
       this.form.title = title
       this.form.titleColor = titleColor
+      this.form.content = content
 
       let obj = {...this.form}
-
-      let jsonarr = []
-      this.list.forEach((item, index, arr) => {
-        let jsonsarr = []
-        if (item.list.selected.length == 0) {
-          this.$toast('板块内容不能为空')
-          return false
-        }
-        item.list.selected.forEach((item1, index1) => {
-          jsonsarr[index1] = {
-            id: item1.id,
-            abstarcts: item1.abstracts,
-            order: index1,
-            title: item1.title,
-            createDate: item1.createDate,
-            thumb: item1.thumb.indexOf('[') >= 0 ? JSON.parse(item1.thumb)[0].url : item1.thumb
-          }
-          if (obj.specialListId.indexOf(item1.id) < 0) {
-            obj.specialListId += (item1.id + ',')
-          }
-        })
-        let oDate = arr[index].time
-        jsonarr[index] = {
-          templateName: item.name,
-          templateContentListList: jsonsarr,
-          orderDate: obj.listType == 2 ? oDate.getFullYear() + '-' + (oDate.getMonth() + 1) + '-' + oDate.getDate() : ''
-        }
+      obj.options.forEach(item => {
+        item.thumb = item.thumb.id
       })
+      obj.options = JSON.stringify(obj.options)
+      obj.headThumb = obj.headThumb.id
 
-      obj.specialListJson = JSON.stringify(jsonarr)
-
-      if (obj.headPicType == 1) {
-        let data = {
-          thumb: this.headList_type1.url
-        }
-        obj.headJson = JSON.stringify([ data ])
-      } else if (obj.headPicType == 2) {
-        let arr = []
-        this.headList_type2.selected.forEach(item => {
-          let data = {
-            abstarcts: item.abstracts,
-            id: item.id,
-            createDate: item.createDate,
-            thumb: item.thumb.indexOf('[') >= 0 ? JSON.parse(item.thumb)[0].url : item.thumb,
-            title: item.title
-          }
-          arr.push(data)
-          obj.headJsonId += (item.id + ',')
-        })
-        obj.headJson = JSON.stringify(arr)
-      }
-      // obj.thumb = obj.thumb.id
-
-      if (this.id) {
-        obj.specialId = obj.id
-        obj.id = this.id
-      }
+      console.log(obj)
 
       this.$http.post(url, obj).then(res => {
         this.ui.submited = true
-        this.$router.push('/special/list?scope=all&status=all')
+        this.$router.push('/vote/list?scope=all&status=all')
       }).catch(
         res => {
           this.$toast(res || res.msg || '保存失败')
@@ -414,21 +416,6 @@ export default {
         }
       )
 
-      // let form = {...this.form}
-      // if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
-      // if (this.id) form.id = this.id
-
-      // this.$http.post(url, form).then(
-      //   res => {
-      //     this.ui.submited = true
-      //     this.$router.replace('/article/list?scope=all&status=all')
-      //   }
-      // ).catch(
-      //   res => {
-      //     this.$toast(res || res.msg || '保存失败')
-      //     console.log(res)
-      //   }
-      // )
     }
   },
   filters: {
@@ -486,6 +473,13 @@ export default {
     }
   },
   watch: {
+    'form.templateType' (newValue) {
+      if (newValue == 1) {
+        this.form.templateStyle = this.form.templateStyle == 3 ? 2 : this.form.templateStyle
+      } else {
+        this.form.templateStyle = this.form.templateStyle == 1 ? 2 : this.form.templateStyle
+      }
+    },
     'thumb.thumb1' (newValue) {
       if (this.form.thumbType === 2) {
         if (!(newValue || this.thumb.thumb2 || this.thumb.thumb3)) {
@@ -574,6 +568,54 @@ export default {
       &::-webkit-input-placeholder{color: #999;}
     }
   }
+  .listType2{
+    width: 24%;
+    margin-right: 1%;
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    position: relative;
+    float: left;
+  }
+  .listtype2_remove{
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    z-index: 10;
+    background: #fff;
+  }
+  .listType2 input, .listType2 textarea{
+    border: 0;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 6px;
+    height: 20px;
+  }
+  .listaddbtn{
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    text-align: right;
+    line-height: 30px;
+  }
+  .listType1{
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    border-radius: 6px;
+  }
+  .listType1 input, .listType1 textarea{
+    margin-right: 10px;
+    height: 30px;
+    border: 0;
+    border-bottom: 1px solid #ddd;
+    padding: 0 10px;
+  }
+  .movelist{
+    background: #008eff;
+    color: #008eff;
+    opacity: 0.5;
+  }
   .setlistbox{
     max-width: 900px;
     margin: 0 auto;
@@ -598,6 +640,11 @@ export default {
   }
   .list_content{
     padding: 10px;
+  }
+  .listbox{
+    width: 900px;
+    margin: 0 auto;
+    padding-bottom: 100px;
   }
   .channel-name{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
   .channel-tree-item{line-height: 1em;border: 1px solid rgba(0,0,0,.08);
