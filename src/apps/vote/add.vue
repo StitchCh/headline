@@ -17,12 +17,12 @@
       </div>
     </div>
     <div class="flex-item scroll-y">
-      <article-editor v-if="getif" :otitle="form.title" ref="editor" @getKeyGenerate="getKeyGenerate"></article-editor>
+      <article-editor v-if="getif" ref="editor" @getKeyGenerate="getKeyGenerate"></article-editor>
 
       <div style="max-width: 900px;margin: 0 auto;padding: 20px 10px;">
         <h2>选择头图</h2>
         <div style="max-width: 300px;margin: 20px;">
-          <app-article-add-thumb v-model="form.headThumb" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
+          <app-article-add-thumb v-if="getif" v-model="form.headThumb" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
           <p style="font-size: 12px;color: #f00;">建议择尺寸为16：9的图片作为头图</p>
         </div>
       </div>
@@ -31,8 +31,8 @@
           <li v-for="(item, index) in form.options" class="listType1">
             <div>
               <span style="width: 30px;display: inline-block;">{{index + 1}}</span>
-              <div v-if="form.templateStyle == 2" style="margin-right: 10px;display: inline-block;width: 80px;transform: translateY(4px);">
-                <app-article-add-thumb v-model="item.thumb" height="40px"></app-article-add-thumb>
+              <div v-if="form.templateStyle == 2" style="margin-right: 10px;display: inline-block;width: 80px;position: relative;top: 10px;">
+                <app-article-add-thumb v-model="item.othumb" height="40px"></app-article-add-thumb>
               </div>
               <span>标题</span>
               <input type="text" v-model="item.title">
@@ -50,7 +50,7 @@
           <li v-for="(item, index) in form.options" class="listType2">
             <div>
               <div style="margin-bottom: 6px;">
-                <app-article-add-thumb v-model="item.thumb" height="100px" style="margin-bottom: 8px;"></app-article-add-thumb>
+                <app-article-add-thumb v-model="item.othumb" height="100px" style="margin-bottom: 8px;"></app-article-add-thumb>
               </div>
               <span>标题</span>
               <input style="width: 100%;" type="text" v-model="item.title">
@@ -285,9 +285,9 @@ export default {
         virtualDigg: '',
         thumb: '',
         options: [],
-        terminalPc: 0,
-        terminalApp: 0,
-        terminalWeb: 0
+        terminalPc: 1,
+        terminalApp: 1,
+        terminalWeb: 1
       },
       thumb: {
         thumb1: null,
@@ -311,7 +311,6 @@ export default {
     },
     channelNames () {
       if (!this.channelIds.length) return '选择栏目'
-      // console.log(this.ui.channels.channels.find)
       return this.channelIds.map(val => this.ui.channels.find(v => v.id === val).channelName).join('，')
     }
   },
@@ -319,7 +318,8 @@ export default {
     addList () {
       this.form.options.push({
         title: '',
-        thumb: {},
+        othumb: {},
+        thumb: '',
         link: '',
         description: '',
         virtualVotes: 0,
@@ -337,24 +337,6 @@ export default {
     },
     removeList (index) {
       this.form.options.splice(index, 1)
-    },
-    autoSave () {
-      // let { title, titleColor, content } = this.$refs.editor
-      // this.form.title = title
-      // this.form.titleColor = titleColor
-      // this.form.content = content
-      // let form = {...this.form}
-      // if (this.autoSaveId) form.id = this.autoSaveId
-      // return this.$http.post('/cri-cms-platform/articleAutoSave/saveAuto.monitor', form).then(
-      //   res => {
-      //     this.autoSaveId = res.autoSaveId
-      //     this.$toast('保存成功')
-      //   }
-      // ).catch(
-      //   res => {
-      //     this.$toast(res.msg || res || '保存失败')
-      //   }
-      // )
     },
     getChannels () {
       this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor').then(res => {
@@ -380,6 +362,9 @@ export default {
     },
     submit () {
       let url = this.id ? '/cri-cms-platform/vote/update.monitor' : '/cri-cms-platform/vote/save.monitor'
+      if (this.id) {
+        this.form.id = this.id
+      }
       let { title, titleColor, content } = this.$refs.editor
       if (!title) {
         this.$toast('请输入标题')
@@ -399,7 +384,7 @@ export default {
 
       let obj = {...this.form}
       obj.options.forEach(item => {
-        item.thumb = item.thumb.id
+        item.thumb = item.othumb.id
       })
       obj.options = JSON.stringify(obj.options)
       obj.headThumb = obj.headThumb.id
@@ -407,6 +392,7 @@ export default {
       console.log(obj)
 
       this.$http.post(url, obj).then(res => {
+        console.log(res)
         this.ui.submited = true
         this.$router.push('/vote/list?scope=all&status=all')
       }).catch(
@@ -424,49 +410,62 @@ export default {
       if (value === '2') return '正文正下方'
     }
   },
-  beforeMount () {
-    this.getChannels()
+  mounted () {
     if (this.from && this.id) {
       if (this.from == 'edit') {
-        this.$http.post('/cri-cms-platform/special/queryDetail.monitor', {
-          id: this.id
-        }).then(res => {
-          this.form = res.special
-          this.form.specialListId = ''
-          this.form.headJsonId = ''
-          if (res.special.headJson === 'object') {
-            this.form.headJson = res.special.headJson
-          } else {
-            this.form.headJson = JSON.parse(res.special.headJson)
-          }
-          if (res.special.thumb) {
-            this.form.thumb = JSON.parse(res.special.thumb)
-            this.thumb.thumb1 = res.special.thumb[0]
-          }
-          this.form.channelIds = res.channelIds || ''
-          this.form.specialListJson = JSON.parse(this.form.specialListJson)
-          for (let i = 0; i < res.special.specialListJson.length; i++) {
-            this.list.push({
-              name: res.special.specialListJson[i].templateName,
-              time: res.special.specialListJson[i].orderDate ? res.special.specialListJson[i].orderDate : this.nowDate,
-              edit: false,
-              list: {
-                selected: res.special.specialListJson[i].templateContentListList
-              }
+        this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor').then(res => {
+          this.getif1 = true
+          this.ui.channels = res || []
+          this.$http.post('/cri-cms-platform/vote/get.monitor', {
+            id: this.id
+          }).then(res => {
+            this.form.maxVotes = res.vote.maxVotes || 2
+            this.form.cycle = res.vote.cycle || 1
+            this.form.voteAll = Number(res.vote.voteAll) || 1
+            this.form.content = res.vote.content || ''
+            this.form.cycleCount = res.vote.cycleCount || 1
+            this.form.memberLoginLimit = Number(res.vote.memberLoginLimit) || 1
+            this.form.showResultCategory = res.vote.showResultCategory || 1
+            this.form.headThumb = res.vote.headThumb || {}
+            this.form.templateStyle = res.vote.templateStyle || 1
+            this.form.templateType = res.vote.templateType || 1
+            this.form.ipLimitInterval = res.vote.ipLimitInterval || 1
+            this.form.startTime = res.vote.startTime || new Date()
+            this.form.endTime = res.vote.endTime || ''
+            this.form.category = res.vote.category || 1
+            this.form.listType = 1
+            this.form.headPicType = 1
+            this.form.title = res.content.title || ''
+            this.form.titleColor = res.content.titleColor || ''
+            this.form.channelIds = res.channelIds || ''
+            this.form.isRecommnd = res.content.isRecommnd || 0
+            this.form.abstarcts = res.content.abstarcts || ''
+            this.form.keywords = res.content.keywords || ''
+            this.form.virtualPv = res.content.virtualPv || ''
+            this.form.virtualDigg = res.content.virtualDigg || ''
+            this.form.thumb = ''
+            this.form.options = res.options || []
+            this.form.terminalPc = res.content.terminalPc || 0
+            this.form.terminalApp = res.content.terminalApp || 0
+            this.form.terminalWeb = res.content.terminalWeb || 0
+
+            this.thumb.thumb1 = res.content.thumb[0]
+
+            this.form.options.forEach(item => {
+              item.othumb = item.thumb
             })
-          }
-          if (this.form.headPicType == 1 && this.form.headJson.length != 0) {
-            this.headList_type1 = {
-              url: this.form.headJson[0].thumb
-            }
-          } else if (this.form.headPicType == 2 && this.form.headJson.length != 0) {
-            this.headList_type2 = {
-              selected: this.form.headJson
-            }
-          }
-          this.getif = true
-          console.log(this.list)
+
+            this.$nextTick(() => {
+              this.$refs.editor.title = this.form.title
+              this.$refs.editor.titleColor = this.form.titleColor
+              this.$refs.editor.content = this.form.content
+            })
+            this.getif = true
+          })
+        }).catch(e => {
+          console.log(e)
         })
+
       }
     } else {
       this.getif = true

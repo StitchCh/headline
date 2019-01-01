@@ -60,11 +60,11 @@ export default [{
   path: '/voteAdd',
   name: 'voteAdd',
   component: resolve => require(['@/apps/vote/add.vue'], resolve),
-  meta: { level: 3, title: '添加专题', identifier: 'vote_add' }
+  meta: { level: 3, title: '添加投票', identifier: 'vote_add' }
 }, {
   path: '/voteEdit/:from/:id',
   name: 'voteEdit',
   component: resolve => require(['@/apps/vote/add.vue'], resolve),
   props: true,
-  meta: { level: 3, title: '修改专题', identifier: 'vote_edit' }
+  meta: { level: 3, title: '修改投票', identifier: 'vote_edit' }
 }]

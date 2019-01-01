@@ -127,6 +127,7 @@ export default {
     submitIssue (callback) {
       let data = this.$refs.published.getIssueResult()
       let result = { results: { data } }
+      console.log(data)
       result = JSON.stringify(result)
       this.$http.post('/cri-cms-platform/issue/saveIssue.monitor', {
         issueJson: result

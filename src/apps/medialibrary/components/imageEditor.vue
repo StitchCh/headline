@@ -15,7 +15,7 @@
         <icon-btn v-tooltip:bottom="'恢复'" :disabled="history.index === history.list.length - 1" @click="redo">redo</icon-btn>
         <!-- <icon-btn v-tooltip:right="'涂鸦'">brush</icon-btn>
         <icon-btn v-tooltip:right="'文字'">text_fields</icon-btn> -->
-         <icon-btn v-tooltip:right="'水印'" @click="watermark = !watermark">branding_watermark</icon-btn>
+         <icon-btn v-tooltip:right="'水印'" :disabled="toolActive !== ''"  @click="watermark = !watermark">branding_watermark</icon-btn>
       </div>
     </div>
     <transition name="fade">
@@ -54,7 +54,7 @@
         <div class="watermark_box"
              :style="{top: watermarkData.top + 'px', left: watermarkData.left + 'px', width: watermarkData.width + 'px'}"
              @mousedown="watermarkDown"
-             v-if="watermark"
+             v-if="watermark && toolActive === ''"
         >
           <img ref="watermark_img" ondragstart="return false;" src="http://localhost:8081/static/img/icon-comment.png" alt="" style="width: 100%;">
           <div @mousedown="watermarkResize" style="width: 10px;height: 10px;position: absolute;right: -5px;bottom: -5px;border-radius: 50%;background: #00a0e9;cursor: nwse-resize;"></div>

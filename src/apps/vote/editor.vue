@@ -70,7 +70,6 @@ import MediaAudios from '../medialibrary/pages/audios'
 
 export default {
   name: 'article-editor',
-  props: ['edshow'],
   components: { VueUeditorWrap, MediaPhotos, MediaVideos, MediaAudios },
   data () {
     return {

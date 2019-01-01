@@ -40,7 +40,7 @@
             <icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn>
           </div> -->
           <div class="tool-item">
-            <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/votelEdit/edit/${id}`)">edit</icon-btn>
+            <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/voteEdit/edit/${id}`)">edit</icon-btn>
           </div>
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'删除'" @click="deleteArticle">delete</icon-btn>
@@ -65,9 +65,9 @@
       <div class="flex-item flex-col">
         <div v-if="id" class="flex-center" style="height: 60px;">
           <div class="tab">
-            <div class="tab-item" :class="{ on: $route.name === 'ArticleContent' }" @click="$router.replace({path: `/vote/list/${id}`, query: $route.query})">内容</div>
-            <div class="tab-item" :class="{ on: $route.name === 'ArticleStatistics' }" @click="$router.replace({path: `/vote/list/${id}/statistics`, query: $route.query})">统计</div>
-            <div class="tab-item" :class="{ on: $route.name === 'ArticleHistory' }" @click="$router.replace({path: `/vote/list/${id}/history`, query: $route.query})">历史</div>
+            <div class="tab-item" :class="{ on: $route.name === 'voteContent' }" @click="$router.replace({path: `/vote/list/${id}`, query: $route.query})">内容</div>
+            <div class="tab-item" :class="{ on: $route.name === 'voteStatistics' }" @click="$router.replace({path: `/vote/list/${id}/statistics`, query: $route.query})">统计</div>
+            <div class="tab-item" :class="{ on: $route.name === 'voteHistory' }" @click="$router.replace({path: `/vote/list/${id}/history`, query: $route.query})">历史</div>
           </div>
         </div>
         <router-view :channels="ui.channels"/>
