@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import apps from '@/apps/launcher/apps'
+//import apps from '@/apps/launcher/apps'
 
 export default {
   name: 'dock',
@@ -41,6 +41,7 @@ export default {
     }
   },
   mounted () {
+    var apps = this.$store.state.account.menu
     this.apps = apps.map(item => {
       item.loading = false
       item.show = true

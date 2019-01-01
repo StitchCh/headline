@@ -214,6 +214,8 @@ export default {
             this.list[i].appname = '连接'
           } else if (this.list[i].app == 'GALLERY') {
             this.list[i].appname = '图集'
+          } else if (this.list[i].app == 'VOTE') {
+            this.list[i].appname = '投票'
           }
         }
         this.ui.totalPage = res.totalPage || 1

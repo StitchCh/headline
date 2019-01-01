@@ -51,6 +51,12 @@ export default {
       name: 'AuditContentGallery',
       props: true,
       component: resolve => require(['@/apps/gallery/list/content.vue'], resolve)
+    },
+    {
+      path: 'VOTE/:id',
+      name: 'AuditContentVote',
+      props: true,
+      component: resolve => require(['@/apps/Vote/list/content.vue'], resolve)
     }
   ]
 }

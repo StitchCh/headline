@@ -1,7 +1,7 @@
 export default [{
   path: '/vote',
   component: resolve => require(['@/apps/vote/index.vue'], resolve),
-  meta: { level: 2, title: '专题', identifier: 'vote' },
+  meta: { level: 2, title: '投票', identifier: 'vote' },
   children: [
     {
       path: '/',
