@@ -141,12 +141,6 @@ export default {
           })
         }
       })
-    },
-    qrcode (id) {
-      let siteId = sessionStorage.getItem('siteId')
-      let previewUrl = sessionStorage.getItem('previewUrl')
-      console.log(`${previewUrl}?siteId=${siteId}&previewId=${id}`)
-      return `${previewUrl}?siteId=${siteId}&previewId=${id}`
     }
   },
   created () {

@@ -140,10 +140,6 @@ export default {
           })
         }
       })
-    },
-    qrcode (id) {
-      let siteId = localStorage.getItem('siteId')
-      return `http://qr.liantu.com/api.php?&w=200&text=http://60.247.77.208:59098/cri-cms-api/preview?siteId=${siteId}&id=${id}`
     }
   },
   created () {
