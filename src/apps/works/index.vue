@@ -12,10 +12,11 @@
   </af-left>
   <div class="flex-item flex-col" style="overflow: hidden;">
     <div class="af-topbar flex-v-center" style="background:rgb(244, 244, 244);">
-      <div style="width: 150px;margin-left: 5px;" v-if="$route.query.channelId">
+      <div style="width: 250px;margin-left: 5px;" v-if="$route.query.channelId">
         <div v-if="$route.name === 'works-published'">
           <btn @click="publish">发布</btn>
           <btn flat @click="refresh">撤销更改</btn>
+          <btn flat @click="$router.replace({path: '/works/history', query: $route.query})">发布历史</btn>
         </div>
         <div v-if="$route.name != 'works-published'">
           <btn @click="onTab('/works')">返回</btn>
@@ -127,10 +128,10 @@ export default {
     submitIssue (callback) {
       let data = this.$refs.published.getIssueResult()
       let result = { results: { data } }
-      console.log(data)
       result = JSON.stringify(result)
       this.$http.post('/cri-cms-platform/issue/saveIssue.monitor', {
-        issueJson: result
+        issueJson: result,
+        channelId: this.$route.query.channelId
       }).then(res => {
         if (callback) callback()
       }).catch(e => {

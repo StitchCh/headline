@@ -33,7 +33,7 @@
         <div class="f-12 c-a t-center" v-if="!data.length && !loading" style="margin-top: 15px;">暂无数据</div>
         <ul>
           <li class="flex-v-center li-item" v-for="item in data" :key="item.id">
-            <span class="flex-item li-title">{{item.title}}</span>
+            <span class="flex-item li-title">【{{appTypeList[item.app]}}】{{item.title}}</span>
             <icon-btn small
               @click="checkItem(item)"
               :disabled="checkedId.includes(item.id)"
@@ -71,7 +71,7 @@
             <li class="flex-v-center li-item"
               v-for="item in layoutChecked"
               :key="item.id">
-              <span class="flex-item li-title">{{item.title}}</span>
+              <span class="flex-item li-title">【{{appTypeList[item.app]}}】{{item.title}}</span>
               <icon-btn small @click="unCheckItem(item)">close</icon-btn>
             </li>
           </transition-group>
@@ -112,8 +112,12 @@ export default {
       searchKey: '',
       activeLayoutId: '',
       data: [],
+      appTypeList: {},
       checked: []
     }
+  },
+  mounted () {
+    this.appTypeList = this.$store.state.account.appTypeList
   },
   created () {
     this.getList()
