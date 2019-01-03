@@ -78,7 +78,7 @@ Vue.prototype.qrcode = function (id) {
   let siteId = sessionStorage.getItem('siteId')
   let previewUrl = sessionStorage.getItem('previewUrl')
   console.log(`${previewUrl}?siteId=${siteId}&contentId=${id}`)
-  return `${previewUrl}?siteId=${siteId}&contentId=${id}`
+  return `${previewUrl}/${siteId}/${id}`
 }
 
 /* eslint-disable no-new */
