@@ -202,7 +202,7 @@ export default {
       newForm: {
         userName: '',
         loginUserName: '',
-        loginUserPwd: '',
+        // loginUserPwd: '',
         userPhone: '',
         userEmail: '',
         rolesId: ''
@@ -311,20 +311,12 @@ export default {
         this.$toast('登录名不可用')
         return
       }
-      if (this.newForm.loginUserPwd === '') {
-        this.$toast('请输入登录密码')
-        return
-      }
       if (this.newForm.userPhone === '') {
         this.$toast('请输入手机号码')
         return
       }
       if (this.newForm.userEmail === '') {
         this.$toast('请输入用户邮箱')
-        return
-      }
-      if (this.newForm.loginUserPwd !== this.vertify.newLoginUserPwd) {
-        this.$toast('两次输入的密码不一致')
         return
       }
       this.$http.post('/cri-cms-platform/sysUser/save.monitor', this.newForm).then(
@@ -402,18 +394,29 @@ export default {
       )
     },
     backPassWd (id) {
-      this.$http.post('/cri-cms-platform/sysUser/backPassWd.monitor', { id }).then(
-        res => {
-          this.$toast('密码重置成功')
-          this.getList()
-          this.detailShow = false
+      this.$confirm({
+        title: '确定要重置用户密码？',
+        text: '用户密码将恢复为初始密码',
+        btns: ['取消', '重置'],
+        color: 'red',
+        yes () {
+          this.$http.post('/cri-cms-platform/sysUser/backPassWd.monitor', { id }).then(
+            res => {
+              this.$toast('密码重置成功')
+              this.getList()
+              this.detailShow = false
+            }
+          ).catch(
+            res => {
+              this.$toast(res.msg)
+              console.log(res)
+            }
+          )
+        },
+        no () {
+
         }
-      ).catch(
-        res => {
-          this.$toast(res.msg)
-          console.log(res)
-        }
-      )
+      })
     },
     deleteUser (id) {
       this.$http.post('/cri-cms-platform/sysUser/del.monitor', { id }).then(
@@ -475,7 +478,7 @@ export default {
       if (value === '00') {
         return '正常'
       } else {
-        return '禁用'
+        return '停用'
       }
     }
   },

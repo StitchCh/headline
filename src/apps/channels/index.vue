@@ -134,11 +134,9 @@ export default {
       this.$http.post('/cri-cms-platform/channel/getChannelSetting.monitor', {
         channelId: id
       }).then(res => {
-        console.log(res)
         for (let item in this.channelState) {
           this.channelState[item] = this.channelState[item] == 'true' ? true : false
         }
-        // forEach()
       })
     },
     setChannel () {

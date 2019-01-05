@@ -10,10 +10,13 @@
         </div>
       </transition>
       <div class="setting-card f-14" style="position: relative;">
+        <div>
+          <vue-datepicker-local v-model="searchTime" format="YYYY-MM-DD HH:mm:ss" show-buttons></vue-datepicker-local>
+          <btn>搜索</btn>
+        </div>
         <table>
           <thead>
           <th>序号</th>
-          <th>会员ID</th>
           <th>昵称</th>
           <th>手机</th>
           <th>邮箱</th>
@@ -27,7 +30,6 @@
           <tbody>
           <tr v-for="(item, index) in list" :key="item.id">
             <td>{{index+1}}</td>
-            <td>{{item.id}}</td>
             <td>{{item.nickname}}</td>
             <td>{{item.mobile}}</td>
             <td>{{item.email || '--' }}</td>
@@ -159,10 +161,14 @@
 </template>
 
 <script>
+  import VueDatepickerLocal from 'vue-datepicker-local'
+
 export default {
   name: 'settings-member',
+  components: { VueDatepickerLocal },
   data () {
     return {
+      searchTime: [],
       loading: false,
       list: [],
       filter: {
