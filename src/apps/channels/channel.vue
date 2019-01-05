@@ -24,7 +24,7 @@
         <icon-btn small v-if="!data.edit && data.channelPartentId != 0" @click.native.stop="data.edit = true">edit</icon-btn>
         <icon-btn small v-if="data.edit && data.channelPartentId != 0" @click.native.stop="data.edit = false;data.channelName=data.editChannelName" class="green">check</icon-btn>
         <icon-btn small v-if="data.edit && data.channelPartentId != 0" @click.native.stop="data.edit = false;data.editChannelName=data.channelName">close</icon-btn>
-
+        <linkBtn @click.native.stop :link="data.channelUrl" :linkShow="data.isEnabledUrl" @linkchange="obj => {data.channelUrl = obj.link; data.isEnabledUrl = obj.linkshow}"></linkBtn>
         <icon-btn small v-if="data.channelPartentId != 0" @click.native.stop="del(data)">delete</icon-btn>
       </div>
     </draggable-tree>
@@ -37,6 +37,7 @@
 import { DraggableTree } from 'vue-draggable-nested-tree'
 import WorkerCode from '@/common/Tree/tree.worker.js'
 import AppArticleAddThumb from './thumb'
+import linkBtn from './linkBtn'
 
 function getTreeData (rootNode) {
   let res = []
@@ -49,7 +50,8 @@ function getTreeData (rootNode) {
         channelPartentId: node.id,
         channelManager: '',
         channelIcon: item.channelIcon,
-        linkShow: false
+        channelUrl: item.channelUrl,
+        isEnabledUrl: item.isEnabledUrl
       })
       if (item.children.length) {
         getData(item)
@@ -62,7 +64,7 @@ function getTreeData (rootNode) {
 
 export default {
   name: 'channel-editor',
-  components: { DraggableTree, AppArticleAddThumb },
+  components: { DraggableTree, AppArticleAddThumb, linkBtn },
   data () {
     return {
       channels: [],
@@ -107,6 +109,8 @@ export default {
         channelPartentId: item.id,
         parent: item,
         children: [],
+        channelUrl: '',
+        isEnabledUrl: 0,
         del: false,
         open: true,
         new: true,
@@ -139,6 +143,7 @@ export default {
     submit () {
       let tree = { id: '0', children: this.channelTree }
       let res = getTreeData(tree)
+      console.log(res)
       // res.unshift({ id: '1', channelName: '根目录', channelPartentId: '0', channelManager: '', channelIcon: '' })
       let delChannels = getTreeData({ children: this.delChannels })
       let result = {
