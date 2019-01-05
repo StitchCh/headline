@@ -85,9 +85,10 @@ export default {
   data () {
     return {
       watermarkData: {
-        top: 0,
-        left: 0,
+        top: 380,
+        left: 580,
         width: 40,
+        height: '',
         x: 0,
         y: 0
       },
@@ -122,12 +123,14 @@ export default {
   },
   mounted () {
     this.waterImg = this.$store.state.account.waterImg
+    this.watermarkData.top
     this.imgboxData = {
       x: this.$refs.imgbox.offsetLeft,
       y: this.$refs.imgbox.offsetTop,
       width: this.$refs.imgbox.offsetWidth,
       height: this.$refs.imgbox.offsetHeight
     }
+    console.log(this.imgboxData)
     this.init()
   //   window.addEventListener('mousedown', this.onRotateStart)
   //   window.addEventListener('mousemove', this.onRotate)
@@ -298,8 +301,8 @@ export default {
         imgObj1.onload = () => {
           this.mycanvas.drawImage(imgObj1, 0, 0)
           let imgObj = new Image()
+          imgObj.setAttribute('crossOrigin', 'Anonymous')
           imgObj.src = this.waterImg
-          imgObj.setAttribute('crossorigin', 'anonymous')
           imgObj.onload = () => {
             if (canvasData.w / canvasData.h >= this.imgboxData.width / this.imgboxData.height) {
               canvasData.ratio = this.imgboxData.width / canvasData.w
@@ -314,7 +317,8 @@ export default {
                 h: this.imgboxData.height
               }
             }
-            this.mycanvas.drawImage(imgObj, (this.watermarkData.left - (this.imgboxData.width - canvasData.ratioValue.w) / 2) / canvasData.ratio, (this.watermarkData.top - (this.imgboxData.height - canvasData.ratioValue.h) / 2) / canvasData.ratio, this.watermarkData.width / canvasData.ratio, this.watermarkData.width / canvasData.ratio)
+            this.watermarkData.height =  (imgObj.width / imgObj.height)
+            this.mycanvas.drawImage(imgObj, (this.watermarkData.left - (this.imgboxData.width - canvasData.ratioValue.w) / 2) / canvasData.ratio, (this.watermarkData.top - (this.imgboxData.height - canvasData.ratioValue.h) / 2) / canvasData.ratio, this.watermarkData.width / canvasData.ratio, (this.watermarkData.width / this.watermarkData.height) / canvasData.ratio)
             var convertBase64ToBlob = function(base64){
               var base64Arr = base64.split(',');
               var imgtype = '';

@@ -90,9 +90,9 @@
       <div class="flex-item"></div>
       <div>
         <i class="icon f-14 tg-icon c-a" :class="{ active: ~~content.isRecommnd }">thumb_up</i>
-        <i class="icon f-14 tg-icon c-a" :class="{ active: ~~content.terminalPc }">computer</i>
-        <i class="icon f-14 tg-icon c-a" :class="{ active: ~~content.terminalApp }">phone_iphone</i>
-        <i class="icon f-14 tg-icon c-a" :class="{ active: ~~content.terminalWeb }">public</i>
+        <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~content.terminalPc }">computer</i>-->
+        <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~content.terminalApp }">phone_iphone</i>-->
+        <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~content.terminalWeb }">public</i>-->
       </div>
     </div>
     <transition name="fade">
