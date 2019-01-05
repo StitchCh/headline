@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <layer v-if="ui.videoSelectorShow" title="选择视频"  width="800px">
+    <layer v-if="ui.videoSelectorShow" title="选择视频"  width="1000px">
       <div class="layer-text relative" style="height: 800px;">
         <media-videos select-mode ref="mediaVideos" single-select></media-videos>
       </div>

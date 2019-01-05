@@ -11,7 +11,7 @@
         </div>
         <div v-else class="vdo-ctn">
           <h1 class="b" :style="{ color: content.titleColor }">{{content.title}}</h1>
-          <div class="f-14 c-a vdo-info flex-v-center">
+          <div class="f-14 c-a vdo-info">
             <span>{{content.createDate}}</span>
             <span>作者：{{content.author}}</span>
             <span>创建者：{{content.createUser}}</span>

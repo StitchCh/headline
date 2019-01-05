@@ -24,12 +24,20 @@
             <div class="textareabox" style="max-width: 900px;margin: 0 auto 20px;">
               <textarea v-model="liveContent" placeholder="发直播..."></textarea>
               <div style="margin-bottom: 10px;">
-                <i class="icon c-a" style="font-size: 50px;" @click="mediaShow = true">add_photo_alternate</i>
+                <i class="icon c-a" style="font-size: 50px;margin-right: 10px;" @click="mediaShow = true">add_photo_alternate</i>
+                <i class="icon c-a" style="font-size: 55px;margin-right: 10px;" @click="videoSelectorShow = true">video_call</i>
+                <i class="icon c-a" style="font-size: 40px;margin-right: 10px;" @click="audioSelectorShow = true">audiotrack</i>
               </div>
               <div v-if="imagelist.length != 0" class="imgList">
                 <div v-for="(item, index) in imagelist" class="img_list">
                   <span class="img_list_delet" @click="removeImage(index)">+</span>
-                  <img :src="item.url" alt="">
+                  <img v-if="item.type == '1'" :src="item.url" alt="">
+                  <div v-if="item.type == '2'" style="background: #318fff;text-align: center;width: 100%;">
+                    <i class="icon c-a" style="font-size: 30px;color: #fff;line-height: 60px;">video_call</i>
+                  </div>
+                  <div v-if="item.type == '3'" style="background: #318fff;text-align: center;width: 100%;">
+                    <i class="icon c-a" style="font-size: 30px;color: #fff;line-height: 60px;">audiotrack</i>
+                  </div>
                 </div>
               </div>
               <div style="text-align: right;"><span @click="addLiveContent">发送</span></div>
@@ -164,6 +172,30 @@
           </div>
         </div>
       </div>
+
+      <div class="video-editor">
+        <layer v-if="videoSelectorShow" title="选择视频"  width="1000px">
+          <div class="layer-text relative" style="height: 1000px;">
+            <media-videos select-mode ref="mediaVideos" single-select></media-videos>
+          </div>
+          <div class="layer-btns">
+            <btn flat @click="videoSelectorShow = false">取消</btn>
+            <btn flat color="#008eff" @click="selectVideo">选择</btn>
+          </div>
+        </layer>
+      </div>
+
+      <div class="video-editor">
+        <layer v-if="audioSelectorShow" title="选择视频"  width="800px">
+          <div class="layer-text relative" style="height: 800px;">
+            <media-audios select-mode ref="mediaAudios" single-select/>
+          </div>
+          <div class="layer-btns">
+            <btn flat @click="audioSelectorShow = false">取消</btn>
+            <btn flat color="#008eff" @click="selectAudio">选择</btn>
+          </div>
+        </layer>
+      </div>
     </template>
   </div>
 </template>
@@ -173,12 +205,18 @@ import MediaPhotos from '../medialibrary/pages/photos'
 import listblock from './listblock.vue'
 import listReply from './listReply.vue'
 import draggable from 'vuedraggable'
+import MediaVideos from '../medialibrary/pages/videos'
+import MediaAudios from '../medialibrary/pages/audios'
+
+const ORIGIN = 'http://60.247.77.208:58088'
 
 export default {
-  components: { MediaPhotos, listblock, listReply, draggable },
+  components: { MediaPhotos, MediaAudios, MediaVideos, listblock, listReply, draggable },
   name: 'liveRoom',
   data () {
     return {
+      audioSelectorShow: false,
+      videoSelectorShow: false,
       status: 0,
       pinglun: '',
       liveContent: '',
@@ -229,10 +267,12 @@ export default {
       this.liveId = res.live.id
       this.tagOrder = res.live.tagOrder.split(',')
       console.log(res.live, this.tagOrder)
-      this.host = {
-        name: res.live.hostAliasName,
-        url: res.live.hostThumb.url,
-        urlid: res.live.hostThumb.id
+      if (res.live.hostThumb) {
+        this.host = {
+          name: res.live.hostAliasName || '',
+          url: res.live.hostThumb.url || '',
+          urlid: res.live.hostThumb.id || ''
+        }
       }
       this.$http.post('/cri-cms-platform/live/broadcaster/user.monitor', {
         liveId: this.liveId
@@ -256,13 +296,29 @@ export default {
     })
   },
   methods: {
+    selectAudio () {
+      this.imagelist.push({
+        id: this.$refs.mediaAudios.selected[0].id,
+        url: ORIGIN + this.$refs.mediaAudios.selected[0].audio,
+        type: '3'
+      })
+      this.audioSelectorShow = false
+    },
+    selectVideo () {
+      this.imagelist.push({
+        id: this.$refs.mediaVideos.selected[0].id,
+        url: ORIGIN + this.$refs.mediaVideos.selected[0].thumb,
+        type: '2'
+      })
+      this.videoSelectorShow = false
+    },
     removeImage (index) {
       this.imagelist.splice(index, 1)
     },
     addLiveContent () {
       let mediaContent = ''
       this.imagelist.forEach(item => {
-        mediaContent += '1:' + item.id + '|'
+        mediaContent += item.type + ':' + item.id + '|'
       })
       console.log(mediaContent)
       this.$http.post('/cri-cms-platform/live/message/add.monitor', {
@@ -381,7 +437,8 @@ export default {
       let image = this.$refs.mediaPhotos.selected[0] || null
       this.image = {
         id: image ? image.id : '',
-        url: image ? this.$refs.mediaPhotos.imgOrigin + image.filePath + image.fileName : ''
+        url: image ? this.$refs.mediaPhotos.imgOrigin + image.filePath + image.fileName : '',
+        type: '1'
       }
       if (this.txChange) {
         console.log(this.zhiboyuanList)
@@ -392,7 +449,7 @@ export default {
         this.host.url = this.image.url
         this.host.urlid = this.image.id
         this.setZhiboRoom()
-      } else{
+      } else {
         this.imagelist.push(this.image)
       }
       this.mediaShow = false
@@ -401,6 +458,53 @@ export default {
   }
 }
 </script>
+
+<style lang="less">
+  .video-editor {max-width: 900px;margin: 0 auto;padding: 10px;
+    .title{font-size: 30px;font-weight: bold;border: none;width: 100%;background: transparent;padding: 20px 15px;color: #555;
+      &::-webkit-input-placeholder{color: #aaa;}
+    }
+    .title-colorpicker-btn {width: 25px;height: 25px;border: 1px solid transparent;margin: 3px;
+      &:hover {border: 1px solid #000}
+    }
+    .title-color-list {width: 192px;padding: 10px;}
+    .selector {width: 100%;height: 495px;
+      .selector-add {width: 100%;height: 100%;background: rgba(0, 0, 0, .06);border-radius: 10px;
+        &:hover {opacity: .8;}
+      }
+    }
+    .layer-ctn {max-width: 1000px;
+      .af-left{width: 280px;background: #fff;border-right: 1px solid rgba(0, 0, 0, .05);}
+      .nav-item{height: 40px;border-bottom: 1px solid #eee;line-height: 1em;padding: 0 5px 0 15px;
+        &.nav-item-folder{padding-left: 30px;}
+        &:hover{background: rgba(0, 0, 0, .05);}
+        &.on{background: #318fff;border-color: #fff;color: #fff;
+          .icon-btn{color: #fff;}
+        }
+        input{border: none;height: 36px;background: transparent;
+          &::-webkit-input-placeholder{color: #aaa;}
+        }
+        .nav-item-icon{margin-right: 15px;}
+      }
+      .search-bar input{width:150px;height: 100%;border:none;margin-left: 10px;}
+      .media-group{padding: 13px 30px;
+        ul{flex-wrap: wrap;}
+        li{margin: 0 6px 6px 0}
+      }
+      .media-group-title{padding: 15px 0;}
+      .media-group-title{padding: 15px 0;}
+      .bubble-item{padding: 4px 15px;white-space: nowrap;cursor: pointer;}
+      .bubble-item:hover{background: rgba(0, 0, 0, .1)}
+      .datepicker{
+        &:before{content: none;}
+        input{background: transparent;border: none;padding: 0 10px;}
+      }
+      .datepicker-range{min-width: 200px;
+        .datepicker-popup{right: 0;width: 420px;}
+      }
+    }
+  }
+</style>
 
 <style scoped>
   input{
@@ -563,9 +667,14 @@ export default {
     border-top: 1px solid #ddd;
   }
   .img_list{
+    display: flex;
+    align-items: center;
     width: 60px;
+    height: 60px;
     margin: 0 5px;
+    background: #ddd;
     position: relative;
+    text-align: center;
   }
   .img_list_delet{
     display: block;

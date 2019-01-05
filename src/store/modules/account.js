@@ -3,6 +3,7 @@ import Vue from 'vue'
 const state = {
   menu: [],
   firstLogin: false,
+  waterImg: false,
   appTypeList: {
     SPECIAL: '专题',
     VIDEO: '视频',
@@ -19,6 +20,9 @@ const state = {
 if (sessionStorage.menu) {
   state.menu = JSON.parse(sessionStorage.menu)
 }
+if (sessionStorage.waterImg) {
+  state.waterImg = sessionStorage.waterImg
+}
 
 const mutations = {
   LOGIN (state, userinfo) {
@@ -34,8 +38,12 @@ const mutations = {
     state.menu = data
     sessionStorage.menu = JSON.stringify(data)
   },
-  setFirstLogin (data) {
+  setFirstLogin (state, data) {
     state.firstLogin = data
+  },
+  setWaterImg (state, data) {
+    state.waterImg = data
+    sessionStorage.waterImg = data
   }
 }
 

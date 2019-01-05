@@ -98,7 +98,7 @@ export default {
         this.$toast('请选择栏目')
         return
       }
-      let form = Object.assign({title, titleColor, videoUrl: video.video}, this.$refs.option.form)
+      let form = Object.assign({title, titleColor, videoUrl: video.video, videoId: video.id}, this.$refs.option.form)
       if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
       if (this.id) form.id = this.id
       this.$http.post(url, form).then(
