@@ -24,11 +24,17 @@
         <icon-btn small v-if="!data.edit && data.channelPartentId != 0" @click.native.stop="data.edit = true">edit</icon-btn>
         <icon-btn small v-if="data.edit && data.channelPartentId != 0" @click.native.stop="data.edit = false;data.channelName=data.editChannelName" class="green">check</icon-btn>
         <icon-btn small v-if="data.edit && data.channelPartentId != 0" @click.native.stop="data.edit = false;data.editChannelName=data.channelName">close</icon-btn>
+        <div v-if="data.channelPartentId != 0" class="relative">
+          <icon-btn small v-if="data.channelPartentId != 0" @click.native.stop>link</icon-btn>
+          <div class="slebox">
+            <input style="border: 0;" type="text">
+          </div>
+        </div>
         <icon-btn small v-if="data.channelPartentId != 0" @click.native.stop="del(data)">delete</icon-btn>
       </div>
     </draggable-tree>
     <!-- <div>{{delChannels}}</div> -->
-  </div>f
+  </div>
 </div>
 </template>
 
@@ -85,6 +91,7 @@ export default {
         worker.postMessage({ data: res, idTxt: 'id', pidTxt: 'channelPartentId', childrenTxt: 'children', rootId: '0' })
         worker.addEventListener('message', e => {
           this.channelTree = e.data
+          console.log(e.data)
           worker.terminate()
           console.log(this.channelTree)
         })
@@ -166,6 +173,12 @@ export default {
 .channel-editor{width: 450px;border-right: 1px solid #ddd;
   .channel-name{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
   .channel-tree-item{line-height: 1em;border: 1px solid rgba(0,0,0,.08);padding-left: 7px;
+    .slebox{
+      position: absolute;top: 40px;width: 140px;right: 0;border: 1px solid #ddd;background: #fff;z-index: 10;
+    }
+    .slebox input{
+      width: 100%;
+    }
     .icon-btn{opacity: .2;}
     input{height: 30px;background: #fff;border: 1px solid #ddd;padding: 0 5px;border-width: 0 1px;}
     &:hover{background: rgba(0,0,0,.1);

@@ -34,7 +34,11 @@ axios.interceptors.response.use(function (response) {
       Vue.prototype.$toast(response.data.msg)
       return
     }
-    if (code === 1002 || code === 1001) {
+    if (code === 1001) {
+      Vue.prototype.$toast(response.data.msg)
+      return
+    }
+    if (code === 1002) {
       router.replace('/login')
       sessionStorage.removeItem('token')
       localStorage.removeItem('token')

@@ -56,7 +56,7 @@ export default {
       path: 'VOTE/:id',
       name: 'AuditContentVote',
       props: true,
-      component: resolve => require(['@/apps/Vote/list/content.vue'], resolve)
+      component: resolve => require(['@/apps/vote/list/content.vue'], resolve)
     }
   ]
 }

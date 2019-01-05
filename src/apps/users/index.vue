@@ -3,8 +3,8 @@
     <af-left color="#1B5E20" vibrant-color="#4CAF50" bg-color="#E8F5E9" title="用户" :defaultActive="$route.name">
       <navigator-item icon="folder" @click="$router.replace('/users/all')" index="UsersAll">全部</navigator-item>
       <navigator-item icon="check_circle" @click="$router.replace('/users/normal')" index="UsersNormal">正常</navigator-item>
-      <navigator-item icon="hourglass_full" @click="$router.replace('/users/auditing')" index="UsersAuditing">待审</navigator-item>
-      <navigator-item icon="delete" @click="$router.replace('/users/delete')" index="UsersDelete">删除</navigator-item>
+      <!--<navigator-item icon="hourglass_full" @click="$router.replace('/users/auditing')" index="UsersAuditing">停用</navigator-item>-->
+      <navigator-item icon="delete" @click="$router.replace('/users/delete')" index="UsersDelete">停用</navigator-item>
     </af-left>
 
     <div class="flex-item relative">

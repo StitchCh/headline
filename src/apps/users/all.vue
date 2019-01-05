@@ -17,7 +17,7 @@
       <div class="setting-card f-14">
         <table>
           <thead>
-          <th>用户ID</th>
+          <th>序号</th>
           <th>用户姓名</th>
           <th>登录名</th>
           <th>用户状态</th>
@@ -26,8 +26,8 @@
           <th colspan="4">操作</th>
           </thead>
           <tbody>
-          <tr v-for="item in list" :key="item.id" @click="openDetail(item.id)">
-            <td>{{item.id}}</td>
+          <tr v-for="(item, index) in list" :key="item.id" @click="openDetail(item.id)">
+            <td>{{index+1}}</td>
             <td>{{item.userName}}</td>
             <td>{{item.loginUserName}}</td>
             <td>{{item.userStatus | status}}</td>
@@ -36,10 +36,10 @@
             <td style="width: 30px;"><icon-btn v-tooltip="'重置密码'" small @click.stop.native="backPassWd(item.id)">refresh</icon-btn></td>
             <td style="width: 30px;"><icon-btn v-tooltip="'编辑'" small @click.stop.native="openEdit(item.id)">edit</icon-btn></td>
             <td style="width: 30px;">
-              <icon-btn v-tooltip="'删除'" v-if="item.userStatus !== '02'" small @click.stop.native="deleteUser(item.id)">delete</icon-btn>
+              <icon-btn v-tooltip="'停用'" v-if="item.userStatus !== '02'" small @click.stop.native="deleteUser(item.id)">delete</icon-btn>
               <icon-btn v-tooltip="'恢复'" v-else small @click.stop.native="restoreUser(item.id)">restore_from_trash</icon-btn>
             </td>
-            <td style="width: 30px;"><icon-btn v-tooltip="'审核'" v-if="item.userStatus === '01'" small @click.stop.native="auditUser(item.id)">find_in_page</icon-btn></td>
+            <!--<td style="width: 30px;"><icon-btn v-tooltip="'审核'" v-if="item.userStatus === '01'" small @click.stop.native="auditUser(item.id)">find_in_page</icon-btn></td>-->
           </tr>
           </tbody>
         </table>
@@ -472,10 +472,11 @@ export default {
   },
   filters: {
     status (value) {
-      if (value === '00') return '正常'
-      if (value === '01') return '待审'
-      if (value === '02') return '删除'
-      return ''
+      if (value === '00') {
+        return '正常'
+      } else {
+        return '禁用'
+      }
     }
   },
   created () {

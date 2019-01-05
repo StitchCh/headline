@@ -31,7 +31,7 @@
               <td>{{item.userLoginIp}}</td>
               <td style="width: 30px;"><icon-btn v-tooltip="'重置密码'" small @click.stop.native="backPassWd(item.id)">refresh</icon-btn></td>
               <td style="width: 30px;"><icon-btn v-tooltip="'编辑'" small @click.stop.native="openEdit(item.id)">edit</icon-btn></td>
-              <td style="width: 30px;"><icon-btn v-tooltip="'删除'" small @click.stop.native="deleteUser(item.id)">delete</icon-btn></td>
+              <td style="width: 30px;"><icon-btn v-tooltip="'停用'" small @click.stop.native="deleteUser(item.id)">delete</icon-btn></td>
             </tr>
           </tbody>
         </table>

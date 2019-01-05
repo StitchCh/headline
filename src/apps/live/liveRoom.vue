@@ -75,7 +75,7 @@
       </div>
 
       <div class="art-options c-4 scroll-y" style="width: 320px;background: #f8f8f8;">
-        <div v-if="status == '0'" class="btn" @click="startLive">开始直播</div>
+        <div v-if="status == '0'" class="btn_type1" @click="startLive">开始直播</div>
         <div v-if="status == '1'" class="btn1" @click="closeLive">结束直播</div>
         <div v-if="status == '2'" class="btn2">直播已关闭</div>
         <div class="rlist">
@@ -354,7 +354,7 @@ export default {
         })
       })
     },
-    startLive(){
+    startLive () {
       this.$http.post('/cri-cms-platform/live/start.monitor',{
         liveId: this.liveId
       }).then(res => {
@@ -383,7 +383,7 @@ export default {
         id: image ? image.id : '',
         url: image ? this.$refs.mediaPhotos.imgOrigin + image.filePath + image.fileName : ''
       }
-      if(this.txChange){
+      if (this.txChange) {
         console.log(this.zhiboyuanList)
         this.zhiboyuanList[this.txIndex].thumb.url = this.image.url
         this.zhiboyuanList[this.txIndex].thumb.id = this.image.id
@@ -456,7 +456,7 @@ export default {
     padding: 5px 10px;
     position: relative;
   }
-  .btn{
+  .btn_type1{
     width: 180px;
     margin: 20px auto;
     line-height: 40px;

@@ -81,7 +81,11 @@ export default {
     toApp (app) {
       if (app.path === 'yvqing') {
         this.$http.post('/cri-cms-platform/YQToken/getToken.monitor').then(res => {
-          window.open(res.forwordUrl)
+          if (res) {
+            window.open(res.forwordUrl)
+          } else {
+            this.$toast('操作失败')
+          }
         })
         return false
       }
