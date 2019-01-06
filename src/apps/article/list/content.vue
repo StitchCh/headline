@@ -20,7 +20,7 @@
             <div class="b c-8" style="margin-bottom: 10px;">相关阅读：</div>
             <ul>
               <li v-for="item in relateArticle" :key="item.id">
-                <a class="a c-8" @click="toLink(item)">{{item.title}}</a>
+                <a class="a c-8">{{item.title}}</a>
               </li>
             </ul>
           </div>
@@ -51,11 +51,11 @@
               </swiper>
             </div>
           </div>
-          <div v-if="relateSpecial.length" class="art-relate f-14">
+          <div v-if="relateSpecial" class="art-relate f-14">
             <div class="b c-8" style="margin-bottom: 10px;">相关专题：</div>
             <ul>
-              <li v-for="item in relateArticle" :key="item.id">
-                <a class="a c-8">{{item.title}}</a>
+              <li>
+                <a class="a c-8">{{relateSpecial.title}}</a>
               </li>
             </ul>
           </div>
@@ -139,7 +139,7 @@ export default {
         gallerySettingThumbWidth: '80',
         gallerySettingThumbHeight: '60'
       },
-      relateSpecial: [],
+      relateSpecial: false,
       attachments: [],
       thumbItem: {
         show: false,
@@ -183,6 +183,7 @@ export default {
       this.$http.post(this.getUrl, {
         id: this.id
       }).then(res => {
+        console.log(res)
         this.content = res.content || {}
         this.article = res.article || {}
         this.relateArticle = res.relateArticle || []
@@ -196,7 +197,7 @@ export default {
         this.gallerySetting.gallerySettingMinHeight = res.gallerySettingMinHeight || '480'
         this.gallerySetting.gallerySettingThumbWidth = res.gallerySettingThumbWidth || '80'
         this.gallerySetting.gallerySettingThumbHeight = res.gallerySettingThumbHeight || '60'
-        this.relateSpecial = res.relateSpecial || {}
+        this.relateSpecial = res.relateSpecial || false
         this.attachments = res.attachments || []
         if (this.relateGalleryContent.length) {
           this.$nextTick(() => {

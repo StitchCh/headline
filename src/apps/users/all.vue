@@ -52,10 +52,6 @@
         <table>
           <tbody>
             <tr>
-              <th align="right">用户ID</th>
-              <td>{{detail.sysUser.id}}</td>
-            </tr>
-            <tr>
               <th align="right">用户姓名</th>
               <td>{{detail.sysUser.userName}}</td>
             </tr>
@@ -64,16 +60,8 @@
               <td>{{detail.sysUser.loginUserName}}</td>
             </tr>
             <tr>
-              <th align="right">登录密码</th>
-              <td>{{detail.sysUser.loginUserPwd}}</td>
-            </tr>
-            <tr>
               <th align="right">用户状态</th>
               <td>{{detail.sysUser.userStatus | status}}</td>
-            </tr>
-            <tr>
-              <th align="right">用户区域</th>
-              <td>{{detail.sysUser.userArea}}</td>
             </tr>
             <tr>
               <th align="right">用户手机</th>
@@ -94,14 +82,6 @@
             <tr>
               <th align="right">登录IP</th>
               <td>{{detail.sysUser.userLoginIp}}</td>
-            </tr>
-            <tr>
-              <th align="right">上次登录IP</th>
-              <td>{{detail.sysUser.userLastLoginIp}}</td>
-            </tr>
-            <tr>
-              <th align="right">用户ID</th>
-              <td>{{detail.sysUser.id}}</td>
             </tr>
             <tr>
               <th align="right">角色</th>
@@ -131,8 +111,8 @@
       <div class="layer-text">
         <input-box label="用户名称" v-model="newForm.userName"></input-box>
         <input-box label="登录名称" v-model="newForm.loginUserName" :hint="newLoginUserNameHint" @blur="vertifyLoginUserName"></input-box>
-        <input-box label="登录密码" type="password" v-model="newForm.loginUserPwd"></input-box>
-        <input-box label="再次输入登录密码" type="password" v-model="vertify.newLoginUserPwd"></input-box>
+        <!--<input-box label="登录密码" type="password" v-model="newForm.loginUserPwd"></input-box>-->
+        <!--<input-box label="再次输入登录密码" type="password" v-model="vertify.newLoginUserPwd"></input-box>-->
         <input-box label="手机号码" v-model="newForm.userPhone"></input-box>
         <input-box label="用户邮箱" v-model="newForm.userEmail"></input-box>
         <!--<input-box label="角色ID（多个角色用逗号分开）" v-model="newForm.rolesId"></input-box>-->

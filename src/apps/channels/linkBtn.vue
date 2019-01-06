@@ -10,6 +10,7 @@
         <input v-if="olinkShow == 1" @change="change" v-model="olink" style="width: 100%;border: 1px solid #ddd;box-sizing: border-box;" type="text">
       </div>
     </transition>
+    <div v-if="show" class="closebox" @click="show = false"></div>
   </div>
 </template>
 
@@ -44,7 +45,19 @@ export default {
     opacity: 0;
   }
   .slebox{
+    position: absolute;top: 40px;width: 300px;right: 0;border: 1px solid #ddd;background: #fff;z-index: 10;
     padding: 10px;
     border-radius: 6px;
+  }
+  .slebox input{
+    width: 100%;
+  }
+  .closebox{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 5;
   }
 </style>

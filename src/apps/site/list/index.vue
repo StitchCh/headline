@@ -15,17 +15,15 @@
       <div class="setting-card f-14">
         <table>
           <thead>
-          <th>编号</th>
           <th>站点名称</th>
           <th>站点url</th>
-          <th>站点对外ID</th>
+          <th>站点编号</th>
           <th>创建人</th>
           <th>创建时间</th>
           <th style="width: 30px;">操作</th>
           </thead>
           <tbody>
           <tr v-for="item in list" :key="item.id">
-            <td>{{item.id}}</td>
             <td>{{item.name}}</td>
             <td>{{item.url}}</td>
             <td>{{item.identifyId}}</td>
@@ -44,7 +42,7 @@
       <div class="layer-text">
         <input-box label="站点名称" v-model="newForm.name"></input-box>
         <input-box label="站点URL" v-model="newForm.url"></input-box>
-        <input-box label="站点值" v-model="newForm.identifyId"></input-box>
+        <input-box label="站点编号" v-model="newForm.identifyId"></input-box>
       </div>
       <div class="layer-btns">
         <btn flat @click="newShow = false">取消</btn>

@@ -13,6 +13,27 @@
       </transition>
 
       <div class="setting-card f-14">
+        <div class="search_box">
+          <div class="seaceh_list">来源：</div>
+          <div v-for="item in sourceList" class="seaceh_list">
+             <label>
+                <check-box v-model="item.state"></check-box><span>{{item.vaule}}</span>
+             </label>
+          </div>
+        </div>
+        <div class="search_box" style="margin-bottom: 30px;">
+          <div class="seaceh_list">
+            <span>搜索内容：</span>
+            <input v-model="title" style="padding: 0 15px;height: 28px;width: 200px;" type="text">
+          </div>
+          <div class="seaceh_list">
+            <vue-datepicker-local v-model="searchTime" format="YYYY-MM-DD" show-buttons></vue-datepicker-local>
+          </div>
+          <div class="seaceh_list">
+            <btn @click="search">搜索</btn>
+          </div>
+        </div>
+
         <table>
           <thead>
             <th style="width: 100px;"><p>关键词</p></th>
@@ -40,22 +61,82 @@
 </template>
 
 <script>
-import Account from "@/components/account";
-import Dock from "@/components/dock";
+import Account from "@/components/account"
+import Dock from "@/components/dock"
+import VueDatepickerLocal from 'vue-datepicker-local'
+import moment from 'moment'
+
 export default {
   name: "app-collection",
-  components: { Account, Dock },
+  components: { Account, Dock, VueDatepickerLocal, moment },
   data() {
     return {
       loading: false,
+      searchTime: [],
       list: [],
       page: 1,
-      total: 1
-    };
+      total: 1,
+      title: '',
+      source: '',
+      sourceList: [
+        {
+          vaule: '人民网',
+          state: false
+        },
+        {
+          vaule: '卫星网',
+          state: false
+        },
+        {
+          vaule: '中国驻俄罗斯大使馆',
+          state: false
+        },
+        {
+          vaule: '俄罗斯驻华使馆',
+          state: false
+        },
+        {
+          vaule: 'PNA',
+          state: false
+        },
+        {
+          vaule: '俄罗斯报',
+          state: false
+        },
+        {
+          vaule: '俄罗斯外交部',
+          state: false
+        }
+      ]
+    }
   },
   methods: {
-    getList() {
+    search () {
       this.loading = true;
+      let source = ''
+      this.sourceList.forEach(item => {
+        if (item.state) {
+          source = source + item.vaule + ','
+        }
+      })
+      this.$http.post("/cri-cms-platform/collectionNew/queryListCollectionNew.monitor", {
+        page: this.page,
+        startTime: moment(this.searchTime[0]).format('YYYY-MM-DD'),
+        endTime: moment(this.searchTime[1]).format('YYYY-MM-DD'),
+        source: source,
+        title: this.title
+      }).then(res => {
+        this.list = res.pages
+        this.total = res.totalRowsAmount
+        console.log(res)
+      }).catch(res => {
+        this.$toast(res.msg)
+      }).finally(() => {
+        this.loading = false
+      })
+    },
+    getList () {
+      this.loading = true
       this.$http
         .post(
           "/cri-cms-platform/collectionNew/queryListCollectionNew.monitor",
@@ -64,9 +145,9 @@ export default {
           }
         )
         .then(res => {
+          console.log(res)
           this.list = res.pages;
-          this.total = res.totalCounts;
-          console.log(res);
+          this.total = res.totalRowsAmount;
         })
         .catch(res => {
           this.$toast(res.msg);
@@ -75,17 +156,37 @@ export default {
           this.loading = false;
         });
     },
-    openUrl(url){
+    openUrl (url) {
         window.open(url);
     }
   },
-  created() {
+  created () {
     this.getList();
   }
 };
 </script>
 
+<style scoped>
+  .search_box{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 0 10px;
+  }
+  .seaceh_list{
+    margin-right: 20px;
+  }
+  .seaceh_list .check-box{
+    margin: 0;
+  }
+</style>
+
 <style  lang="less">
+  .datepicker-range .datepicker-popup {
+    width: 420px!important;
+    right: -50px;
+    left: auto;
+  }
 .app-collection {
   .collection-content {
     .setting-card {

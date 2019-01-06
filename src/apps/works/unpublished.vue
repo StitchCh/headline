@@ -45,14 +45,14 @@
           :page="page"
           :size="size"
           :total="totalPage * size"
-          @change="page=$event;getData(1)"
+          @change="page=$event;getList()"
           style="border-top: 1px solid #eee;padding: 5px 0;"
         />
       </div>
     </div>
 
     <div class="right" style="width: 50%;">
-      <div class="card flex-item" style="margin-left: 5px;">
+      <div class="card flex-item" style="margin-left: 5px;" :style="{marginTop: scrollTop + 'px'}">
         <div class="flex-v-center card-title">
           <div class="b blue flex-item">已选择</div>
           <btn @click="confirm" :disabled="!checked.length">确定选取</btn>
@@ -95,6 +95,9 @@ export default {
     childChannel: {
       type: Array,
       default: () => []
+    },
+    scrollTop: {
+      type: Number
     },
     layout: {
       type: Array,
@@ -173,6 +176,9 @@ export default {
         this.loading = false
         this.$toast(e.msg)
       })
+    },
+    add () {
+      console.log('a')
     },
     checkItem (item) {
       if (!this.activeLayoutId) {

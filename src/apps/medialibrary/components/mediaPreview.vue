@@ -45,7 +45,7 @@
         </a>
         <icon-btn small v-tooltip:top="'复制链接地址'" @click="copyLink">link</icon-btn>
         <input type="text" :value="origin+current.filePath+current.fileName" ref="copyInput" readonly style="width: 1px;border: none;opacity: 0;">
-        <icon-btn small v-tooltip:top="`编辑${typeContent[type].text}`" @click="show.imageEditor = !type">edit</icon-btn>
+        <icon-btn small v-if="type === 0" v-tooltip:top="`编辑${typeContent[type].text}`" @click="show.imageEditor = !type">edit</icon-btn>
         <icon-btn small v-tooltip:top="`删除${typeContent[type].text}`" @click="del">delete</icon-btn>
       </div>
       <!--<div class="flex" style="margin: 15px 0;">-->

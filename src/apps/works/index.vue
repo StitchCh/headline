@@ -32,12 +32,13 @@
     </div>
     <div class="flex-item flex-col relative" v-if="$route.query.channelId" style="background: #f4f4f4;">
       <!-- <div v-if="loading" class="abs flex-center bg-light-rgb-2" style="z-index:10;"><loading/></div> -->
-      <div class="flex-item relative scroll-y" style="padding: 20px;">
+      <div class="flex-item relative scroll-y" style="padding: 20px;" ref="scrollbox" @scroll="scrollfun">
         <!-- {{childChannel}} -->
         <keep-alive>
           <router-view
             :layout="layout"
             :channel="channel"
+            :scrollTop="scrollTop"
             ref="published"
             @add="onAdd"
             @dragend="$event => {layout=$event}"
@@ -67,7 +68,8 @@ export default {
       loading: false,
       publishLoading: false,
       channel: [],
-      layout: []
+      layout: [],
+      scrollTop: 0
     }
   },
   created () {
@@ -80,6 +82,9 @@ export default {
     }
   },
   methods: {
+    scrollfun () {
+      this.scrollTop = this.$refs.scrollbox.scrollTop
+    },
     getChannel () {
       this.$http.post('/cri-cms-platform/issue/getChannels.monitor').then(res => {
         res.forEach(item => {

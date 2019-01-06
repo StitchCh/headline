@@ -54,6 +54,16 @@ export default {
         this.show = false
         return
       }
+      if (app.path === 'yvqing') {
+        this.$http.post('/cri-cms-platform/YQToken/getToken.monitor').then(res => {
+          if (res) {
+            window.open(res.forwordUrl)
+          } else {
+            this.$toast('操作失败')
+          }
+        })
+        return false
+      }
       app.loading = true
       setTimeout(() => {
         this.$router.push(app.path)

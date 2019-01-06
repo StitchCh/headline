@@ -183,8 +183,13 @@ export default {
       if (item.issueStatus === 0) {
         item.dateRange = [item.sendDate ? item.sendDate : item.dateRange[0], this.overTime]
       } else {
-        item.dateRange = [item.sendDate ? item.sendDate : item.dateRange[0], item.endDate != '9998-12-31 23:59:59' ? item.endDate : this.thistime ]
+        if (item.endDate != '9998-12-31 23:59:59') {
+          item.dateRange = [item.sendDate ? item.sendDate : item.dateRange[0], this.thistime ]
+        } else {
+          item.dateRange = [item.sendDate ? item.sendDate : item.dateRange[0], item.endDate ]
+        }
       }
+      console.log(item.dateRange)
       this.viewListShow = false
       this.$nextTick(() => (this.viewListShow = true))
     },

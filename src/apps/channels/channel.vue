@@ -90,7 +90,6 @@ export default {
         worker.addEventListener('message', e => {
           this.channelTree = e.data
           worker.terminate()
-          console.log(e.data)
         })
         worker.addEventListener('error', e => {
           this.$toast(e.msg || e.message)
@@ -171,12 +170,6 @@ export default {
 .channel-editor{width: 450px;border-right: 1px solid #ddd;
   .channel-name{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
   .channel-tree-item{line-height: 1em;border: 1px solid rgba(0,0,0,.08);padding-left: 7px;
-    .slebox{
-      position: absolute;top: 40px;width: 140px;right: 0;border: 1px solid #ddd;background: #fff;z-index: 10;
-    }
-    .slebox input{
-      width: 100%;
-    }
     .icon-btn{opacity: .2;}
     input{height: 30px;background: #fff;border: 1px solid #ddd;padding: 0 5px;border-width: 0 1px;}
     &:hover{background: rgba(0,0,0,.1);

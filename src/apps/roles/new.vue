@@ -86,6 +86,9 @@ export default {
       }
     }
   },
+  mounted () {
+    console.log(this.menuList)
+  },
   methods: {
     menuFormat (menu, node) {
       let arr = menu.split('-')

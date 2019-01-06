@@ -94,13 +94,11 @@ export default {
         file: file.source
       }
       file.status = 'uploading'
-      // console.log(this.fileList.indexOf(file))
       let config = {
         onUploadProgress: progressEvent => {
           let complete = (progressEvent.loaded / progressEvent.total * 100 | 0) + '%'
           file.datalength = complete
           this.fileList.splice(this.fileList.indexOf(file), 1, file)
-          console.log(complete)
         }
       }
       this.$http.post('/cri-cms-platform/media/uploadIAU.monitor', data, config).then(res => {

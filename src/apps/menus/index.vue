@@ -31,8 +31,8 @@
           <tbody>
           <tr v-for="item in list" :key="item.id" @click="openDetail(item.id)">
             <td>
-              <icon-btn v-show="item.sysMenuShowFlag === '1'" v-tooltip="'收起下级'" v-if="menuChildShow[item.id]" small @click.stop.native="packupChild(item.id)">delete</icon-btn>
-              <icon-btn v-show="item.sysMenuShowFlag === '1'" v-tooltip="'展示下级'" v-else small @click.stop.native="showChild(item.id)">edit</icon-btn>
+              <icon-btn v-show="item.sysMenuShowFlag === '1'" v-tooltip="'收起下级'" v-if="menuChildShow[item.id]" small @click.stop.native="packupChild(item.id)">keyboard_arrow_up</icon-btn>
+              <icon-btn v-show="item.sysMenuShowFlag === '1'" v-tooltip="'展示下级'" v-else small @click.stop.native="showChild(item.id)">keyboard_arrow_down</icon-btn>
             </td>
             <td>{{item.sysMenuName}}</td>
             <td>{{item.sysMenuUrl}}</td>
@@ -418,11 +418,15 @@ export default {
           } else {
             this.$http.post('/cri-cms-platform/sysMenu/get.monitor', { 'id': res.menu.sysMenuParentId }).then(
               res3 => {
-                var p = []
-                p.push(res3.menu)
-                this.parentMenus = p
-                this.editForm.sysMenuShowFlag = '0'
-                this.editForm.sysMenuParentId = res3.menu.id
+                this.$http.post('/cri-cms-platform/sysMenu/list.monitor').then(res2 => {
+                  var p = [ { id: '-1', sysMenuName: '根目录' } ]
+                  for (var index in res2) {
+                    p.push(res2[index])
+                    this.parentMenus = p
+                    this.editForm.sysMenuShowFlag = '0'
+                    this.editForm.sysMenuParentId = res3.menu.id
+                  }
+                })
               }
             )
           }
@@ -451,7 +455,7 @@ export default {
         this.$toast('请输入菜单URL')
         return
       }
-      if (this.editForm.sysMenuIcon === '') {
+      if (this.editForm.sysMenuIcon === '' && this.editForm.sysMenuShowFlag == 1) {
         this.$toast('请输入菜单图标')
         return
       }
