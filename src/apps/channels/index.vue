@@ -105,11 +105,11 @@ export default {
       layout1: [],
       mark: 1,
       liebiao: true,
-      channelState:{
+      channelState: {
         channelId: '',
         showLocal: false,
         isPingLun: false,
-        isShenHe: false,
+        isShenHe: false
       }
     }
   },
@@ -134,9 +134,10 @@ export default {
       this.$http.post('/cri-cms-platform/channel/getChannelSetting.monitor', {
         channelId: id
       }).then(res => {
-        this.channelState = JSON.parse(res.setting)
-        for (let item in this.channelState) {
-          this.channelState[item] = this.channelState[item] == 'true' ? true : false
+        this.channelState.channelId = res.channelId
+        res.setting = JSON.parse(res.setting)
+        for (let item in res.setting) {
+          this.channelState[item] = res.setting[item] == 'true' ? true : false
         }
       })
     },

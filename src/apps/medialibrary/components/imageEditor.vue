@@ -1,5 +1,5 @@
 <template>
-<layer class="image-editor" width="700px">
+<div class="image-editor">
   <div class="content flex">
     <div class="tool-bar flex-center">
       <div style="padding: 12px;">
@@ -15,7 +15,7 @@
         <icon-btn v-tooltip:bottom="'恢复'" :disabled="history.index === history.list.length - 1" @click="redo">redo</icon-btn>
         <!-- <icon-btn v-tooltip:right="'涂鸦'">brush</icon-btn>
         <icon-btn v-tooltip:right="'文字'">text_fields</icon-btn> -->
-        <!-- <icon-btn v-tooltip:right="'水印'">branding_watermark</icon-btn> -->
+         <icon-btn v-tooltip:right="'水印'" :disabled="toolActive !== ''"  @click="watermark = !watermark">branding_watermark</icon-btn>
       </div>
     </div>
     <transition name="fade">
@@ -50,7 +50,15 @@
       </div>
     </transition>
     <div class="flex-item flex-col">
-      <div class="flex-item flex-center">
+      <div ref="imgbox" class="flex-item flex-center" style="position: relative">
+        <div class="watermark_box"
+             :style="{top: watermarkData.top + 'px', left: watermarkData.left + 'px', width: watermarkData.width + 'px'}"
+             @mousedown="watermarkDown"
+             v-if="watermark && toolActive === ''"
+        >
+          <img ref="watermark_img" ondragstart="return false;" :src="waterImg" alt="" style="width: 100%;">
+          <div @mousedown="watermarkResize" style="width: 10px;height: 10px;position: absolute;right: -5px;bottom: -5px;border-radius: 50%;background: #00a0e9;cursor: nwse-resize;"></div>
+        </div>
         <img style="max-width: 100%;" :src="src" ref="cropper"/>
       </div>
       <div class="layer-btns">
@@ -59,7 +67,8 @@
       </div>
     </div>
   </div>
-</layer>
+  <!--<canvas style="position: fixed;top: 0px;left: 0px;z-index: -10;" ref="mycanvasbox"></canvas>-->
+</div>
 </template>
 
 <script>
@@ -75,7 +84,22 @@ export default {
   },
   data () {
     return {
+      watermarkData: {
+        top: 380,
+        left: 580,
+        width: 40,
+        height: '',
+        x: 0,
+        y: 0
+      },
+      imgboxData: {
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0
+      },
       toolActive: '',
+      watermark: false,
       optionActive: '',
       cropper: null,
       // crop: {
@@ -85,7 +109,9 @@ export default {
       history: {
         index: -1,
         list: []
-      }
+      },
+      waterImg: '',
+      mycanvas: null
       // rotate: {
       //   move: false,
       //   deg: 0,
@@ -96,6 +122,15 @@ export default {
     }
   },
   mounted () {
+    this.waterImg = this.$store.state.account.waterImg
+    this.watermarkData.top
+    this.imgboxData = {
+      x: this.$refs.imgbox.offsetLeft,
+      y: this.$refs.imgbox.offsetTop,
+      width: this.$refs.imgbox.offsetWidth,
+      height: this.$refs.imgbox.offsetHeight
+    }
+    console.log(this.imgboxData)
     this.init()
   //   window.addEventListener('mousedown', this.onRotateStart)
   //   window.addEventListener('mousemove', this.onRotate)
@@ -109,6 +144,36 @@ export default {
   //   window.addEventListener('resize', this.onWindowResize)
   },
   methods: {
+    watermarkResize (event) {
+      event.stopPropagation()
+      console.log(this.watermarkData.width, event.clientX , this.watermarkData.x)
+      let ox = event.clientX - this.watermarkData.width
+      document.body.onmousemove = (event) => {
+        this.watermarkData.width = event.clientX - ox
+      }
+      document.body.onmouseup = () => {
+        document.body.onmousemove = null
+      }
+    },
+    watermarkDown (event) {
+      this.watermarkData.x = event.clientX - this.watermarkData.left
+      this.watermarkData.y = event.clientY - this.watermarkData.top
+      document.body.onmousemove = (event) => {
+        let oTop = event.clientY - this.watermarkData.y <= 0 ? 0 : event.clientY - this.watermarkData.y
+        let oLeft = event.clientX - this.watermarkData.x <= 0 ? 0 : event.clientX - this.watermarkData.x
+        if (oTop >= this.imgboxData.height - this.watermarkData.width) {
+          oTop = this.imgboxData.height - this.watermarkData.width
+        }
+        if (oLeft >= this.imgboxData.width - this.watermarkData.width) {
+          oLeft = this.imgboxData.width - this.watermarkData.width
+        }
+        this.watermarkData.left = oLeft
+        this.watermarkData.top = oTop
+      }
+      document.body.onmouseup = () => {
+        document.body.onmousemove = null
+      }
+    },
     init () {
       this.cropper = new Cropper(this.$refs.cropper, {
         viewMode: 1,
@@ -217,20 +282,98 @@ export default {
     },
     submit () {
       let { current } = this
-      this.cropper.getCroppedCanvas().toBlob(img => {
-        let data = {
-          type: 0,
-          folderId: current.folderId,
-          file: new File([img], current.alias)
+      let canvasData = {
+        w: this.cropper.getCroppedCanvas().width,
+        h: this.cropper.getCroppedCanvas().height,
+        ratio: 0,
+        ratioValue: {
+          w: 0,
+          h: 0
         }
-        console.log(data)
-        this.$http.post('/cri-cms-platform/media/uploadIAU.monitor', data).then(res => {
-          console.log(res)
-          this.$emit('refresh')
-        }).catch(e => {
-          this.$toast(e.msg || `保存失败`)
+      }
+      if (this.watermark) {
+        let canvas = document.createElement("canvas")
+        canvas.width = canvasData.w
+        canvas.height = canvasData.h
+        this.mycanvas = canvas.getContext("2d")
+        let imgObj1 = new Image()
+        imgObj1.src = this.cropper.getCroppedCanvas().toDataURL("image/png")
+        imgObj1.onload = () => {
+          this.mycanvas.drawImage(imgObj1, 0, 0)
+          let imgObj = new Image()
+          imgObj.setAttribute('crossOrigin', 'Anonymous')
+          imgObj.src = this.waterImg
+          imgObj.onload = () => {
+            if (canvasData.w / canvasData.h >= this.imgboxData.width / this.imgboxData.height) {
+              canvasData.ratio = this.imgboxData.width / canvasData.w
+              canvasData.ratioValue = {
+                w: this.imgboxData.width,
+                h: canvasData.ratio * canvasData.h
+              }
+            } else {
+              canvasData.ratio = this.imgboxData.height / canvasData.h
+              canvasData.ratioValue = {
+                w: canvasData.ratio * canvasData.w,
+                h: this.imgboxData.height
+              }
+            }
+            this.watermarkData.height =  (imgObj.width / imgObj.height)
+            this.mycanvas.drawImage(imgObj, (this.watermarkData.left - (this.imgboxData.width - canvasData.ratioValue.w) / 2) / canvasData.ratio, (this.watermarkData.top - (this.imgboxData.height - canvasData.ratioValue.h) / 2) / canvasData.ratio, this.watermarkData.width / canvasData.ratio, (this.watermarkData.width / this.watermarkData.height) / canvasData.ratio)
+            var convertBase64ToBlob = function(base64){
+              var base64Arr = base64.split(',');
+              var imgtype = '';
+              var base64String = '';
+              if(base64Arr.length > 1){
+                //如果是图片base64，去掉头信息
+                base64String = base64Arr[1];
+                imgtype = base64Arr[0].substring(base64Arr[0].indexOf(':')+1,base64Arr[0].indexOf(';'));
+              }
+              // 将base64解码
+              var bytes = atob(base64String);
+              //var bytes = base64;
+              var bytesCode = new ArrayBuffer(bytes.length);
+              // 转换为类型化数组
+              var byteArray = new Uint8Array(bytesCode);
+
+              // 将base64转换为ascii码
+              for (var i = 0; i < bytes.length; i++) {
+                byteArray[i] = bytes.charCodeAt(i);
+              }
+
+              // 生成Blob对象（文件对象）
+              return new Blob( [bytesCode] , {type : imgtype});
+            }
+            let img = convertBase64ToBlob(canvas.toDataURL("image/png"))
+            let data = {
+              type: 0,
+              folderId: current.folderId,
+              file: new File([img], current.alias)
+            }
+            console.log(data)
+            this.$http.post('/cri-cms-platform/media/uploadIAU.monitor', data).then(res => {
+              console.log(res)
+              this.$emit('refresh')
+            }).catch(e => {
+              this.$toast(e.msg || `保存失败`)
+            })
+          }
+        }
+      } else {
+        this.cropper.getCroppedCanvas().toBlob(img => {
+          let data = {
+            type: 0,
+            folderId: current.folderId,
+            file: new File([img], current.alias)
+          }
+          console.log(data)
+          this.$http.post('/cri-cms-platform/media/uploadIAU.monitor', data).then(res => {
+            console.log(res)
+            this.$emit('refresh')
+          }).catch(e => {
+            this.$toast(e.msg || `保存失败`)
+          })
         })
-      })
+      }
     }
   }
 }
@@ -238,9 +381,15 @@ export default {
 
 <style lang="less">
 .image-editor{
+  .watermark_box{
+    width: 40px;
+    z-index:100;
+    position: absolute;
+    border: 1px solid #00a0e9;
+  }
   position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: 20;background: rgba(0, 0, 0, .9);
   .layer-ctn{max-width: 800px!important;}
-  .content{height: 500px;}
+  .content{height: 500px;width: 700px;position: absolute;top: 0px;left: 0px;right: 0px;bottom: 0px;margin: auto;background: #fff;border-radius: 10px;}
   .tool-bar{width: 60px;border-right: 1px solid rgba(0, 0, 0, .1);}
   .option-bar{position: absolute;left: 60px;top: 0;height: 100%;z-index: 10;border-right: 1px solid rgba(0, 0, 0, .1);
     background: rgba(255, 255, 255, .7);

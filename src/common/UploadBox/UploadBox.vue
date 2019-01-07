@@ -9,9 +9,13 @@
         <i v-else class="icon uploadDocument">description</i>
         <span class="flex-item">{{item.name}}</span>
         <!-- <div class="flex-item"></div> -->
-        <div class="loadingBox" v-if="item.status === 'uploading'">
-          <Loading size="20"></Loading>
+        <div style="border: 1px solid #ddd;width: 100px;height: 6px;padding: 0;margin: 0 10px 0 0;">
+          <span style="background: #3bb4f2;display: block;height: 100%;width: 0;padding: 0;margin: 0;" :style="{width: item.datalength}"></span>
         </div>
+        <p>{{item.datalength}}</p>
+        <!--<div class="loadingBox" v-if="item.status === 'uploading'">-->
+          <!--<Loading size="20"></Loading>-->
+        <!--</div>-->
         <i class="icon uploadStatus" v-if="item.status === 'done'">done</i>
         <i class="icon uploadStatus upload-error" v-if="item.status === 'error'">error_outline</i>
         <icon-btn small @click="removeFile(item, index)">close</icon-btn>

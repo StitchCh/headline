@@ -24,11 +24,12 @@
         <icon-btn small v-if="!data.edit && data.channelPartentId != 0" @click.native.stop="data.edit = true">edit</icon-btn>
         <icon-btn small v-if="data.edit && data.channelPartentId != 0" @click.native.stop="data.edit = false;data.channelName=data.editChannelName" class="green">check</icon-btn>
         <icon-btn small v-if="data.edit && data.channelPartentId != 0" @click.native.stop="data.edit = false;data.editChannelName=data.channelName">close</icon-btn>
+        <linkBtn @click.native.stop :link="data.channelUrl" :linkShow="data.isEnabledUrl" @linkchange="obj => {data.channelUrl = obj.link; data.isEnabledUrl = obj.linkshow}"></linkBtn>
         <icon-btn small v-if="data.channelPartentId != 0" @click.native.stop="del(data)">delete</icon-btn>
       </div>
     </draggable-tree>
     <!-- <div>{{delChannels}}</div> -->
-  </div>f
+  </div>
 </div>
 </template>
 
@@ -36,6 +37,7 @@
 import { DraggableTree } from 'vue-draggable-nested-tree'
 import WorkerCode from '@/common/Tree/tree.worker.js'
 import AppArticleAddThumb from './thumb'
+import linkBtn from './linkBtn'
 
 function getTreeData (rootNode) {
   let res = []
@@ -47,7 +49,9 @@ function getTreeData (rootNode) {
         channelName: item.channelName,
         channelPartentId: node.id,
         channelManager: '',
-        channelIcon: item.channelIcon
+        channelIcon: item.channelIcon,
+        channelUrl: item.channelUrl,
+        isEnabledUrl: item.isEnabledUrl
       })
       if (item.children.length) {
         getData(item)
@@ -60,7 +64,7 @@ function getTreeData (rootNode) {
 
 export default {
   name: 'channel-editor',
-  components: { DraggableTree, AppArticleAddThumb },
+  components: { DraggableTree, AppArticleAddThumb, linkBtn },
   data () {
     return {
       channels: [],
@@ -86,7 +90,6 @@ export default {
         worker.addEventListener('message', e => {
           this.channelTree = e.data
           worker.terminate()
-          console.log(this.channelTree)
         })
         worker.addEventListener('error', e => {
           this.$toast(e.msg || e.message)
@@ -105,6 +108,8 @@ export default {
         channelPartentId: item.id,
         parent: item,
         children: [],
+        channelUrl: '',
+        isEnabledUrl: 0,
         del: false,
         open: true,
         new: true,
@@ -136,15 +141,14 @@ export default {
     },
     submit () {
       let tree = { id: '0', children: this.channelTree }
-      console.log(this.channelTree)
       let res = getTreeData(tree)
+      console.log(res)
       // res.unshift({ id: '1', channelName: '根目录', channelPartentId: '0', channelManager: '', channelIcon: '' })
       let delChannels = getTreeData({ children: this.delChannels })
       let result = {
         result: res,
         removeChannelId: delChannels.filter(item => item.id).map(item => item.id)
       }
-      console.log(result)
       this.$http.post('/cri-cms-platform/channel/saveChannel.monitor', {
         channelJson: JSON.stringify(result)
       }).then(res => {

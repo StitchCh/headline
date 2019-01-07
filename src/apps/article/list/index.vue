@@ -9,6 +9,7 @@
 
       <div class="list-item a" slot-scope="slotProps" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.id == $route.params.id}">
         <div class="list-title flex-v-center">
+          <img v-if="slotProps.item.hasThumb == 1" src="../../../../static/head_img.png" alt="" style="width: 20px;margin-right: 10px;">
           <i v-if="~~(slotProps.item.isRecommnd)" class="icon f-16 blue">thumb_up</i>
           <!-- <i v-if="~~(slotProps.item.hasThumb)" class="icon f-16 orange">image</i> -->
           <i v-if="~~(slotProps.item.isOriginal)" class="icon f-16 green">copyright</i>
@@ -23,9 +24,9 @@
             <i v-tooltip:top="'阅读'">{{slotProps.item.pv}}</i>/<i v-tooltip:top="'评论'">{{slotProps.item.commentCount}}</i>/<i v-tooltip:top="'分享'">{{slotProps.item.shareCount}}</i>/<i v-tooltip:top="'点赞'">{{slotProps.item.diggCount}}</i>
           </span>
           <span class="flex-item"></span>
-          <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalPc }">computer</i>
-          <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalApp }">phone_iphone</i>
-          <i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalWeb }">public</i>
+          <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalPc }">computer</i>-->
+          <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalApp }">phone_iphone</i>-->
+          <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalWeb }">public</i>-->
         </div>
       </div>
     </af-center>
@@ -140,12 +141,6 @@ export default {
           })
         }
       })
-    },
-    qrcode (id) {
-      let siteId = sessionStorage.getItem('siteId')
-      let previewUrl = sessionStorage.getItem('previewUrl')
-      console.log(`${previewUrl}?siteId=${siteId}&previewId=${id}`)
-      return `${previewUrl}?siteId=${siteId}&previewId=${id}`
     }
   },
   created () {

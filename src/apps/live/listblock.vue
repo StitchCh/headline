@@ -7,8 +7,16 @@
       <p class="text_title">{{data.messageUserAlias}}<span class="toptag" v-if="data.stick === '01'">置顶</span></p>
       <p class="text_content">{{data.textContent}}</p>
       <p class="text_time">{{data.createTime}}</p>
-      <div v-if="data.items" style="padding-top: 10px;">
-        <img v-for="item in data.items" :src="item.mediaUrl" alt="" class="img_list">
+      <div v-if="data.items" style="padding-top: 10px;display: flex;flex-wrap: wrap;">
+        <div class="imgbox imgimgbox" v-for="item in data.items">
+          <img v-if="item.orderNum == 1" :src="item.mediaUrl" alt="">
+          <div v-if="item.orderNum == 2" style="background: #318fff;text-align: center;width: 100%;">
+            <i class="icon c-a" style="font-size: 30px;color: #fff;line-height: 60px;">video_call</i>
+          </div>
+          <div v-if="item.orderNum == 3" style="background: #318fff;text-align: center;width: 100%;">
+            <i class="icon c-a" style="font-size: 30px;color: #fff;line-height: 60px;">audiotrack</i>
+          </div>
+        </div>
       </div>
     </div>
     <div v-if="data.withdrawn == '00'" class="xiala">
@@ -83,6 +91,7 @@ export default {
   },
   mounted () {
     this.data = this.value
+    console.log(this.data)
   },
   methods: {
     removeImage (index) {
@@ -144,6 +153,14 @@ export default {
 </script>
 
 <style scoped>
+  .imgimgbox{
+    width: 60px;
+    height: 60px;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    margin: 0 10px 10px 0;
+  }
   .sbtn{
     cursor: pointer;
   }
@@ -159,7 +176,7 @@ export default {
   }
   .img_list{
     width: 60px;
-    margin: 0 5px;
+    margin: 10px;
     position: relative;
   }
   .img_list_delet{

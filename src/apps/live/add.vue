@@ -29,7 +29,13 @@
           </div>
         </div>
         <div style="width: 50%;">
-          <h2>拖拽排序</h2>
+          <div style="overflow: hidden">
+            <h2 style="float: left;">拖拽排序</h2>
+            <div style="float: right;border: 0;" class="option-item flex-v-center">
+              <span class="flex-item" style="margin-right: 10px;">是否开启聊天室</span>
+              <switcher mode="Number" v-model="liveShow"/>
+            </div>
+          </div>
           <draggable element="ul" :options="{ghostClass:'movelist'}" v-model="tagOrder" >
             <li v-for="(item, index) in tagOrder" class="flex-v-center orderitem">
               <span style="margin-right: 10px;">{{index+1}}. {{item === 'LIVE' ? '直播窗口' : '聊天室'}}</span>
@@ -54,9 +60,10 @@
       <div class="option-item flex-v-center">
         <icon-btn small v-tooltip:top="'推荐'" :class="{ active: form.isRecommnd }" @click="form.isRecommnd = ~~!form.isRecommnd">thumb_up</icon-btn>
         <span class="flex-item"></span>
-        <icon-btn small v-tooltip:top="'发布到 PC 页面'" :class="{ active: form.terminalPc }" @click="form.terminalPc = ~~!form.terminalPc">computer</icon-btn>
-        <icon-btn small v-tooltip:top="'发布到客户端'" :class="{ active: form.terminalApp }" @click="form.terminalApp = ~~!form.terminalApp">phone_iphone</icon-btn>
-        <icon-btn small v-tooltip:top="'发布到移动网页'" :class="{ active: form.terminalWeb }" @click="form.terminalWeb = ~~!form.terminalWeb">public</icon-btn>
+        <!--<icon-btn small v-tooltip:top="'发布到 PC 页面'" :class="{ active: form.terminalPc }" @click="form.terminalPc = ~~!form.terminalPc">computer</icon-btn>-->
+        <!--<icon-btn small v-tooltip:top="'发布到客户端'" :class="{ active: form.terminalApp }" @click="form.terminalApp = ~~!form.terminalApp">phone_iphone</icon-btn>-->
+        <!--<icon-btn small v-tooltip:top="'发布到移动网页'" :class="{ active: form.terminalWeb }" @click="form.terminalWeb = ~~!form.terminalWeb">public</icon-btn>-->
+      <!---->
       </div>
       <div style="margin: 10px 0;">
         <app-article-add-thumb scale v-if="getif" v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
@@ -87,10 +94,10 @@
       <div class="option-item">
         <input type="text" placeholder="回放地址" v-model="form.playback"/>
       </div>
-      <div class="option-item flex-v-center">
-        <span class="flex-item">是否开启弹幕</span>
-        <switcher mode="Number" v-model="form.openBulletScreen"/>
-      </div>
+      <!--<div class="option-item flex-v-center">-->
+        <!--<span class="flex-item">是否开启弹幕</span>-->
+        <!--<switcher mode="Number" v-model="form.openBulletScreen"/>-->
+      <!--</div>-->
       <!--<div class="option-item flex" v-if="!form.isOriginal">-->
         <!--<input type="text" class="flex-item" placeholder="来源名称" v-model="form.originalFrom">-->
         <!--<input type="text" class="flex-item" placeholder="来源URL" v-model="form.originalUrl">-->
@@ -157,6 +164,7 @@ export default {
   props: [ 'from', 'id' ],
   data () {
     return {
+      liveShow: 1,
       tagOrder: ['LIVE', 'CHATROOM'],
       getif: false,
       getif1: false,
@@ -212,9 +220,9 @@ export default {
         // hasThumb: 0,
         // thumbType: 1,
         thumb: '',
-        terminalPc: 0,
-        terminalApp: 0,
-        terminalWeb: 0,
+        // terminalPc: 0,
+        // terminalApp: 0,
+        // terminalWeb: 0,
         // attachmentIds: ''
       },
       thumb: {
@@ -286,7 +294,7 @@ export default {
     submit () {
       let url = this.id ? '/cri-cms-platform/live/update.monitor' : '/cri-cms-platform/live/save.monitor'
 
-      let { title } = this.$refs.editor
+      let { title, titleColor } = this.$refs.editor
       if (!title) {
         this.$toast('请输入标题')
         return
@@ -296,6 +304,7 @@ export default {
         return
       }
       this.form.title = title
+      this.form.titleColor = titleColor
 
       let obj = {...this.form}
       obj.tagOrder = this.tagOrder.join(',')
@@ -344,6 +353,7 @@ export default {
         this.$http.post('/cri-cms-platform/live/get.monitor', {
           id: this.id
         }).then(res => {
+          console.log(res)
           this.form.channelIds = res.channelIds
           this.tagOrder = res.live.tagOrder.split(',')
           this.form.title = res.content.title
@@ -361,6 +371,7 @@ export default {
           this.form.terminalApp = res.content.terminalApp
           this.form.terminalWeb = res.content.terminalWeb
           this.form.category = res.live.category
+          this.form.liveSource = res.live.liveSource
 
           this.getif = true
         })
@@ -419,6 +430,13 @@ export default {
     // this.getChannels()
   },
   watch: {
+    'liveShow' (newValue) {
+      if (newValue == 1) {
+        this.tagOrder = ['LIVE', 'CHATROOM']
+      } else {
+        this.tagOrder = ['LIVE']
+      }
+    },
     'thumb.thumb1' (newValue) {
       if (this.form.thumbType === 2) {
         if (!(newValue || this.thumb.thumb2 || this.thumb.thumb3)) {

@@ -33,7 +33,7 @@
         <div class="f-12 c-a t-center" v-if="!data.length && !loading" style="margin-top: 15px;">暂无数据</div>
         <ul>
           <li class="flex-v-center li-item" v-for="item in data" :key="item.id">
-            <span class="flex-item li-title">{{item.title}}</span>
+            <span class="flex-item li-title">【{{appTypeList[item.app]}}】{{item.title}}</span>
             <icon-btn small
               @click="checkItem(item)"
               :disabled="checkedId.includes(item.id)"
@@ -45,14 +45,14 @@
           :page="page"
           :size="size"
           :total="totalPage * size"
-          @change="page=$event;getData(1)"
+          @change="page=$event;getList()"
           style="border-top: 1px solid #eee;padding: 5px 0;"
         />
       </div>
     </div>
 
     <div class="right" style="width: 50%;">
-      <div class="card flex-item" style="margin-left: 5px;">
+      <div class="card flex-item" style="margin-left: 5px;" :style="{marginTop: scrollTop + 'px'}">
         <div class="flex-v-center card-title">
           <div class="b blue flex-item">已选择</div>
           <btn @click="confirm" :disabled="!checked.length">确定选取</btn>
@@ -71,7 +71,7 @@
             <li class="flex-v-center li-item"
               v-for="item in layoutChecked"
               :key="item.id">
-              <span class="flex-item li-title">{{item.title}}</span>
+              <span class="flex-item li-title">【{{appTypeList[item.app]}}】{{item.title}}</span>
               <icon-btn small @click="unCheckItem(item)">close</icon-btn>
             </li>
           </transition-group>
@@ -96,6 +96,9 @@ export default {
       type: Array,
       default: () => []
     },
+    scrollTop: {
+      type: Number
+    },
     layout: {
       type: Array,
       default: () => []
@@ -112,8 +115,12 @@ export default {
       searchKey: '',
       activeLayoutId: '',
       data: [],
+      appTypeList: {},
       checked: []
     }
+  },
+  mounted () {
+    this.appTypeList = this.$store.state.account.appTypeList
   },
   created () {
     this.getList()
@@ -169,6 +176,9 @@ export default {
         this.loading = false
         this.$toast(e.msg)
       })
+    },
+    add () {
+      console.log('a')
     },
     checkItem (item) {
       if (!this.activeLayoutId) {

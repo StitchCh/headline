@@ -17,7 +17,7 @@
     <div v-if="loading" class="abs bg-light-rgb-3 flex-center"><loading size="30"/></div>
     <div v-if="layout.type !== '3'">
       <draggable
-        v-if="viewList && viewList.length"
+        v-if="viewList && viewList.length && viewListShow"
         v-model="viewList" @end="sort"
         :options="{handle: '.can-drag'}">
         <transition-group tag="ul" name="flip-list">
@@ -28,9 +28,11 @@
             :class="{'del': li.del, 'new': li.new, 'can-drag': !li.top}">
             <span style="width: 30px;">{{index+1}}</span>
             <span class="f-12 fix-top" v-if="li.top">置顶</span>
-            <span class="flex-item item-title">{{li.newTitle}}</span>
+            <span class="flex-item item-title">【{{appTypeList[li.app]}}】{{li.newTitle}}</span>
             <span class="f-12 c-5">
-              <vue-datepicker-local v-model="li.dateRange" format="YYYY-MM-DD HH:mm:ss" show-buttons></vue-datepicker-local>
+              <vue-datepicker-local v-if="li.issueStatus === 1" v-model="li.dateRange" format="YYYY-MM-DD HH:mm:ss" show-buttons></vue-datepicker-local>
+              <span>定时上下架</span>
+              <switcher mode="Number" @change="changeTime(li)" v-model="li.issueStatus"/>
               <span style="margin-left: 10px;" :style="{color: getPublishStatus(li).color}">{{getPublishStatus(li).str}}</span>
             </span>
             <icon-btn small v-tooltip="'恢复'" v-if="li.del" @click="li.del=false">undo</icon-btn>
@@ -90,10 +92,14 @@ export default {
   },
   data () {
     return {
+      viewListShow: true,
       loading: false,
       open: false,
       page: 1,
+      appTypeList: {},
       size: 10,
+      thistime: new Date(),
+      overTime: '9998-12-31 23:59:59',
       //
       layout: this.item, // props.item 副本
       add: [], // 新增文章项
@@ -130,6 +136,9 @@ export default {
         this.editSetting = JSON.parse(JSON.stringify(this.setting))
       }
     }
+  },
+  mounted () {
+    this.appTypeList = this.$store.state.account.appTypeList
   },
   computed: {
     changed () {
@@ -169,6 +178,21 @@ export default {
     }
   },
   methods: {
+    changeTime (item) {
+      console.log(item.dateRange[1])
+      if (item.issueStatus === 0) {
+        item.dateRange = [item.sendDate ? item.sendDate : item.dateRange[0], this.overTime]
+      } else {
+        if (item.endDate != '9998-12-31 23:59:59') {
+          item.dateRange = [item.sendDate ? item.sendDate : item.dateRange[0], this.thistime ]
+        } else {
+          item.dateRange = [item.sendDate ? item.sendDate : item.dateRange[0], item.endDate ]
+        }
+      }
+      console.log(item.dateRange)
+      this.viewListShow = false
+      this.$nextTick(() => (this.viewListShow = true))
+    },
     // 获取文章列表
     getList () {
       this.loading = true
@@ -176,8 +200,10 @@ export default {
         layoutId: this.layout.id,
         type: this.layout.type
       }).then(res => {
+        console.log(res)
         let len = res.data.length
         res.data.forEach((item, i) => {
+          item.issueStatus = Number(item.issueStatus)
           item.dateRange = [item.sendDate, item.endDate]
           // item.editSendDate = item.sendDate
           // item.editEndDate = item.endDate
@@ -233,11 +259,13 @@ export default {
           res.push(item)
         }
         if (item.sortOrder !== item.order && !item.new) item.changed = true
+        if (!item.issueStatus) {
+          item.issueStatus = 0
+        }
       })
       this.viewList = res
     },
     toEdit (item) {
-      console.log(item)
       this.edit.item = item
       this.edit.title = item.newTitle || ''
       this.edit.abstarcts = item.newAbstract || item.abstarcts || ''
@@ -268,6 +296,7 @@ export default {
       }
     },
     getIssueResult () {
+      console.log(this.viewList)
       return {
         layoutId: this.layout.id,
         type: this.layout.type,
@@ -277,6 +306,7 @@ export default {
           return {
             id: item.id,
             newTitle: item.newTitle,
+            issueStatus: item.issueStatus,
             newAbstract: item.newAbstract,
             sortOrder: item.sortOrder,
             type: this.layout.type,

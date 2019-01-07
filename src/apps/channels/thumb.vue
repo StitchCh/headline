@@ -5,6 +5,7 @@
       <i v-if="!image.url" class="icon f-32 c-a">add_photo_alternate</i>
     </div>
     <layer v-if="show" title="选择图片"  width="800px">
+      <p style="padding-left: 20px;color: #f00;font-size: 12px;">仅支持png格式图片</p>
       <div class="layer-text relative" style="height: 800px;">
         <media-photos select-mode single-select ref="mediaPhotos"></media-photos>
       </div>

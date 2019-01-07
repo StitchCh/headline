@@ -17,7 +17,7 @@
       <div class="setting-card f-14">
         <table>
           <thead>
-          <th>用户ID</th>
+          <th>序号</th>
           <th>用户姓名</th>
           <th>登录名</th>
           <th>用户状态</th>
@@ -26,8 +26,8 @@
           <th colspan="4">操作</th>
           </thead>
           <tbody>
-          <tr v-for="item in list" :key="item.id" @click="openDetail(item.id)">
-            <td>{{item.id}}</td>
+          <tr v-for="(item, index) in list" :key="item.id" @click="openDetail(item.id)">
+            <td>{{index+1}}</td>
             <td>{{item.userName}}</td>
             <td>{{item.loginUserName}}</td>
             <td>{{item.userStatus | status}}</td>
@@ -36,10 +36,10 @@
             <td style="width: 30px;"><icon-btn v-tooltip="'重置密码'" small @click.stop.native="backPassWd(item.id)">refresh</icon-btn></td>
             <td style="width: 30px;"><icon-btn v-tooltip="'编辑'" small @click.stop.native="openEdit(item.id)">edit</icon-btn></td>
             <td style="width: 30px;">
-              <icon-btn v-tooltip="'删除'" v-if="item.userStatus !== '02'" small @click.stop.native="deleteUser(item.id)">delete</icon-btn>
+              <icon-btn v-tooltip="'停用'" v-if="item.userStatus !== '02'" small @click.stop.native="deleteUser(item.id)">delete</icon-btn>
               <icon-btn v-tooltip="'恢复'" v-else small @click.stop.native="restoreUser(item.id)">restore_from_trash</icon-btn>
             </td>
-            <td style="width: 30px;"><icon-btn v-tooltip="'审核'" v-if="item.userStatus === '01'" small @click.stop.native="auditUser(item.id)">find_in_page</icon-btn></td>
+            <!--<td style="width: 30px;"><icon-btn v-tooltip="'审核'" v-if="item.userStatus === '01'" small @click.stop.native="auditUser(item.id)">find_in_page</icon-btn></td>-->
           </tr>
           </tbody>
         </table>
@@ -52,10 +52,6 @@
         <table>
           <tbody>
             <tr>
-              <th align="right">用户ID</th>
-              <td>{{detail.sysUser.id}}</td>
-            </tr>
-            <tr>
               <th align="right">用户姓名</th>
               <td>{{detail.sysUser.userName}}</td>
             </tr>
@@ -64,16 +60,8 @@
               <td>{{detail.sysUser.loginUserName}}</td>
             </tr>
             <tr>
-              <th align="right">登录密码</th>
-              <td>{{detail.sysUser.loginUserPwd}}</td>
-            </tr>
-            <tr>
               <th align="right">用户状态</th>
               <td>{{detail.sysUser.userStatus | status}}</td>
-            </tr>
-            <tr>
-              <th align="right">用户区域</th>
-              <td>{{detail.sysUser.userArea}}</td>
             </tr>
             <tr>
               <th align="right">用户手机</th>
@@ -94,14 +82,6 @@
             <tr>
               <th align="right">登录IP</th>
               <td>{{detail.sysUser.userLoginIp}}</td>
-            </tr>
-            <tr>
-              <th align="right">上次登录IP</th>
-              <td>{{detail.sysUser.userLastLoginIp}}</td>
-            </tr>
-            <tr>
-              <th align="right">用户ID</th>
-              <td>{{detail.sysUser.id}}</td>
             </tr>
             <tr>
               <th align="right">角色</th>
@@ -131,8 +111,8 @@
       <div class="layer-text">
         <input-box label="用户名称" v-model="newForm.userName"></input-box>
         <input-box label="登录名称" v-model="newForm.loginUserName" :hint="newLoginUserNameHint" @blur="vertifyLoginUserName"></input-box>
-        <input-box label="登录密码" type="password" v-model="newForm.loginUserPwd"></input-box>
-        <input-box label="再次输入登录密码" type="password" v-model="vertify.newLoginUserPwd"></input-box>
+        <!--<input-box label="登录密码" type="password" v-model="newForm.loginUserPwd"></input-box>-->
+        <!--<input-box label="再次输入登录密码" type="password" v-model="vertify.newLoginUserPwd"></input-box>-->
         <input-box label="手机号码" v-model="newForm.userPhone"></input-box>
         <input-box label="用户邮箱" v-model="newForm.userEmail"></input-box>
         <!--<input-box label="角色ID（多个角色用逗号分开）" v-model="newForm.rolesId"></input-box>-->
@@ -202,7 +182,7 @@ export default {
       newForm: {
         userName: '',
         loginUserName: '',
-        loginUserPwd: '',
+        // loginUserPwd: '',
         userPhone: '',
         userEmail: '',
         rolesId: ''
@@ -311,20 +291,12 @@ export default {
         this.$toast('登录名不可用')
         return
       }
-      if (this.newForm.loginUserPwd === '') {
-        this.$toast('请输入登录密码')
-        return
-      }
       if (this.newForm.userPhone === '') {
         this.$toast('请输入手机号码')
         return
       }
       if (this.newForm.userEmail === '') {
         this.$toast('请输入用户邮箱')
-        return
-      }
-      if (this.newForm.loginUserPwd !== this.vertify.newLoginUserPwd) {
-        this.$toast('两次输入的密码不一致')
         return
       }
       this.$http.post('/cri-cms-platform/sysUser/save.monitor', this.newForm).then(
@@ -402,18 +374,29 @@ export default {
       )
     },
     backPassWd (id) {
-      this.$http.post('/cri-cms-platform/sysUser/backPassWd.monitor', { id }).then(
-        res => {
-          this.$toast('密码重置成功')
-          this.getList()
-          this.detailShow = false
+      this.$confirm({
+        title: '确定要重置用户密码？',
+        text: '用户密码将恢复为初始密码',
+        btns: ['取消', '重置'],
+        color: 'red',
+        yes () {
+          this.$http.post('/cri-cms-platform/sysUser/backPassWd.monitor', { id }).then(
+            res => {
+              this.$toast('密码重置成功')
+              this.getList()
+              this.detailShow = false
+            }
+          ).catch(
+            res => {
+              this.$toast(res.msg)
+              console.log(res)
+            }
+          )
+        },
+        no () {
+
         }
-      ).catch(
-        res => {
-          this.$toast(res.msg)
-          console.log(res)
-        }
-      )
+      })
     },
     deleteUser (id) {
       this.$http.post('/cri-cms-platform/sysUser/del.monitor', { id }).then(
@@ -472,10 +455,11 @@ export default {
   },
   filters: {
     status (value) {
-      if (value === '00') return '正常'
-      if (value === '01') return '待审'
-      if (value === '02') return '删除'
-      return ''
+      if (value === '00') {
+        return '正常'
+      } else {
+        return '停用'
+      }
     }
   },
   created () {

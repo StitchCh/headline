@@ -34,7 +34,11 @@ axios.interceptors.response.use(function (response) {
       Vue.prototype.$toast(response.data.msg)
       return
     }
-    if (code === 1002 || code === 1001) {
+    if (code === 1001) {
+      Vue.prototype.$toast(response.data.msg)
+      return
+    }
+    if (code === 1002) {
       router.replace('/login')
       sessionStorage.removeItem('token')
       localStorage.removeItem('token')
@@ -72,6 +76,13 @@ Vue.prototype.keydownFun = function (nub, fun) {
       fun()
     }
   }
+}
+
+Vue.prototype.qrcode = function (id) {
+  let siteId = sessionStorage.getItem('siteId')
+  let previewUrl = sessionStorage.getItem('previewUrl')
+  console.log(`${previewUrl}?siteId=${siteId}&contentId=${id}`)
+  return `${previewUrl}/${siteId}/${id}`
 }
 
 /* eslint-disable no-new */

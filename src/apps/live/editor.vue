@@ -2,21 +2,21 @@
 <div class="article-editor">
   <div class="relative">
     <input v-model="title" class="title" type="text" placeholder="请输入标题" :style="{ color: titleColor }">
-    <!--<div style="position: absolute;right: 20px;top: 28px;">-->
-      <!--<button class="title-colorpicker-btn" @click="titleColorBoxShow = !titleColorBoxShow" :style="{ background: titleColor }"></button>-->
-      <!--<bubble v-if="titleColorBoxShow" @close="titleColorBoxShow = false">-->
-        <!--<div class="title-color-list">-->
-          <!--<button class="title-colorpicker-btn" style="background: #000;" @click="changeTitleColor('#000')"></button>-->
-          <!--<button class="title-colorpicker-btn" style="background: #F44336;" @click="changeTitleColor('#F44336')"></button>-->
-          <!--<button class="title-colorpicker-btn" style="background: #FF9800;" @click="changeTitleColor('#FF9800')"></button>-->
-          <!--<button class="title-colorpicker-btn" style="background: #FFEB3B;" @click="changeTitleColor('#FFEB3B')"></button>-->
-          <!--<button class="title-colorpicker-btn" style="background: #4CAF50;" @click="changeTitleColor('#4CAF50')"></button>-->
-          <!--<button class="title-colorpicker-btn" style="background: #00BCD4;" @click="changeTitleColor('#00BCD4')"></button>-->
-          <!--<button class="title-colorpicker-btn" style="background: #2196F3;" @click="changeTitleColor('#2196F3')"></button>-->
-          <!--<button class="title-colorpicker-btn" style="background: #9C27B0;" @click="changeTitleColor('#9C27B0')"></button>-->
-        <!--</div>-->
-      <!--</bubble>-->
-    <!--</div>-->
+    <div style="position: absolute;right: 20px;top: 28px;">
+      <button class="title-colorpicker-btn" @click="titleColorBoxShow = !titleColorBoxShow" :style="{ background: titleColor }"></button>
+      <bubble v-if="titleColorBoxShow" @close="titleColorBoxShow = false">
+        <div class="title-color-list">
+          <button class="title-colorpicker-btn" style="background: #000;" @click="changeTitleColor('#000')"></button>
+          <button class="title-colorpicker-btn" style="background: #F44336;" @click="changeTitleColor('#F44336')"></button>
+          <button class="title-colorpicker-btn" style="background: #FF9800;" @click="changeTitleColor('#FF9800')"></button>
+          <button class="title-colorpicker-btn" style="background: #FFEB3B;" @click="changeTitleColor('#FFEB3B')"></button>
+          <button class="title-colorpicker-btn" style="background: #4CAF50;" @click="changeTitleColor('#4CAF50')"></button>
+          <button class="title-colorpicker-btn" style="background: #00BCD4;" @click="changeTitleColor('#00BCD4')"></button>
+          <button class="title-colorpicker-btn" style="background: #2196F3;" @click="changeTitleColor('#2196F3')"></button>
+          <button class="title-colorpicker-btn" style="background: #9C27B0;" @click="changeTitleColor('#9C27B0')"></button>
+        </div>
+      </bubble>
+    </div>
   </div>
 </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="member_list">
     <div class="af-topbar">
       <span class="f-18">全部</span>
     </div>
@@ -10,10 +10,13 @@
         </div>
       </transition>
       <div class="setting-card f-14" style="position: relative;">
+        <div style="text-align: right;margin-bottom: 20px;">
+          <vue-datepicker-local v-model="searchTime" format="YYYY-MM-DD" show-buttons></vue-datepicker-local>
+          <btn style="margin-left: 10px;" @click="search">搜索</btn>
+        </div>
         <table>
           <thead>
           <th>序号</th>
-          <th>会员ID</th>
           <th>昵称</th>
           <th>手机</th>
           <th>邮箱</th>
@@ -27,7 +30,6 @@
           <tbody>
           <tr v-for="(item, index) in list" :key="item.id">
             <td>{{index+1}}</td>
-            <td>{{item.id}}</td>
             <td>{{item.nickname}}</td>
             <td>{{item.mobile}}</td>
             <td>{{item.email || '--' }}</td>
@@ -159,10 +161,15 @@
 </template>
 
 <script>
+  import VueDatepickerLocal from 'vue-datepicker-local'
+  import moment from 'moment'
+
 export default {
   name: 'settings-member',
+  components: { VueDatepickerLocal },
   data () {
     return {
+      searchTime: [new Date(), new Date()],
       loading: false,
       list: [],
       filter: {
@@ -182,6 +189,31 @@ export default {
     }
   },
   methods: {
+    search () {
+      console.log(moment(this.searchTime[0]).format('YYYY-MM-DD'))
+      this.loading = true
+      this.$http.post('/cri-cms-platform/member/list.monitor', {
+        pageSize: 15,
+        toPage: 1,
+        startTime: moment(this.searchTime[0]).format('YYYY-MM-DD'),
+        endTime: moment(this.searchTime[1]).format('YYYY-MM-DD')
+      }).then(
+        res => {
+          console.log(res)
+          res.pages.forEach(v => {
+            v.stateShow = false
+          })
+          this.list = res.pages
+          this.totalRowsAmount = res.totalRowsAmount
+          this.total = res.totalPage * 15
+          this.loading = false
+        }
+      ).catch(
+        res => {
+          console.log(res)
+        }
+      )
+    },
     open (item) {
       console.log(666)
       item.stateShow = true
@@ -270,5 +302,9 @@ export default {
 </script>
 
 <style lang="less">
-
+  .member_list .datepicker-popup {
+    width: 500px!important;
+    right: -50px;
+    left: auto;
+  }
 </style>

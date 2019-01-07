@@ -22,8 +22,8 @@
             <th colspan="3">操作</th>
           </thead>
           <tbody>
-            <tr v-for="item in list" :key="item.id" @click="openDetail(item.id)">
-              <td>{{item.id}}</td>
+            <tr v-for="(item, index) in list" :key="item.id" @click="openDetail(item.id)">
+              <td>{{index+1}}</td>
               <td>{{item.userName}}</td>
               <td>{{item.loginUserName}}</td>
               <td>{{item.userStatus | status}}</td>
@@ -31,7 +31,7 @@
               <td>{{item.userLoginIp}}</td>
               <td style="width: 30px;"><icon-btn v-tooltip="'重置密码'" small @click.stop.native="backPassWd(item.id)">refresh</icon-btn></td>
               <td style="width: 30px;"><icon-btn v-tooltip="'编辑'" small @click.stop.native="openEdit(item.id)">edit</icon-btn></td>
-              <td style="width: 30px;"><icon-btn v-tooltip="'删除'" small @click.stop.native="deleteUser(item.id)">delete</icon-btn></td>
+              <td style="width: 30px;"><icon-btn v-tooltip="'停用'" small @click.stop.native="deleteUser(item.id)">delete</icon-btn></td>
             </tr>
           </tbody>
         </table>
@@ -273,18 +273,29 @@ export default {
       )
     },
     backPassWd (id) {
-      this.$http.post('/cri-cms-platform/sysUser/backPassWd.monitor', { id }).then(
-        res => {
-          this.$toast('密码重置成功')
-          this.getList()
-          this.detailShow = false
+      this.$confirm({
+        title: '确定要重置用户密码？',
+        text: '用户密码将恢复为初始密码',
+        btns: ['取消', '重置'],
+        color: 'red',
+        yes () {
+          this.$http.post('/cri-cms-platform/sysUser/backPassWd.monitor', { id }).then(
+            res => {
+              this.$toast('密码重置成功')
+              this.getList()
+              this.detailShow = false
+            }
+          ).catch(
+            res => {
+              this.$toast(res.msg)
+              console.log(res)
+            }
+          )
+        },
+        no () {
+
         }
-      ).catch(
-        res => {
-          this.$toast(res.msg)
-          console.log(res)
-        }
-      )
+      })
     },
     deleteUser (id) {
       this.$http.post('/cri-cms-platform/sysUser/del.monitor', { id }).then(
@@ -319,10 +330,11 @@ export default {
   },
   filters: {
     status (value) {
-      if (value === '00') return '正常'
-      if (value === '01') return '待审'
-      if (value === '02') return '删除'
-      return ''
+      if (value === '00') {
+        return '正常'
+      } else {
+        return '停用'
+      }
     }
   },
   created () {

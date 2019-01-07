@@ -88,7 +88,7 @@ export default {
       this.preview.list = e.list || []
       this.preview.index = e.index || 0
       this.preview.show = true
-    },
+    }
   },
   created () {
     if (this.value) this.image = JSON.parse(JSON.stringify(this.value))

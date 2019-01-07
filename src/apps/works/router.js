@@ -11,5 +11,9 @@ export default {
     path: 'unpublished',
     name: 'works-unpublished',
     component: resolve => require(['@/apps/works/unpublished.vue'], resolve)
+  }, {
+    path: 'history',
+    name: 'works-history',
+    component: resolve => require(['@/apps/works/history.vue'], resolve)
   }]
 }

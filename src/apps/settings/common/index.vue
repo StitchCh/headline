@@ -12,11 +12,21 @@
 
       <div v-if="!loading" class="setting-card">
         <ul>
-          <li class="flex"  v-for="item in list" :key="item.id">
+          <li class="flex"  v-for="item in list" :key="item.id" v-if="item.key != 'watermark_path'">
             <span>{{item.explain}}</span>
             <div class="flex-item"></div>
             <switcher v-if="switcherShow(item.key)" mode="Number" v-model="item.value" @change="switchValue(item.app, item.key, item.value)"></switcher>
             <span v-else class="flex-v-center" style="line-height: 25px;cursor: pointer;" @click="openSettingBox(item)">{{item.value | style | sharemodel}}<i class="icon">keyboard_arrow_right</i></span>
+          </li>
+          <li>
+            <p>选择水印图片</p>
+            <div style="text-align: center">
+              <label>
+                <i v-if="!watermark" class="icon c-a" style="font-size: 50px;">add_photo_alternate</i>
+                <img v-if="watermark" :src="watermark" alt="" style="width: 100px;">
+                <input type="file" ref="fileimg" @change="updateImg($event)" accept="image/*" style="display: none">
+              </label>
+            </div>
           </li>
         </ul>
       </div>
@@ -59,6 +69,8 @@ export default {
       loading: true,
       list: [],
       item: {},
+      watermark: null,
+      watermarkid: null,
       styleShow: false,
       imageratioShow: false,
       sharemodelShow: false,
@@ -66,14 +78,37 @@ export default {
     }
   },
   methods: {
+    updateImg (event) {
+      let othis = this
+      var fileimg = event.target.files[0]
+      let reader = new FileReader()
+      reader.readAsDataURL(fileimg)
+      reader.onloadend = function () {
+        othis.watermark = this.result
+        othis.$http.post('/cri-cms-platform/site/setting/uploadWaterMarkPic.monitor', {
+          id: othis.watermarkid,
+          file: fileimg
+        }).then(res => {
+          console.log(res)
+          othis.$store.commit('setWaterImg', res[0].waterMarkPath)
+        })
+      }
+    },
     getList () {
       this.loading = true
       let siteId = sessionStorage.siteId || localStorage.siteId
       this.$http.post('/cri-cms-platform/site/setting/index.monitor', { siteId }).then(
         res => {
+          console.log(res)
           for (let i = 0; i < res.length; i++) {
             let temp = Number(res[i].value)
             res[i].value = isNaN(temp) ? res[i].value : temp
+            if (res[i].key == 'watermark_path') {
+              this.watermarkid = res[i].id
+              if (res[i].value != 1) {
+                this.watermark = res[i].value
+              }
+            }
           }
           this.list = res
           this.loading = false

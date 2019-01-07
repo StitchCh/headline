@@ -20,7 +20,6 @@
         <table>
           <thead>
             <th>序号</th>
-            <th>用户ID</th>
             <th>角色名称</th>
             <th>角色中文名</th>
             <th>创建人</th>
@@ -30,7 +29,6 @@
           <tbody>
             <tr v-for="(item, index) in list" :key="item.id" @click="openDetail(item.id)">
               <td>{{index+1}}</td>
-              <td>{{item.id}}</td>
               <td>{{item.rolesName}}</td>
               <td>{{item.rolesCnName}}</td>
               <td>{{item.createUser}}</td>
@@ -59,10 +57,6 @@
         <transition name="fade" mode="out-in">
         <table v-if="tab === 'base'" key="base">
           <tbody>
-            <tr>
-              <th align="right">用户ID</th>
-              <td>{{detail.sysRoles.id}}</td>
-            </tr>
             <tr>
               <th align="right">角色名称</th>
               <td>{{detail.sysRoles.rolesName}}</td>

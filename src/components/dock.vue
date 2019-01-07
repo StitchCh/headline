@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import apps from '@/apps/launcher/apps'
+//import apps from '@/apps/launcher/apps'
 
 export default {
   name: 'dock',
@@ -41,6 +41,7 @@ export default {
     }
   },
   mounted () {
+    var apps = this.$store.state.account.menu
     this.apps = apps.map(item => {
       item.loading = false
       item.show = true
@@ -49,9 +50,19 @@ export default {
   },
   methods: {
     toApp (app) {
-      if (app.path.split('?')[0] === this.$route.path) {
+      if (this.$route.path.indexOf(app.path) >= 0) {
         this.show = false
         return
+      }
+      if (app.path === 'yvqing') {
+        this.$http.post('/cri-cms-platform/YQToken/getToken.monitor').then(res => {
+          if (res) {
+            window.open(res.forwordUrl)
+          } else {
+            this.$toast('操作失败')
+          }
+        })
+        return false
       }
       app.loading = true
       setTimeout(() => {

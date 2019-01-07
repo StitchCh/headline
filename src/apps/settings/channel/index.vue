@@ -79,16 +79,16 @@ export default {
     this.getChannels()
   },
   methods: {
-    getChannels () {
-      this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor').then(res => {
-        res.channels.forEach(item => {
-          item.name = item.channelName
-        })
-        this.channels = res.channels
-      }).catch(e => {
-        this.$toast(e.msg)
-      })
-    }
+    // getChannels () {
+    //   this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor').then(res => {
+    //     res.forEach(item => {
+    //       item.name = item.channelName
+    //     })
+    //     this.channels = res
+    //   }).catch(e => {
+    //     this.$toast(e.msg)
+    //   })
+    // }
   }
 }
 </script>

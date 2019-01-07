@@ -80,10 +80,11 @@
       <slot :item="slotProps.item"></slot>
     </li>
   </list-view>
-  <div class="af-bottombar flex-center">
+  <div class="af-bottombar flex-center relative">
     <icon-btn small class="a" @click="onPrev" :disabled="filter.toPage <= 1">keyboard_arrow_left</icon-btn>
     <span class="f-14 c-6" style="margin: 0 10px;line-height: 1em;">第 {{filter.toPage}} / {{totalPage}} 页</span>
     <icon-btn small class="a" @click="onNext" :disabled="filter.toPage >= totalPage">keyboard_arrow_right</icon-btn>
+    <span v-if="filter.totalRowsAmount" style="position:absolute; right: 10px;bottom: 8px;font-size: 12px;color: #999;">共 {{filter.totalRowsAmount}} 项</span>
   </div>
 </div>
 </template>
@@ -137,7 +138,8 @@ export default {
         terminalApp: '',
         terminalWeb: '',
         publishChannelId: '',
-        recommend: ''
+        recommend: '',
+        totalRowsAmount: false
       },
       channels: []
     }
@@ -202,6 +204,9 @@ export default {
       if (refresh) filter.toPage = 1
       this.$refs.listView.loading = true
       this.$http.post(this.url, filter).then(res => {
+        if (res.totalRowsAmount) {
+          this.filter.totalRowsAmount = res.totalRowsAmount
+        }
         this.$refs.listView.loading = false
         this.totalPage = res.totalPage || 1
         this.list = res.pages || []
