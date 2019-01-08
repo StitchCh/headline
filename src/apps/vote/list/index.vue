@@ -2,7 +2,6 @@
   <div class="flex flex-item article-list">
     <af-center
       @add="$router.push('/voteAdd')"
-      :scope="$route.query.scope"
       :status="$route.query.status"
       url="/cri-cms-platform/vote/list.monitor"
       ref="afCenter">

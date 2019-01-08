@@ -51,9 +51,9 @@
       </bubble>
     </div>
     <!--<i class="icon c-a a item" v-tooltip:top="'显示移动采编内容'">directions_walk</i>-->
-    <i class="icon c-a a item" v-tooltip:top="'发布到 PC 网站'" :class="{ active: filter.terminalPc }" @click="filter.terminalPc = ~~!filter.terminalPc || '';getList(true)">computer</i>
-    <i class="icon c-a a item" v-tooltip:top="'发布到手机客户端'" :class="{ active: filter.terminalApp }" @click="filter.terminalApp = ~~!filter.terminalApp || '';getList(true)">phone_iphone</i>
-    <i class="icon c-a a item" v-tooltip:top="'发布到手机网站'" :class="{ active: filter.terminalWeb }" @click="filter.terminalWeb = ~~!filter.terminalWeb || '';getList(true)">public</i>
+    <!--<i class="icon c-a a item" v-tooltip:top="'发布到 PC 网站'" :class="{ active: filter.terminalPc }" @click="filter.terminalPc = ~~!filter.terminalPc || '';getList(true)">computer</i>-->
+    <!--<i class="icon c-a a item" v-tooltip:top="'发布到手机客户端'" :class="{ active: filter.terminalApp }" @click="filter.terminalApp = ~~!filter.terminalApp || '';getList(true)">phone_iphone</i>-->
+    <!--<i class="icon c-a a item" v-tooltip:top="'发布到手机网站'" :class="{ active: filter.terminalWeb }" @click="filter.terminalWeb = ~~!filter.terminalWeb || '';getList(true)">public</i>-->
   </div>
   <div v-if="ui.searchShow" class="flex-v-center search-bar c-6 f-13">
     <i class="icon f-18 c-8">search</i>
@@ -98,7 +98,6 @@ export default {
   components: { ListView },
   props: {
     url: String,
-    scope: String,
     status: String
   },
   data () {
@@ -126,7 +125,6 @@ export default {
         ]
       },
       filter: {
-        scope: '1',
         status: 'all',
         toPage: 1,
         pageSize: 30,
@@ -147,8 +145,7 @@ export default {
   watch: {
     '$route.query' (query) {
       let { filter } = this
-      if (query.scope !== filter.scope || query.status !== filter.status) {
-        filter.scope = query.scope
+      if (query.status !== filter.status) {
         filter.status = query.status
         this.getList(true)
       }
@@ -191,8 +188,7 @@ export default {
   mounted () {
     let { filter } = this
     let query = this.$route.query
-    if (query.scope !== filter.scope || query.status !== filter.status) {
-      filter.scope = query.scope
+    if (query.status !== filter.status) {
       filter.status = query.status
     }
     this.getList()

@@ -12,7 +12,7 @@
         </div>
       </transition>
 
-      <div class="setting-card f-14">
+      <div class="setting-card f-14" style="min-height: 400px;">
         <div class="search_box">
           <div class="seaceh_list">来源：</div>
           <div v-for="item in sourceList" class="seaceh_list">
@@ -24,7 +24,7 @@
         <div class="search_box" style="margin-bottom: 30px;">
           <div class="seaceh_list">
             <span>搜索内容：</span>
-            <input v-model="title" style="padding: 0 15px;height: 28px;width: 200px;" type="text">
+            <input v-model="title" style="padding: 0 15px;height: 32px;width: 200px;border:1px solid #e5e5e5;" type="text">
           </div>
           <div class="seaceh_list">
             <vue-datepicker-local v-model="searchTime" format="YYYY-MM-DD" show-buttons></vue-datepicker-local>

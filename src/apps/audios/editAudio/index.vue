@@ -103,7 +103,7 @@ export default {
       this.$http.post(url, form).then(
         res => {
           this.ui.submited = true
-          this.$router.replace('/audio/list?scope=all&status=all')
+          this.$router.replace('/audio/list?status=all')
         }
       ).catch(
         res => {

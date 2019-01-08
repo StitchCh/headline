@@ -2,7 +2,6 @@
   <div class="flex flex-item audio-list">
     <af-center
       @add="$router.push('/audioAdd')"
-      :scope="$route.query.scope"
       :status="$route.query.status"
       url="/cri-cms-platform/audio/queryList.monitor"
       ref="afCenter">

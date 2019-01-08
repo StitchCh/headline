@@ -2,7 +2,6 @@
   <div class="flex flex-item video-list">
     <af-center
       @add="$router.push('/videoAdd')"
-      :scope="$route.query.scope"
       :status="$route.query.status"
       url="/cri-cms-platform/video/queryList.monitor"
       ref="afCenter">

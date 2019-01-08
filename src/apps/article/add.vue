@@ -22,7 +22,7 @@
   </div>
   <div class="art-options c-4 scroll-y" :style="{width: ui.optionShow ? '320px' : '0px'}">
     <div style="width: 280px;margin: 0 20px;">
-      <div class="option-item flex-v-center relative a" @click="ui.channelShow=!ui.channelShow">
+      <div v-if="getend" class="option-item flex-v-center relative a" @click="ui.channelShow=!ui.channelShow">
         <span class="flex-item">{{channelNames}}</span>
         <i class="icon f-20 c-a">keyboard_arrow_down</i>
         <bubble v-if="ui.channelShow" pos="bottom" align="center" @close="ui.channelShow=false">
@@ -226,6 +226,7 @@ export default {
         gallerySettingDisplayPositionShow: false,
         submited: false
       },
+      getend: false,
       form: {
         app: 'ARTICLE',
         title: '',
@@ -286,6 +287,7 @@ export default {
     },
     channelNames () {
       if (!this.channelIds.length) return '选择栏目'
+      console.log(this.ui.channels)
       return this.channelIds.map(val => this.ui.channels.find(v => v.id === val).channelName).join('，')
     }
   },
@@ -293,6 +295,7 @@ export default {
     getChannels () {
       this.$http.post('/cri-cms-platform/article/getChannels.monitor').then(res => {
         this.ui.channels = res || []
+        this.getend = true
       }).catch(e => {
         console.log(e)
       })
@@ -355,7 +358,7 @@ export default {
       this.$http.post(url, form).then(
         res => {
           this.ui.submited = true
-          this.$router.replace('/article/list?scope=all&status=all')
+          this.$router.replace('/article/list?status=all')
         }
       ).catch(
         res => {

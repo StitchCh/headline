@@ -7,10 +7,10 @@
           <span style="color: #999;">开启链接</span>
           <switcher v-model="olinkShow" @change="change" mode="Number"/>
         </div>
-        <input v-if="olinkShow == 1" @change="change" v-model="olink" style="width: 100%;border: 1px solid #ddd;box-sizing: border-box;" type="text">
+        <input v-if="olinkShow == 1" @blur="testLink" @change="change" v-model="olink" :class="{sleboxerr: err}" type="text">
       </div>
     </transition>
-    <div v-if="show" class="closebox" @click="show = false"></div>
+    <div v-if="show" class="closebox" @click="closeLink"></div>
   </div>
 </template>
 
@@ -22,7 +22,9 @@ export default {
     return {
       show: false,
       olink: '',
-      olinkShow: ''
+      err: false,
+      olinkShow: '',
+      urlif: /^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/
     }
   },
   mounted () {
@@ -30,8 +32,31 @@ export default {
     this.olinkShow = this.linkShow == 1 ? 1 : 0
   },
   methods: {
+    closeLink () {
+      if (!this.show) {
+        this.show = true
+        return
+      }
+      if (this.olinkShow == 1 && !this.urlif.test(this.olink)) {
+        this.err = true
+        this.$toast('请输入正确的链接')
+      } else {
+        this.err = false
+        this.show = false
+      }
+    },
+    testLink () {
+      if (!this.urlif.test(this.olink)) {
+        this.err = true
+        this.$toast('请输入正确的链接')
+      } else {
+        this.err = false
+      }
+    },
     change () {
-      this.$emit('linkchange', { link: this.olink, linkshow: this.olinkShow})
+      if (this.olink != "") {
+        this.$emit('linkchange', { link: this.olink, linkshow: this.olinkShow})
+      }
     }
   }
 }
@@ -51,6 +76,10 @@ export default {
   }
   .slebox input{
     width: 100%;
+    width: 100%;border: 1px solid #ddd;box-sizing: border-box;
+  }
+  .slebox .sleboxerr{
+    border-color: #f00;
   }
   .closebox{
     position: fixed;

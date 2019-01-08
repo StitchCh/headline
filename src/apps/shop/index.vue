@@ -7,7 +7,9 @@
       </navigator-item>
     </af-left>
     <div class="flex-item relative">
-      <account/>
+      <div class="af-topbar">
+        <account/>
+      </div>
       <router-view class="abs flex-col c-6 member-content"/>
     </div>
   </div>
