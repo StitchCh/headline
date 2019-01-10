@@ -132,11 +132,22 @@ export default {
       ).catch(console.log)
     },
     deleteItem (id) {
-      this.$http.post('/cri-cms-platform/comment/delete.monitor', { id }).then(
-        () => {
-          this.getList()
+      this.$confirm({
+        title: '提示',
+        text: '是否删除本条评论？',
+        btns: ['取消', '删除'],
+        color: 'red',
+        yes () {
+          this.$http.post('/cri-cms-platform/comment/delete.monitor', { id }).then(
+            () => {
+              this.getList()
+            }
+          ).catch(console.log)
+        },
+        no () {
+
         }
-      ).catch(console.log)
+      })
     }
   },
   created () {

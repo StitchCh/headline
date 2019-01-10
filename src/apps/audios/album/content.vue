@@ -78,7 +78,7 @@ export default {
     },
     linkTo (item) {
       this.$parent.$parent.$refs.afLeft.activeIndex = 'all-all'
-      this.$router.push(`/audio/list/${item.id}?scope=all&status=all`)
+      this.$router.push(`/audio/list/${item.id}?status=all`)
     }
   },
   created () {

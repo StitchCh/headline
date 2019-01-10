@@ -66,7 +66,6 @@ export default {
       totalPage: 1,
       filter: {
         // range: []
-        scope: 'my',
         toPage: 1,
         pageSize: 30,
         order: 'desc',

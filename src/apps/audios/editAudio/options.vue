@@ -1,7 +1,7 @@
 <template>
   <div class="audio-options c-4 scroll-y">
     <div style="width: 280px;margin: 0 20px;">
-      <div class="option-item flex-v-center relative a" @click="ui.channelShow=!ui.channelShow">
+      <div v-if="getend" class="option-item flex-v-center relative a" @click="ui.channelShow=!ui.channelShow">
         <span class="flex-item">{{channelNames}}</span>
         <i class="icon f-20 c-a">keyboard_arrow_down</i>
         <bubble v-if="ui.channelShow" pos="bottom" align="center" @close="ui.channelShow=false">
@@ -132,6 +132,7 @@ export default {
   props: [ 'res' ],
   data () {
     return {
+      getend: false,
       ui: {
         channelShow: false,
         channels: []
@@ -200,6 +201,7 @@ export default {
     getChannels () {
       this.$http.post('/cri-cms-platform/audio/getChannels.monitor').then(res => {
         this.ui.channels = res || []
+        this.getend = true
       }).catch(e => {
         console.log(e)
       })
@@ -220,9 +222,10 @@ export default {
           continue
         }
         if (k === 'thumb') {
-          // this.thumb.thumb1 = res.audio.thumb[0]
-          // this.thumb.thumb2 = res.audio.thumb[1]
-          // this.thumb.thumb3 = res.audio.thumb[2]
+          res.audio.thumb = JSON.parse(res.audio.thumb)
+          this.thumb.thumb1 = res.audio.thumb[0]
+          this.thumb.thumb2 = res.audio.thumb[1]
+          this.thumb.thumb3 = res.audio.thumb[2]
         }
         if (k === 'isDelete' || k === 'isOpenComment' || k === 'isOriginal' || k === 'isRecommnd' || k === 'isWatermarked' || k === 'terminalApp' || k === 'terminalPc' || k === 'terminalWeb' || k === 'hasThumb') {
           this.form[k] = Number(res.audio[k])

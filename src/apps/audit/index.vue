@@ -1,15 +1,15 @@
 <template>
   <div class="abs bg-f flex app-audit">
     <af-left color="#00897B" vibrant-color="#00897B" bg-color="#E0F2F1" title="审核" :defaultActive="defaultActive">
-      <navigator-item icon="folder" index="all-all" @click="$router.replace('/audit?scope=all&status=all')">全部</navigator-item>
+      <navigator-item icon="folder" index="all-all" @click="$router.replace('/audit?status=all')">全部</navigator-item>
       <!-- <navigator-item-group defaultExtended index="2" icon="face">
       <span slot="title">我的</span> -->
-      <navigator-item icon="class" index="my-all" @click="$router.replace('/audit?scope=my&status=all')">已发</navigator-item>
-      <navigator-item icon="hourglass_full" index="my-AUDITING" @click="$router.replace('/audit?scope=my&status=AUDITING')">待审</navigator-item>
-      <navigator-item icon="error" index="my-REJECT" @click="$router.replace('/audit?scope=my&status=REJECT')">驳回</navigator-item>
-      <navigator-item icon="check_circle" index="my-PASS" @click="$router.replace('/audit?scope=my&status=PASS')">通过</navigator-item>
+      <navigator-item icon="class" index="my-all" @click="$router.replace('/audit?status=all')">已审</navigator-item>
+      <navigator-item icon="hourglass_full" index="my-AUDITING" @click="$router.replace('/audit?status=AUDITING')">待审</navigator-item>
+      <navigator-item icon="error" index="my-REJECT" @click="$router.replace('/audit?status=REJECT')">驳回</navigator-item>
+      <navigator-item icon="check_circle" index="my-PASS" @click="$router.replace('/audit?status=PASS')">通过</navigator-item>
       <!-- </navigator-item-group> -->
-      <!--<navigator-item icon="delete" index="ArticleRecycle" @click="$router.replace('/audit?scope=all&status=DELETE')">已删除</navigator-item>-->
+      <navigator-item icon="delete" index="ArticleRecycle" @click="$router.replace('/audit?status=DELETE')">已删除</navigator-item>
     </af-left>
     <div class="flex">
       <div class="flex-col audit-center">
@@ -189,7 +189,6 @@ export default {
         rejectShow: false
       },
       filter: {
-        scope: 'all',
         status: 'all',
         pageSize: 30,
         toPage: 1,
@@ -213,9 +212,9 @@ export default {
     defaultActive () {
       let { name } = this.$route
       name = name || ''
-      let { scope, status } = this.$route.query
-      if (scope && status) {
-        return `${scope}-${status}`
+      let { status } = this.$route.query
+      if (status) {
+        return `${status}`
       }
       return name.replace('Content', '')
     },
@@ -315,8 +314,7 @@ export default {
   created () {
     let { filter } = this
     let query = this.$route.query
-    if (query.scope !== filter.scope || query.status !== filter.status) {
-      filter.scope = query.scope
+    if (query.status !== filter.status) {
       filter.status = query.status
     }
     this.getChannels().then(() => this.getList())
@@ -324,8 +322,7 @@ export default {
   watch: {
     '$route.query' (query) {
       let { filter } = this
-      if (query.scope !== filter.scope || query.status !== filter.status) {
-        filter.scope = query.scope
+      if (query.status !== filter.status) {
         filter.status = query.status
         this.getList(true)
       }

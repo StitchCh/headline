@@ -22,7 +22,7 @@
   </div>
   <div class="art-options c-4 scroll-y" :style="{width: ui.optionShow ? '320px' : '0px'}">
     <div style="width: 280px;margin: 0 20px;">
-      <div class="option-item flex-v-center relative a" @click="ui.channelShow=!ui.channelShow">
+      <div v-if="getend" class="option-item flex-v-center relative a" @click="ui.channelShow=!ui.channelShow">
         <span class="flex-item">{{channelNames}}</span>
         <i class="icon f-20 c-a">keyboard_arrow_down</i>
         <bubble v-if="ui.channelShow" pos="bottom" align="center" @close="ui.channelShow=false">
@@ -217,6 +217,7 @@ export default {
   data () {
     return {
       article: null,
+      getend: false,
       ui: {
         loading: false,
         optionShow: true,
@@ -296,6 +297,7 @@ export default {
     getChannels () {
       this.$http.post('/cri-cms-platform/ecommerce/getChannels.monitor').then(res => {
         this.ui.channels = res || []
+        this.getend = true
       }).catch(e => {
         console.log(e)
       })
@@ -364,7 +366,7 @@ export default {
       this.$http.post(url, form).then(
         res => {
           this.ui.submited = true
-          this.$router.replace('/ecommerce/list?scope=all&status=all')
+          this.$router.replace('/ecommerce/list?status=all')
         }
       ).catch(
         res => {

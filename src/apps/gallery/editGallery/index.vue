@@ -105,7 +105,7 @@ export default {
       this.$http.post(url, form).then(
         res => {
           this.ui.submited = true
-          this.$router.replace('/gallery/list?scope=all&status=all')
+          this.$router.replace('/gallery/list?status=all')
         }
       ).catch(
         res => {

@@ -1,7 +1,7 @@
 <template>
   <div class="gallery-options c-4 scroll-y">
     <div style="width: 280px;margin: 0 20px;">
-      <div class="option-item flex-v-center relative a" @click="ui.channelShow=!ui.channelShow">
+      <div v-if="getend" class="option-item flex-v-center relative a" @click="ui.channelShow=!ui.channelShow">
         <span class="flex-item">{{channelNames}}</span>
         <i class="icon f-20 c-a">keyboard_arrow_down</i>
         <bubble v-if="ui.channelShow" pos="bottom" align="center" @close="ui.channelShow=false">
@@ -124,6 +124,7 @@ export default {
   props: [ 'res' ],
   data () {
     return {
+      getend: false,
       ui: {
         channelShow: false,
         channels: []
@@ -190,6 +191,7 @@ export default {
     getChannels () {
       this.$http.post('/cri-cms-platform/gallery/getChannels.monitor').then(res => {
         this.ui.channels = res || []
+        this.getend = true
       }).catch(console.log)
     }
   },

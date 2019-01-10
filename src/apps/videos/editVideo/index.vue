@@ -69,6 +69,7 @@ export default {
           id: this.id,
           app: 'VIDEO'
         }).then(res => {
+          console.log(res)
           this.res = res
           this.ui.loading = false
           this.$nextTick(() => {
@@ -104,7 +105,7 @@ export default {
       this.$http.post(url, form).then(
         res => {
           this.ui.submited = true
-          this.$router.replace('/video/list?scope=all&status=all')
+          this.$router.replace('/video/list?status=all')
         }
       ).catch(
         res => {

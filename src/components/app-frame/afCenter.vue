@@ -51,9 +51,9 @@
       </bubble>
     </div>
     <!--<i class="icon c-a a item" v-tooltip:top="'显示移动采编内容'">directions_walk</i>-->
-    <i class="icon c-a a item" v-tooltip:top="'发布到 PC 网站'" :class="{ active: filter.terminalPc }" @click="filter.terminalPc = ~~!filter.terminalPc || '';getList(true)">computer</i>
-    <i class="icon c-a a item" v-tooltip:top="'发布到手机客户端'" :class="{ active: filter.terminalApp }" @click="filter.terminalApp = ~~!filter.terminalApp || '';getList(true)">phone_iphone</i>
-    <i class="icon c-a a item" v-tooltip:top="'发布到手机网站'" :class="{ active: filter.terminalWeb }" @click="filter.terminalWeb = ~~!filter.terminalWeb || '';getList(true)">public</i>
+    <!--<i class="icon c-a a item" v-tooltip:top="'发布到 PC 网站'" :class="{ active: filter.terminalPc }" @click="filter.terminalPc = ~~!filter.terminalPc || '';getList(true)">computer</i>-->
+    <!--<i class="icon c-a a item" v-tooltip:top="'发布到手机客户端'" :class="{ active: filter.terminalApp }" @click="filter.terminalApp = ~~!filter.terminalApp || '';getList(true)">phone_iphone</i>-->
+    <!--<i class="icon c-a a item" v-tooltip:top="'发布到手机网站'" :class="{ active: filter.terminalWeb }" @click="filter.terminalWeb = ~~!filter.terminalWeb || '';getList(true)">public</i>-->
   </div>
   <div v-if="ui.searchShow" class="flex-v-center search-bar c-6 f-13">
     <i class="icon f-18 c-8">search</i>
@@ -84,7 +84,7 @@
     <icon-btn small class="a" @click="onPrev" :disabled="filter.toPage <= 1">keyboard_arrow_left</icon-btn>
     <span class="f-14 c-6" style="margin: 0 10px;line-height: 1em;">第 {{filter.toPage}} / {{totalPage}} 页</span>
     <icon-btn small class="a" @click="onNext" :disabled="filter.toPage >= totalPage">keyboard_arrow_right</icon-btn>
-    <span v-if="filter.totalRowsAmount" style="position:absolute; right: 10px;bottom: 8px;font-size: 12px;color: #999;">共 {{filter.totalRowsAmount}} 项</span>
+    <span v-if="totalRowsAmount" style="position:absolute; right: 10px;bottom: 8px;font-size: 12px;color: #999;">共 {{totalRowsAmount}} 项</span>
   </div>
 </div>
 </template>
@@ -98,7 +98,6 @@ export default {
   components: { ListView },
   props: {
     url: String,
-    scope: String,
     status: String
   },
   data () {
@@ -126,7 +125,6 @@ export default {
         ]
       },
       filter: {
-        scope: '1',
         status: 'all',
         toPage: 1,
         pageSize: 30,
@@ -138,17 +136,16 @@ export default {
         terminalApp: '',
         terminalWeb: '',
         publishChannelId: '',
-        recommend: '',
-        totalRowsAmount: false
+        recommend: ''
       },
+      totalRowsAmount: false,
       channels: []
     }
   },
   watch: {
     '$route.query' (query) {
       let { filter } = this
-      if (query.scope !== filter.scope || query.status !== filter.status) {
-        filter.scope = query.scope
+      if (query.status !== filter.status) {
         filter.status = query.status
         this.getList(true)
       }
@@ -191,8 +188,7 @@ export default {
   mounted () {
     let { filter } = this
     let query = this.$route.query
-    if (query.scope !== filter.scope || query.status !== filter.status) {
-      filter.scope = query.scope
+    if (query.status !== filter.status) {
       filter.status = query.status
     }
     this.getList()
@@ -204,8 +200,9 @@ export default {
       if (refresh) filter.toPage = 1
       this.$refs.listView.loading = true
       this.$http.post(this.url, filter).then(res => {
+        console.log(res.totalRowsAmount)
         if (res.totalRowsAmount) {
-          this.filter.totalRowsAmount = res.totalRowsAmount
+          this.totalRowsAmount = res.totalRowsAmount
         }
         this.$refs.listView.loading = false
         this.totalPage = res.totalPage || 1

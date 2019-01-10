@@ -53,7 +53,6 @@ export default {
       width: 0,
       list: [],
       filter: {
-        scope: 'my',
         status: 'REJECT',
         pageSize: 30,
         toPage: 1,

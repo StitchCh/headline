@@ -46,7 +46,6 @@ export default {
       width: 0,
       list: [],
       filter: {
-        scope: 'my',
         status: 'REJECT',
         pageSize: 30,
         toPage: 1,
@@ -59,8 +58,7 @@ export default {
   watch: {
     '$route.query' (query) {
       let { filter } = this
-      if (query.scope !== filter.scope || query.status !== filter.status) {
-        filter.scope = query.scope
+      if (query.status !== filter.status) {
         filter.status = query.status
         this.getList(true)
       }

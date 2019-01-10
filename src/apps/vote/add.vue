@@ -71,7 +71,7 @@
   </div>
   <div class="art-options c-4 scroll-y" :style="{width: ui.optionShow ? '320px' : '0px'}">
     <div style="width: 280px;margin: 0 20px;">
-      <div class="option-item flex-v-center relative a" @click="ui.channelShow=!ui.channelShow">
+      <div v-if="getend" class="option-item flex-v-center relative a" @click="ui.channelShow=!ui.channelShow">
         <span class="flex-item">{{channelNames}}</span>
         <i class="icon f-20 c-a">keyboard_arrow_down</i>
         <bubble v-if="ui.channelShow" pos="bottom" align="center" @close="ui.channelShow=false">
@@ -238,6 +238,7 @@ export default {
   props: [ 'from', 'id' ],
   data () {
     return {
+      getend: false,
       moble_index: 0,
       list1: [],
       scaleshow1List: ['标题', '标题加图片', '标题加图片加描述'],
@@ -341,8 +342,9 @@ export default {
     },
     getChannels () {
       this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor').then(res => {
-        this.getif1 = true
         this.ui.channels = res || []
+        this.getif1 = true
+        this.getend = true
       }).catch(e => {
         console.log(e)
       })
@@ -395,7 +397,7 @@ export default {
       this.$http.post(url, obj).then(res => {
         console.log(res)
         this.ui.submited = true
-        this.$router.push('/vote/list?scope=all&status=all')
+        this.$router.push('/vote/list?status=all')
       }).catch(
         res => {
           this.$toast(res || res.msg || '保存失败')
@@ -469,6 +471,7 @@ export default {
 
       }
     } else {
+      this.getChannels()
       this.getif = true
     }
   },

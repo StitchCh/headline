@@ -82,6 +82,7 @@ export default {
       editor: null,
       config: {
         zIndex: 1,
+        height: 800,
         toolbars: [
           [
             'fullscreen',

@@ -183,7 +183,6 @@ export default {
       this.$http.post(this.getUrl, {
         id: this.id
       }).then(res => {
-        console.log(res)
         this.content = res.content || {}
         this.article = res.article || {}
         this.relateArticle = res.relateArticle || []
