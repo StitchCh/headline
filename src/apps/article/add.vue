@@ -384,6 +384,7 @@ export default {
     if (this.from && this.id) {
       this.ui.loading = true
       if (this.from === 'draft') this.autoSaveId = this.id
+      console.log(from[this.from].getUrl)
       this.$http.post(from[this.from].getUrl, {
         id: this.id
       }).then(res => {
@@ -425,7 +426,6 @@ export default {
           this.$refs.editor.titleColor = this.form.titleColor
           this.$refs.editor.content = this.form.content
         })
-        console.log(this.form.hasThumb)
       }).catch(e => {
         console.log(e)
       })

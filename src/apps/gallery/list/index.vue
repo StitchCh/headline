@@ -3,6 +3,7 @@
     <af-center
       @add="$router.push('/GalleryAdd')"
       :scope="$route.query.scope"
+      @getListEnd="onItemClick"
       :status="$route.query.status"
       url="/cri-cms-platform/gallery/list.monitor"
       ref="afCenter">

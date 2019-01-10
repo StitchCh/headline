@@ -16,6 +16,11 @@ export default {
       path: 'order',
       name: 'order',
       component: resolve => require(['@/apps/shop/order/index.vue'], resolve)
+    },
+    {
+      path: 'category',
+      name: 'category',
+      component: resolve => require(['@/apps/shop/category/index.vue'], resolve)
     }
   ]
 }

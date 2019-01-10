@@ -6,7 +6,6 @@
       class="c-4"
       :data="channel"
       :activeId="$route.query.channelId"
-      openAll
       pidTxt="channelPartentId"
       @select="onTreeSelect"></tree>
   </af-left>
@@ -90,6 +89,7 @@ export default {
         res.forEach(item => {
           item.name = item.channelName
         })
+        console.log(res)
         this.channel = res
       }).catch(e => {
         this.$toast(e.msg)

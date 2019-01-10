@@ -31,8 +31,8 @@
           <tbody>
           <tr v-for="item in list" :key="item.id" @click="openDetail(item.id)">
             <td>
-              <icon-btn v-show="item.sysMenuShowFlag === '1'" v-tooltip="'收起下级'" v-if="menuChildShow[item.id]" small @click.stop.native="packupChild(item.id)">keyboard_arrow_up</icon-btn>
-              <icon-btn v-show="item.sysMenuShowFlag === '1'" v-tooltip="'展示下级'" v-else small @click.stop.native="showChild(item.id)">keyboard_arrow_down</icon-btn>
+              <icon-btn v-show="item.sysMenuParentId == '-1'" v-tooltip="'收起下级'" v-if="menuChildShow[item.id]" small @click.stop.native="packupChild(item.id)">keyboard_arrow_up</icon-btn>
+              <icon-btn v-show="item.sysMenuParentId == '-1'" v-tooltip="'展示下级'" v-else small @click.stop.native="showChild(item.id)">keyboard_arrow_down</icon-btn>
             </td>
             <td>{{item.sysMenuName}}</td>
             <td>{{item.sysMenuUrl}}</td>
@@ -108,7 +108,13 @@
           <input-box label="菜单名称" v-model="newForm.sysMenuName"></input-box>
           <input-box label="菜单URL" v-model="newForm.sysMenuUrl"></input-box>
           <input-box label="菜单排序" v-model="newForm.sysMenuOrder"></input-box>
-          <input-box label="图标" v-show="newForm.sysMenuShowFlag === '1'" v-model="newForm.sysMenuIcon"></input-box>
+          <input-box label="图标" v-show="newForm.sysMenuParentId == '-1'" v-model="newForm.sysMenuIcon"></input-box>
+          <div>
+            <div class="flex-v-center">
+              <span class="flex-item">展示项</span>
+              <switcher mode="Number" v-model="newForm.sysMenuShowFlag"/>
+            </div>
+          </div>
           <div class="relative input-box">
             <label>上级菜单</label>
             <div style="padding-left: 80px;">
@@ -128,7 +134,13 @@
           <input-box label="菜单名称" v-model="editForm.sysMenuName"></input-box>
           <input-box label="菜单URL" v-model="editForm.sysMenuUrl"></input-box>
           <input-box label="菜单排序" v-model="editForm.sysMenuOrder"></input-box>
-          <input-box label="图标" v-show="editForm.sysMenuShowFlag === '1'" v-model="editForm.sysMenuIcon"></input-box>
+          <input-box label="图标" v-show="editForm.sysMenuParentId == '-1'" v-model="editForm.sysMenuIcon"></input-box>
+          <div>
+            <div class="flex-v-center">
+              <span class="flex-item">展示项</span>
+              <switcher mode="Number" v-model="editForm.sysMenuShowFlag"/>
+            </div>
+          </div>
           <div class="relative input-box">
             <label>上级菜单</label>
             <div style="padding-left: 50px;">
@@ -280,7 +292,7 @@ export default {
             for (var index in res) {
               p.push(res[index])
             }
-            this.newForm.sysMenuShowFlag = '1'
+            this.newForm.sysMenuShowFlag = 1
             this.newForm.sysMenuParentId = '-1'
             this.parentMenus = p
           }
@@ -378,7 +390,7 @@ export default {
         this.$toast('请输入菜单URL')
         return
       }
-      if (this.newForm.sysMenuIcon === '') {
+      if (this.newForm.sysMenuIcon === '' && this.editForm.sysMenuParentId == -1) {
         this.$toast('请输入菜单图标')
         return
       }
@@ -400,7 +412,7 @@ export default {
           this.editForm.sysMenuName = res.menu.sysMenuName
           this.editForm.sysMenuUrl = res.menu.sysMenuUrl
           this.editForm.sysMenuIcon = res.menu.sysMenuIcon
-          this.editForm.sysMenuShowFlag = res.menu.sysMenuShowFlag
+          this.editForm.sysMenuShowFlag = Number(res.menu.sysMenuShowFlag)
           this.editForm.sysMenuOrder = res.menu.sysMenuOrder
           if (res.menu.sysMenuParentId === '-1') {
             // 说明是添加二级菜单
@@ -410,7 +422,6 @@ export default {
                 for (var index in res2) {
                   p.push(res2[index])
                 }
-                this.editForm.sysMenuShowFlag = '1'
                 this.editForm.sysMenuParentId = '-1'
                 this.parentMenus = p
               }
@@ -423,7 +434,6 @@ export default {
                   for (var index in res2) {
                     p.push(res2[index])
                     this.parentMenus = p
-                    this.editForm.sysMenuShowFlag = '0'
                     this.editForm.sysMenuParentId = res3.menu.id
                   }
                 })
@@ -455,7 +465,7 @@ export default {
         this.$toast('请输入菜单URL')
         return
       }
-      if (this.editForm.sysMenuIcon === '' && this.editForm.sysMenuShowFlag == 1) {
+      if (this.editForm.sysMenuIcon === '' && this.editForm.sysMenuParentId == -1) {
         this.$toast('请输入菜单图标')
         return
       }
@@ -472,6 +482,11 @@ export default {
       )
     },
     selectNewParentMenu (id) {
+      if (id == -1) {
+        this.newForm.sysMenuShowFlag = 1
+      } else {
+        this.newForm.sysMenuShowFlag = 0
+      }
       let index = this.newParentMenus.findIndex(v => v === id)
       let tempArr = this.newParentMenus.map(v => v)
       if (index === -1) {

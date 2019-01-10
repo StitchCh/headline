@@ -3,6 +3,7 @@
     <af-center
       @add="$router.push('/ecommerceAdd')"
       :status="$route.query.status"
+      @getListEnd="onItemClick"
       url="/cri-cms-platform/ecommerce/list.monitor"
       ref="afCenter">
 

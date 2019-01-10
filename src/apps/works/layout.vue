@@ -11,7 +11,7 @@
         <switcher v-model="showDelected" :style="{transform: 'scale(.75)', transformOrigin: 'right'}"/>
       </div>
     </div>
-    <icon-btn small v-if="layout.type !== '3'" v-tooltip:top="'添加文章'" @click="$router.replace({path: '/works/unpublished', query: $route.query})" style="margin-right: 10px;">add</icon-btn>
+    <icon-btn small v-if="layout.type !== '3'" v-tooltip:top="'添加文章'" @click="$router.replace({path: '/works/unpublished', query:{channelId: $route.query.channelId, typeId: layout.id} })" style="margin-right: 10px;">add</icon-btn>
   </div>
   <div class="content relative" v-if="open">
     <div v-if="loading" class="abs bg-light-rgb-3 flex-center"><loading size="30"/></div>

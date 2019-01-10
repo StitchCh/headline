@@ -200,13 +200,15 @@ export default {
       if (refresh) filter.toPage = 1
       this.$refs.listView.loading = true
       this.$http.post(this.url, filter).then(res => {
-        console.log(res.totalRowsAmount)
         if (res.totalRowsAmount) {
           this.totalRowsAmount = res.totalRowsAmount
         }
         this.$refs.listView.loading = false
         this.totalPage = res.totalPage || 1
         this.list = res.pages || []
+        if (this.list.length > 0) {
+          this.$emit('getListEnd', this.list[0])
+        }
       }).catch(e => {
         this.$refs.listView.loading = false
       })

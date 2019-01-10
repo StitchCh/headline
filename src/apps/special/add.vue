@@ -115,14 +115,14 @@
       <div class="option-item">
         <input type="text" placeholder="关键词，逗号分隔。" v-model="form.keywords"/>
       </div>
-      <div class="option-item flex-v-center">
-        <span class="flex-item">©原创声明</span>
-        <switcher mode="Number" v-model="form.isOriginal"/>
-      </div>
-      <div class="option-item flex" v-if="!form.isOriginal">
-        <input type="text" class="flex-item" placeholder="来源名称" v-model="form.originalFrom">
-        <input type="text" class="flex-item" placeholder="来源URL" v-model="form.originalUrl">
-      </div>
+      <!--<div class="option-item flex-v-center">-->
+        <!--<span class="flex-item">©原创声明</span>-->
+        <!--<switcher mode="Number" v-model="form.isOriginal"/>-->
+      <!--</div>-->
+      <!--<div class="option-item flex" v-if="!form.isOriginal">-->
+        <!--<input type="text" class="flex-item" placeholder="来源名称" v-model="form.originalFrom">-->
+        <!--<input type="text" class="flex-item" placeholder="来源URL" v-model="form.originalUrl">-->
+      <!--</div>-->
       <div class="option-item">
         <input type="text" placeholder="作者，逗号分隔" v-model="form.author">
       </div>

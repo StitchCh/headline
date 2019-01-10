@@ -1,16 +1,22 @@
 <template>
   <div class="abs bg-f flex app-member">
     <af-left color="#555" vibrant-color="#008cff" bg-color="#fafafa" title="积分商城" :defaultActive="$route.name">
-      <navigator-item icon="people" @click="$router.replace('/shop/product')" index="product">商品管理
+      <navigator-item icon="shopping_basket" @click="$router.replace('/shop/product')" index="product">商品管理
       </navigator-item>
-      <navigator-item icon="people" @click="$router.replace('/shop/order')" index="order">订单管理
+      <navigator-item icon="assignment" @click="$router.replace('/shop/order')" index="order">订单管理
+      </navigator-item>
+      <navigator-item icon="widgets" @click="$router.replace('/shop/category')" index="category">分类管理
       </navigator-item>
     </af-left>
-    <div class="flex-item relative">
-      <div class="af-topbar">
+
+    <div class="flex-item flex-col">
+      <div class="af-topbar flex-v-center">
+        <div class="flex-item"></div>
         <account/>
       </div>
-      <router-view class="abs flex-col c-6 member-content"/>
+      <div class="flex-item flex flex-col">
+        <router-view/>
+      </div>
     </div>
   </div>
 </template>

@@ -24,10 +24,20 @@
         <icon-btn small v-if="!data.edit && data.channelPartentId != 0" @click.native.stop="data.edit = true">edit</icon-btn>
         <icon-btn small v-if="data.edit && data.channelPartentId != 0" @click.native.stop="data.edit = false;data.channelName=data.editChannelName" class="green">check</icon-btn>
         <icon-btn small v-if="data.edit && data.channelPartentId != 0" @click.native.stop="data.edit = false;data.editChannelName=data.channelName">close</icon-btn>
-        <linkBtn @click.native.stop :link="data.channelUrl" :linkShow="data.isEnabledUrl" @linkchange="obj => {data.channelUrl = obj.link; data.isEnabledUrl = obj.linkshow}"></linkBtn>
+        <linkBtn v-if="data.channelPartentId != 0" @click.native.stop :link="data.channelUrl" :linkShow="data.isEnabledUrl" @linkchange="obj => {data.channelUrl = obj.link; data.isEnabledUrl = obj.linkshow}"></linkBtn>
         <icon-btn small v-if="data.channelPartentId != 0" @click.native.stop="del(data)">delete</icon-btn>
       </div>
     </draggable-tree>
+
+    <div class="channel-tree-item flex-v-center"
+         @click="onItemClick({id: 50000})">
+      <i class="icon tree-icon f-20 c-8 a"
+         style="margin-right: 10px;"
+      >insert_drive_file</i>
+      <div class="flex-item flex-v-center" style="height: 40px;overflow:hidden;">
+        <span class="flex-item channel-name">PC端发布</span>
+      </div>
+    </div>
     <!-- <div>{{delChannels}}</div> -->
   </div>
 </div>
@@ -88,6 +98,15 @@ export default {
         const worker = new WorkerCode()
         worker.postMessage({ data: res, idTxt: 'id', pidTxt: 'channelPartentId', childrenTxt: 'children', rootId: '0' })
         worker.addEventListener('message', e => {
+          let xunhuan = function (arr) {
+            if (arr.children && arr.children.length > 0) {
+              arr.children.forEach((item, index) => {
+                item.open = false
+                xunhuan(item)
+              })
+            }
+          }
+          xunhuan(e.data[0])
           this.channelTree = e.data
           worker.terminate()
         })

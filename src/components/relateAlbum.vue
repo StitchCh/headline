@@ -25,7 +25,7 @@
             <li slot-scope="slotProps">
               <div class="list-item c-6 f-14 a flex-v-center" :class="{ on: selected.some(v => v.id === slotProps.item.id) }" @click="selectItem(slotProps.item)">
                 <div class="list-thumb flex-center">
-                  <img v-if="slotProps.item.thumb.length" :src="slotProps.item.thumb[0].url" alt="">
+                  <img v-if="slotProps.item.thumb" :src="slotProps.item.thumb" alt="">
                 </div>
                 <div class="flex-item">
                   <div class="b" style="white-space: nowrap;overflow:hidden;text-overflow:ellipsis">{{slotProps.item.title}}</div>
@@ -87,6 +87,7 @@ export default {
       this.loading = true
       if (refresh) this.filter.toPage = 1
       return this.$http.post(this.listUrl, this.filter).then(res => {
+        console.log(res.data)
         this.list = res.data || []
         this.totalPage = res.totalPage || 1
         this.loading = false

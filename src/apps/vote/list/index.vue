@@ -3,6 +3,7 @@
     <af-center
       @add="$router.push('/voteAdd')"
       :status="$route.query.status"
+      @getListEnd="onItemClick"
       url="/cri-cms-platform/vote/list.monitor"
       ref="afCenter">
 

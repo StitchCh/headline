@@ -53,7 +53,7 @@
           </tbody>
         </table>
         <div class="flex-center">
-          <pagination :page="page" :size="20" :total="total" @change="p => { page = p;getList(); }"></pagination>
+          <pagination :page="page" :size="20" :total="total" @change="p => { page = p;search(); }"></pagination>
         </div>
       </div>
     </div>
@@ -119,10 +119,16 @@ export default {
           source = source + item.vaule + ','
         }
       })
+      let startTime = ''
+      let endTime = ''
+      if (this.searchTime.length == 2) {
+        startTime = moment(this.searchTime[0]).format('YYYY-MM-DD')
+        endTime = moment(this.searchTime[1]).format('YYYY-MM-DD')
+      }
       this.$http.post("/cri-cms-platform/collectionNew/queryListCollectionNew.monitor", {
         page: this.page,
-        startTime: moment(this.searchTime[0]).format('YYYY-MM-DD'),
-        endTime: moment(this.searchTime[1]).format('YYYY-MM-DD'),
+        startTime: startTime,
+        endTime: endTime,
         source: source,
         title: this.title
       }).then(res => {

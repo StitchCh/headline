@@ -2,14 +2,17 @@
   <div class="flex flex-item article-list">
     <af-center
       @add="$router.push('/articleAdd')"
+      @getListEnd="onItemClick"
       :status="$route.query.status"
       url="/cri-cms-platform/article/list.monitor"
       ref="afCenter">
 
       <div class="list-item a" slot-scope="slotProps" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.id == $route.params.id}">
         <div class="list-title flex-v-center">
-          <img v-if="slotProps.item.hasThumb == 1" src="../../../../static/head_img.png" alt="" style="width: 20px;margin-right: 10px;">
+          <!--<img v-if="slotProps.item.hasThumb == 1" src="../../../../static/head_img.png" alt="" style="width: 20px;margin-right: 10px;">-->
+          <i v-if="~~(slotProps.item.hasThumb == 1)" class="icon f-16 orange">image</i>
           <i v-if="~~(slotProps.item.isRecommnd)" class="icon f-16 blue">thumb_up</i>
+          <i class="icon f-16 blue" >phone_iphone</i>
           <!-- <i v-if="~~(slotProps.item.hasThumb)" class="icon f-16 orange">image</i> -->
           <i v-if="~~(slotProps.item.isOriginal)" class="icon f-16 green">copyright</i>
           <span class="flex-item c-6 f-14 b">{{slotProps.item.title}}</span>
@@ -154,6 +157,9 @@ export default {
     .list-title span{color: #fff;}
     .list-info{color: rgba(255, 255, 255, .8)}
     .tg-icon{color: rgba(255, 255, 255, .8);}
+  }
+  .on i{
+    color: #fff;
   }
   .active {color: #018be6;}
 
