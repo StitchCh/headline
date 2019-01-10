@@ -120,7 +120,6 @@ export default {
         id: this.id
       }).then(
         res => {
-          console.log(res)
           this.content = res.audio || {}
           if (res.audio) {
             this.playerOptions.sources[0].src = ORIGIN + res.audio.audio
@@ -131,7 +130,7 @@ export default {
           this.channelIds = res.channelIds || ''
           this.loading = false
         }
-      )
+      ).catch(console.log)
     },
     getChannel (id) {
       let channel = this.channels.find(v => v.id === id)

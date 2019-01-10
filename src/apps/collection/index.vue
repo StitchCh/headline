@@ -15,9 +15,9 @@
       <div class="setting-card f-14" style="min-height: 400px;">
         <div class="search_box">
           <div class="seaceh_list">来源：</div>
-          <div v-for="item in sourceList" class="seaceh_list">
+          <div v-for="item in sourceList" class="seaceh_list" :key="item.value">
              <label>
-                <check-box v-model="item.state"></check-box><span>{{item.vaule}}</span>
+                <check-box v-model="item.state"></check-box><span>{{item.value}}</span>
              </label>
           </div>
         </div>
@@ -61,15 +61,15 @@
 </template>
 
 <script>
-import Account from "@/components/account"
-import Dock from "@/components/dock"
+import Account from '@/components/account'
+import Dock from '@/components/dock'
 import VueDatepickerLocal from 'vue-datepicker-local'
 import moment from 'moment'
 
 export default {
-  name: "app-collection",
-  components: { Account, Dock, VueDatepickerLocal, moment },
-  data() {
+  name: 'app-collection',
+  components: { Account, Dock, VueDatepickerLocal },
+  data () {
     return {
       loading: false,
       searchTime: [],
@@ -80,31 +80,31 @@ export default {
       source: '',
       sourceList: [
         {
-          vaule: '人民网',
+          value: '人民网',
           state: false
         },
         {
-          vaule: '卫星网',
+          value: '卫星网',
           state: false
         },
         {
-          vaule: '中国驻俄罗斯大使馆',
+          value: '中国驻俄罗斯大使馆',
           state: false
         },
         {
-          vaule: '俄罗斯驻华使馆',
+          value: '俄罗斯驻华使馆',
           state: false
         },
         {
-          vaule: 'PNA',
+          value: 'PNA',
           state: false
         },
         {
-          vaule: '俄罗斯报',
+          value: '俄罗斯报',
           state: false
         },
         {
-          vaule: '俄罗斯外交部',
+          value: '俄罗斯外交部',
           state: false
         }
       ]
@@ -112,23 +112,22 @@ export default {
   },
   methods: {
     search () {
-      this.loading = true;
+      this.loading = true
       let source = ''
       this.sourceList.forEach(item => {
         if (item.state) {
-          source = source + item.vaule + ','
+          source = source + item.value + ','
         }
       })
-      this.$http.post("/cri-cms-platform/collectionNew/queryListCollectionNew.monitor", {
+      this.$http.post('/cri-cms-platform/collectionNew/queryListCollectionNew.monitor', {
         page: this.page,
         startTime: moment(this.searchTime[0]).format('YYYY-MM-DD'),
         endTime: moment(this.searchTime[1]).format('YYYY-MM-DD'),
-        source: source,
+        source,
         title: this.title
       }).then(res => {
         this.list = res.pages
         this.total = res.totalRowsAmount
-        console.log(res)
       }).catch(res => {
         this.$toast(res.msg)
       }).finally(() => {
@@ -139,31 +138,31 @@ export default {
       this.loading = true
       this.$http
         .post(
-          "/cri-cms-platform/collectionNew/queryListCollectionNew.monitor",
+          '/cri-cms-platform/collectionNew/queryListCollectionNew.monitor',
           {
             page: this.page
           }
         )
         .then(res => {
           console.log(res)
-          this.list = res.pages;
-          this.total = res.totalRowsAmount;
+          this.list = res.pages
+          this.total = res.totalRowsAmount
         })
         .catch(res => {
-          this.$toast(res.msg);
+          this.$toast(res.msg)
         })
         .finally(() => {
-          this.loading = false;
-        });
+          this.loading = false
+        })
     },
     openUrl (url) {
-        window.open(url);
+      window.open(url)
     }
   },
   created () {
-    this.getList();
+    this.getList()
   }
-};
+}
 </script>
 
 <style scoped>

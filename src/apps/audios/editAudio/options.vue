@@ -202,16 +202,13 @@ export default {
       this.$http.post('/cri-cms-platform/audio/getChannels.monitor').then(res => {
         this.ui.channels = res || []
         this.getend = true
-      }).catch(e => {
-        console.log(e)
-      })
+      }).catch(console.log)
     }
   },
   created () {
     this.getChannels()
     if (this.res) {
       let { form, res } = this
-      console.log(res)
       for (let k in this.form) {
         if (k === 'virtualComment') {
           if (res.audio[k] === '') {
@@ -222,7 +219,6 @@ export default {
           continue
         }
         if (k === 'thumb') {
-          res.audio.thumb = JSON.parse(res.audio.thumb)
           this.thumb.thumb1 = res.audio.thumb[0]
           this.thumb.thumb2 = res.audio.thumb[1]
           this.thumb.thumb3 = res.audio.thumb[2]
@@ -235,19 +231,10 @@ export default {
       }
       this.form.createDate = res.audio.createDate
       this.form.channelIds = res.channelIds || ''
-      // this.form.relateIds = res.relateArticle.map(v => v.id).join(',')
-      // this.form.specialId = res.relateSpecial.id || ''
-      // this.attachmentDefaultList = res.attachments
-      // this.form.gallerySettingDisplayPosition = res.gallerySettingDisplayPosition || '1'
-      // this.form.gallerySettingMaxWidth = res.gallerySettingMaxWidth || '640'
-      // this.form.gallerySettingMinHeight = res.gallerySettingMinHeight || '480'
-      // this.form.gallerySettingThumbHeight = res.gallerySettingThumbHeight || '80'
-      // this.form.gallerySettingThumbWidth = res.gallerySettingThumbWidth || '60'
     }
   },
   watch: {
     'thumb.thumb1' (newValue) {
-      console.log(newValue)
       if (this.form.thumbType === 2) {
         if (!(newValue || this.thumb.thumb2 || this.thumb.thumb3)) {
           this.form.hasThumb = 0
