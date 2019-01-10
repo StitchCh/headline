@@ -144,9 +144,7 @@ export default {
             }
           ).catch(console.log)
         },
-        no () {
-
-        }
+        no () {}
       })
     }
   },

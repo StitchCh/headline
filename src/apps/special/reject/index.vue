@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-item flex-col article-tile">
+  <div class="flex-item flex-col special-reject">
     <div class="af-topbar flex-v-center">
       <div class="flex-item"></div>
       <account/>
@@ -16,9 +16,13 @@
           <no-data/>
         </div>
         <ul class="flex" ref="ul" style="flex-wrap: wrap;padding-bottom: 50px;" :style="{paddingLeft: (width - (240 * ~~((width - 80) / 240))) * 0.5 + 'px'}">
-          <li v-for="item in list" :key="item.id" class="a" @click="$router.push('/articleAdd?id='+item.id)">
-            <div class="cover flex-center">
+          <li v-for="item in list" :key="item.id" class="a" @click="$router.push('/specialEdit/special/' + item.id)">
+            <div class="cover flex-center relative">
               <img v-if="item.thumb && item.thumb.length" :src="item.thumb[0].url" alt="">
+              <div class="abs message c-6 bg-f">
+                <p>驳回信息：</p>
+                <p>{{item.rejectMessage}}</p>
+              </div>
             </div>
             <div class="flex-v-center item-info">
               <div class="flex-item" style="overflow: hidden;">
@@ -31,6 +35,9 @@
         </ul>
       </div>
     </div>
+    <div class="af-bottombar flex-center">
+      <pagination v-if="totalPage" :size="filter.pageSize" :total="filter.pageSize * totalPage" :page="filter.toPage" @change="onPageChange"/>
+    </div>
   </div>
 </template>
 
@@ -38,7 +45,7 @@
 import Account from '@/components/account'
 
 export default {
-  name: 'app-article-tile',
+  name: 'app-special-reject',
   components: { Account },
   data () {
     return {
@@ -50,18 +57,9 @@ export default {
         pageSize: 30,
         toPage: 1,
         searchby: 'title',
-        order: 'asc',
         search: ''
-      }
-    }
-  },
-  watch: {
-    '$route.query' (query) {
-      let { filter } = this
-      if (query.status !== filter.status) {
-        filter.status = query.status
-        this.getList(true)
-      }
+      },
+      totalPage: 1
     }
   },
   created () {
@@ -86,7 +84,7 @@ export default {
         btns: ['取消', '删除'],
         color: 'red',
         yes () {
-          that.$http.post('/cri-cms-platform/special/delete.monitor', {id: item.id}).then(
+          that.$http.post('/cri-cms-platform/special/del.monitor', {id: item.id}).then(
             res => {
               that.getList()
             }
@@ -97,28 +95,38 @@ export default {
     getList (refresh) {
       this.loading = true
       if (refresh) this.filter.toPage = 1
-      this.$http.post('/cri-cms-platform/special/list.monitor', this.filter).then(res => {
+      this.$http.post('/cri-cms-platform/special/queryList.monitor', this.filter).then(res => {
         this.list = res.pages || []
+        this.totalPage = res.totalPage
         this.loading = false
-      }).catch(e => {
-        console.log(e)
-      })
+      }).catch(console.log)
+    },
+    onPageChange (e) {
+      this.filter.toPage = parseInt(e)
+      this.getList()
     }
   }
 }
 </script>
 
 <style lang="less">
-  .article-tile{
+  .special-reject{
     .search{width: 300px;line-height: 32px;border:1px solid #ddd;border-radius: 20px;padding: 0 20px;}
-    li{width: 210px;margin: 15px;box-shadow: 0 0 0 1px rgba(0, 0, 0, .1);border-radius: 6px;overflow: hidden;transition: box-shadow .3s;}
-    li:hover{box-shadow: 0 0 3px 1px rgba(0, 0, 0, .05), 0 10px 30px rgba(0, 0, 0, .15);
-      .icon{color: rgb(255, 115, 115);}
+    .box {
+      li{width: 210px;margin: 15px;box-shadow: 0 0 0 1px rgba(0, 0, 0, .1);border-radius: 6px;overflow: hidden;transition: box-shadow .3s;
+        .message {opacity: 0;transition: opacity .2s;
+          p {padding: 5px 10px;margin: 5px 0;}
+        }
+      }
+      li:hover{box-shadow: 0 0 3px 1px rgba(0, 0, 0, .05), 0 10px 30px rgba(0, 0, 0, .15);
+        .icon{color: rgb(255, 115, 115);}
+        .message {opacity: 1;}
+      }
+      .cover{width: 210px;height: 210px;background: #eee;
+        img{max-height: 100%;}
+      }
+      .item-info{padding: 10px;}
+      .item-name{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
     }
-    .cover{width: 210px;height: 210px;background: #eee;
-      img{max-height: 100%;}
-    }
-    .item-info{padding: 10px;}
-    .item-name{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
   }
 </style>

@@ -74,9 +74,7 @@ export default {
             editor.titleColor = res.content.titleColor
             editor.selected = res.gallery.content
           })
-        }).catch(e => {
-          console.log(e)
-        })
+        }).catch(console.log)
       }
     },
     submit () {
@@ -103,10 +101,6 @@ export default {
       let form = Object.assign({title, titleColor, content}, this.$refs.option.form)
       if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
       if (this.id) form.id = this.id
-
-      console.log(this.$refs.option.form.thumb)
-
-      console.log(form)
 
       this.$http.post(url, form).then(
         res => {

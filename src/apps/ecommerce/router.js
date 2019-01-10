@@ -33,12 +33,13 @@ export default [{
       ]
     },
     {
-      path: 'tile',
-      name: 'EcommerceTile',
-      component: resolve => require(['@/apps/ecommerce/tile/index.vue'], resolve)
+      path: 'draft',
+      name: 'EcommerceDraft',
+      component: resolve => require(['@/apps/ecommerce/draft/index.vue'], resolve)
     },
     {
       path: 'reject',
+      name: 'EcommerceReject',
       component: resolve => require(['@/apps/ecommerce/reject/index.vue'], resolve)
     },
     {

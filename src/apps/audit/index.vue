@@ -4,18 +4,28 @@
       <navigator-item icon="folder" index="all-all" @click="$router.replace('/audit?status=all')">全部</navigator-item>
       <!-- <navigator-item-group defaultExtended index="2" icon="face">
       <span slot="title">我的</span> -->
-      <navigator-item icon="class" index="my-all" @click="$router.replace('/audit?status=all')">已审</navigator-item>
-      <navigator-item icon="hourglass_full" index="my-AUDITING" @click="$router.replace('/audit?status=AUDITING')">待审</navigator-item>
-      <navigator-item icon="error" index="my-REJECT" @click="$router.replace('/audit?status=REJECT')">驳回</navigator-item>
-      <navigator-item icon="check_circle" index="my-PASS" @click="$router.replace('/audit?status=PASS')">通过</navigator-item>
+      <navigator-item icon="class" index="all" @click="$router.replace('/audit?status=all')">已审</navigator-item>
+      <navigator-item icon="hourglass_full" index="AUDITING" @click="$router.replace('/audit?status=AUDITING')">待审</navigator-item>
+      <navigator-item icon="error" index="REJECT" @click="$router.replace('/audit?status=REJECT')">驳回</navigator-item>
+      <navigator-item icon="check_circle" index="PASS" @click="$router.replace('/audit?status=PASS')">通过</navigator-item>
       <!-- </navigator-item-group> -->
-      <navigator-item icon="delete" index="ArticleRecycle" @click="$router.replace('/audit?status=DELETE')">已删除</navigator-item>
+      <!--<navigator-item icon="delete" index="ArticleRecycle" @click="$router.replace('/audit?status=DELETE')">已删除</navigator-item>-->
     </af-left>
     <div class="flex">
       <div class="flex-col audit-center">
         <div class="af-topbar flex-v-center f-14 c-6">
           <i class="icon c-a f-20">search</i>
-          <div class="relative" style="margin: 0 10px;">
+          <div class="relative" style="padding: 0 5px;">
+            <div class="relative flex-v-center a item" @click="ui.searchAppShow=true">
+              <span>{{searchApp}}</span><i class="icon c-a f-16">keyboard_arrow_down</i>
+            </div>
+            <bubble v-if="ui.searchAppShow" pos="bottom" align="start" @close="ui.searchAppShow=false">
+              <ul class="filter-bubble">
+                <li v-for="item in ui.appList" :key="item.id" @click="filter.app = item.id" class="a">{{item.name}}</li>
+              </ul>
+            </bubble>
+          </div>
+          <div class="relative" style="padding: 0 10px;">
             <div class="relative flex-v-center a item" @click="ui.searchOptionShow=true">
               <span>{{searchByName}}</span><i class="icon c-a f-16">keyboard_arrow_down</i>
             </div>
@@ -29,10 +39,10 @@
           <icon-btn small @click="filter.search='';getList(true)">close</icon-btn>
         </div>
         <div class="flex-v-center filter-bar c-6 f-13">
-          <i class="icon c-a a item" :class="{ active: filter.recommend }" v-tooltip:top="'推荐'" @click="filter.recommend = ~~!filter.recommend || '';getList(true)">thumb_up</i>
+          <i class="icon c-a a item" :class="{ active: filter.recommend }" v-tooltip="'推荐'" @click="filter.recommend = ~~!filter.recommend || '';getList(true)">thumb_up</i>
           <span class="flex-item"></span>
           <div class="relative">
-            <div class="relative flex-v-center a item" v-tooltip:top="'筛选栏目'" @click="ui.channelShow=true">
+            <div class="relative flex-v-center a item" v-tooltip="'筛选栏目'" @click="ui.channelShow=true">
               <span>筛选</span><i class="icon c-a">keyboard_arrow_down</i>
             </div>
             <bubble v-if="ui.channelShow" pos="bottom" align="center" @close="ui.channelShow=false">
@@ -42,7 +52,7 @@
             </bubble>
           </div>
           <div class="relative">
-            <div class="relative flex-v-center a item" v-tooltip:top="'排序'" @click="ui.orderShow=true">
+            <div class="relative flex-v-center a item" v-tooltip="'排序'" @click="ui.orderShow=true">
               <span>排序</span><i class="icon c-a">keyboard_arrow_down</i>
             </div>
             <bubble v-if="ui.orderShow" pos="bottom" align="center" @close="ui.orderShow=false">
@@ -83,7 +93,7 @@
                 </div>
                 <div class="list-info f-12 c-8 flex-v-center">
                   <span v-if="slotProps.item.pv" class="list-info-num">
-                    <i v-tooltip:top="'阅读'">{{slotProps.item.pv}}</i>/<i v-tooltip:top="'评论'">{{slotProps.item.commentCount}}</i>/<i v-tooltip:top="'分享'">{{slotProps.item.shareCount}}</i>/<i v-tooltip:top="'点赞'">{{slotProps.item.diggCount}}</i>
+                    <i v-tooltip="'阅读'">{{slotProps.item.pv}}</i>/<i v-tooltip="'评论'">{{slotProps.item.commentCount}}</i>/<i v-tooltip="'分享'">{{slotProps.item.shareCount}}</i>/<i v-tooltip="'点赞'">{{slotProps.item.diggCount}}</i>
                   </span>
                   <span class="flex-item"></span>
                   <!--<i class="icon f-14 tg-icon c-a" :class="{ active: ~~slotProps.item.terminalPc }">computer</i>-->
@@ -104,14 +114,24 @@
     <div class="af-right flex-item flex-col">
       <div class="af-topbar flex-v-center">
         <div class="flex-v-center" v-if="id">
-          <icon-btn v-tooltip:bottom="'审核通过'" style="margin-right: 10px;" color="#4caf50" @click="audit('PASS')">check_circle_outline</icon-btn>
-          <icon-btn v-tooltip:bottom="'审核驳回'" color="#ff5252" @click="audit('REJECT')">error_outline</icon-btn>
+          <icon-btn v-if="$route.query.status === 'AUDITING' || status" v-tooltip:bottom="'审核通过'" style="margin-right: 10px;" color="#4caf50" @click="audit('PASS')">check_circle_outline</icon-btn>
+          <icon-btn v-if="$route.query.status === 'AUDITING' || status" v-tooltip:bottom="'审核驳回'" color="#ff5252" @click="rejectMessage = '';ui.rejectShow = true;">error_outline</icon-btn>
         </div>
         <div class="flex-item"></div>
         <account/>
       </div>
-      <router-view :channels="ui.channels"></router-view>
+      <router-view :channels="ui.channels" ref="content"></router-view>
     </div>
+
+    <layer v-if="ui.rejectShow" title="审核驳回" width="600px">
+      <div class="layer-text">
+        <input-box multi-line rows="10" label="请输入驳回理由" v-model="rejectMessage"/>
+      </div>
+      <div class="layer-btns">
+        <btn flat @click="ui.rejectShow = false">取消</btn>
+        <btn flat color="#008eff" @click="audit('REJECT')">确定</btn>
+      </div>
+    </layer>
   </div>
 </template>
 
@@ -136,6 +156,7 @@ export default {
         getUrl: '/cri-cms-platform/audit/get.monitor',
         status,
         searchOptionShow: false,
+        searchAppShow: false,
         channelShow: false, // 栏目
         orderShow: false, // 排序
         channels: [],
@@ -152,7 +173,20 @@ export default {
           {id: 'abstracts', name: '摘要'},
           {id: 'author', name: '作者'}
         ],
-        totalPage: 1
+        appList: [
+          {id: '', name: '全部'},
+          {id: 'ARTICLE', name: '文章'},
+          {id: 'GALLERY', name: '图集'},
+          {id: 'VIDEO', name: '视频'},
+          {id: 'AUDIO', name: '音频'},
+          {id: 'SPECIAL', name: '专题'},
+          {id: 'LINK', name: '链接'},
+          {id: 'ECOMMERCE', name: '电商'},
+          {id: 'LIVE', name: '直播'},
+          {id: 'VOTE', name: '投票'}
+        ],
+        totalPage: 1,
+        rejectShow: false
       },
       filter: {
         status: 'all',
@@ -162,6 +196,7 @@ export default {
         order: 'desc',
         searchby: 'title',
         search: '',
+        app: '',
         // terminalPc: '',
         // terminalApp: '',
         // terminalWeb: '',
@@ -169,7 +204,8 @@ export default {
         recommend: ''
       },
       list: [],
-      channels: []
+      channels: [],
+      rejectMessage: ''
     }
   },
   computed: {
@@ -178,14 +214,25 @@ export default {
       name = name || ''
       let { status } = this.$route.query
       if (status) {
-        return `${status}`
+        return status
       }
       return name.replace('Content', '')
     },
     searchByName () {
       let item = this.ui.searchby.find(item => item.id === this.filter.searchby)
       if (item) return item.name
-      return '---'
+      return '--'
+    },
+    searchApp () {
+      let item = this.ui.appList.find(item => item.id === this.filter.app)
+      if (item) return item.name
+      return '--'
+    },
+    status () {
+      if (!this.list.length || !this.id) return false
+      let item = this.list.find(v => v.id === this.id)
+      if (item && item.auditStatus === 'AUDITING') return true
+      return false
     }
   },
   methods: {
@@ -194,26 +241,25 @@ export default {
       if (refresh) filter.toPage = 1
       this.$refs.listView.loading = true
       this.$http.post('/cri-cms-platform/audit/list.monitor', filter).then(res => {
-        console.log(res)
         this.list = res.pages || []
         for (let i = 0; i < this.list.length; i++) {
-          if (this.list[i].app && this.list[i].app == 'SPECIAL') {
+          if (this.list[i].app && this.list[i].app === 'SPECIAL') {
             this.list[i].appname = '专题'
-          } else if (this.list[i].app == 'VIDEO') {
+          } else if (this.list[i].app === 'VIDEO') {
             this.list[i].appname = '视频'
-          } else if (this.list[i].app == 'ARTICLE') {
+          } else if (this.list[i].app === 'ARTICLE') {
             this.list[i].appname = '文章'
-          } else if (this.list[i].app == 'AUDIO') {
+          } else if (this.list[i].app === 'AUDIO') {
             this.list[i].appname = '音频'
-          } else if (this.list[i].app == 'LIVE') {
+          } else if (this.list[i].app === 'LIVE') {
             this.list[i].appname = '直播'
-          } else if (this.list[i].app == 'ECOMMERCE') {
+          } else if (this.list[i].app === 'ECOMMERCE') {
             this.list[i].appname = '电商'
-          } else if (this.list[i].app == 'LINK') {
+          } else if (this.list[i].app === 'LINK') {
             this.list[i].appname = '连接'
-          } else if (this.list[i].app == 'GALLERY') {
+          } else if (this.list[i].app === 'GALLERY') {
             this.list[i].appname = '图集'
-          } else if (this.list[i].app == 'VOTE') {
+          } else if (this.list[i].app === 'VOTE') {
             this.list[i].appname = '投票'
           }
         }
@@ -250,10 +296,13 @@ export default {
       })
     },
     audit (status) {
-      this.$http.post('/cri-cms-platform/audit/audit.monitor', {
+      let data = {
         id: this.id,
         auditStatus: status
-      }).then(res => {
+      }
+      if (status === 'REJECT') data.rejectMessage = this.rejectMessage
+      this.$http.post('/cri-cms-platform/audit/audit.monitor', data).then(res => {
+        this.ui.rejectShow = false
         this.getList()
         this.$router.replace({path: '/audit', query: this.$route.query})
         this.$toast(`审核${this.ui.status[status].text}`)
@@ -264,9 +313,9 @@ export default {
   },
   created () {
     let { filter } = this
-    let query = this.$route.query
-    if (query.status !== filter.status) {
-      filter.status = query.status
+    let { status } = this.$route.query
+    if (status !== filter.status) {
+      filter.status = status
     }
     this.getChannels().then(() => this.getList())
   },
@@ -293,6 +342,10 @@ export default {
     'filter.searchby' () {
       this.ui.searchOptionShow = false
       if (this.filter.search) this.getList(true)
+    },
+    'filter.app' () {
+      this.ui.searchAppShow = false
+      this.getList(true)
     }
   }
 }

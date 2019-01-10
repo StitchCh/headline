@@ -202,16 +202,13 @@ export default {
       this.$http.post('/cri-cms-platform/video/getChannels.monitor').then(res => {
         this.ui.channels = res || []
         this.getend = true
-      }).catch(e => {
-        console.log(e)
-      })
+      }).catch(console.log)
     }
   },
   created () {
     this.getChannels()
     if (this.res) {
       let { form, res } = this
-      console.log(res)
       for (let k in this.form) {
         if (k === 'virtualComment') {
           if (res.video[k] === '') {
@@ -222,7 +219,6 @@ export default {
           continue
         }
         if (k === 'thumb') {
-          res.video.thumb = JSON.parse(res.video.thumb)
           this.thumb.thumb1 = res.video.thumb[0]
           this.thumb.thumb2 = res.video.thumb[1]
           this.thumb.thumb3 = res.video.thumb[2]
@@ -247,7 +243,6 @@ export default {
   },
   watch: {
     'thumb.thumb1' (newValue) {
-      console.log(newValue)
       if (this.form.thumbType === 2) {
         if (!(newValue || this.thumb.thumb2 || this.thumb.thumb3)) {
           this.form.hasThumb = 0

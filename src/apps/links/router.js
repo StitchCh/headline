@@ -1,7 +1,7 @@
 export default [{
   path: '/links',
   component: resolve => require(['@/apps/links/index.vue'], resolve),
-  meta: { level: 2, title: '音频', identifier: 'links' },
+  meta: { level: 2, title: '链接', identifier: 'links' },
   children: [
     {
       path: '/',
@@ -33,12 +33,13 @@ export default [{
       ]
     },
     {
-      path: 'tile',
-      name: 'LinksTile',
-      component: resolve => require(['@/apps/links/tile/index.vue'], resolve)
+      path: 'draft',
+      name: 'LinksDraft',
+      component: resolve => require(['@/apps/links/draft/index.vue'], resolve)
     },
     {
       path: 'reject',
+      name: 'LinksReject',
       component: resolve => require(['@/apps/links/reject/index.vue'], resolve)
     },
     {
@@ -66,5 +67,5 @@ export default [{
   name: 'LinksEdit',
   component: resolve => require(['@/apps/links/add.vue'], resolve),
   props: true,
-  meta: { level: 3, title: '添加连接', identifier: 'links_edit' }
+  meta: { level: 3, title: '编辑连接', identifier: 'links_edit' }
 }]

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-item flex-col ecommerce-reject">
+  <div class="flex-item flex-col video-reject">
     <div class="af-topbar flex-v-center">
       <div class="flex-item"></div>
       <account/>
@@ -16,7 +16,7 @@
           <no-data/>
         </div>
         <ul class="flex" ref="ul" style="flex-wrap: wrap;padding-bottom: 50px;" :style="{paddingLeft: (width - (240 * ~~((width - 80) / 240))) * 0.5 + 'px'}">
-          <li v-for="item in list" :key="item.id" class="a" @click="$router.push('/ecommerceEdit/ecommerce/' + item.id)">
+          <li v-for="item in list" :key="item.id" class="a" @click="$router.push('/videoEdit/video/' + item.id)">
             <div class="cover flex-center relative">
               <img v-if="item.thumb && item.thumb.length" :src="item.thumb[0].url" alt="">
               <div class="abs message c-6 bg-f">
@@ -45,7 +45,7 @@
 import Account from '@/components/account'
 
 export default {
-  name: 'app-ecommerce-reject',
+  name: 'app-video-reject',
   components: { Account },
   data () {
     return {
@@ -53,6 +53,7 @@ export default {
       width: 0,
       list: [],
       filter: {
+        scope: 'my',
         status: 'REJECT',
         pageSize: 30,
         toPage: 1,
@@ -84,8 +85,8 @@ export default {
         btns: ['取消', '删除'],
         color: 'red',
         yes () {
-          that.$http.post('/cri-cms-platform/ecommerce/delete.monitor', {id: item.id}).then(
-            res => {
+          that.$http.post('/cri-cms-platform/video/del.monitor', {id: item.id}).then(
+            () => {
               that.getList()
             }
           )
@@ -95,7 +96,7 @@ export default {
     getList (refresh) {
       this.loading = true
       if (refresh) this.filter.toPage = 1
-      this.$http.post('/cri-cms-platform/ecommerce/list.monitor', this.filter).then(res => {
+      this.$http.post('/cri-cms-platform/video/queryList.monitor', this.filter).then(res => {
         this.list = res.pages || []
         this.totalPage = res.totalPage
         this.loading = false
@@ -110,7 +111,7 @@ export default {
 </script>
 
 <style lang="less">
-  .ecommerce-reject{
+  .video-reject{
     .search{width: 300px;line-height: 32px;border:1px solid #ddd;border-radius: 20px;padding: 0 20px;}
     .box {
       li{width: 210px;margin: 15px;box-shadow: 0 0 0 1px rgba(0, 0, 0, .1);border-radius: 6px;overflow: hidden;transition: box-shadow .3s;

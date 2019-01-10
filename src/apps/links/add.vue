@@ -240,7 +240,6 @@ export default {
         // app: 'ARTICLE',
         title: '',
         titleColor: '',
-        hasThumb: 1,
         // content: '',
         channelIds: '',
         // galleryId: '',
@@ -270,7 +269,7 @@ export default {
         virtualDigg: '',
         hasThumb: 0,
         // thumbType: 1,
-        thumb: '',
+        thumb: ''
         // terminalPc: 0,
         // terminalApp: 0,
         // terminalWeb: 0
@@ -306,9 +305,7 @@ export default {
       this.$http.post('/cri-cms-platform/link/getChannels.monitor').then(res => {
         this.ui.channels = res || []
         this.getend = true
-      }).catch(e => {
-        console.log(e)
-      })
+      }).catch(console.log)
     },
     getKeyGenerate () {
       if (this.from || this.id) return

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-item flex-col article-tile">
+  <div class="flex-item flex-col vote-draft">
     <div class="af-topbar flex-v-center">
       <div class="flex-item"></div>
       <account/>
@@ -16,7 +16,7 @@
           <no-data/>
         </div>
         <ul class="flex" ref="ul" style="flex-wrap: wrap;padding-bottom: 50px;" :style="{paddingLeft: (width - (240 * ~~((width - 80) / 240))) * 0.5 + 'px'}">
-          <li v-for="item in list" :key="item.id" class="a" @click="$router.push(`/ecommerceEdit/draft/${item.id}`)">
+          <li v-for="item in list" :key="item.id" class="a" @click="$router.push(`/voteEdit/draft/${item.id}`)">
             <div class="cover flex-center">
               <img v-if="item.thumb && item.thumb.length" :src="item.thumb[0].url" alt="">
             </div>
@@ -38,7 +38,7 @@
 import Account from '@/components/account'
 
 export default {
-  name: 'app-article-tile',
+  name: 'app-vote-draft',
   components: { Account },
   data () {
     return {
@@ -46,10 +46,9 @@ export default {
       width: 0,
       list: [],
       filter: {
+        app: 'VOTE',
         pageSize: 30,
         toPage: 1,
-        orderby: 'create_date',
-        order: 'desc',
         searchby: '',
         search: 'title'
       }
@@ -90,6 +89,7 @@ export default {
       if (refresh) this.filter.toPage = 1
       this.$http.post('/cri-cms-platform/articleAutoSave/listAuto.monitor', this.filter).then(res => {
         this.list = res.pages || []
+        this.totalPage = res.totalPage
         this.loading = false
       }).catch(e => {
         console.log(e)
@@ -100,7 +100,7 @@ export default {
 </script>
 
 <style lang="less">
-.article-tile{
+.vote-draft{
   .search{width: 300px;line-height: 32px;border:1px solid #ddd;border-radius: 20px;padding: 0 20px;}
   li{width: 210px;margin: 15px;box-shadow: 0 0 0 1px rgba(0, 0, 0, .1);border-radius: 6px;overflow: hidden;transition: box-shadow .3s;}
   li:hover{box-shadow: 0 0 3px 1px rgba(0, 0, 0, .05), 0 10px 30px rgba(0, 0, 0, .15);

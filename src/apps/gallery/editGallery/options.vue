@@ -11,7 +11,7 @@
         </bubble>
       </div>
       <div class="option-item flex-v-center">
-        <icon-btn small v-tooltip:top="'推荐'" :class="{ active: form.isRecommnd }" @click="form.isRecommnd = ~~!form.isRecommnd">thumb_up</icon-btn>
+        <icon-btn small v-tooltip="'推荐'" :class="{ active: form.isRecommnd }" @click="form.isRecommnd = ~~!form.isRecommnd">thumb_up</icon-btn>
         <span class="flex-item"></span>
         <!--<icon-btn small v-tooltip:top="'发布到 PC 页面'" :class="{ active: form.terminalPc }" @click="form.terminalPc = ~~!form.terminalPc">computer</icon-btn>-->
         <!--<icon-btn small v-tooltip:top="'发布到客户端'" :class="{ active: form.terminalApp }" @click="form.terminalApp = ~~!form.terminalApp">phone_iphone</icon-btn>-->
@@ -157,7 +157,7 @@ export default {
         virtualDigg: '',
         hasThumb: 0,
         thumbType: 2,
-        thumb: '',
+        thumb: ''
         // terminalPc: 0,
         // terminalApp: 0,
         // terminalWeb: 0
@@ -192,16 +192,13 @@ export default {
       this.$http.post('/cri-cms-platform/gallery/getChannels.monitor').then(res => {
         this.ui.channels = res || []
         this.getend = true
-      }).catch(e => {
-        console.log(e)
-      })
+      }).catch(console.log)
     }
   },
   created () {
     this.getChannels()
     if (this.res) {
       let { form, res } = this
-      console.log(res)
       for (let k in this.form) {
         if (k === 'virtualComment') {
           if (res.content[k] === '') {
@@ -212,7 +209,6 @@ export default {
           continue
         }
         if (k === 'thumb') {
-          console.log('a')
           this.thumb.thumb1 = res.content.thumb[0]
           this.thumb.thumb2 = res.content.thumb[1]
           this.thumb.thumb3 = res.content.thumb[2]
@@ -273,7 +269,7 @@ export default {
         this.form.hasThumb = 1
         this.form.thumb = [ this.thumb.thumb1, this.thumb.thumb2, newValue ].filter(v => v).map(v => v.id).join(',')
       }
-    },
+    }
     // 'form.thumbType' (newValue) {
     //   if (newValue === 2) {
     //     if (!(this.thumb.thumb1 || this.thumb.thumb2 || this.thumb.thumb3)) {

@@ -48,6 +48,11 @@ export default [
         ]
       },
       {
+        path: 'reject',
+        name: 'VideoReject',
+        component: resolve => require(['@/apps/videos/reject/index.vue'], resolve)
+      },
+      {
         path: 'draft',
         name: 'VideoDraft',
         component: resolve => require(['@/apps/videos/draft/index.vue'], resolve)

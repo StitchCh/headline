@@ -34,13 +34,14 @@ export default [{
       ]
     },
     {
-      path: 'tile',
-      name: 'ArticleTile',
-      component: resolve => require(['@/apps/article/tile/index.vue'], resolve)
+      path: 'reject',
+      name: 'ArticleReject',
+      component: resolve => require(['@/apps/article/reject/index.vue'], resolve)
     },
     {
-      path: 'reject',
-      component: resolve => require(['@/apps/article/reject/index.vue'], resolve)
+      path: 'draft',
+      name: 'ArticleDraft',
+      component: resolve => require(['@/apps/article/draft/index.vue'], resolve)
     },
     {
       path: 'recycle',

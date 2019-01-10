@@ -39,6 +39,7 @@ export default [{
     },
     {
       path: 'reject',
+      name: 'SpecialReject',
       component: resolve => require(['@/apps/special/reject/index.vue'], resolve)
     },
     {

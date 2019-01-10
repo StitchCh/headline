@@ -20,7 +20,7 @@
   </div>
   <!--<quill-editor v-model="content" ref="editor" :options="options" @change="getKeyGenerate"/>-->
   <div>
-    <vue-ueditor-wrap v-model="content" ref="editor" :config="config" destroy @ready="ready"/>
+    <vue-ueditor-wrap v-model="content" ref="editor" :config="config" :destroy="true" @ready="ready"/>
   </div>
 
   <layer v-if="ui.imageSelectorShow" title="选择图片"  width="800px">
@@ -56,10 +56,6 @@
 </template>
 
 <script>
-// import 'quill/dist/quill.core.css'
-// import 'quill/dist/quill.snow.css'
-// import { Quill, quillEditor } from 'vue-quill-editor'
-// import ImageResize from 'quill-image-resize-module'
 import VueUeditorWrap from 'vue-ueditor-wrap'
 import debounce from 'lodash/debounce'
 import MediaPhotos from '../medialibrary/pages/photos'
@@ -67,7 +63,7 @@ import MediaVideos from '../medialibrary/pages/videos'
 import MediaAudios from '../medialibrary/pages/audios'
 
 // Quill.register('modules/imageResize', ImageResize)
-
+console.log(window.innerHeight)
 export default {
   name: 'article-editor',
   components: { VueUeditorWrap, MediaPhotos, MediaVideos, MediaAudios },
@@ -150,58 +146,14 @@ export default {
         },
         wordCount: false,
         autoHeightEnabled: false,
-        initialFrameHeight: 400
+        initialFrameHeight: window.innerHeight - 250,
+        autoTypeSet: {
+          indent: true,
+          removeEmptyNode: false
+        }
+        // serverUrl: '/cri-cms-platform/media/uploadIAU.monitor'
+        // imageUrlPrefix: '/cri-cms-platform/media/uploadIAU.monitor'
       }
-      // options: {
-      //   theme: 'snow',
-      //   placeholder: '请输入内容',
-      //   modules: {
-      //     toolbar: {
-      //       container: [
-      //         [{ 'header': [2, 3, 4, false] }],
-      //         ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-      //         ['blockquote', 'code-block', 'link', 'image', 'video', 'audio'],
-      //         // [{ 'header': 1 }, { 'header': 2 }], // custom button values
-      //         [{'list': 'ordered'}, {'list': 'bullet'}],
-      //         // [{ 'script': 'sub'}, { 'script': 'super' }], // superscript/subscript
-      //         [{'indent': '-1'}, {'indent': '+1'}, {'align': []}], // outdent/indent
-      //         // [{ 'direction': 'rtl' }], // text direction
-      //         [{'size': ['small', false, 'large', 'huge']}],
-      //         [{'color': []}, {'background': []}], // dropdown with defaults from theme
-      //         ['clean'] // remove formatting button
-      //       ],
-      //       handlers: {
-      //         'image' (value) {
-      //           if (value) {
-      //             that.ui.index = this.quill.getSelection().index
-      //             that.ui.imageSelectorShow = true
-      //           } else {
-      //             this.quill.format('image', false)
-      //           }
-      //         },
-      //         'video' (value) {
-      //           if (value) {
-      //             that.ui.index = this.quill.getSelection().index
-      //             that.ui.videoSelectorShow = true
-      //           } else {
-      //             this.quill.format('video', false)
-      //           }
-      //         },
-      //         'audio' () {
-      //           that.$toast()
-      //         }
-      //       }
-      //     },
-      //     imageResize: {
-      //       displayStyles: {
-      //         backgroundColor: 'black',
-      //         border: 'none',
-      //         color: 'white'
-      //       },
-      //       modules: [ 'Resize', 'DisplaySize', 'Toolbar' ]
-      //     }
-      //   }
-      // }
     }
   },
   methods: {
