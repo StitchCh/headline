@@ -7,7 +7,7 @@
     <navigator-item icon="check_circle" index="PASS" @click="$router.replace('/article/list?status=PASS')">已审</navigator-item>
     <navigator-item icon="hourglass_full" index="AUDITING" @click="$router.replace('/article/list?status=AUDITING')">待审</navigator-item>
     <navigator-item icon="error" index="ArticleReject" @click="$router.replace('/article/reject')">驳回</navigator-item>
-    <navigator-item icon="class" index="ArticleTile" @click="$router.replace('/article/tile')">草稿</navigator-item>
+    <navigator-item icon="class" index="ArticleTile" @click="$router.replace('/article/draft')">草稿</navigator-item>
     <!-- </navigator-item-group> -->
     <navigator-item icon="delete" index="ArticleRecycle" @click="$router.replace('/article/recycle')">回收站</navigator-item>
   </af-left>

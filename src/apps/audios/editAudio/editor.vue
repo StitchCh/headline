@@ -37,7 +37,7 @@
     </div>
 
     <layer v-if="ui.audioSelectorShow" title="选择视频"  width="800px">
-      <div class="layer-text relative" style="height: 800px;">
+      <div class="layer-text relative w100h100" style="height: 800px;">
         <media-audios select-mode ref="mediaAudios" single-select/>
       </div>
       <div class="layer-btns">

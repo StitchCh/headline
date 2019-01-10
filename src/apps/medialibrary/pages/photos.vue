@@ -1,7 +1,7 @@
 <template>
 <div class="abs flex-item flex media-photos">
   <media-left-tree :select-mode="selectMode" @changeFolder="getList"/>
-  <div class="flex-item flex-col">
+  <div class="flex-item flex-col w100h100">
     <div class="af-topbar flex-v-center" style="height:36px;">
       <div class="search-bar flex-v-center">
         <i class="icon f-20 c-a">search</i>
@@ -58,7 +58,7 @@
             v-for="item in group.data"
             :key="item.id"
             :class="{'checked': item.checked}"
-            :style="{width: item.width * 150 / item.height + 'px', height: '150px'}">
+            :style="{width: item.width * 100 / item.height + 'px', height: '100px'}">
             <i class="icon item-check a" @click="selectItem(item)">check_circle</i>
             <img :src="imgOrigin + item.filePath + item.fileName" @click="onItemClick(item)">
             <div class="img-name c-f f-12">{{item.alias}}</div>

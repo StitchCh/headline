@@ -41,11 +41,20 @@ export default {
 <style lang="less">
 #app{min-width: 1000px;height: 100%;background: #f8f8f8;}
 #app.showBg{background: linear-gradient(#002d70, #0097a1);}
-  .app-article-add-thumb .layer-ctn{
-    width: 1100px !important;
-    max-width: 1100px !important;
+  .app-article-add-thumb .layer-ctn, .w100h100{
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    border-radius: 0 !important;
   }
 .app-article-add-thumb .layer-ctn .layer-text{
   width: 100% !important;
 }
+  input{
+    font-family: Microsoft Yahei !important;
+  }
+  textarea{
+    font-family: Microsoft Yahei !important;
+  }
 </style>

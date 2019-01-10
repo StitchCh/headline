@@ -50,7 +50,8 @@ export default {
   },
   methods: {
     toApp (app) {
-      if (this.$route.path.indexOf(app.path) >= 0) {
+      let opath = app.path.split('/')[1]
+      if (this.$route.path.indexOf(opath) >= 0) {
         this.show = false
         return
       }
