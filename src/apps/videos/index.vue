@@ -7,7 +7,7 @@
     <span slot="title">我的</span> -->
     <navigator-item icon="check_circle" index="my-all" @click="$router.replace('/video/list?scope=my&status=PASS')">已审</navigator-item>
     <navigator-item icon="hourglass_full" index="my-AUDITING" @click="$router.replace('/video/list?scope=my&status=AUDITING')">待审</navigator-item>
-    <navigator-item icon="error" index="my-REJECT" @click="$router.replace('/video/list?scope=my&status=REJECT')">驳回</navigator-item>
+    <navigator-item icon="error" index="VideoReject" @click="$router.replace('/video/reject')">驳回</navigator-item>
     <navigator-item icon="class" index="VideoDraft" @click="$router.replace('/video/draft')">草稿</navigator-item>
     <!-- </navigator-item-group> -->
     <navigator-item icon="delete" index="VideoRecycle" @click="$router.replace('/video/recycle')">回收站</navigator-item>

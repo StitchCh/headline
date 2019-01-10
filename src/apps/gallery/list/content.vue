@@ -25,7 +25,7 @@
                   <div class="bg-e">
                     <img :src="item.url">
                   </div>
-                  <div class="description">{{item.description}}</div>
+                  <div class="description" v-if="item.description">{{item.description}}</div>
                 </div>
               </div>
               <div class="flex-item column">
@@ -33,7 +33,7 @@
                   <div class="bg-e">
                     <img :src="item.url">
                   </div>
-                  <div class="description">{{item.description}}</div>
+                  <div class="description" v-if="item.description">{{item.description}}</div>
                 </div>
               </div>
               <div class="flex-item column">
@@ -41,7 +41,7 @@
                   <div class="bg-e">
                     <img :src="item.url">
                   </div>
-                  <div class="description">{{item.description}}</div>
+                  <div class="description" v-if="item.description">{{item.description}}</div>
                 </div>
               </div>
             </div>
@@ -189,9 +189,9 @@ export default {
     a:hover{text-decoration: underline;}
   }
   .column+.column {margin-left: 12px;}
-  .gallery-item {
+  .gallery-item {margin-bottom: 12px;width: 100%;border: 1px solid #eee;
     img {width: 100%;}
-    .description {padding: 8px;font-size: 14px;margin-bottom: 12px;width: 100%;border: 1px solid #eee;border-top-width: 0;}
+    .description {padding: 8px;font-size: 14px;}
   }
 }
 .thumb-cover {position: fixed;left: 0;right: 0;top: 0;bottom: 0;background: rgba(0, 0, 0, .7);z-index: 99;text-align: center;

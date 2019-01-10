@@ -40,6 +40,7 @@ export default [{
     },
     {
       path: 'reject',
+      name: 'ArticleReject',
       component: resolve => require(['@/apps/article/reject/index.vue'], resolve)
     },
     {

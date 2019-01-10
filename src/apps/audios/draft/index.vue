@@ -31,6 +31,9 @@
         </ul>
       </div>
     </div>
+    <div class="af-bottombar flex-center">
+      <pagination v-if="totalPage" :size="filter.pageSize" :total="filter.pageSize * totalPage" :page="filter.toPage" @change="onPageChange"/>
+    </div>
   </div>
 </template>
 
@@ -53,7 +56,8 @@ export default {
         order: 'desc',
         searchby: '',
         search: 'title'
-      }
+      },
+      totalPage: 1
     }
   },
   methods: {
@@ -85,6 +89,10 @@ export default {
           )
         }
       })
+    },
+    onPageChange (e) {
+      this.filter.toPage = parseInt(e)
+      this.getList()
     }
   },
   created () {
@@ -103,14 +111,16 @@ export default {
 <style lang="less">
 .audio-draft {
   .search{width: 300px;line-height: 32px;border:1px solid #ddd;border-radius: 20px;padding: 0 20px;}
-  li{width: 210px;margin: 15px;box-shadow: 0 0 0 1px rgba(0, 0, 0, .1);border-radius: 6px;overflow: hidden;transition: box-shadow .3s;}
-  li:hover{box-shadow: 0 0 3px 1px rgba(0, 0, 0, .05), 0 10px 30px rgba(0, 0, 0, .15);
-    .icon{color: rgb(255, 115, 115);}
+  .box {
+    li{width: 210px;margin: 15px;box-shadow: 0 0 0 1px rgba(0, 0, 0, .1);border-radius: 6px;overflow: hidden;transition: box-shadow .3s;}
+    li:hover{box-shadow: 0 0 3px 1px rgba(0, 0, 0, .05), 0 10px 30px rgba(0, 0, 0, .15);
+      .icon{color: rgb(255, 115, 115);}
+    }
+    .cover{width: 210px;height: 210px;background: #eee;
+      img{max-height: 100%;}
+    }
+    .item-info{padding: 10px;}
+    .item-name{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
   }
-  .cover{width: 210px;height: 210px;background: #eee;
-    img{max-height: 100%;}
-  }
-  .item-info{padding: 10px;}
-  .item-name{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
 }
 </style>

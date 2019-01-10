@@ -34,6 +34,11 @@ export default [
         ]
       },
       {
+        path: 'reject',
+        name: 'GalleryReject',
+        component: resolve => require(['@/apps/gallery/reject/index.vue'], resolve)
+      },
+      {
         path: 'draft',
         name: 'GalleryDraft',
         component: resolve => require(['@/apps/gallery/draft/index.vue'], resolve)

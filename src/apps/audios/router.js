@@ -48,6 +48,11 @@ export default [
         ]
       },
       {
+        path: 'reject',
+        name: 'AudioReject',
+        component: resolve => require(['@/apps/audios/reject/index.vue'], resolve)
+      },
+      {
         path: 'draft',
         name: 'AudioDraft',
         component: resolve => require(['@/apps/audios/draft/index.vue'], resolve)

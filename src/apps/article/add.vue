@@ -229,7 +229,7 @@ export default {
       form: {
         app: 'ARTICLE',
         title: '',
-        hasThumb: 1,
+        hasThumb: 0,
         titleColor: '',
         content: '',
         channelIds: '',
