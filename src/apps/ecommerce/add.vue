@@ -229,9 +229,8 @@ export default {
       },
       getif: false,
       form: {
-        hasThumb: 1,
         ecommerceUrl: '',
-        app: 'ARTICLE',
+        app: 'ECOMMERCE',
         title: '',
         titleColor: '',
         content: '',
@@ -321,7 +320,7 @@ export default {
       this.form.title = title
       this.form.titleColor = titleColor
       this.form.content = content
-      this.from.ecommerceUrl = ecommerceUrl
+      this.form.ecommerceUrl = ecommerceUrl
       let form = {...this.form}
       if (this.autoSaveId) form.id = this.autoSaveId
       return this.$http.post('/cri-cms-platform/articleAutoSave/saveAuto.monitor', form).then(
@@ -393,7 +392,8 @@ export default {
       this.ui.loading = true
       if (this.from === 'draft') this.autoSaveId = this.id
       this.$http.post(from[this.from].getUrl, {
-        id: this.id
+        id: this.id,
+        app: 'ECOMMERCE'
       }).then(res => {
         console.log(res)
         for (let k in this.form) {

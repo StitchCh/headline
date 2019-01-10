@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-item flex-col article-tile">
+  <div class="flex-item flex-col ecommerce-draft">
     <div class="af-topbar flex-v-center">
       <div class="flex-item"></div>
       <account/>
@@ -16,7 +16,7 @@
           <no-data/>
         </div>
         <ul class="flex" ref="ul" style="flex-wrap: wrap;padding-bottom: 50px;" :style="{paddingLeft: (width - (240 * ~~((width - 80) / 240))) * 0.5 + 'px'}">
-          <li v-for="item in list" :key="item.id" class="a" @click="$router.push(`/articleEdit/draft/${item.id}`)">
+          <li v-for="item in list" :key="item.id" class="a" @click="$router.push(`/ecommerceEdit/draft/${item.id}`)">
             <div class="cover flex-center">
               <img v-if="item.thumb && item.thumb.length" :src="item.thumb[0].url" alt="">
             </div>
@@ -41,7 +41,7 @@
 import Account from '@/components/account'
 
 export default {
-  name: 'app-article-tile',
+  name: 'app-ecommerce-draft',
   components: { Account },
   data () {
     return {
@@ -49,6 +49,7 @@ export default {
       width: 0,
       list: [],
       filter: {
+        app: 'ECOMMERCE',
         pageSize: 30,
         toPage: 1,
         searchby: '',
@@ -107,7 +108,7 @@ export default {
 </script>
 
 <style lang="less">
-.article-tile{
+.ecommerce-draft{
   .search{width: 300px;line-height: 32px;border:1px solid #ddd;border-radius: 20px;padding: 0 20px;}
   .box {
     li{width: 210px;margin: 15px;box-shadow: 0 0 0 1px rgba(0, 0, 0, .1);border-radius: 6px;overflow: hidden;transition: box-shadow .3s;}

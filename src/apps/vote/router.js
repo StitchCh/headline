@@ -33,12 +33,13 @@ export default [{
       ]
     },
     {
-      path: 'tile',
+      path: 'draft',
       name: 'voteTile',
-      component: resolve => require(['@/apps/vote/tile/index.vue'], resolve)
+      component: resolve => require(['@/apps/vote/draft/index.vue'], resolve)
     },
     {
       path: 'reject',
+      name: 'VoteReject',
       component: resolve => require(['@/apps/vote/reject/index.vue'], resolve)
     },
     {

@@ -200,7 +200,6 @@ export default {
       if (refresh) filter.toPage = 1
       this.$refs.listView.loading = true
       this.$http.post(this.url, filter).then(res => {
-        console.log(res.totalRowsAmount)
         if (res.totalRowsAmount) {
           this.totalRowsAmount = res.totalRowsAmount
         }

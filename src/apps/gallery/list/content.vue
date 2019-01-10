@@ -148,7 +148,6 @@ export default {
         id: this.id
       }).then(
         res => {
-          console.log(res)
           this.content = res.content || {}
           if (res.gallery) {
             this.gallery = res.gallery
@@ -157,7 +156,7 @@ export default {
           this.channelIds = res.channelIds || ''
           this.loading = false
         }
-      )
+      ).catch(console.log)
     },
     getChannel (id) {
       let channel = this.channels.find(v => v.id === id)
