@@ -1,4 +1,4 @@
-export default {
+export default [{
   path: '/shop',
   component: resolve => require(['@/apps/shop/index.vue'], resolve),
   meta: { level: 2, title: '积分商城', identifier: 'shop' },
@@ -23,4 +23,9 @@ export default {
       component: resolve => require(['@/apps/shop/category/index.vue'], resolve)
     }
   ]
+}, {
+  path: '/shopAdd',
+  component: resolve => require(['@/apps/shop/product/add.vue'], resolve),
+  meta: { level: 3, title: '添加商品', identifier: 'shop' }
 }
+]
