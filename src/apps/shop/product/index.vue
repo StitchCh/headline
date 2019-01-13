@@ -1,17 +1,56 @@
 <template>
   <div class="flex-item flex-col">
     <div class="flex-item scroll-y" style="background: #eee;">
-      <div class="relative article-content c-6">
+      <div class="relative article-content c-6" style="max-width: 1200px;">
         <div class="flex-v-center product_top">
-          <div class="flex-v-center a">
+          <div class="flex-v-center a" @click="$router.push('/shopAdd')">
             <i class="icon">add_box</i><span style="padding-left: 4px;">添加商品</span>
           </div>
           <div>
-            <input type="text" class="search_input">
+            <input type="text" class="search_input" >
             <btn>搜索</btn>
           </div>
         </div>
 
+        <div class="setting-card f-14">
+          <table style="margin-bottom: 30px;">
+            <thead>
+              <th>序号</th>
+              <th>商品图片</th>
+              <th>商品名称</th>
+              <th>分类名称</th>
+              <th>商品价格</th>
+              <th>库存</th>
+              <th>创建日期</th>
+              <th colspan="4">操作</th>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in productList">
+                <td>{{index+1}}</td>
+                <td>
+                  <div class="imgbox">
+                    <img :src="item.pic1" alt="">
+                  </div>
+                </td>
+                <td>{{item.commodityName}}</td>
+                <td>{{item.typeName}}</td>
+                <td>{{item.commodityIntegral}}</td>
+                <td>{{item.inventoryNum}}</td>
+                <td>{{item.createDate}}</td>
+                <td>
+                  <icon-btn v-tooltip="'推荐'" small>thumb_up</icon-btn>
+                  <icon-btn v-tooltip="'删除'" small @click="removeItem()">delete</icon-btn>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="af-bottombar flex-center relative">
+            <icon-btn small class="a" @click="onPrev" :disabled="toPage <= 1">keyboard_arrow_left</icon-btn>
+            <span class="f-14 c-6" style="margin: 0 10px;line-height: 1em;">第 {{toPage}} / {{totalPage}} 页</span>
+            <icon-btn small class="a" @click="onNext" :disabled="toPage >= totalPage">keyboard_arrow_right</icon-btn>
+            <span v-if="totalRowsAmount" style="position:absolute; right: 10px;bottom: 8px;font-size: 12px;color: #999;">共 {{totalRowsAmount}} 项</span>
+          </div>
+        </div>
 
       </div>
     </div>
@@ -19,23 +58,58 @@
 </template>
 
 <script>
-  export default {
-    name: 'product',
-    data () {
-      return {
+export default {
+  name: 'product',
+  data () {
+    return {
+      toPage: 1,
+      totalPage: 1,
+      totalRowsAmount: false,
+      productList:[]
+    }
+  },
+  mounted () {
+    this.getList()
+  },
+  methods: {
+    removeItem () {
+      this.$confirm({
+        title: '您确定要删除商品吗？',
+        text: '删除后将无法恢复。',
+        btns: ['取消', '删除'],
+        color: 'red',
+        yes () {
 
-      }
+        },
+        no () {
+
+        }
+      })
+    },
+    getList () {
+      this.$http.post('/cri-cms-platform/mall/queryListCommodity.monitor').then(res => {
+        this.productList = res
+      })
+    },
+    onPrev () {
+
+    },
+    onNext () {
+
     }
   }
+}
 </script>
 
 <style scoped>
   .search_input{
     height: 25px;
-    width: 100px;
+    width: 200px;
+    padding: 0 10px;
   }
   .product_top{
     justify-content: space-between;
+    margin-bottom: 30px;
   }
   .a:hover{
     color: #318fff;
@@ -47,4 +121,8 @@
     padding: 20px;
     border-radius: 10px;
   }
+  .imgbox{
+    width: 100px;
+  }
+  .af-bottombar{display: flex;align-items: center;height: 40px;border-top: 1px solid rgba(0, 0, 0, .1);padding: 0 15px;}
 </style>
