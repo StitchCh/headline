@@ -3,6 +3,7 @@
     <af-center
       @add="$router.push('/linksAdd')"
       :status="$route.query.status"
+      @getListEnd="onItemClick"
       url="/cri-cms-platform/link/list.monitor"
       ref="afCenter">
 

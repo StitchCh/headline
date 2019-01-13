@@ -295,6 +295,7 @@ export default {
     },
     submit () {
       let url = this.id ? '/cri-cms-platform/live/update.monitor' : '/cri-cms-platform/live/save.monitor'
+      let reg = /^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/
 
       let { title, titleColor } = this.$refs.editor
       if (!title) {
@@ -303,6 +304,15 @@ export default {
       }
       if (!this.form.channelIds) {
         this.$toast('请选择栏目')
+        return
+      }
+
+      if (!this.form.liveSource && this.form.category != 'PICTURE') {
+        this.$toast('请输入直播源')
+        return
+      }
+      if (!reg.test(this.form.liveSource)) {
+        this.$toast('请输入正确格式的直播源地址')
         return
       }
       this.form.title = title

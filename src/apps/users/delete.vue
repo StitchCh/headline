@@ -26,7 +26,7 @@
               <td>{{index+1}}</td>
               <td>{{item.userName}}</td>
               <td>{{item.loginUserName}}</td>
-              <td>{{item.userStatus | status}}</td>
+              <td>{{item.userStatus == '00' ? '正常' : '停用'}}</td>
               <td>{{item.userLoginTime}}</td>
               <td>{{item.userLoginIp}}</td>
               <td style="width: 30px;"><icon-btn v-tooltip="'重置密码'" small @click.stop.native="backPassWd(item.id)">refresh</icon-btn></td>
@@ -44,10 +44,6 @@
         <table>
           <tbody>
             <tr>
-              <th align="right">用户ID</th>
-              <td>{{detail.sysUser.id}}</td>
-            </tr>
-            <tr>
               <th align="right">用户姓名</th>
               <td>{{detail.sysUser.userName}}</td>
             </tr>
@@ -56,16 +52,8 @@
               <td>{{detail.sysUser.loginUserName}}</td>
             </tr>
             <tr>
-              <th align="right">登录密码</th>
-              <td>{{detail.sysUser.loginUserPwd}}</td>
-            </tr>
-            <tr>
               <th align="right">用户状态</th>
-              <td>{{detail.sysUser.userStatus | status}}</td>
-            </tr>
-            <tr>
-              <th align="right">用户区域</th>
-              <td>{{detail.sysUser.userArea}}</td>
+              <td>{{detail.sysUser.userStatus == '00' ? '正常' : '停用'}}</td>
             </tr>
             <tr>
               <th align="right">用户手机</th>
@@ -86,14 +74,6 @@
             <tr>
               <th align="right">登录IP</th>
               <td>{{detail.sysUser.userLoginIp}}</td>
-            </tr>
-            <tr>
-              <th align="right">上次登录IP</th>
-              <td>{{detail.sysUser.userLastLoginIp}}</td>
-            </tr>
-            <tr>
-              <th align="right">用户ID</th>
-              <td>{{detail.sysUser.id}}</td>
             </tr>
             <tr>
               <th align="right">角色</th>
@@ -187,7 +167,7 @@ export default {
       this.$http.post('/cri-cms-platform/sysUser/queryList.monitor', {
         pageSize: 10,
         toPage: this.page,
-        userStatus: '02'
+        userStatus: '01'
       }).then(
         res => {
           console.log(res)
@@ -259,21 +239,23 @@ export default {
       )
     },
     backPassWd (id) {
+      let othis = this
       this.$confirm({
         title: '确定要重置用户密码？',
         text: '用户密码将恢复为初始密码',
         btns: ['取消', '重置'],
         color: 'red',
         yes () {
-          this.$http.post('/cri-cms-platform/sysUser/backPassWd.monitor', { id }).then(
+          othis.$http.post('/cri-cms-platform/sysUser/backPassWd.monitor', { id }).then(
             res => {
-              this.$toast('密码重置成功')
-              this.getList()
-              this.detailShow = false
+              console.log(res)
+              othis.$toast(res.msg)
+              othis.getList()
+              othis.detailShow = false
             }
           ).catch(
             res => {
-              this.$toast(res.msg)
+              othis.$toast(res.msg)
               console.log(res)
             }
           )
@@ -328,7 +310,7 @@ export default {
       this.$http.post('/cri-cms-platform/sysUser/queryList.monitor', {
         pageSize: 10,
         toPage: this.page,
-        userStatus: '02'
+        userStatus: '01'
       }),
       this.$http.post('/cri-cms-platform/sysUser/roles.monitor')
     ]).then(

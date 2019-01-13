@@ -17,7 +17,7 @@
         </div>
         <ul class="flex" ref="ul" style="flex-wrap: wrap;padding-bottom: 50px;" :style="{paddingLeft: (width - (240 * ~~((width - 80) / 240))) * 0.5 + 'px'}">
           <li v-for="item in list" :key="item.id" class="a" @click="$router.push('/articleEdit/article/' + item.id)">
-            <div class="cover flex-center relative">
+            <div class="cover flex-center relative">8
               <img v-if="item.thumb && item.thumb.length" :src="item.thumb[0].url" alt="">
               <div class="abs message c-6 bg-f">
                 <p>驳回信息：</p>

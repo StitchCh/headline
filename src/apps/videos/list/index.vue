@@ -3,6 +3,7 @@
     <af-center
       @add="$router.push('/videoAdd')"
       :status="$route.query.status"
+      @getListEnd="onItemClick"
       url="/cri-cms-platform/video/queryList.monitor"
       ref="afCenter">
       <div class="list-item flex-v-center a" slot-scope="slotProps" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.id == $route.params.id}">

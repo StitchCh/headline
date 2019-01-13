@@ -14,7 +14,7 @@
     </bubble>
   </div>
   <!--<notification/>-->
-  <layer v-if="logoutShow">
+  <layer v-if="logoutShow" :small="true">
     <div class="layer-text flex" style="padding-top: 20px;">
       <img class="log-out-logo" src="../assets/img/login-logo.png" alt="">
       <div class="flex-item">

@@ -120,6 +120,8 @@ export default {
     }
   },
   mounted () {
+    console.log(this.$route.query)
+    this.activeLayoutId = this.$route.query.typeId
     this.appTypeList = this.$store.state.account.appTypeList
   },
   created () {

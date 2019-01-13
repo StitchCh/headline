@@ -190,7 +190,6 @@ export default {
   },
   methods: {
     search () {
-      console.log(moment(this.searchTime[0]).format('YYYY-MM-DD'))
       this.loading = true
       this.$http.post('/cri-cms-platform/member/list.monitor', {
         pageSize: 15,

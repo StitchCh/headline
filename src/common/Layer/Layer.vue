@@ -2,7 +2,7 @@
 <transition name="fade" mode="out-in">
 <div class="layer" :class="{'layer-side': side, 'layer-transparent': transparent}">
   <div class="layer-mask" v-if="maskClick" @click="$emit('close')"></div>
-  <div class="layer-ctn" :style="{ width }">
+  <div class="layer-ctn" :class="{w100h100: !small}" :style="{ width }">
     <div v-if="title" class="layer-title">{{title}}</div>
     <slot v-else name="title"/>
     <slot/>
@@ -22,7 +22,8 @@ export default {
     width: { default: 'auto' },
     maskClick: Boolean,
     side: Boolean,
-    transparent: Boolean
+    transparent: Boolean,
+    small: Boolean
   },
   mounted () {
     // document.body.appendChild(this.$el)

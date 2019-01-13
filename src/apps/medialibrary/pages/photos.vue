@@ -1,18 +1,22 @@
 <template>
 <div class="abs flex-item flex media-photos">
   <media-left-tree :select-mode="selectMode" @changeFolder="getList"/>
-  <div class="flex-item flex-col">
+  <div class="flex-item flex-col w100h100">
     <div class="af-topbar flex-v-center" style="height:36px;">
       <div class="search-bar flex-v-center">
         <i class="icon f-20 c-a">search</i>
         <input style="width: 100px;margin-right: 10px;" v-model="secrchName" type="text" class="f-14 c-6" placeholder="输入图片名称">
-        <span style="cursor: pointer;color: #0299ff;" @click="getList">搜索</span>
+        <vue-datepicker-local v-model="searchTime" format="YYYY-MM-DD" show-buttons></vue-datepicker-local>
+        <span style="cursor: pointer;color: #0299ff;margin-left: 10px;" @click="getList">搜索</span>
       </div>
+
       <div class="flex-item"></div>
       <span class="f-14" v-if="selected.length" style="margin-right: 10px;">已选择 {{selected.length}} 项</span>
       <btn flat v-if="selected.length" color="#008eff" @click="cancelSelect">取消选择</btn>
+
+      <!--<btn style="margin-left: 10px;" @click="search">搜索</btn>-->
       <div class="relative" style="padding: 0 4px;">
-        <p @click="scaleshow = true" style="cursor: pointer;color: #0299ff;">筛选</p>
+        <btn @click="scaleshow = true" color="#008eff" flat>筛选</btn>
         <bubble v-if="scaleshow" @close="scaleshow = false">
           <ul class="f-14 c-5" style="padding: 4px 0;width: 60px;text-align: center;line-height: 24px;">
             <li class="a flex-v-center listhover" @click="setScale('all')">
@@ -54,7 +58,7 @@
             v-for="item in group.data"
             :key="item.id"
             :class="{'checked': item.checked}"
-            :style="{width: item.width * 150 / item.height + 'px', height: '150px'}">
+            :style="{width: item.width * 100 / item.height + 'px', height: '100px'}">
             <i class="icon item-check a" @click="selectItem(item)">check_circle</i>
             <img :src="imgOrigin + item.filePath + item.fileName" @click="onItemClick(item)">
             <div class="img-name c-f f-12">{{item.alias}}</div>
@@ -76,12 +80,14 @@ import MediaLeftTree from '../components/leftTree'
 import ImageEditor from '../components/imageEditor'
 import MediaUpload from '../components/upload'
 import debounce from 'lodash/debounce'
+import VueDatepickerLocal from 'vue-datepicker-local'
+import moment from 'moment'
 
 // const IMG_ORIGIN = 'http://60.247.77.208:58088'
 
 export default {
   name: 'media-photos',
-  components: { MediaLeftTree, ImageEditor, MediaUpload },
+  components: { MediaLeftTree, ImageEditor, MediaUpload, VueDatepickerLocal, moment },
   props: {
     scale: {
       type: Boolean,
@@ -105,6 +111,7 @@ export default {
       size: 50,
       total: 0,
       fileList: [],
+      searchTime: [],
       list: [],
       imgOrigin: '',
       scaleType: ''
@@ -145,13 +152,22 @@ export default {
       let type = this.selectMode ? '0' : this.$route.meta.type
       let folderId = this.$route.query.folderId || ''
       if (this.selectMode) folderId = id || ''
+      let startDate = ''
+      let endDate = ''
+      if (this.searchTime.length == 2) {
+        startDate = moment(this.searchTime[0]).format('YYYY-MM-DD')
+        endDate = moment(this.searchTime[1]).format('YYYY-MM-DD')
+      }
+      console.log(startDate, endDate)
       this.$http.post('/cri-cms-platform/media/list.monitor', {
         type,
         folderId,
         toPage: this.page,
         pageSize: this.size,
         scale: this.scaleType,
-        alias: this.secrchName
+        alias: this.secrchName,
+        startDate: startDate,
+        endDate: endDate
       }).then(res => {
         console.log(res)
         res.data.forEach(data => {
@@ -251,5 +267,19 @@ export default {
       margin: 0;
     }
   }
+  .datepicker:before {
+     content: '' !important;
+  }
+  .datepicker{
+    min-width: 230px !important;
+  }
+  .datepicker input{
+    border: 1px solid #ddd !important;
+    height: 30px !important;
+    width: calc(100% - 10px) !important;
+    box-sizing: border-box;
+    padding: 0;
+  }
 }
+
 </style>

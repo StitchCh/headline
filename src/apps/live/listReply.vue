@@ -1,6 +1,5 @@
 <template>
   <div class="list" :class="{'listdele': data.withdrawn === '01', 'liston': data.auditStatus === '1', 'listoff': data.auditStatus === '0'}">
-    {{data.auditStatus}}
     <div class="imgbox txbox" style="float: left;">
       <img :src="data.commentUserThumb" alt="">
     </div>

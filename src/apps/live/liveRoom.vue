@@ -22,7 +22,7 @@
           </div>
           <div v-if="navindex == 0">
             <div class="textareabox" style="max-width: 900px;margin: 0 auto 20px;">
-              <textarea v-model="liveContent" placeholder="发直播..."></textarea>
+              <textarea v-model="liveContent" placeholder="发直播..." style="font-family: Microsoft Yahei"></textarea>
               <div style="margin-bottom: 10px;">
                 <i class="icon c-a" style="font-size: 50px;margin-right: 10px;" @click="mediaShow = true">add_photo_alternate</i>
                 <i class="icon c-a" style="font-size: 55px;margin-right: 10px;" @click="videoSelectorShow = true">video_call</i>
@@ -40,11 +40,15 @@
                   </div>
                 </div>
               </div>
-              <div style="text-align: right;"><span @click="addLiveContent">发送</span></div>
+              <div style="text-align: right;"><btn @click="addLiveContent">发送</btn></div>
             </div>
 
             <ul class="flex tabbox">
-              <li class="tabboxon">全部</li>
+              <li class="flex nav_list">
+                <div @click="messageIndex = 0" :class="{tabboxon: messageIndex == 0}">全部</div>
+                <div @click="messageIndex = 1" :class="{tabboxon: messageIndex == 1}">我的发布</div>
+                <div @click="messageIndex = 2" :class="{tabboxon: messageIndex == 2}">我的撤回</div>
+              </li>
               <li @click="getLiveContentList()">刷新</li>
             </ul>
 
@@ -55,12 +59,17 @@
 
           <div v-if="navindex == 1">
             <div class="textareabox" style="max-width: 900px;margin: 0 auto 20px;overflow: hidden;">
-              <textarea placeholder="发聊天..." v-model="pinglun"></textarea>
-              <div style="float: right;" @click="pushPinglun">发送</div>
+              <textarea placeholder="发聊天..." v-model="pinglun" style="font-family: Microsoft Yahei"></textarea>
+              <div style="text-align: right;"><btn @click="pushPinglun">发送</btn></div>
             </div>
 
             <ul class="flex tabbox">
-              <li class="tabboxon">全部</li>
+              <li class="flex nav_list">
+                <div @click="plIndex = 0" :class="{tabboxon: plIndex == 0}">全部</div>
+                <div @click="plIndex = 1" :class="{tabboxon: plIndex == 1}">我的发布</div>
+                <div @click="plIndex = 2" :class="{tabboxon: plIndex == 2}">我的审核</div>
+                <div @click="plIndex = 3" :class="{tabboxon: plIndex == 3}">我的撤回</div>
+              </li>
               <li @click="getPinglunList">刷新</li>
             </ul>
 
@@ -83,9 +92,9 @@
       </div>
 
       <div class="art-options c-4 scroll-y" style="width: 320px;background: #f8f8f8;">
-        <div v-if="status == '0'" class="btn_type1" @click="startLive">开始直播</div>
-        <div v-if="status == '1'" class="btn1" @click="closeLive">结束直播</div>
-        <div v-if="status == '2'" class="btn2">直播已关闭</div>
+        <div v-if="status == '0'" class="btn_type1" @click="startLive">准备直播</div>
+        <div v-if="status == '1'" class="btn1" @click="closeLive">直播中</div>
+        <div v-if="status == '2'" class="btn2">直播结束</div>
         <div class="rlist">
           <p style="line-height: 40px;font-size: 18px;">主持人</p>
           <div class="flex" style="align-items: center">
@@ -114,10 +123,10 @@
           </div>
         </div>
 
-        <div class="option-item flex-v-center">
-          <span class="flex-item">是否开启弹幕</span>
-          <switcher v-model="openBulletScreen" mode="Number"/>
-        </div>
+        <!--<div class="option-item flex-v-center">-->
+          <!--<span class="flex-item">是否开启弹幕</span>-->
+          <!--<switcher v-model="openBulletScreen" mode="Number"/>-->
+        <!--</div>-->
 
         <div class="rlist">
           <p style="font-size: 18px;line-height: 40px;">拖拽排序</p>
@@ -126,6 +135,26 @@
               <span style="padding-left: 10px;">{{index+1}}. {{item == 'LIVE' ? '直播窗口' : '聊天室'}}</span>
             </li>
           </draggable>
+        </div>
+
+        <div class="option-item flex-v-center">
+          <span class="flex-item">显示阅读量</span>
+          <switcher v-model="openBulletScreen" mode="Number"/>
+        </div>
+
+        <div class="option-item flex-v-center">
+          <span class="flex-item">显示点赞量</span>
+          <switcher v-model="openBulletScreen" mode="Number"/>
+        </div>
+
+        <div class="option-item flex-v-center">
+          <span class="flex-item">显示分享量</span>
+          <switcher v-model="openBulletScreen" mode="Number"/>
+        </div>
+
+        <div class="option-item flex-v-center">
+          <span class="flex-item">显示评论量</span>
+          <switcher v-model="openBulletScreen" mode="Number"/>
         </div>
 
         <!--<div class="option-item flex-v-center">-->
@@ -173,8 +202,8 @@
         </div>
       </div>
 
-      <div class="video-editor">
-        <layer v-if="videoSelectorShow" title="选择视频"  width="1000px">
+      <div v-if="videoSelectorShow" class="video-editor">
+        <layer title="选择视频"  width="1000px">
           <div class="layer-text relative" style="height: 1000px;">
             <media-videos select-mode ref="mediaVideos" single-select></media-videos>
           </div>
@@ -185,8 +214,8 @@
         </layer>
       </div>
 
-      <div class="video-editor">
-        <layer v-if="audioSelectorShow" title="选择视频"  width="800px">
+      <div v-if="audioSelectorShow" class="video-editor">
+        <layer title="选择音频"  width="800px">
           <div class="layer-text relative" style="height: 800px;">
             <media-audios select-mode ref="mediaAudios" single-select/>
           </div>
@@ -217,6 +246,8 @@ export default {
     return {
       audioSelectorShow: false,
       videoSelectorShow: false,
+      messageIndex: 0,
+      plIndex: 0,
       status: 0,
       pinglun: '',
       liveContent: '',
@@ -316,10 +347,19 @@ export default {
       this.imagelist.splice(index, 1)
     },
     addLiveContent () {
+      if (this.imagelist.length === 0 && this.liveContent === '') {
+        this.$toast('请输入内容')
+        return
+      }
       let mediaContent = ''
-      this.imagelist.forEach(item => {
-        mediaContent += item.type + ':' + item.id + '|'
-      })
+      for (let i = 0; i < this.imagelist.length; i++) {
+        let type = this.imagelist[i].type
+        if (i == this.imagelist.length - 1) {
+          mediaContent += type + ':' + this.imagelist[i].id
+        } else {
+          mediaContent += type + ':' + this.imagelist[i].id + '|'
+        }
+      }
       console.log(mediaContent)
       this.$http.post('/cri-cms-platform/live/message/add.monitor', {
         liveId: this.liveId,
@@ -350,6 +390,11 @@ export default {
       }).then(res => {
         console.log(res)
         this.messageList = res.messages
+        this.messageList.forEach(item => {
+          item.items.forEach(item1 => {
+            item1.type = item1.category
+          })
+        })
       })
     },
     getPinglunList () {
@@ -460,7 +505,7 @@ export default {
 </script>
 
 <style lang="less">
-  .video-editor {max-width: 900px;margin: 0 auto;padding: 10px;
+  .video-editor {max-width: 900px;margin: 0 auto;
     .title{font-size: 30px;font-weight: bold;border: none;width: 100%;background: transparent;padding: 20px 15px;color: #555;
       &::-webkit-input-placeholder{color: #aaa;}
     }
@@ -591,7 +636,7 @@ export default {
   }
   .option-item{
     border-bottom: 1px solid rgba(0, 0, 0, .1);
-    padding: 20px 10px;
+    padding: 10px 10px;
     margin: 0 20px;
   }
   .orderitem{
@@ -717,6 +762,10 @@ export default {
     padding: 20px;
     border:1px solid #ddd;
     border-radius: 10px;
+  }
+  .nav_list div{
+    margin-right: 20px;
+    cursor: pointer;
   }
 </style>
 

@@ -26,6 +26,7 @@
       :hideLeaf="hideLeaf"
       :draggable="draggable"
       :openAll="openAll"
+      :openFirst="openFirst"
       :nameTxt="nameTxt"
       :format="format"
       :activeId="activeId"
@@ -52,13 +53,14 @@ export default {
     hideLeaf: Boolean,
     autoOpen: Boolean,
     openAll: Boolean,
+    openFirst: Boolean,
     draggable: Boolean,
     format: Function
   },
   data () {
     return {
       tree: null,
-      open: this.openAll,
+      open: this.model.open,
       showCheckbox: null
     }
   },

@@ -92,6 +92,7 @@ export default {
         x: 0,
         y: 0
       },
+      clickState: true,
       imgboxData: {
         x: 0,
         y: 0,
@@ -281,6 +282,11 @@ export default {
       this.setHistory()
     },
     submit () {
+      if (!this.clickState) {
+        return
+      } else {
+        this.clickState = false
+      }
       let { current } = this
       let canvasData = {
         w: this.cropper.getCroppedCanvas().width,
@@ -353,7 +359,9 @@ export default {
             this.$http.post('/cri-cms-platform/media/uploadIAU.monitor', data).then(res => {
               console.log(res)
               this.$emit('refresh')
+              this.clickState = true
             }).catch(e => {
+              this.clickState = true
               this.$toast(e.msg || `保存失败`)
             })
           }

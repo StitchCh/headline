@@ -7,6 +7,7 @@
     :model="item"
     :autoOpen="autoOpen"
     :openAll="openAll"
+    :openFirst="openFirst"
     :hideLeaf="hideLeaf"
     :format="format"
     :childrenTxt="childrenTxt"
@@ -35,6 +36,7 @@ export default {
     activeId: [Number, String],
     autoOpen: Boolean,
     openAll: Boolean,
+    openFirst: Boolean,
     hideLeaf: Boolean,
     draggable: Boolean,
     format: {
@@ -77,8 +79,19 @@ export default {
       const worker = new WorkerCode()
       worker.postMessage({ data, idTxt, pidTxt, childrenTxt, rootId })
       worker.addEventListener('message', e => {
-        // console.log(e.data)
-        this.model = e.data
+        if (e.data) {
+          let xunhuan = function (arr) {
+            if (arr.children && arr.children.length > 0) {
+              arr.children.forEach((item, index) => {
+                item.open = false
+                xunhuan(item)
+              })
+            }
+          }
+          xunhuan(e.data[0])
+          e.data[0].open = true
+          this.model = e.data
+        }
         worker.terminate()
       })
       worker.addEventListener('error', e => {

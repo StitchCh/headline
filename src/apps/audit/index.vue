@@ -104,10 +104,11 @@
             </div>
           </li>
         </list-view>
-        <div class="af-bottombar flex-center">
+        <div class="af-bottombar flex-center relative">
           <icon-btn small class="a" @click="onPrev" :disabled="filter.toPage <= 1">keyboard_arrow_left</icon-btn>
           <span class="f-14 c-6" style="margin: 0 10px;line-height: 1em;">第 {{filter.toPage}} / {{ui.totalPage}} 页</span>
           <icon-btn small class="a" @click="onNext" :disabled="filter.toPage >= ui.totalPage">keyboard_arrow_right</icon-btn>
+          <span v-if="totalRowsAmount" style="position:absolute; right: 10px;bottom: 8px;font-size: 12px;color: #999;">共 {{totalRowsAmount}} 项</span>
         </div>
       </div>
     </div>
@@ -152,6 +153,7 @@ export default {
   props: [ 'id' ],
   data () {
     return {
+      totalRowsAmount: false,
       ui: {
         getUrl: '/cri-cms-platform/audit/get.monitor',
         status,
@@ -241,6 +243,7 @@ export default {
       if (refresh) filter.toPage = 1
       this.$refs.listView.loading = true
       this.$http.post('/cri-cms-platform/audit/list.monitor', filter).then(res => {
+        this.totalRowsAmount = res.totalRowsAmount
         this.list = res.pages || []
         for (let i = 0; i < this.list.length; i++) {
           if (this.list[i].app && this.list[i].app === 'SPECIAL') {
