@@ -186,6 +186,9 @@ export default {
 
 <style lang="less">
 .media-preview{
+  .w100h100{
+    height: 500px !important;
+  }
   .layer-ctn{max-width: 800px!important;}
   .img-container{width: 100%;background: #222;}
   .img-info{width: 250px;padding: 15px;}

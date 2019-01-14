@@ -1,7 +1,7 @@
 <template>
 <div class="abs flex-item flex media-photos">
   <media-left-tree :select-mode="selectMode" @changeFolder="getList"/>
-  <div class="flex-item flex-col w100h100">
+  <div class="flex-item flex-col">
     <div class="af-topbar flex-v-center" style="height:36px;">
       <div class="search-bar flex-v-center">
         <i class="icon f-20 c-a">search</i>
