@@ -12,13 +12,19 @@
 
       <div v-if="!loading" class="setting-card">
         <ul>
-          <li class="flex"  v-for="item in list" :key="item.id" v-if="item.key != 'watermark_path'">
-            <span>{{item.explain}}</span>
-            <div class="flex-item"></div>
-            <switcher v-if="switcherShow(item.key)" mode="Number" v-model="item.value" @change="switchValue(item.app, item.key, item.value)"></switcher>
-            <span v-else class="flex-v-center" style="line-height: 25px;cursor: pointer;" @click="openSettingBox(item)">{{item.value | style | sharemodel}}<i class="icon">keyboard_arrow_right</i></span>
+          <li v-for="item in list" :key="item.id" v-if="item.key != 'watermark_path'">
+            <div v-if="item.key != 'mobileDispatch'" class="flex">
+              <span>{{item.explain}}</span>
+              <div class="flex-item"></div>
+              <switcher v-if="switcherShow(item.key)" mode="Number" v-model="item.value" @change="switchValue(item.app, item.key, item.value)"></switcher>
+              <span v-else class="flex-v-center" style="line-height: 25px;cursor: pointer;" @click="openSettingBox(item)">{{item.value | style | sharemodel}}<i class="icon">keyboard_arrow_right</i></span>
+            </div>
+            <div v-if="item.key == 'mobileDispatch'" class="flex">
+              <span>{{item.explain}}</span>
+              <div class="flex-item"></div>
+            </div>
           </li>
-          <li>
+          <li v-if="watermarkShow">
             <p>选择水印图片</p>
             <div style="text-align: center">
               <label>
@@ -74,7 +80,8 @@ export default {
       styleShow: false,
       imageratioShow: false,
       sharemodelShow: false,
-      titlemaxShow: false
+      titlemaxShow: false,
+      watermarkShow: false
     }
   },
   methods: {
@@ -109,8 +116,12 @@ export default {
                 this.watermark = res[i].value
               }
             }
+            if (res[i].key == 'watermark') {
+              this.watermarkShow = res[i].value == 1 ? true : false
+            }
           }
           this.list = res
+          console.log(res)
           this.loading = false
         }
       )
@@ -135,6 +146,9 @@ export default {
       this.$http.post('/cri-cms-platform/site/setting/update.monitor', data).then(
         res => {
           if (isOption) this[key + 'Show'] = false
+          if (key == 'watermark') {
+            this.watermarkShow = !this.watermarkShow
+          }
         }
       ).catch(
         res => {

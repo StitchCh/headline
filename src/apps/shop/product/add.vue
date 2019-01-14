@@ -9,14 +9,14 @@
           </div>
           <div class="flex-item"></div>
           <div class="flex-v-center">
-            <btn big style="margin-right: 20px;">保存</btn>
+            <btn big style="margin-right: 20px;" @click="submit">保存</btn>
           </div>
         </div>
 
         <div class="flex-item scroll-y">
           <div style="width: 900px;margin: 0 auto;padding: 0 10px;">
             <div class="pro_add_title">
-              <input type="text" placeholder="请输入产品名称">
+              <input type="text" v-model="productData.commodityName" placeholder="请输入产品名称">
             </div>
             <p style="font-size: 20px;">产品介绍</p>
           </div>
@@ -27,6 +27,10 @@
 
       <div class="art-options c-4 scroll-y" style="width: 320px;">
         <div style="width: 280px;margin: 0 20px;">
+          <div class="option-item flex-v-center">
+            <icon-btn small v-tooltip:top="'推荐'" :class="{ active: productData.isRecommend }" @click="productData.isRecommend = ~~!productData.isRecommend">thumb_up</icon-btn>
+            <span class="flex-item"></span>
+          </div>
 
           <div>
             <div class="add_top_addimg" @click="photoSelectorShow = true">
@@ -42,27 +46,21 @@
           </div>
 
           <div class="option-item">
-            <input type="number" placeholder="单品积分" />
+            <input type="number" v-model="productData.commodityIntegral" placeholder="单品积分" />
           </div>
 
           <div class="option-item">
-            <input type="number" placeholder="库存" />
+            <input type="number" v-model="productData.inventoryNum" placeholder="库存" />
           </div>
 
           <div class="option-item relative">
             <div class="a" @click="addShow=true">
-              123
+              {{productData.typeId.typeName}}
             </div>
             <bubble v-if="addShow" @close="addShow = false">
               <ul class="f-14 c-5 add-select" style="padding: 4px 10px;width: 280px;left: 0;box-sizing: border-box;">
-                <li class="a flex-v-center" style="line-height: 36px;">
-                  1
-                </li>
-                <li class="a flex-v-center" style="line-height: 36px;">
-                  2
-                </li>
-                <li class="a flex-v-center" style="line-height: 36px;">
-                  3
+                <li v-for="item in typeList" class="a flex-v-center" style="line-height: 36px;" @click="productData.typeId = item; addShow = false">
+                  {{item.typeName}}
                 </li>
               </ul>
             </bubble>
@@ -98,10 +96,65 @@ export default {
     return {
       photoSelectorShow: false,
       selected: [],
-      addShow: false
+      typeList: [],
+      addShow: false,
+      productData: {
+        commodityName: '',
+        commodityDescribe: '',
+        commodityIntegral: '',
+        typeId: '',
+        pic1: '',
+        pic2: '',
+        pic3: '',
+        pic4: '',
+        pic5: '',
+        inventoryNum: '',
+        isRecommend: true
+      }
     }
   },
+  mounted () {
+    if (this.$route.query.id) {
+      this.$http.post('/cri-cms-platform/mall/queryCommodityDetail.monitor', {
+        id: this.$route.query.id
+      }).then(res => {
+        console.log(res)
+        this.productData = res.mallCommodity
+        this.productData.isRecommend = this.productData.isRecommend == 1 ? true : false
+        this.$nextTick(() => {
+          this.$refs.editor.content = this.productData.commodityDescribe
+        })
+        for (let i = 0; i < 5; i++) {
+          if (this.productData['pic' + (i + 1)] == "") {
+            return
+          }
+          this.selected[i] = {
+            url: this.productData['pic' + (i + 1)]
+          }
+        }
+      })
+    }
+    this.$http.post('/cri-cms-platform/mall/queryListType.monitor').then(res => {
+      this.typeList = res
+      this.productData.typeId = res[0]
+    })
+  },
   methods: {
+    submit () {
+      let url = this.$route.query.id ? '/cri-cms-platform/mall/updateCommodity.monitor' : '/cri-cms-platform/mall/saveCommodity.monitor'
+      let { content } = this.$refs.editor
+      let obj = {...this.productData}
+      this.selected.forEach((item, index) => {
+        obj['pic' + (index + 1)] = item.url
+      })
+      obj.isRecommend = obj.isRecommend ? 1 : 0
+      obj.typeId = obj.typeId.id
+      obj.commodityDescribe = content
+      console.log(obj)
+      this.$http.post(url, obj).then(res => {
+        this.$router.push('/shop/product')
+      })
+    },
     removeimg (index) {
       this.selected.splice(index, 1)
     },
@@ -126,12 +179,6 @@ export default {
       if (this.from || this.id) return
       let doc = this.$refs.editor.getText()
       if (!doc.trim()) return
-      this.$http.post('/cri-cms-platform/article/getKeyGenerate.monitor', { doc }).then(
-        res => {
-          this.form.abstarcts = res.gerenate
-          this.form.keywords = res.key.join(',')
-        }
-      )
     }
   }
 }
@@ -145,6 +192,7 @@ export default {
     justify-content: space-between;
     flex-wrap: wrap;
   }
+  .active {color: #018be6;}
   .option-item{border-bottom: 1px solid rgba(0, 0, 0, .1);padding: 12px 0;}
   p{
     margin: 0;

@@ -283,6 +283,7 @@ export default {
     getPublishStatus (item) {
       if (item.new) return { state: 1, color: '#008eff', str: '未上线' }
       let now = moment()
+      console.log(now)
       if (now.isBefore(item.sendDate)) {
         return { state: 1, color: '#008eff', str: '未上线' }
       }
