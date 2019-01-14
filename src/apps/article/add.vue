@@ -287,7 +287,6 @@ export default {
     },
     channelNames () {
       if (!this.channelIds.length) return '选择栏目'
-      console.log(this.ui.channels)
       return this.channelIds.map(val => this.ui.channels.find(v => v.id === val).channelName).join('，')
     }
   },
@@ -354,7 +353,6 @@ export default {
       let form = {...this.form}
       if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
       if (this.id) form.id = this.id
-      console.log(form)
       this.$http.post(url, form).then(
         res => {
           this.ui.submited = true
@@ -384,11 +382,10 @@ export default {
     if (this.from && this.id) {
       this.ui.loading = true
       if (this.from === 'draft') this.autoSaveId = this.id
-      console.log(from[this.from].getUrl)
       this.$http.post(from[this.from].getUrl, {
+        app: 'ARTICLE',
         id: this.id
       }).then(res => {
-        console.log(res)
         for (let k in this.form) {
           if (k === 'virtualComment') {
             if (res.content[k] === '') {

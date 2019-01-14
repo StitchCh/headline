@@ -62,8 +62,6 @@ import MediaPhotos from '../medialibrary/pages/photos'
 import MediaVideos from '../medialibrary/pages/videos'
 import MediaAudios from '../medialibrary/pages/audios'
 
-// Quill.register('modules/imageResize', ImageResize)
-console.log(window.innerHeight)
 export default {
   name: 'article-editor',
   components: { VueUeditorWrap, MediaPhotos, MediaVideos, MediaAudios },
@@ -147,11 +145,7 @@ export default {
         wordCount: false,
         autoHeightEnabled: false,
         initialFrameHeight: window.innerHeight - 250,
-        autoTypeSet: {
-          indent: true,
-          removeEmptyNode: false
-        }
-        // serverUrl: '/cri-cms-platform/media/uploadIAU.monitor'
+        serverUrl: '/cri-cms-platform/media/uploadIAU.monitor'
         // imageUrlPrefix: '/cri-cms-platform/media/uploadIAU.monitor'
       }
     }
@@ -198,7 +192,6 @@ export default {
       this.ui.audioSelectorShow = false
     },
     ready (UE) {
-      console.log(window.UE)
       let that = this
       this.editor = UE
       window.UE.commands['selectimage'] = {
