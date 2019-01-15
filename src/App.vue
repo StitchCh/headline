@@ -60,4 +60,9 @@ export default {
 .icon-btn{
   position: relative;
 }
+.distpicker-address-wrapper select{
+  padding: 4px !important;
+  height: auto !important;
+  outline: none;
+}
 </style>
