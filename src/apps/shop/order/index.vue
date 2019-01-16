@@ -18,36 +18,34 @@
 
           <div class="mb_10 flex-v-center" style="font-size: 14px;">
             <div>
-              <img :src="item.member.thumb">
-            </div>
-            <div>
               <p>{{item.mallAddress.consigneeName}}</p>
               <p>联系电话：{{item.mallAddress.consigneePhone}}</p>
             </div>
           </div>
 
-          <div v-if="item.orderStatus == '已下单'" class="address">
-            <p>收货地址：</p>
-            <v-distpicker
-              :province="item.mallAddress.consigneeProvince + '省'" 
-              :city="item.mallAddress.consigneeCity + '市'" 
-              :area="item.mallAddress.consigneeArea">
-            </v-distpicker>
-            <p style="padding-top: 10px;">
-              <input style="width: 500px;height: 30px;border-radius: 4px;border: 1px solid #ddd;" v-model="item.mallAddress.consigneeContent" type="text" name="">
-            </p>
-          </div>
+          <!--<div v-if="item.orderStatus == '已下单'" class="address">-->
+            <!--<p>收货地址：</p>-->
+            <!--<v-distpicker-->
+              <!--:province="item.mallAddress.consigneeProvince + '省'"-->
+              <!--:city="item.mallAddress.consigneeCity + '市'"-->
+              <!--:area="item.mallAddress.consigneeArea">-->
+            <!--</v-distpicker>-->
+            <!--<p style="padding-top: 10px;">-->
+              <!--<input style="width: 500px;height: 30px;border-radius: 4px;border: 1px solid #ddd;" v-model="item.mallAddress.consigneeContent" type="text" name="">-->
+            <!--</p>-->
+          <!--</div>-->
 
-          <div v-if="item.orderStatus != '已下单'" class="address">
+          <div class="address">
             <p>收货地址：</p>
             <p>
               <span>{{item.mallAddress.consigneeProvince}}</span>
               <span>{{item.mallAddress.consigneeCity}}</span>
               <span>{{item.mallAddress.consigneeArea}}</span>
+              <span>{{item.mallAddress.consigneeContent}}</span>
             </p>
-            <p style="padding-top: 10px;">
-              {{item.mallAddress.consigneeContent}}
-            </p>
+            <!--<p>-->
+              <!--{{item.mallAddress.consigneeContent}}-->
+            <!--</p>-->
           </div>
 
           <ul class="order_product mb_10">
