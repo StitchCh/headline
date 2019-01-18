@@ -1,5 +1,5 @@
 <template>
-  <div class="settings-common flex-col c-6">
+  <div class="app-common flex-col c-6">
     <div class="af-topbar">
       <span class="f-18">客户端引导页设置</span>
     </div>
@@ -204,7 +204,7 @@ export default {
     width: 140px;
     border: 0 !important;
   }
-  .settings-common{background: #fafafa;
+  .app-common{background: #fafafa;
     .content {background: #eee;}
     .setting-card {max-width: 800px;margin: 20px auto;border-radius: 10px;padding: 20px;background: #fff;
       li {padding: 12px 20px 12px 0;border-bottom: 1px solid #e1e1e1;

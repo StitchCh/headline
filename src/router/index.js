@@ -32,7 +32,7 @@ const createRouter = () => new Router({
 
 const router = createRouter()
 
-const showBgRoutes = ['Launcher', 'Login', 'FindPassword', 'ChooseSite']
+const showBgRoutes = ['Launcher', 'Login', 'FindPassword', 'ChooseSite', 'mobile', 'ChooseSite_mobile']
 
 function setTransition (to, from) {
   let transitionName = 'none'
@@ -47,20 +47,23 @@ function setTransition (to, from) {
 }
 
 router.beforeEach((to, from, next) => {
+  console.log(to.name)
   setTransition(to, from)
   next()
 })
 
 router.afterEach((to) => {
+  console.log(to)
   document.title = to.meta.title || 'CCTP'
   let token = localStorage.token || sessionStorage.token
   let siteId = localStorage.siteId || sessionStorage.siteId
-  if (!siteId && !(to.name === 'Login' || to.name === 'ChooseSite' || to.name === 'FindPassword')) {
+  if (!siteId && !(to.name === 'Login' || to.name === 'ChooseSite' || to.name === 'FindPassword') && to.name != 'ChooseSite_mobile' && to.name != 'mobile') {
     router.replace('/login')
     return
   }
-  if (!token && !(to.name === 'Login' || to.name === 'FindPassword')) {
+  if (!token && !(to.name === 'Login' || to.name === 'FindPassword') && to.name != 'ChooseSite_mobile' && to.name != 'mobile') {
     router.replace('/login')
+    return
   }
 })
 

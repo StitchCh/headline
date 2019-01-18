@@ -4,10 +4,11 @@
       <navigator-item icon="folder" index="all-all" @click="$router.replace('/audit?status=all')">全部</navigator-item>
       <!-- <navigator-item-group defaultExtended index="2" icon="face">
       <span slot="title">我的</span> -->
-      <navigator-item icon="class" index="all" @click="$router.replace('/audit?status=all')">已审</navigator-item>
+      <navigator-item icon="check_circle" index="PASS" @click="$router.replace('/audit?status=PASS')">已审</navigator-item>
+      <!--<navigator-item icon="class" index="all" @click="$router.replace('/audit?status=all')">已审</navigator-item>-->
       <navigator-item icon="hourglass_full" index="AUDITING" @click="$router.replace('/audit?status=AUDITING')">待审</navigator-item>
       <navigator-item icon="error" index="REJECT" @click="$router.replace('/audit?status=REJECT')">驳回</navigator-item>
-      <navigator-item icon="check_circle" index="PASS" @click="$router.replace('/audit?status=PASS')">通过</navigator-item>
+
       <!-- </navigator-item-group> -->
       <!--<navigator-item icon="delete" index="ArticleRecycle" @click="$router.replace('/audit?status=DELETE')">已删除</navigator-item>-->
     </af-left>

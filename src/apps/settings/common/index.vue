@@ -19,9 +19,11 @@
               <switcher v-if="switcherShow(item.key)" mode="Number" v-model="item.value" @change="switchValue(item.app, item.key, item.value)"></switcher>
               <span v-else class="flex-v-center" style="line-height: 25px;cursor: pointer;" @click="openSettingBox(item)">{{item.value | style | sharemodel}}<i class="icon">keyboard_arrow_right</i></span>
             </div>
-            <div v-if="item.key == 'mobileDispatch'" class="flex">
+            <div v-if="item.key == 'mobileDispatch'">
               <span>{{item.explain}}</span>
-              <div class="flex-item"></div>
+              <div class="flex" style="justify-content: center;align-items: center;">
+                <app-article-add-thumb scale v-model="item.value[0]" @setMobileDispatch="setMobileDispatch(item)" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
+              </div>
             </div>
           </li>
           <li v-if="watermarkShow">
@@ -66,10 +68,11 @@
 <script>
 import SelectCard from '@/components/select-card/index'
 import SelectCardOption from '@/components/select-card/option'
+import AppArticleAddThumb from './thumb'
 
 export default {
   name: 'settings-common',
-  components: { SelectCard, SelectCardOption },
+  components: { SelectCard, SelectCardOption, AppArticleAddThumb },
   data () {
     return {
       loading: true,
@@ -85,6 +88,23 @@ export default {
     }
   },
   methods: {
+    setMobileDispatch (item) {
+      console.log(item)
+      let imglist = JSON.stringify(item.value)
+      this.$http.post('/cri-cms-platform/site/setting/update.monitor', {
+        app: item.app,
+        key: item.key,
+        value: imglist,
+        explain: item.explain
+      }).then(res => {
+
+      }).catch(
+        res => {
+          this.getList()
+          this.$toast(res.msg ? res.msg : '修改失败')
+        }
+      )
+    },
     updateImg (event) {
       let othis = this
       var fileimg = event.target.files[0]
@@ -118,6 +138,9 @@ export default {
             }
             if (res[i].key == 'watermark') {
               this.watermarkShow = res[i].value == 1 ? true : false
+            }
+            if (res[i].key == 'mobileDispatch') {
+              res[i].value = JSON.parse(res[i].value)
             }
           }
           this.list = res
@@ -184,9 +207,9 @@ export default {
   .settings-common{background: #fafafa;
     .content {background: #eee;}
     .setting-card {max-width: 800px;margin: 20px auto;border-radius: 10px;padding-left: 20px;background: #fff;
-      li {padding: 12px 20px 12px 0;border-bottom: 1px solid #e1e1e1;
-        &:last-child {border-bottom: 0;}
-      }
+    }
+    .setting-card > ul > li {padding: 12px 20px 12px 0;border-bottom: 1px solid #e1e1e1;
+      &:last-child {border-bottom: 0;}
     }
   }
 </style>

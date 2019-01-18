@@ -22,17 +22,31 @@ export default {
   computed: {
     showApp () {
       let route = this.$route.name
-      if (route === 'Login' || route === 'FindPassword' || route === 'ChooseSite') return true
-      if (this.$store.state.account.id) return true
+      if (route === 'Login' || route === 'FindPassword' || route === 'ChooseSite' || route === 'mobile' || route === 'ChooseSite_mobile' || route === 'mobilePush') return true
+      console.log(this.$store.state.account)
+      if (this.$store.state.account.id) {
+        return true
+      }
     }
   },
   created () {
     getUserInfo().then().catch(e => {
-      localStorage.removeItem('token')
-      sessionStorage.removeItem('token')
-      localStorage.removeItem('siteId')
-      sessionStorage.removeItem('siteId')
-      this.$router.replace('/login')
+      if (sessionStorage.type) {
+        localStorage.removeItem('token')
+        sessionStorage.removeItem('token')
+        localStorage.removeItem('siteId')
+        sessionStorage.removeItem('siteId')
+        // if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+        //   this.$router.replace('/mobile')
+        // }else{
+        //   this.$router.replace('/login')
+        // }
+        if (sessionStorage.type == 'pc') {
+          this.$router.replace('/login')
+        } else if (sessionStorage.type == 'mobile') {
+          this.$router.replace('/mobile')
+        }
+      }
     })
   }
 }
