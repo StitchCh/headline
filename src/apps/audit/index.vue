@@ -32,7 +32,9 @@
             </div>
             <bubble v-if="ui.searchOptionShow" pos="bottom" align="start" @close="ui.searchOptionShow=false">
               <ul class="filter-bubble">
-                <li v-for="item in ui.searchby" :key="item.id" @click="filter.searchby = item.id" class="a">{{item.name}}</li>
+                <li v-for="item in ui.searchby" :key="item.id" @click="filter.searchby = item.id" class="a">
+                  {{item.name}}
+                </li>
               </ul>
             </bubble>
           </div>
@@ -43,8 +45,22 @@
           <i class="icon c-a a item" :class="{ active: filter.recommend }" v-tooltip="'推荐'" @click="filter.recommend = ~~!filter.recommend || '';getList(true)">thumb_up</i>
           <span class="flex-item"></span>
           <div class="relative">
+            <div class="relative flex-v-center a item" v-tooltip="'筛选分类'" @click="ui.classShow=true">
+              <span>分类</span><i class="icon c-a">keyboard_arrow_down</i>
+            </div>
+            <bubble v-if="ui.classShow" pos="bottom" align="center" @close="ui.classShow=false">
+              <ul>
+                <li style="padding: 10px;width: 80px;text-align: center;cursor: pointer;" v-for="item in classList">
+                  <label>
+                    <check-box v-model="item.state" @change="searchClass(item)"></check-box>{{item.name}}
+                  </label>
+                </li>
+              </ul>
+            </bubble>
+          </div>
+          <div class="relative">
             <div class="relative flex-v-center a item" v-tooltip="'筛选栏目'" @click="ui.channelShow=true">
-              <span>筛选</span><i class="icon c-a">keyboard_arrow_down</i>
+              <span>栏目</span><i class="icon c-a">keyboard_arrow_down</i>
             </div>
             <bubble v-if="ui.channelShow" pos="bottom" align="center" @close="ui.channelShow=false">
               <div style="padding: 10px 0;width: 280px;">
@@ -158,6 +174,7 @@ export default {
       ui: {
         getUrl: '/cri-cms-platform/audit/get.monitor',
         status,
+        classShow: false,
         searchOptionShow: false,
         searchAppShow: false,
         channelShow: false, // 栏目
@@ -208,7 +225,54 @@ export default {
       },
       list: [],
       channels: [],
-      rejectMessage: ''
+      rejectMessage: '',
+      classList: [
+        {
+          app: 'SPECIAL',
+          name: '专题',
+          state: false
+        },
+        {
+          app: 'VIDEO',
+          name: '视频',
+          state: false
+        },
+        {
+          app: 'ARTICLE',
+          name: '文章',
+          state: false
+        },
+        {
+          app: 'AUDIO',
+          name: '音频',
+          state: false
+        },
+        {
+          app: 'LIVE',
+          name: '直播',
+          state: false
+        },
+        {
+          app: 'ECOMMERCE',
+          name: '电商',
+          state: false
+        },
+        {
+          app: 'LINK',
+          name: '链接',
+          state: false
+        },
+        {
+          app: 'GALLERY',
+          name: '图集',
+          state: false
+        },
+        {
+          app: 'VOTE',
+          name: '投票',
+          state: false
+        }
+      ]
     }
   },
   computed: {
@@ -239,10 +303,14 @@ export default {
     }
   },
   methods: {
+    searchClass (item) {
+      console.log(item)
+    },
     getList (refresh) {
       let { filter } = this
       if (refresh) filter.toPage = 1
       this.$refs.listView.loading = true
+      console.log(filter)
       this.$http.post('/cri-cms-platform/audit/list.monitor', filter).then(res => {
         this.totalRowsAmount = res.totalRowsAmount
         this.list = res.pages || []
@@ -260,7 +328,7 @@ export default {
           } else if (this.list[i].app === 'ECOMMERCE') {
             this.list[i].appname = '电商'
           } else if (this.list[i].app === 'LINK') {
-            this.list[i].appname = '连接'
+            this.list[i].appname = '链接'
           } else if (this.list[i].app === 'GALLERY') {
             this.list[i].appname = '图集'
           } else if (this.list[i].app === 'VOTE') {
