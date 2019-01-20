@@ -322,11 +322,14 @@ export default {
       if (this.autoSaveId) form.id = this.autoSaveId
       return this.$http.post('/cri-cms-platform/articleAutoSave/saveAuto.monitor', form).then(
         res => {
+          console.log(res)
+          console.log(this.autoSaveId)
           this.autoSaveId = res.autoSaveId
           this.$toast('保存成功')
         }
       ).catch(
         res => {
+          console.log(res)
           this.$toast(res.msg || res || '保存失败')
         }
       )

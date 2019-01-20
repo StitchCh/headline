@@ -1,5 +1,5 @@
 <template>
-  <div class="app-article-add-thumb">
+  <div class="app-article-add-thumb tc_box">
     <div class="add-photo-btn a flex-center" :style="{ width, height }" @click="show = true">
       <img v-if="image.id" :src="image.url" width="100%" alt="">
       <i v-else class="icon f-32 c-a">add_photo_alternate</i>

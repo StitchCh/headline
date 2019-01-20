@@ -45,7 +45,7 @@
       </div>
     </div>
 
-    <layer v-if="ui.photoSelectorShow" title="选择图片"  width="800px">
+    <layer v-if="ui.photoSelectorShow" title="选择图片"  width="800px" class="tc_box">
       <div class="layer-text relative" style="height: 800px;">
         <media-photos select-mode ref="mediaPhotos"/>
       </div>

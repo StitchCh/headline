@@ -4,7 +4,7 @@
     <vue-ueditor-wrap v-model="content" ref="editor" :config="config" :destroy="true" @ready="ready"/>
   </div>
 
-  <layer v-if="ui.imageSelectorShow" title="选择图片"  width="800px">
+  <layer v-if="ui.imageSelectorShow" title="选择图片"  width="800px" class="tc_box">
     <div class="layer-text relative" style="height: 800px;">
       <media-photos select-mode ref="mediaPhotos"></media-photos>
     </div>
@@ -14,7 +14,7 @@
     </div>
   </layer>
 
-  <layer v-if="ui.videoSelectorShow" title="选择视频"  width="800px">
+  <layer v-if="ui.videoSelectorShow" title="选择视频"  width="800px" class="tc_box">
     <div class="layer-text relative" style="height: 800px;">
       <media-videos select-mode ref="mediaVideos"></media-videos>
     </div>
@@ -24,7 +24,7 @@
     </div>
   </layer>
 
-  <layer v-if="ui.audioSelectorShow" title="选择音频"  width="800px">
+  <layer v-if="ui.audioSelectorShow" title="选择音频"  width="800px" class="tc_box">
     <div class="layer-text relative" style="height: 800px;">
       <media-audios select-mode ref="mediaAudios"></media-audios>
     </div>

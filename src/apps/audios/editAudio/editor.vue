@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <layer v-if="ui.audioSelectorShow" title="选择视频"  width="800px">
+    <layer v-if="ui.audioSelectorShow" title="选择视频"  width="800px"  class="tc_box">
       <div class="layer-text relative w100h100" style="height: 800px;">
         <media-audios select-mode ref="mediaAudios" single-select/>
       </div>

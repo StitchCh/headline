@@ -25,7 +25,7 @@
 
   <quill-editor v-model="content" ref="editor" :options="options" @change="getKeyGenerate"/>
 
-  <layer v-if="ui.imageSelectorShow" title="选择图片"  width="800px">
+  <layer v-if="ui.imageSelectorShow" title="选择图片"  width="800px" class="tc_box">
     <div class="layer-text relative" style="height: 800px;">
       <media-photos select-mode ref="mediaPhotos"></media-photos>
     </div>
@@ -35,7 +35,7 @@
     </div>
   </layer>
 
-  <layer v-if="ui.videoSelectorShow" title="选择视频"  width="800px">
+  <layer v-if="ui.videoSelectorShow" title="选择视频"  width="800px" class="tc_box">
     <div class="layer-text relative" style="height: 800px;">
       <media-videos select-mode ref="mediaVideos"></media-videos>
     </div>
