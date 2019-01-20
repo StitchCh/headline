@@ -53,7 +53,7 @@
             </ul>
 
             <div style="max-width: 900px;margin: 0 auto;">
-              <listblock v-for="(item, index) in messageList" :key="index" @change="getLiveContentList" :value="item" :liveId="liveId"></listblock>
+              <listblock v-for="(item, index) in messageList" v-if="messageIndex == 0 || item.type == msgTypeList[messageIndex]" :key="index" @change="getLiveContentList" :value="item" :liveId="liveId"></listblock>
             </div>
           </div>
 
@@ -67,15 +67,15 @@
               <li class="flex nav_list">
                 <div @click="plIndex = 0" :class="{tabboxon: plIndex == 0}">全部</div>
                 <div @click="plIndex = 1" :class="{tabboxon: plIndex == 1}">我的发布</div>
-                <div @click="plIndex = 2" :class="{tabboxon: plIndex == 2}">我的审核</div>
-                <div @click="plIndex = 3" :class="{tabboxon: plIndex == 3}">我的撤回</div>
+                <div @click="plIndex = 2" :class="{tabboxon: plIndex == 2}">我的撤回</div>
+                <div @click="plIndex = 3" :class="{tabboxon: plIndex == 3}">我的审核</div>
               </li>
               <li @click="getPinglunList">刷新</li>
             </ul>
 
             <div style="max-width: 900px;margin: 0 auto;">
-              <div v-for="(item, index) in pinglunList"  :key="index">
-                <listReply :value="item" @change="data => { item = data }" @reset="getPinglunList"></listReply>
+              <div v-for="(item, index) in pinglunList"  v-if="plIndex == 0 || plIndex == 3 || item.type == msgTypeList[plIndex]" :key="index">
+                <listReply v-if="plIndex != 3 || item.auditUser == usid" :value="item" @change="data => { item = data }" @reset="getPinglunList"></listReply>
               </div>
               <!--<div v-for="(item, index) in pinglunList">-->
                 <!--<listReply :value="item"></listReply>-->
@@ -103,7 +103,7 @@
               <img v-if="host.url" :src="host.url" alt="">
             </div>
             <!-- <p>{{host.name}}</p> -->
-            <input type="" v-model="host.name" name="" @blur="setZhiboRoom">
+            <input type="text" style="width: calc(100% - 60px)" v-model="host.name" name="" @blur="setZhiboRoom">
           </div>
         </div>
         <div class="rlist">
@@ -137,25 +137,25 @@
           </draggable>
         </div>
 
-        <div class="option-item flex-v-center">
-          <span class="flex-item">显示阅读量</span>
-          <switcher v-model="openBulletScreen" mode="Number"/>
-        </div>
+        <!--<div class="option-item flex-v-center">-->
+          <!--<span class="flex-item">显示阅读量</span>-->
+          <!--<switcher v-model="openBulletScreen" mode="Number"/>-->
+        <!--</div>-->
 
-        <div class="option-item flex-v-center">
-          <span class="flex-item">显示点赞量</span>
-          <switcher v-model="openBulletScreen" mode="Number"/>
-        </div>
+        <!--<div class="option-item flex-v-center">-->
+          <!--<span class="flex-item">显示点赞量</span>-->
+          <!--<switcher v-model="openBulletScreen" mode="Number"/>-->
+        <!--</div>-->
 
-        <div class="option-item flex-v-center">
-          <span class="flex-item">显示分享量</span>
-          <switcher v-model="openBulletScreen" mode="Number"/>
-        </div>
+        <!--<div class="option-item flex-v-center">-->
+          <!--<span class="flex-item">显示分享量</span>-->
+          <!--<switcher v-model="openBulletScreen" mode="Number"/>-->
+        <!--</div>-->
 
-        <div class="option-item flex-v-center">
-          <span class="flex-item">显示评论量</span>
-          <switcher v-model="openBulletScreen" mode="Number"/>
-        </div>
+        <!--<div class="option-item flex-v-center">-->
+          <!--<span class="flex-item">显示评论量</span>-->
+          <!--<switcher v-model="openBulletScreen" mode="Number"/>-->
+        <!--</div>-->
 
         <!--<div class="option-item flex-v-center">-->
           <!--<span>虚拟阅读量</span>-->
@@ -277,7 +277,9 @@ export default {
       tagOrder: ['LIVE', 'CHATROOM'],
       imagelist: [],
       pinglunList: [],
-      messageList:[]
+      messageList:[],
+      msgTypeList: [],
+      usid: ''
     }
   },
   watch:{
@@ -286,10 +288,11 @@ export default {
     }
   },
   beforeMount () {
+    this.usid = this.$store.state.account.id
+    this.msgTypeList = ['all', this.usid + ',' + '00', this.usid + ',' + '01']
     this.$http.post('/cri-cms-platform/live/room.monitor', {
       id: this.$route.query.id
     }).then(res => {
-      console.log(res)
       this.status = res.live.status
       this.liveTitle = res.content.title
       this.virtualDigg = res.content.virtualDigg
@@ -297,7 +300,6 @@ export default {
       this.virtualPv = res.content.virtualPv
       this.liveId = res.live.id
       this.tagOrder = res.live.tagOrder.split(',')
-      console.log(res.live, this.tagOrder)
       if (res.live.hostThumb) {
         this.host = {
           name: res.live.hostAliasName || '',
@@ -321,7 +323,6 @@ export default {
         liveId: this.liveId
       }).then(res => {
         this.zhiboyuanList = res.broadcasters
-        console.log(this.zhiboyuanList)
         this.zhiboyuanList.checked = res.broadcasters.auditPermission == 0 ? false : true
       })
     })
@@ -388,9 +389,9 @@ export default {
         liveId: this.liveId,
         userType: ''
       }).then(res => {
-        console.log(res)
         this.messageList = res.messages
         this.messageList.forEach(item => {
+          item.type = item.createUser + ',' + item.withdrawn
           item.items.forEach(item1 => {
             item1.type = item1.category
           })
@@ -402,8 +403,11 @@ export default {
       this.$http.post('/cri-cms-platform/live/comment/refresh.monitor', {
         liveId: this.liveId
       }).then(res => {
+        console.log(res.comments)
         this.pinglunList = res.comments
-        console.log(this.pinglunList)
+        this.pinglunList.forEach(item => {
+          item.type = item.memberId + ',' + item.withdrawn
+        })
       })
     },
     closeLive () {
@@ -681,6 +685,9 @@ export default {
     width: 50px;
     height: 50px;
     border-radius: 50%;
+  }
+  .txbox img{
+    height: 100%;
   }
   .imgbox{
     overflow: hidden;

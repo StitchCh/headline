@@ -19,6 +19,7 @@
         </div>
       </div>
     </div>
+    <div v-if="data.withdrawn == '01'" class="xiala">已撤回</div>
     <div v-if="data.withdrawn == '00'" class="xiala">
       <div class="bg-f flex-center a b">
         <!--<span class="fsbtn" style="margin-right: 10px;">审核</span>-->
@@ -129,7 +130,6 @@ export default {
   },
   mounted () {
     this.data = this.value
-    console.log(this.data)
   },
   methods: {
     selectAudio () {
@@ -197,7 +197,6 @@ export default {
         textContent: this.setContent,
         mediaContent: imglist
       }).then(res => {
-        console.log(res)
         this.changeShow = false
         this.$emit('change')
       })
@@ -206,7 +205,6 @@ export default {
       this.$http.post('/cri-cms-platform/live/message/withdrawn.monitor', {
         liveMessageId: this.data.id
       }).then(res => {
-        console.log(res)
         this.$emit('change')
       })
     }

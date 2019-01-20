@@ -49,11 +49,10 @@
               <span>分类</span><i class="icon c-a">keyboard_arrow_down</i>
             </div>
             <bubble v-if="ui.classShow" pos="bottom" align="center" @close="ui.classShow=false">
-              <ul>
-                <li style="padding: 10px;width: 80px;text-align: center;cursor: pointer;" v-for="item in classList">
-                  <label>
-                    <check-box v-model="item.state" @change="searchClass(item)"></check-box>{{item.name}}
-                  </label>
+              <ul class="filter-bubble">
+                <li class="a flex-v-center" style="width: 50px;" v-for="item in classList" @click="searchClass(item)">
+                  <span class="flex-item">{{item.name}}</span>
+                  <i v-if="item.state" class="icon f-14 blue check-ico">check</i>
                 </li>
               </ul>
             </bubble>
@@ -272,7 +271,8 @@ export default {
           name: '投票',
           state: false
         }
-      ]
+      ],
+      appList: []
     }
   },
   computed: {
@@ -304,13 +304,21 @@ export default {
   },
   methods: {
     searchClass (item) {
-      console.log(item)
+      item.state = !item.state
+      this.appList = []
+      this.classList.forEach(item => {
+        if (item.state) {
+          this.appList.push(item.app)
+        }
+      })
+      this.getList()
     },
     getList (refresh) {
       let { filter } = this
       if (refresh) filter.toPage = 1
       this.$refs.listView.loading = true
       console.log(filter)
+      filter.app = this.appList.join(',')
       this.$http.post('/cri-cms-platform/audit/list.monitor', filter).then(res => {
         this.totalRowsAmount = res.totalRowsAmount
         this.list = res.pages || []
