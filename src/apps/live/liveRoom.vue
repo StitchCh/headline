@@ -664,7 +664,8 @@ export default {
   }
   .list{
     padding: 20px;
-    border: 1px solid #ddd;
+    width: auto !important;
+    border: 1px solid #ddd !important;
     border-radius: 10px;
     position: relative;
   }
