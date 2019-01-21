@@ -1,5 +1,5 @@
 <template>
-<div class="article-editor">
+<div class="shop-editor">
   <div>
     <vue-ueditor-wrap v-model="content" ref="editor" :config="config" :destroy="true" @ready="ready"/>
   </div>
@@ -208,7 +208,7 @@ export default {
 </script>
 
 <style lang="less">
-.article-editor{max-width: 900px;margin: 0 auto;padding: 10px;
+.shop-editor{max-width: 900px;margin: 0 auto;padding: 10px;
   .flex-v-center{
     font-size: 14px !important;
   }
@@ -238,13 +238,13 @@ export default {
   /*.ql-snow .ql-tooltip a.ql-remove::before{content: '删除'}*/
   /*.ql-tooltip{border-radius: 6px;}*/
   .edui-for-selectimage .edui-icon {
-    background-position: -380px 0;
+    background-position: -380px 0!important;
   }
   .edui-for-selectvideo .edui-icon {
-    background-position: -320px -20px;
+    background-position: -320px -20px!important;
   }
   .edui-for-selectaudio .edui-icon {
-    background-position: -18px -40px;
+    background-position: -18px -40px!important;
   }
   .layer-ctn {max-width: 1000px;
     .af-left{width: 280px;background: #fff;border-right: 1px solid rgba(0, 0, 0, .05);}

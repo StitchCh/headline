@@ -1,5 +1,5 @@
 <template>
-<div class="article-editor">
+<div class="mobile-push-editor">
   <!--<div class="relative">-->
     <!--<input v-model="title" class="title" type="text" placeholder="请输入标题">-->
     <!--&lt;!&ndash;<div style="position: absolute;right: 20px;top: 28px;">&ndash;&gt;-->
@@ -232,7 +232,7 @@ export default {
     padding: 6px;
     box-sizing: border-box;
   }
-.article-editor{max-width: 100%;margin: 0 auto;padding: 10px;
+.mobile-push-editor{max-width: 100%;margin: 0 auto;padding: 10px;
   .flex-v-center{
     font-size: 14px !important;
   }
@@ -244,13 +244,13 @@ export default {
   }
   .title-color-list {width: 192px;padding: 10px;}
   .edui-for-selectimage .edui-icon {
-    background-position: -380px 0;
+    background-position: -380px 0!important;
   }
   .edui-for-selectvideo .edui-icon {
-    background-position: -320px -20px;
+    background-position: -320px -20px!important;
   }
   .edui-for-selectaudio .edui-icon {
-    background-position: -18px -40px;
+    background-position: -18px -40px!important;
   }
   .layer-ctn {max-width: 1000px;
     .af-left{width: 280px;background: #fff;border-right: 1px solid rgba(0, 0, 0, .05);}

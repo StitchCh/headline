@@ -1,5 +1,5 @@
 <template>
-<div class="article-editor">
+<div class="links-editor">
   <div class="relative">
     <input v-model="title" class="title" type="text" placeholder="请输入标题" :style="{ color: titleColor }">
     <div style="position: absolute;right: 20px;top: 28px;">
@@ -186,7 +186,7 @@ export default {
 </script>
 
 <style lang="less">
-.article-editor{
+.links-editor{
   max-width: 900px;margin: 0 auto;padding: 10px;
   .fl{
     float: left;

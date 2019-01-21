@@ -1,5 +1,5 @@
 <template>
-<div class="article-editor">
+<div class="ecommerce-editor">
   <div class="relative">
     <input v-model="title" class="title" type="text" placeholder="请输入标题" :style="{ color: titleColor }">
     <div style="position: absolute;right: 20px;top: 28px;">
@@ -161,7 +161,7 @@ export default {
 </script>
 
 <style lang="less">
-.article-editor{
+.ecommerce-editor{
   max-width: 900px;margin: 0 auto;padding: 10px;
   .title{font-size: 30px;font-weight: bold;border: none;width: 100%;background: transparent;padding: 20px 15px;color: #555;
     &::-webkit-input-placeholder{color: #aaa;}
