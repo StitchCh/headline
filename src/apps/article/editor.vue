@@ -145,8 +145,8 @@ export default {
         wordCount: false,
         autoHeightEnabled: false,
         initialFrameHeight: window.innerHeight - 250,
-        serverUrl: '/cri-cms-platform/media/uploadIAU.monitor'
-        // imageUrlPrefix: '/cri-cms-platform/media/uploadIAU.monitor'
+        serverUrl: '/cri-cms-platform/media/uploadIAU.monitor',
+        imageActionName: '/cri-cms-platform/media/uploadIAU.monitor'
       }
     }
   },
