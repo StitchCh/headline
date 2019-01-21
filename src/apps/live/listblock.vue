@@ -19,6 +19,7 @@
         </div>
       </div>
     </div>
+    <div v-if="data.withdrawn == '01'" class="xiala">已撤回</div>
     <div v-if="data.withdrawn == '00'" class="xiala">
       <div class="bg-f flex-center a b">
         <!--<span class="fsbtn" style="margin-right: 10px;">审核</span>-->
@@ -67,7 +68,7 @@
     </div>
 
     <div class="app-article-add-thumb">
-      <layer v-if="mediaShow" title="选择图片" width="900px" style="z-index:200;">
+      <layer v-if="mediaShow" title="选择图片" width="900px" style="z-index:200;" class="tc_box">
         <div class="layer-text relative" style="height: 800px;width: 900px;">
           <media-photos select-mode single-select ref="mediaPhotos"></media-photos>
         </div>
@@ -79,7 +80,7 @@
     </div>
 
     <div class="video-editor">
-      <layer v-if="videoSelectorShow" title="选择视频"  width="1000px">
+      <layer v-if="videoSelectorShow" title="选择视频"  width="1000px" class="tc_box">
         <div class="layer-text relative" style="height: 1000px;">
           <media-videos select-mode ref="mediaVideos" single-select></media-videos>
         </div>
@@ -91,7 +92,7 @@
     </div>
 
     <div class="video-editor">
-      <layer v-if="audioSelectorShow" title="选择音频"  width="800px">
+      <layer v-if="audioSelectorShow" title="选择音频"  width="800px" class="tc_box">
         <div class="layer-text relative" style="height: 800px;">
           <media-audios select-mode ref="mediaAudios" single-select/>
         </div>
@@ -129,7 +130,6 @@ export default {
   },
   mounted () {
     this.data = this.value
-    console.log(this.data)
   },
   methods: {
     selectAudio () {
@@ -197,7 +197,6 @@ export default {
         textContent: this.setContent,
         mediaContent: imglist
       }).then(res => {
-        console.log(res)
         this.changeShow = false
         this.$emit('change')
       })
@@ -206,7 +205,6 @@ export default {
       this.$http.post('/cri-cms-platform/live/message/withdrawn.monitor', {
         liveMessageId: this.data.id
       }).then(res => {
-        console.log(res)
         this.$emit('change')
       })
     }

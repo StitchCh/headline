@@ -1,29 +1,30 @@
 <template>
 <div class="article-editor">
-  <div class="relative">
-    <input v-model="title" class="title" type="text" placeholder="请输入标题" :style="{ color: titleColor }">
-    <div style="position: absolute;right: 20px;top: 28px;">
-      <button class="title-colorpicker-btn" @click="titleColorBoxShow = !titleColorBoxShow" :style="{ background: titleColor }"></button>
-      <bubble v-if="titleColorBoxShow" @close="titleColorBoxShow = false">
-        <div class="title-color-list">
-          <button class="title-colorpicker-btn" style="background: #000;" @click="changeTitleColor('#000')"></button>
-          <button class="title-colorpicker-btn" style="background: #F44336;" @click="changeTitleColor('#F44336')"></button>
-          <button class="title-colorpicker-btn" style="background: #FF9800;" @click="changeTitleColor('#FF9800')"></button>
-          <button class="title-colorpicker-btn" style="background: #FFEB3B;" @click="changeTitleColor('#FFEB3B')"></button>
-          <button class="title-colorpicker-btn" style="background: #4CAF50;" @click="changeTitleColor('#4CAF50')"></button>
-          <button class="title-colorpicker-btn" style="background: #00BCD4;" @click="changeTitleColor('#00BCD4')"></button>
-          <button class="title-colorpicker-btn" style="background: #2196F3;" @click="changeTitleColor('#2196F3')"></button>
-          <button class="title-colorpicker-btn" style="background: #9C27B0;" @click="changeTitleColor('#9C27B0')"></button>
-        </div>
-      </bubble>
-    </div>
-  </div>
+  <!--<div class="relative">-->
+    <!--<input v-model="title" class="title" type="text" placeholder="请输入标题">-->
+    <!--&lt;!&ndash;<div style="position: absolute;right: 20px;top: 28px;">&ndash;&gt;-->
+      <!--&lt;!&ndash;<button class="title-colorpicker-btn" @click="titleColorBoxShow = !titleColorBoxShow" :style="{ background: titleColor }"></button>&ndash;&gt;-->
+      <!--&lt;!&ndash;<bubble v-if="titleColorBoxShow" @close="titleColorBoxShow = false">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="title-color-list">&ndash;&gt;-->
+          <!--&lt;!&ndash;<button class="title-colorpicker-btn" style="background: #000;" @click="changeTitleColor('#000')"></button>&ndash;&gt;-->
+          <!--&lt;!&ndash;<button class="title-colorpicker-btn" style="background: #F44336;" @click="changeTitleColor('#F44336')"></button>&ndash;&gt;-->
+          <!--&lt;!&ndash;<button class="title-colorpicker-btn" style="background: #FF9800;" @click="changeTitleColor('#FF9800')"></button>&ndash;&gt;-->
+          <!--&lt;!&ndash;<button class="title-colorpicker-btn" style="background: #FFEB3B;" @click="changeTitleColor('#FFEB3B')"></button>&ndash;&gt;-->
+          <!--&lt;!&ndash;<button class="title-colorpicker-btn" style="background: #4CAF50;" @click="changeTitleColor('#4CAF50')"></button>&ndash;&gt;-->
+          <!--&lt;!&ndash;<button class="title-colorpicker-btn" style="background: #00BCD4;" @click="changeTitleColor('#00BCD4')"></button>&ndash;&gt;-->
+          <!--&lt;!&ndash;<button class="title-colorpicker-btn" style="background: #2196F3;" @click="changeTitleColor('#2196F3')"></button>&ndash;&gt;-->
+          <!--&lt;!&ndash;<button class="title-colorpicker-btn" style="background: #9C27B0;" @click="changeTitleColor('#9C27B0')"></button>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;</bubble>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--</div>-->
+
   <!--<quill-editor v-model="content" ref="editor" :options="options" @change="getKeyGenerate"/>-->
   <div>
-    <vue-ueditor-wrap v-model="content" ref="editor" :config="config" destroy @ready="ready"/>
+    <vue-ueditor-wrap v-model="content" ref="editor" :config="config" :destroy="true" @ready="ready"/>
   </div>
 
-  <layer v-if="ui.imageSelectorShow" title="选择图片"  width="800px" class="tc_box">
+  <layer v-if="ui.imageSelectorShow" title="选择图片"  width="800px">
     <div class="layer-text relative" style="height: 800px;">
       <media-photos select-mode ref="mediaPhotos"></media-photos>
     </div>
@@ -33,7 +34,7 @@
     </div>
   </layer>
 
-  <layer v-if="ui.videoSelectorShow" title="选择视频"  width="800px" class="tc_box">
+  <layer v-if="ui.videoSelectorShow" title="选择视频"  width="800px">
     <div class="layer-text relative" style="height: 800px;">
       <media-videos select-mode ref="mediaVideos"></media-videos>
     </div>
@@ -43,7 +44,7 @@
     </div>
   </layer>
 
-  <layer v-if="ui.audioSelectorShow" title="选择音频"  width="800px" class="tc_box">
+  <layer v-if="ui.audioSelectorShow" title="选择音频"  width="800px">
     <div class="layer-text relative" style="height: 800px;">
       <media-audios select-mode ref="mediaAudios"></media-audios>
     </div>
@@ -56,17 +57,11 @@
 </template>
 
 <script>
-// import 'quill/dist/quill.core.css'
-// import 'quill/dist/quill.snow.css'
-// import { Quill, quillEditor } from 'vue-quill-editor'
-// import ImageResize from 'quill-image-resize-module'
 import VueUeditorWrap from 'vue-ueditor-wrap'
 import debounce from 'lodash/debounce'
 import MediaPhotos from '../medialibrary/pages/photos'
 import MediaVideos from '../medialibrary/pages/videos'
 import MediaAudios from '../medialibrary/pages/audios'
-
-// Quill.register('modules/imageResize', ImageResize)
 
 export default {
   name: 'article-editor',
@@ -86,6 +81,7 @@ export default {
       editor: null,
       config: {
         zIndex: 1,
+        height: 800,
         toolbars: [
           [
             'fullscreen',
@@ -103,14 +99,14 @@ export default {
             'unlink',
             '|',
             // 'simpleupload',
-            'selectimage',
+            // 'selectimage',
             'imagenone', // 不浮动
             'imageleft', // 左浮动
             'imageright', // 右浮动
-            '|',
-            'selectvideo',
-            '|',
-            'selectaudio'
+            // '|',
+            // 'selectvideo',
+            // '|',
+            // 'selectaudio'
           ],
           [
             'paragraph',
@@ -149,58 +145,10 @@ export default {
         },
         wordCount: false,
         autoHeightEnabled: false,
-        initialFrameHeight: 400
+        initialFrameHeight: window.innerHeight - 250,
+        serverUrl: '/cri-cms-platform/media/uploadIAU.monitor'
+        // imageUrlPrefix: '/cri-cms-platform/media/uploadIAU.monitor'
       }
-      // options: {
-      //   theme: 'snow',
-      //   placeholder: '请输入内容',
-      //   modules: {
-      //     toolbar: {
-      //       container: [
-      //         [{ 'header': [2, 3, 4, false] }],
-      //         ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-      //         ['blockquote', 'code-block', 'link', 'image', 'video', 'audio'],
-      //         // [{ 'header': 1 }, { 'header': 2 }], // custom button values
-      //         [{'list': 'ordered'}, {'list': 'bullet'}],
-      //         // [{ 'script': 'sub'}, { 'script': 'super' }], // superscript/subscript
-      //         [{'indent': '-1'}, {'indent': '+1'}, {'align': []}], // outdent/indent
-      //         // [{ 'direction': 'rtl' }], // text direction
-      //         [{'size': ['small', false, 'large', 'huge']}],
-      //         [{'color': []}, {'background': []}], // dropdown with defaults from theme
-      //         ['clean'] // remove formatting button
-      //       ],
-      //       handlers: {
-      //         'image' (value) {
-      //           if (value) {
-      //             that.ui.index = this.quill.getSelection().index
-      //             that.ui.imageSelectorShow = true
-      //           } else {
-      //             this.quill.format('image', false)
-      //           }
-      //         },
-      //         'video' (value) {
-      //           if (value) {
-      //             that.ui.index = this.quill.getSelection().index
-      //             that.ui.videoSelectorShow = true
-      //           } else {
-      //             this.quill.format('video', false)
-      //           }
-      //         },
-      //         'audio' () {
-      //           that.$toast()
-      //         }
-      //       }
-      //     },
-      //     imageResize: {
-      //       displayStyles: {
-      //         backgroundColor: 'black',
-      //         border: 'none',
-      //         color: 'white'
-      //       },
-      //       modules: [ 'Resize', 'DisplaySize', 'Toolbar' ]
-      //     }
-      //   }
-      // }
     }
   },
   methods: {
@@ -245,7 +193,6 @@ export default {
       this.ui.audioSelectorShow = false
     },
     ready (UE) {
-      console.log(window.UE)
       let that = this
       this.editor = UE
       window.UE.commands['selectimage'] = {
@@ -274,35 +221,28 @@ export default {
 </script>
 
 <style lang="less">
-.article-editor{max-width: 900px;margin: 0 auto;padding: 10px;
+  #app{
+    min-width: auto !important;
+  }
+  textarea{
+    outline: none;
+    width: 100%;
+    height: 60px;
+    resize: none;
+    padding: 6px;
+    box-sizing: border-box;
+  }
+.article-editor{max-width: 100%;margin: 0 auto;padding: 10px;
   .flex-v-center{
     font-size: 14px !important;
   }
-  .title{font-size: 30px;font-weight: bold;border: none;width: 100%;background: transparent;padding: 20px 15px;color: #555;
+  .title{font-size: 15px;font-weight: bold;border: none;width: 100%;background: transparent;padding: 10px 6px;color: #555;box-sizing: border-box;
     &::-webkit-input-placeholder{color: #aaa;}
   }
   .title-colorpicker-btn {width: 25px;height: 25px;border: 1px solid transparent;margin: 3px;
     &:hover {border: 1px solid #000}
   }
   .title-color-list {width: 192px;padding: 10px;}
-  /*.ql-toolbar.ql-snow, .ql-container.ql-snow{border: none;}*/
-  /*.ql-toolbar.ql-snow{position: sticky;top: 0;border-top: 1px solid #ddd;background: #fff;z-index: 10;}*/
-  /*.ql-editor{font-size: 14px;color: #555;min-height: 200px;}*/
-  /*.ql-formats svg{vertical-align: top;}*/
-  /*.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="1"]::before, .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before{content: '一级标题'}*/
-  /*.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="2"]::before, .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="2"]::before{content: '二级标题'}*/
-  /*.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="3"]::before, .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before{content: '三级标题'}*/
-  /*.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="4"]::before, .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="4"]::before{content: '四级标题'}*/
-  /*.ql-snow .ql-picker.ql-header .ql-picker-label::before, .ql-snow .ql-picker.ql-header .ql-picker-item::before{content: '正文'}*/
-
-  /*.ql-snow .ql-picker.ql-size .ql-picker-label[data-value=huge]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=huge]::before{content: '超大'}*/
-  /*.ql-snow .ql-picker.ql-size .ql-picker-label[data-value=large]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=large]::before{content: '大号'}*/
-  /*.ql-snow .ql-picker.ql-size .ql-picker-label[data-value=small]::before, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=small]::before{content: '小号'}*/
-  /*.ql-snow .ql-picker.ql-size .ql-picker-label::before, .ql-snow .ql-picker.ql-size .ql-picker-item::before{content: '正常'}*/
-  /*.ql-snow .ql-tooltip::before{content: '链接地址'}*/
-  /*.ql-snow .ql-tooltip a.ql-action::after{content: '修改'}*/
-  /*.ql-snow .ql-tooltip a.ql-remove::before{content: '删除'}*/
-  /*.ql-tooltip{border-radius: 6px;}*/
   .edui-for-selectimage .edui-icon {
     background-position: -380px 0;
   }

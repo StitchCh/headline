@@ -26132,6 +26132,7 @@ UE.ui = baidu.editor.ui = {};
                 '<input type="radio" name="'+ textAlignInputName +'" value="left" ' + ((opt["textAlign"] && opt["textAlign"] == "left") ? "checked" : "") + '>' + me.getLang("justifyleft") +
                 '<input type="radio" name="'+ textAlignInputName +'" value="center" ' + ((opt["textAlign"] && opt["textAlign"] == "center") ? "checked" : "") + '>' + me.getLang("justifycenter") +
                 '<input type="radio" name="'+ textAlignInputName +'" value="right" ' + ((opt["textAlign"] && opt["textAlign"] == "right") ? "checked" : "") + '>' + me.getLang("justifyright") +
+                '<input type="radio" name="'+ textAlignInputName +'" value="justify" ' + ((opt["textAlign"] && opt["textAlign"] == "justify") ? "checked" : "") + '>' + me.getLang("justifyjustify") +
                 '</td>' +
                 '</tr>' +
                 '<tr>' +

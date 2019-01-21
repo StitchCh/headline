@@ -1,7 +1,7 @@
 <template>
-  <div class="app-article-add-thumb tc_box">
+  <div class="app-article-add-thumb">
     <div class="add-photo-btn a flex-center" :style="{ width, height }" @click="show = true">
-      <img v-if="image.id" :src="image.url" width="100%" alt="">
+      <img v-if="image.url" :src="image.url" style="height: 100%;" alt="">
       <i v-else class="icon f-32 c-a">add_photo_alternate</i>
     </div>
     <layer v-if="show" title="选择图片"  width="1000px">
@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import MediaPhotos from '../medialibrary/pages/photos'
-import MediaPreview from '../medialibrary/components/mediaPreview'
+import MediaPhotos from '../../medialibrary/pages/photos'
+import MediaPreview from '../../medialibrary/components/mediaPreview'
 
 export default {
   name: 'app-article-add-thumb',
@@ -71,7 +71,6 @@ export default {
     selectImage () {
       let image = this.$refs.mediaPhotos.selected[0] || null
       if (this.scale) {
-        console.log(image.scale == sessionStorage.imageratio)
         if (image.scale != sessionStorage.imageratio) {
           this.$toast('请选择比例为' + sessionStorage.imageratio + '的图片')
           return false
@@ -83,12 +82,13 @@ export default {
       }
       this.$emit('input', image ? this.image : image)
       this.show = false
+      this.$emit('setMobileDispatch')
     },
     onPreview (e) {
       this.preview.list = e.list || []
       this.preview.index = e.index || 0
       this.preview.show = true
-    }
+    },
   },
   created () {
     if (this.value) this.image = JSON.parse(JSON.stringify(this.value))

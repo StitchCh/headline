@@ -43,7 +43,7 @@
 import LangSwitch from '@/components/langSwitch'
 
 export default {
-  name: 'app-login',
+  name: 'mobile_login',
   components: { LangSwitch },
   data () {
     return {
@@ -87,11 +87,11 @@ export default {
           sessionStorage.token = res.token
         }
         sessionStorage.previewUrl = res.previewUrl
-        sessionStorage.type = "pc"
+        sessionStorage.type = "mobile"
         if (res.isFirstLogin === 'true') {
           this.$store.commit('setFirstLogin', true)
         }
-        this.$router.replace('/chooseSite')
+        this.$router.replace('/chooseSite_mobile')
       }).catch(e => {
         this.showError(e)
       })

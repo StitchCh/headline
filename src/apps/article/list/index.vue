@@ -12,7 +12,7 @@
           <!--<img v-if="slotProps.item.hasThumb == 1" src="../../../../static/head_img.png" alt="" style="width: 20px;margin-right: 10px;">-->
           <i v-if="~~(slotProps.item.hasThumb == 1)" class="icon f-16 orange">image</i>
           <i v-if="~~(slotProps.item.isRecommnd)" class="icon f-16 blue">thumb_up</i>
-          <i class="icon f-16 blue" >phone_iphone</i>
+          <i class="icon f-16 blue" v-if="slotProps.item.mdFlage == 1">phone_iphone</i>
           <!-- <i v-if="~~(slotProps.item.hasThumb)" class="icon f-16 orange">image</i> -->
           <i v-if="~~(slotProps.item.isOriginal)" class="icon f-16 green">copyright</i>
           <span class="flex-item c-6 f-14 b">{{slotProps.item.title}}</span>
