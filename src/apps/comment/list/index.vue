@@ -36,6 +36,12 @@
       <div class="abs flex-center" v-else>
         <no-data/>
       </div>
+      <div class="af-bottombar flex-center relative">
+        <icon-btn small class="a" @click="onPrev" :disabled="toPage <= 1">keyboard_arrow_left</icon-btn>
+        <span class="f-14 c-6" style="margin: 0 10px;line-height: 1em;">第 {{toPage}} / {{totalPage}} 页</span>
+        <icon-btn small class="a" @click="onNext" :disabled="toPage >= totalPage">keyboard_arrow_right</icon-btn>
+        <span v-if="totalRowsAmount" style="position:absolute; right: 10px;bottom: 8px;font-size: 12px;color: #999;">共 {{totalRowsAmount}} 项</span>
+      </div>
     </div>
 
     <layer v-if="editShow" title="修改评论" width="600px">
@@ -56,6 +62,9 @@ export default {
   props: [ 'audit' ],
   data () {
     return {
+      toPage: 1,
+      totalPage: 1,
+      totalRowsAmount: 0,
       loading: false,
       list: [],
       editShow: false,
@@ -81,11 +90,29 @@ export default {
     }
   },
   methods: {
+    onNext () {
+      if (this.toPage+1 > this.totalPage) {
+        return
+      }
+      this.toPage++
+      this.getList()
+    },
+    onPrev () {
+      if (this.toPage <= 1) {
+        return
+      }
+      this.toPage--
+      this.getList()
+    },
     getList () {
       this.loading = true
-      this.$http.post('/cri-cms-platform/comment/list.monitor', this.$route.query).then(
+      let obj = this.$route.query
+      obj.toPage = this.toPage
+      this.$http.post('/cri-cms-platform/comment/list.monitor', obj).then(
         res => {
-          console.log(res)
+          this.totalPage = res.totalPage
+          this.totalRowsAmount = res.totalRowsAmount
+          this.toPage = res.current
           res.pages.forEach(v => {
             v._state = this.getState(v)
           })
@@ -153,6 +180,7 @@ export default {
   },
   watch: {
     '$route.query' () {
+      this.toPage = 1
       this.getList()
     }
   }
