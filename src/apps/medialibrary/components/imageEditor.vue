@@ -358,7 +358,7 @@ export default {
             console.log(data)
             this.$http.post('/cri-cms-platform/media/uploadIAU.monitor', data).then(res => {
               console.log(res)
-              this.$emit('refresh')
+              this.$emit('refresh', res[0])
               this.clickState = true
             }).catch(e => {
               this.clickState = true
@@ -375,8 +375,7 @@ export default {
           }
           console.log(data)
           this.$http.post('/cri-cms-platform/media/uploadIAU.monitor', data).then(res => {
-            console.log(res)
-            this.$emit('refresh')
+            this.$emit('refresh', res[0])
           }).catch(e => {
             this.$toast(e.msg || `保存失败`)
           })

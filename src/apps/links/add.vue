@@ -237,7 +237,7 @@ export default {
         submited: false
       },
       form: {
-        // app: 'ARTICLE',
+        app: 'LINK',
         title: '',
         titleColor: '',
         // content: '',
@@ -267,7 +267,7 @@ export default {
         virtualComment: '',
         virtualShare: '',
         virtualDigg: '',
-        hasThumb: 0,
+        hasThumb: 1,
         // thumbType: 1,
         thumb: ''
         // terminalPc: 0,
@@ -322,22 +322,20 @@ export default {
       return time <= new Date()
     },
     autoSave () {
-      // let { title, titleColor, content } = this.$refs.editor
-      // this.form.title = title
-      // this.form.titleColor = titleColor
-      // this.form.content = content
-      // let form = {...this.form}
-      // if (this.autoSaveId) form.id = this.autoSaveId
-      // return this.$http.post('/cri-cms-platform/articleAutoSave/saveAuto.monitor', form).then(
-      //   res => {
-      //     this.autoSaveId = res.autoSaveId
-      //     this.$toast('保存成功')
-      //   }
-      // ).catch(
-      //   res => {
-      //     this.$toast(res.msg || res || '保存失败')
-      //   }
-      // )
+      let { title } = this.$refs.editor
+      this.form.title = title
+      let form = {...this.form}
+      if (this.autoSaveId) form.id = this.autoSaveId
+      return this.$http.post('/cri-cms-platform/articleAutoSave/saveAuto.monitor', form).then(
+        res => {
+          this.autoSaveId = res.autoSaveId
+          this.$toast('保存成功')
+        }
+      ).catch(
+        res => {
+          this.$toast(res.msg || res || '保存失败')
+        }
+      )
     },
     submit () {
       let url = this.id ? '/cri-cms-platform/link/update.monitor' : '/cri-cms-platform/link/save.monitor'
@@ -393,10 +391,18 @@ export default {
   mounted () {
     if (this.from && this.id) {
       this.ui.loading = true
-      if (this.from === 'draft') this.autoSaveId = this.id
-      this.$http.post('/cri-cms-platform/link/get.monitor', {
+      let url = ''
+      let obj = {
         id: this.id
-      }).then(res => {
+      }
+      if (this.from === 'draft') {
+        this.autoSaveId = this.id
+        url = '/cri-cms-platform/articleAutoSave/getAuto.monitor'
+        obj.app = 'LINK'
+      } else if (this.from === 'editor') {
+        url = '/cri-cms-platform/link/get.monitor'
+      }
+      this.$http.post(url, obj).then(res => {
         console.log(res)
         for (let k in this.form) {
           if (k === 'virtualComment') {

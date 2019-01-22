@@ -32,15 +32,10 @@ export default [{
         }
       ]
     },
-    // {
-    //   path: 'tile',
-    //   name: 'SpecialTile',
-    //   component: resolve => require(['@/apps/live/tile/index.vue'], resolve)
-    // },
-    // {
-    //   path: 'reject',
-    //   component: resolve => require(['@/apps/live/reject/index.vue'], resolve)
-    // },
+    {
+      path: 'reject',
+      component: resolve => require(['@/apps/live/reject/index.vue'], resolve)
+    },
     {
       path: 'recycle',
       name: 'liveRecycle',

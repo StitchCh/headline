@@ -23,6 +23,7 @@
       <div class="set_password_input">
         <input v-model="loginUserPwdConfirm" type="password" placeholder="确认新密码">
       </div>
+      <p style="margin: 0;line-height: 1.4;font-size: 12px;color: rgba(255,0,0,0.5);">新密码数字、字母、符号至少包含两种，密码长度最少八位!</p>
       <div class="set_password_btn">
         <span @click="setPassword">确定</span>
       </div>
@@ -128,7 +129,7 @@ export default {
   }
   .set_password{
     width: 300px;
-    height: 230px;
+    height: 260px;
     padding: 20px;
     border-radius: 10px;
     position: absolute;

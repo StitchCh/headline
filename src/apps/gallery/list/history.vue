@@ -6,14 +6,12 @@
         <th>操作</th>
         <th>操作人</th>
         <th>操作时间</th>
-        <th>备注</th>
         </thead>
         <tbody>
         <tr v-for="operate in list" :key="operate.id">
-          <td>{{operate.operate}}</td>
+          <td>{{operate.remark}}</td>
           <td>{{operate.operateUser}}</td>
           <td>{{operate.operateTime}}</td>
-          <td>{{operate.remark}}</td>
         </tr>
         <tr v-if="!list.length">
           <td colspan="4" style="padding: 50px;">

@@ -75,6 +75,7 @@ export default {
       this.$http.post('/cri-cms-platform/video/albumList.monitor', this.filter).then(res => {
         this.list = res.data || []
         this.totalPage = res.totalPage || 1
+        this.$router.push('/video/album/' + this.list[0].id)
       }).catch(e => {
         console.log(e)
       })

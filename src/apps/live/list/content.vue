@@ -25,7 +25,11 @@
             <img :src="content.headimg" alt="" style="width: 100%;">
           </div>
 
-          <div class="initbtn" @click="inRoom">进入直播</div>
+          <div v-if="content.auditStatus != 'REJECT'" class="initbtn" @click="inRoom">进入直播</div>
+          <div v-if="content.auditStatus == 'REJECT'">
+            <p>驳回理由</p>
+
+          </div>
 
         </div>
       </div>
@@ -144,7 +148,7 @@ export default {
       this.$http.post(this.getUrl, {
         id: this.id
       }).then(res => {
-        console.log(res.live)
+        console.log(res)
         this.content = res.content || {}
         this.content.abstarcts = res.live.introduction
         this.content.headimg = res.live.headThumb[0].url

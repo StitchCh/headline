@@ -79,4 +79,13 @@ export default {
   height: auto !important;
   outline: none;
 }
+.article-editor{
+  max-width: 80% !important;
+}
+.edui-editor{
+  width: 100% !important;
+}
+.edui-editor-iframeholder{
+  width: 100% !important;
+}
 </style>

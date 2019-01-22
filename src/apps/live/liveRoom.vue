@@ -279,11 +279,16 @@ export default {
       pinglunList: [],
       messageList:[],
       msgTypeList: [],
-      usid: ''
+      usid: '',
+      first: true
     }
   },
   watch:{
     'tagOrder' () {
+      if (this.first) {
+        this.first = false
+        return
+      }
       this.setZhiboRoom()
     }
   },
@@ -300,13 +305,12 @@ export default {
       this.virtualPv = res.content.virtualPv
       this.liveId = res.live.id
       this.tagOrder = res.live.tagOrder.split(',')
-      if (res.live.hostThumb) {
-        this.host = {
-          name: res.live.hostAliasName || '',
-          url: res.live.hostThumb.url || '',
-          urlid: res.live.hostThumb.id || ''
-        }
+      this.host = {
+        name: res.live.hostAliasName || '',
+        url: res.live.hostThumb ? res.live.hostThumb.url : '',
+        urlid: res.live.hostThumb ? res.live.hostThumb.id : ''
       }
+
       this.$http.post('/cri-cms-platform/live/broadcaster/user.monitor', {
         liveId: this.liveId
       }).then(res => {
@@ -396,6 +400,7 @@ export default {
             item1.type = item1.category
           })
         })
+        console.log(this.messageList)
       })
     },
     getPinglunList () {

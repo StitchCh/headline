@@ -20,7 +20,7 @@
       :index="preview.index"
       :type="$route.meta.type"
       @close="preview.show=false"
-      @refresh="$refs.mediaPhotos.getList();preview.show = false;"
+      @refresh="refresh"
       @delected="onDelected"/>
   </div>
 </template>
@@ -65,6 +65,10 @@ export default {
     }
   },
   methods: {
+    refresh (item) {
+      this.$refs.mediaPhotos.getList('', item)
+      this.preview.show = false
+    },
     onDelected (e) {
       this.$refs.mediaPhotos.getList()
     },

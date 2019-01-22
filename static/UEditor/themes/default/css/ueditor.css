@@ -1679,7 +1679,7 @@ div.edui-box {
 }
 
 .edui-default .edui-autotypesetpicker-body td {
-    font-size: 12px;
+    font-size: 14px;
     word-wrap:break-word;
 }
 
@@ -1690,7 +1690,7 @@ div.edui-box {
 /*自动排版弹出菜单*/
 .edui-default .edui-cellalignpicker .edui-cellalignpicker-body {
     width: 70px;
-    font-size: 12px;
+    font-size: 14px;
     cursor: default;
 }
 

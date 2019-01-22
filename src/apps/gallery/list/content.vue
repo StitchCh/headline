@@ -16,12 +16,12 @@
               <span>作者：{{content.author}}</span>
               <span>创建者：{{content.createUser}}</span>
               <span class="flex-item"></span>
-              <img v-if="content && content.thumb" v-for="item in content.thumb" :key="item.id" :src="item.url" @click="thumbItem.url = item.url;thumbItem.show = true;" style="margin-left: 5px;height: 50px;cursor: pointer;">
+              <img v-if="content && content.thumb" v-for="(item, index) in content.thumb" :key="index" :src="item.url" @click="thumbItem.url = item.url;thumbItem.show = true;" style="margin-left: 5px;height: 50px;cursor: pointer;">
             </div>
             <p class="abstarcts"><strong>[摘要]</strong>{{content.abstarcts}}</p>
             <div class="flex">
               <div class="flex-item column">
-                <div class="gallery-item relative" v-for="item in column1" :key="item.id">
+                <div class="gallery-item relative" v-for="(item, index) in column1" :key="index">
                   <div class="bg-e">
                     <img :src="item.url">
                   </div>
@@ -29,7 +29,7 @@
                 </div>
               </div>
               <div class="flex-item column">
-                <div class="gallery-item relative" v-for="item in column2" :key="item.id">
+                <div class="gallery-item relative" v-for="(item, index) in column2" :key="index">
                   <div class="bg-e">
                     <img :src="item.url">
                   </div>
@@ -37,7 +37,7 @@
                 </div>
               </div>
               <div class="flex-item column">
-                <div class="gallery-item relative" v-for="item in column3" :key="item.id">
+                <div class="gallery-item relative" v-for="(item, index) in column3" :key="index">
                   <div class="bg-e">
                     <img :src="item.url">
                   </div>
@@ -49,7 +49,7 @@
             <div v-if="relateGallery.length" class="relate f-14">
               <div class="b c-8" style="margin-bottom: 10px;">相关图集：</div>
               <ul>
-                <li v-for="item in relateGallery" :key="item.id">
+                <li v-for="(item, index) in relateGallery" :key="index">
                   <a class="a c-8" @click="toLink(item)">{{item.title}}</a>
                 </li>
               </ul>

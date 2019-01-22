@@ -295,7 +295,7 @@ export default {
     },
     submit () {
       let url = this.id ? '/cri-cms-platform/live/update.monitor' : '/cri-cms-platform/live/save.monitor'
-      let reg = /^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/
+      let reg = /^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)/
 
       let { title, titleColor } = this.$refs.editor
       if (!title) {

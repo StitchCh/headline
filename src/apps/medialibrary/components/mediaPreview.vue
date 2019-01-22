@@ -69,7 +69,7 @@
       </div>
     </div>
   </div>
-  <image-editor v-if="show.imageEditor" @close="show.imageEditor = false" @refresh="$emit('refresh');show.imageEditor = false;" :src="origin+current.filePath+current.fileName" :current="current"/>
+  <image-editor v-if="show.imageEditor" @close="show.imageEditor = false" @refresh="refresh" :src="origin+current.filePath+current.fileName" :current="current"/>
 </layer>
 </template>
 
@@ -147,6 +147,11 @@ export default {
     }
   },
   methods: {
+    refresh (item) {
+      console.log(item)
+      this.$emit('refresh', item)
+      this.show.imageEditor = false
+    },
     prev () {
       this.i -= 1
     },

@@ -43,6 +43,12 @@
           <i class="icon">add_photo_alternate</i>添加图片
         </div>
       </div>
+      <div>
+        <p>批量添加说明</p>
+        <div>
+          <textarea @change="allDescriptionChange" class="tysm_box" rows="4" v-model="allDescription" placeholder="在此处输入批量图片说明"></textarea>
+        </div>
+      </div>
     </div>
 
     <layer v-if="ui.photoSelectorShow" title="选择图片"  width="800px" class="tc_box">
@@ -77,10 +83,20 @@ export default {
       title: '',
       titleColor: '#000',
       selected: [],
-      activeIndex: 0
+      activeIndex: 0,
+      allDescription: ''
     }
   },
   methods: {
+    allDescriptionChange () {
+      this.selected.forEach((item, index) => {
+        if (item.description == "") {
+          let otiem = item
+          otiem.description = this.allDescription
+          this.selected.splice(index, 1, otiem)
+        }
+      })
+    },
     changeTitleColor (color) {
       this.titleColor = color
       this.ui.titleColorBoxShow = false
@@ -88,7 +104,7 @@ export default {
     selectPhoto () {
       let imgOrigin = this.$refs.mediaPhotos.imgOrigin
       this.selected = this.selected.concat(this.$refs.mediaPhotos.selected.map(v => {
-        v.description = ''
+        v.description = this.allDescription
         v.url = imgOrigin + v.filePath + v.fileName
         return v
       }))
@@ -106,6 +122,15 @@ export default {
 .gallery-editor {max-width: 900px;margin: 0 auto;padding: 10px;
   .title{font-size: 30px;font-weight: bold;border: none;width: 100%;background: transparent;padding: 20px 15px;color: #555;
     &::-webkit-input-placeholder{color: #aaa;}
+  }
+  .tysm_box{
+    width: 100%;
+    outline: none;
+    resize: none;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 6px;
   }
   .title-colorpicker-btn {width: 25px;height: 25px;border: 1px solid transparent;margin: 3px;
     &:hover {border: 1px solid #000}
