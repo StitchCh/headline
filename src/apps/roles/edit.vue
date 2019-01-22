@@ -19,11 +19,19 @@
 
     <layer v-if="ui.roleMenuShow" title="选择菜单" width="600px">
       <div class="layer-text">
-        <tree :data="menuList" pidTxt="pId" rootId="-1" :format="menuFormat" show-checkbox :checked-list.sync="checkList.menu"></tree>
+
+        <div v-for="item in menuList" class="melist_box">
+          <div style="margin-bottom: 10px;"><check-box @change="menuChange(item.checked)" v-model="item.checked" style="width: 100%;" :text="item.name"></check-box></div>
+          <div class="melist_sbox">
+            <div v-for="item1 in item.children" :title="item1.name" class="melist_s"><check-box @change="menuChange(item1.checked)" v-model="item1.checked" style="margin: 0;width: 100%;" :text="item1.name"></check-box></div>
+          </div>
+        </div>
+
       </div>
       <div class="layer-btns">
         <btn flat @click="ui.roleMenuShow = false">关闭</btn>
       </div>
+      <check-box v-model="menuAll" class="qxbtn" text="全选"></check-box>
     </layer>
     <layer v-if="ui.roleSiteShow" title="选择站点频道" width="600px">
       <div class="layer-text flex">
@@ -55,10 +63,6 @@ export default {
       type: String,
       default: ''
     },
-    menuList: {
-      type: Array,
-      default: () => []
-    },
     siteList: {
       type: Array,
       default: () => []
@@ -66,6 +70,8 @@ export default {
   },
   data () {
     return {
+      menuList: [],
+      menuAll: false,
       ui: {
         loading: true,
         roleMenuShow: false,
@@ -93,6 +99,11 @@ export default {
     }
   },
   methods: {
+    menuChange (data) {
+      if (!data) {
+        this.menuAll = false
+      }
+    },
     menuFormat (menu, node) {
       let arr = menu.split('-')
       let name = arr[0]
@@ -118,6 +129,18 @@ export default {
       )
     },
     submit () {
+      let menuList = []
+      this.menuList.forEach(item => {
+        if (item.checked == true) {
+          menuList.push(item.id)
+        }
+        item.children.forEach(item1 => {
+          if (item1.checked == true) {
+            menuList.push(item1.id)
+          }
+        })
+      })
+      this.form.editApp = menuList.join(',')
       this.form.editSiteChannels = JSON.stringify({data: this.site.filter(v => {
         return v.channels !== ''
       })})
@@ -146,14 +169,34 @@ export default {
     }
     this.$http.post('/cri-cms-platform/sysRoles/updateQuery.monitor', { id: this.id }).then(
       res => {
+        console.log(res)
         this.form.id = this.id
         this.form.rolesName = res.sysRoles.rolesName
         this.form.rolesCnName = res.sysRoles.rolesCnName
-        this.checkList.menu = res.menus.filter(v => v.checked).map(v => v.id)
+        // this.checkList.menu = res.menus.filter(v => v.checked).map(v => v.id)
         res.siteChannels.forEach(v => {
           this.site.find(site => site.siteId === v.siteId).channels = v.channels.filter(channel => channel.checked).map(channel => channel.id).join(',')
         })
         this.ui.loading = false
+        let cnList = []
+        res.menus.forEach(item => {
+          if (item.pId == -1) {
+            item.children = []
+            cnList.push(item)
+          }
+        })
+        res.menus.forEach(item => {
+          item.name = item.name.split('-')[0]
+          if (item.pId != -1) {
+            for (let i = 0; i < cnList.length; i++) {
+              if (cnList[i].id == item.pId) {
+                cnList[i].children.push(item)
+                i = cnList.length
+              }
+            }
+          }
+        })
+        this.menuList = cnList
       }
     ).catch(
       res => {
@@ -162,6 +205,16 @@ export default {
     )
   },
   watch: {
+    'menuAll' (newValue) {
+      if (newValue) {
+        this.menuList.forEach(item => {
+          item.checked = true
+          item.children.forEach(item1 => {
+            item1.checked = true
+          })
+        })
+      }
+    },
     'checkList.menu' (newValue) {
       this.form.editApp = newValue.join(',')
     },
@@ -178,5 +231,27 @@ export default {
 </script>
 
 <style>
-
+  .melist_s{
+    width: calc(25% - 26px);
+    margin-bottom: 10px;
+    overflow: hidden;
+    margin-right: 26px;
+  }
+  .melist_sbox{
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .melist_box{
+    border-bottom: 1px solid #127ddd;
+    margin-bottom: 10px;
+  }
+  .qxbtn{
+    position: absolute;
+    z-index: 100;
+    left: 20px;
+    bottom: 20px;
+    width: 60px;
+  }
 </style>

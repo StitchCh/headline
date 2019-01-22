@@ -173,6 +173,7 @@ export default {
         this.loading = false
         res.data.forEach(item => { item.checked = false })
         this.data = res.data
+        console.log(res.data)
         this.totalPage = res.totalPage
       }).catch(e => {
         this.loading = false

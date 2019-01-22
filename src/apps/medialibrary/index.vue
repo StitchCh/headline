@@ -21,7 +21,7 @@
     :index="preview.index"
     :type="$route.meta.type"
     @close="preview.show=false"
-    @refresh="$refs.routerView.getList();preview.show = false;"
+    @refresh="refresh"
     @delected="onDelected"/>
 
 </div>
@@ -45,6 +45,11 @@ export default {
     }
   },
   methods: {
+    refresh (item) {
+      console.log(item)
+      this.$refs.routerView.getList('', item)
+      this.preview.show = false
+    },
     onPreview (e) {
       this.preview.list = e.list || []
       this.preview.index = e.index || 0

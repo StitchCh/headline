@@ -147,7 +147,7 @@ export default {
     }
   },
   methods: {
-    getList (id) {
+    getList (id, changeItem) {
       this.loading = true
       let type = this.selectMode ? '0' : this.$route.meta.type
       let folderId = this.$route.query.folderId || ''
@@ -179,6 +179,15 @@ export default {
         this.list = res.data || []
         this.imgOrigin = res.suffix
         this.loading = false
+        if (changeItem) {
+          this.list[0].data.forEach(item => {
+            if (item.id == changeItem.id) {
+              item.checked = true
+            }
+          })
+        }
+        console.log(changeItem)
+        console.log(this.list)
       }).catch(e => {
         this.loading = false
         this.$toast(e.msg)

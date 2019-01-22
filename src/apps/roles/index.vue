@@ -96,7 +96,7 @@
     </layer>
 
     <roles-new v-if="newRoleShow" :menu-list="menuList" :site-list="siteList" @close="newRoleShow = false" @getList="getList"></roles-new>
-    <roles-edit v-if="editRoleShow" :id="editId" :menu-list="menuList" :site-list="siteList" @close="editRoleShow = false" @getList="getList"></roles-edit>
+    <roles-edit v-if="editRoleShow" :id="editId" :site-list="siteList" @close="editRoleShow = false" @getList="getList"></roles-edit>
   </div>
 </template>
 
@@ -208,11 +208,34 @@ export default {
       this.$http.post('/cri-cms-platform/sysRoles/getSite.monitor')
     ]).then(
       res => {
+        console.log(res)
         this.list = res[0].pages
         this.total = res[0].totalPage * 15
 
-        this.menuList = res[1].menus
         this.siteList = res[2].sites
+        let cnList = []
+        res[1].menus.forEach(item => {
+          if (item.pId == -1) {
+            item.children = []
+            cnList.push(item)
+          }
+        })
+        res[1].menus.forEach(item => {
+          item.name = item.name.split('-')[0]
+          item.checked = false
+          if (item.pId != -1) {
+            for (let i = 0; i < cnList.length; i++) {
+              if (cnList[i].id == item.pId) {
+                cnList[i].children.push(item)
+                i = cnList.length
+              }
+            }
+          }
+        })
+
+        this.menuList = cnList
+
+        console.log(this.menuList)
 
         this.loading = false
       }

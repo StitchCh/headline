@@ -19,11 +19,19 @@
 
     <layer v-if="ui.roleMenuShow" title="选择菜单" width="600px">
       <div class="layer-text">
-        <tree :data="menuList" pidTxt="pId" rootId="-1" :format="menuFormat" show-checkbox :checked-list.sync="checkList.menu"></tree>
+
+        <div v-for="item in menuList" class="melist_box">
+          <div style="margin-bottom: 10px;"><check-box @change="menuChange(item.checked)" v-model="item.checked" style="width: 100%;" :text="item.name"></check-box></div>
+          <div class="melist_sbox">
+            <div v-for="item1 in item.children" :title="item1.name" class="melist_s"><check-box @change="menuChange(item1.checked)" v-model="item1.checked" style="margin: 0;width: 100%;" :text="item1.name"></check-box></div>
+          </div>
+        </div>
+
       </div>
       <div class="layer-btns">
         <btn flat @click="ui.roleMenuShow = false">关闭</btn>
       </div>
+      <check-box v-model="menuAll" class="qxbtn" text="全选"></check-box>
     </layer>
     <layer v-if="ui.roleSiteShow" title="选择站点频道" width="600px">
       <div class="layer-text flex">
@@ -73,10 +81,11 @@ export default {
         roleSiteFlag: false,
         channels: []
       },
+      menuAll: false,
       form: {
         rolesName: '',
         rolesCnName: '',
-        app: '',
+        app: [],
         addSiteChannels: ''
       },
       site: [],
@@ -86,10 +95,12 @@ export default {
       }
     }
   },
-  mounted () {
-    console.log(this.menuList)
-  },
   methods: {
+    menuChange (data) {
+      if (!data) {
+        this.menuAll = false
+      }
+    },
     menuFormat (menu, node) {
       let arr = menu.split('-')
       let name = arr[0]
@@ -115,6 +126,18 @@ export default {
       )
     },
     submit () {
+      let menuList = []
+      this.menuList.forEach(item => {
+        if (item.checked == true) {
+          menuList.push(item.id)
+        }
+        item.children.forEach(item1 => {
+          if (item1.checked == true) {
+            menuList.push(item1.id)
+          }
+        })
+      })
+      this.form.app = menuList.join(',')
       this.form.addSiteChannels = JSON.stringify({data: this.site.filter(v => {
         return v.channels !== ''
       })})
@@ -139,6 +162,16 @@ export default {
     })
   },
   watch: {
+    'menuAll' (newValue) {
+      if (newValue) {
+        this.menuList.forEach(item => {
+          item.checked = true
+          item.children.forEach(item1 => {
+            item1.checked = true
+          })
+        })
+      }
+    },
     'checkList.menu' (newValue) {
       this.form.app = newValue.join(',')
     },
@@ -154,6 +187,28 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+  .melist_s{
+    width: calc(25% - 26px);
+    margin-bottom: 10px;
+    overflow: hidden;
+    margin-right: 26px;
+  }
+  .melist_sbox{
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .melist_box{
+    border-bottom: 1px solid #127ddd;
+    margin-bottom: 10px;
+  }
+  .qxbtn{
+    position: absolute;
+    z-index: 100;
+    left: 20px;
+    bottom: 20px;
+    width: 60px;
+  }
 </style>

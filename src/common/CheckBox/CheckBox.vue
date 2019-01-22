@@ -45,10 +45,17 @@ export default {
 </script>
 
 <style>
-.check-box { display: inline-flex;height:20px;margin-right:10px;align-items: center;cursor: pointer;vertical-align: middle;}
+.check-box { display: inline-flex;max-width:100%;height:20px;margin-right:10px;align-items: center;cursor: pointer;vertical-align: middle;}
 .check-box input { display: none }
 .check-box i {position:relative;  display: block; width:15px; height:15px; border-radius: 2px; border:2px solid #aaa;box-sizing: border-box;}
 .check-box input:checked + i { background:#018be6; border:1px solid #018be6;
+}
+.check-box-text{
+  width: calc(100% - 27px);
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .check-box input:checked + i:after { position:absolute;left:4px;top:1px; content:''; height: 7px; width:3px;
 border:2px solid #fff; transform:rotate(40deg);border-width: 0 2px 2px 0 }
