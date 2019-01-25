@@ -10,7 +10,7 @@
       <div ref="echarts" style="height: 400px;"></div>
       <div v-if="statistics" class="flex" style="padding-top: 20px">
         <div class="flex-item">
-          <div style="font-weight: 700;color: #000;margin-bottom: 20px;">{{days.list.find(v => v.value === days.value).text}}总计</div>
+          <div style="font-weight: 700;color: #000000;margin-bottom: 20px;">{{days.list.find(v => v.value === days.value).text}}总计</div>
           <table>
             <tbody>
             <tr style="border: 0;">
@@ -33,7 +33,7 @@
           </table>
         </div>
         <div style="flex: 2;margin-left: 100px;">
-          <div style="font-weight: 700;color: #000;margin-bottom: 20px;">各平台统计</div>
+          <div style="font-weight: 700;color: #000000;margin-bottom: 20px;">各平台统计</div>
           <table>
             <thead>
             <th></th>

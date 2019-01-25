@@ -145,7 +145,7 @@ Highcharts.theme = {
 						[0.6, '#333333']
 					]
 				},
-				stroke: '#000000'
+				stroke: '#000000000'
 			}
 		}
 	},
@@ -160,7 +160,7 @@ Highcharts.theme = {
 					[0.6, '#555']
 				]
 			},
-			stroke: '#000000',
+			stroke: '#000000000',
 			style: {
 				color: '#CCC',
 				fontWeight: 'bold'
@@ -174,7 +174,7 @@ Highcharts.theme = {
 							[0.6, '#888']
 						]
 					},
-					stroke: '#000000',
+					stroke: '#000000000',
 					style: {
 						color: 'white'
 					}
@@ -183,11 +183,11 @@ Highcharts.theme = {
 					fill: {
 						linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
 						stops: [
-							[0.1, '#000'],
+							[0.1, '#000000'],
 							[0.3, '#333']
 						]
 					},
-					stroke: '#000000',
+					stroke: '#000000000',
 					style: {
 						color: 'yellow'
 					}
@@ -238,7 +238,7 @@ Highcharts.theme = {
 		trackBackgroundColor: {
 			linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
 			stops: [
-				[0, '#000'],
+				[0, '#000000'],
 				[1, '#333']
 			]
 		},

@@ -58,7 +58,7 @@ export default {
       },
       title: '',
       titleColorBoxShow: false,
-      titleColor: '#000',
+      titleColor: '#000000',
       content: '',
       editor: null,
       config: {
@@ -216,7 +216,7 @@ export default {
     &::-webkit-input-placeholder{color: #aaa;}
   }
   .title-colorpicker-btn {width: 25px;height: 25px;border: 1px solid transparent;margin: 3px;
-    &:hover {border: 1px solid #000}
+    &:hover {border: 1px solid #000000}
   }
   .title-color-list {width: 192px;padding: 10px;}
   /*.ql-toolbar.ql-snow, .ql-container.ql-snow{border: none;}*/

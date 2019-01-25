@@ -208,7 +208,7 @@ export default {
 <style lang="less">
 .editor {
   word-break: break-all;
-  // background: #000;
+  // background: #000000;
   font-size: 14px;color: #444;
   .ql-snow{border: none;}
   .ql-editor{min-height: 100px;}
@@ -256,7 +256,7 @@ export default {
 
   .ql-bubble .ql-toolbar .ql-formats{margin: 0 5px;padding: 5px;}
   .ql-bubble .ql-editor{padding: 1px 0!important;overflow: visible;}
-  
+
   // ul li{list-style-type: disc;margin: .3em 0;}
   // ol li{list-style-type: decimal;margin: .3em 0;}
   .pell {border-radius: 5px;box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);box-sizing: border-box;width: 100%; }

@@ -20,7 +20,7 @@ Highcharts.theme = {
 	},
 	title: {
 		style: {
-			color: '#000',
+			color: '#000000',
 			font: 'bold 16px "Trebuchet MS", Verdana, sans-serif'
 		}
 	},
@@ -32,11 +32,11 @@ Highcharts.theme = {
 	},
 	xAxis: {
 		gridLineWidth: 1,
-		lineColor: '#000',
-		tickColor: '#000',
+		lineColor: '#000000',
+		tickColor: '#000000',
 		labels: {
 			style: {
-				color: '#000',
+				color: '#000000',
 				font: '11px Trebuchet MS, Verdana, sans-serif'
 			}
 		},
@@ -52,13 +52,13 @@ Highcharts.theme = {
 	},
 	yAxis: {
 		minorTickInterval: 'auto',
-		lineColor: '#000',
+		lineColor: '#000000',
 		lineWidth: 1,
 		tickWidth: 1,
-		tickColor: '#000',
+		tickColor: '#000000',
 		labels: {
 			style: {
-				color: '#000',
+				color: '#000000',
 				font: '11px Trebuchet MS, Verdana, sans-serif'
 			}
 		},

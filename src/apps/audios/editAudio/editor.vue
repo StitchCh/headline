@@ -6,7 +6,7 @@
         <button class="title-colorpicker-btn" @click="ui.titleColorBoxShow = !ui.titleColorBoxShow" :style="{ background: titleColor }"></button>
         <bubble v-if="ui.titleColorBoxShow" @close="ui.titleColorBoxShow = false">
           <div class="title-color-list">
-            <button class="title-colorpicker-btn" style="background: #000;" @click="changeTitleColor('#000')"></button>
+            <button class="title-colorpicker-btn" style="background: #000000;" @click="changeTitleColor('#000000')"></button>
             <button class="title-colorpicker-btn" style="background: #F44336;" @click="changeTitleColor('#F44336')"></button>
             <button class="title-colorpicker-btn" style="background: #FF9800;" @click="changeTitleColor('#FF9800')"></button>
             <button class="title-colorpicker-btn" style="background: #FFEB3B;" @click="changeTitleColor('#FFEB3B')"></button>
@@ -77,7 +77,7 @@ export default {
       },
       title: '',
       audio: null,
-      titleColor: '#000'
+      titleColor: '#000000'
     }
   },
   methods: {
@@ -100,7 +100,7 @@ export default {
     &::-webkit-input-placeholder{color: #aaa;}
   }
   .title-colorpicker-btn {width: 25px;height: 25px;border: 1px solid transparent;margin: 3px;
-    &:hover {border: 1px solid #000}
+    &:hover {border: 1px solid #000000}
   }
   .title-color-list {width: 192px;padding: 10px;}
   .selector {width: 100%;height: 495px;

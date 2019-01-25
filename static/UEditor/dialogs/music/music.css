@@ -10,7 +10,7 @@
 .paneloff{display:none}
 
 .page{width:220px;margin:20px auto;overflow: hidden;}
-.pageon{float:right;width:24px;line-height:24px;height:24px;margin-right: 5px;background: none;border: none;color: #000;font-weight: bold;text-align:center}
+.pageon{float:right;width:24px;line-height:24px;height:24px;margin-right: 5px;background: none;border: none;color: #000000;font-weight: bold;text-align:center}
 .pageoff{float:right;width:24px;line-height:24px;height:24px;cursor:pointer;background-color: #fff;
    border: 1px solid #E7ECF0;color: #2D64B3;margin-right: 5px;text-decoration: none;text-align:center;}
 

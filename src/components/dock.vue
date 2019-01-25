@@ -31,7 +31,7 @@ export default {
     title: String,
     color: {
       type: String,
-      default: '#000'
+      default: '#000000'
     }
   },
   data () {
@@ -84,6 +84,6 @@ export default {
     white-space: nowrap;
     &.on{color: #2196F3;border-color: #5cb6ff;}
   }
-  .dock-logo{height: 20px;margin-left: -100px;padding-right: 106px;filter: drop-shadow(970px 0 0 #000);}
+  .dock-logo{height: 20px;margin-left: -100px;padding-right: 106px;filter: drop-shadow(970px 0 0 #000000);}
 }
 </style>
