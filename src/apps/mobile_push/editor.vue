@@ -221,8 +221,19 @@ export default {
 </script>
 
 <style lang="less">
+  #edui7{
+    left: 0 !important;
+  }
+  #edui_fixedlayer{
+    position: absolute !important;
+  }
+  body{
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
   #app{
     min-width: auto !important;
+    padding-bottom: 50px;
   }
   textarea{
     outline: none;

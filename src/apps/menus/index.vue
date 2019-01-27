@@ -189,7 +189,7 @@ export default {
         sysMenuName: '',
         sysMenuUrl: '',
         sysMenuOrder: '',
-        sysMenuShowFlag: '',
+        sysMenuShowFlag: 1,
         sysMenuIcon: ''
       },
       editShow: false,
@@ -199,7 +199,7 @@ export default {
         sysMenuName: '',
         sysMenuUrl: '',
         sysMenuOrder: '',
-        sysMenuShowFlag: '',
+        sysMenuShowFlag: 1,
         sysMenuIcon: ''
       }
     }

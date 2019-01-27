@@ -1,7 +1,15 @@
 <template>
   <div>
-    <div class="af-topbar">
+    <div class="af-topbar flex">
       <span class="f-18">{{title}}</span>
+      <div v-if="$route.query.audit == 2" style="padding-left: 40px;">
+        <btn style="margin-right: 20px;" @click="checkedShow = !checkedShow">批量操作</btn>
+        <span v-if="checkedShow">
+          <icon-btn v-tooltip="'通过'" color="#4caf50" @click="plAudit">check_circle</icon-btn>
+          <icon-btn v-tooltip="'驳回'" color="#ff5252" @click="plReject">error</icon-btn>
+          <icon-btn v-tooltip="'删除'" color="#D81B60" @click="plDelete">delete</icon-btn>
+        </span>
+      </div>
     </div>
     <div class="flex-item scroll-y bg-e relative">
       <transition name="fade">
@@ -12,6 +20,7 @@
       <div v-if="list.length">
         <div class="setting-card f-14" v-for="item in list" :key="item.id">
           <div class="flex-v-center comment-item-info">
+            <check-box v-if="checkedShow" v-model="item.checked"></check-box>
             <strong class="f-16">{{item.contentTitle}}</strong>
             <span class="flex-item"></span>
             <i class="icon state-icon f-20" :style="{ color: stateList[item._state].color }">{{stateList[item._state].icon}}</i>
@@ -24,7 +33,7 @@
             <span>{{item.createTime}}</span>
           </div>
           <div class="comment-item-info pre-wrap">{{item.content}}</div>
-          <div v-if="item.deleteStatus === '1'" class="flex comment-item-info">
+          <div v-if="item.deleteStatus === '1' && !checkedShow" class="flex comment-item-info">
             <span class="flex-item"></span>
             <icon-btn v-tooltip="'通过'" color="#4caf50" style="margin-right: 5px;" v-if="item.isAudit === '2' || (item.isAudit === '3' && item.auditStatus === '0')" @click="pass(item.id)">check_circle</icon-btn>
             <icon-btn v-tooltip="'驳回'" color="#ff5252" style="margin-right: 5px;" v-if="item.isAudit === '2' || (item.isAudit === '3' && item.auditStatus === '1')" @click="reject(item.id)">error</icon-btn>
@@ -63,6 +72,7 @@ export default {
   data () {
     return {
       toPage: 1,
+      checkedShow: false,
       totalPage: 1,
       totalRowsAmount: 0,
       loading: false,
@@ -90,6 +100,51 @@ export default {
     }
   },
   methods: {
+    plDelete () {
+      let arr = []
+      this.list.forEach(item => {
+        if (item.checked) {
+          arr.push(item.id)
+        }
+      })
+      this.$http.post('/cri-cms-platform/comment/delete.monitor', {
+        ids: arr.join(',')
+      }).then(
+        () => {
+          this.getList()
+        }
+      ).catch(console.log)
+    },
+    plReject () {
+      let arr = []
+      this.list.forEach(item => {
+        if (item.checked) {
+          arr.push(item.id)
+        }
+      })
+      this.$http.post('/cri-cms-platform/comment/audit/reject.monitor', {
+        ids: arr.join(',')
+      }).then(
+        () => {
+          this.getList()
+        }
+      ).catch(console.log)
+    },
+    plAudit () {
+      let arr = []
+      this.list.forEach(item => {
+        if (item.checked) {
+          arr.push(item.id)
+        }
+      })
+      this.$http.post('/cri-cms-platform/comment/audit/pass.monitor', {
+        ids: arr.join(',')
+      }).then(
+        () => {
+          this.getList()
+        }
+      ).catch(console.log)
+    },
     onNext () {
       if (this.toPage+1 > this.totalPage) {
         return
@@ -117,6 +172,10 @@ export default {
             v._state = this.getState(v)
           })
           this.list = res.pages
+          console.log(this.list)
+          this.list.forEach(item => {
+            item.checked = false
+          })
           this.loading = false
         }
       ).catch(console.log)

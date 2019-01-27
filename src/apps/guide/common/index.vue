@@ -61,6 +61,10 @@
               <span style="display: inline-block;line-height: 34px;">链接</span>
               <input v-model="item.appValue[0].url" style="height: 30px;width: calc(100% - 80px);float: right;padding: 0 10px;" type="text" placeholder="请输入链接地址">
             </div>
+            <div v-if="item.appValue[0]" style="overflow: hidden;padding-top: 10px;">
+              <span style="display: inline-block;line-height: 34px;">广告跳转时间</span>
+              <input style="height: 30px;width: calc(100% - 150px);float: right;padding: 0 10px;" type="number" placeholder="请输入时间">
+            </div>
           </div>
 
         </div>

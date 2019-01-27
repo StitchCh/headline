@@ -20,6 +20,7 @@
         </div>
         <div class="flex-item scroll-y">
           <audio-editor ref="editor"/>
+          <editor ref="editor_box"></editor>
         </div>
       </div>
       <audio-option :res="res" ref="option" :style="{ width: ui.optionShow ? '320px' : '0px' }"/>
@@ -31,6 +32,7 @@
 import moment from 'moment'
 import AudioEditor from './editor'
 import AudioOption from './options'
+import editor from './editorbox'
 
 const ORIGIN = 'http://60.247.77.208:58088'
 
@@ -45,7 +47,7 @@ const from = {
 
 export default {
   name: 'app-audio-edit',
-  components: { AudioEditor, AudioOption },
+  components: { AudioEditor, AudioOption, editor },
   props: [ 'from', 'id' ],
   data () {
     return {
@@ -76,6 +78,7 @@ export default {
             editor.titleColor = res.audio.titleColor
             editor.playerOptions.sources[0].src = ORIGIN + res.audio.audio
             editor.audio = res.audio
+            this.$refs.editor_box.content = res.audio.content
           })
         }).catch(e => {
           console.log(e)
@@ -85,6 +88,7 @@ export default {
     submit () {
       let url = this.id && this.from === 'audio' ? '/cri-cms-platform/audio/update.monitor' : '/cri-cms-platform/audio/save.monitor'
       let { title, titleColor, audio } = this.$refs.editor
+      let { content } = this.$refs.editor_box
       if (!title) {
         this.$toast('请输入标题')
         return
@@ -97,7 +101,7 @@ export default {
         this.$toast('请选择栏目')
         return
       }
-      let form = Object.assign({title, titleColor, audioUrl: audio.audio}, this.$refs.option.form)
+      let form = Object.assign({title, content, titleColor, audioUrl: audio.audio}, this.$refs.option.form)
       if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
       if (this.id && this.from === 'audio') form.id = this.id
       this.$http.post(url, form).then(

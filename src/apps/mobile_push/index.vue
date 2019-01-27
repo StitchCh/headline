@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="flex-item scroll-y" style="position: fixed;width: 100%;height: calc(100% - 50px);top: 0;left: 0;background: #fff;">
+  <div class="bigbigbox">
+    <div style="width: 100%;background: #fff;">
       <div class="topbox">
         <div v-if="getend" class="option-item flex-v-center relative a" @click="ui.channelShow=!ui.channelShow">
           <span class="flex-item">{{channelNames}}</span>
@@ -46,6 +46,7 @@ export default {
   components: { ArticleEditor },
   data () {
     return {
+      minh: document.documentElement.clientHeight,
       ui: {
         channelShow: false,
         channels: []
@@ -170,9 +171,6 @@ export default {
     padding: 10px;
   }
   .btn{
-    position: fixed;
-    bottom: 0;
-    left: 0;
     width: 100%;
     height: 50px;
     font-size: 16px;
@@ -180,5 +178,7 @@ export default {
     text-align: center;
     background: #00a0e9;
     color: #fff;
+    z-index: 9999;
   }
 </style>
+
