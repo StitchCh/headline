@@ -391,6 +391,8 @@ export default {
       })
       obj.options = JSON.stringify(obj.options)
       obj.headThumb = obj.headThumb.id
+      obj.startTime = moment(obj.startTime).format('YYYY-MM-DD HH:mm:ss')
+      obj.endTime = moment(obj.endTime).format('YYYY-MM-DD HH:mm:ss')
 
       console.log(obj)
 
