@@ -31,10 +31,6 @@
         <div style="width: 50%;">
           <div style="overflow: hidden">
             <h2 style="float: left;">拖拽排序</h2>
-            <div style="float: right;border: 0;" class="option-item flex-v-center">
-              <span class="flex-item" style="margin-right: 10px;">是否开启聊天室</span>
-              <switcher mode="Number" v-model="liveShow"/>
-            </div>
           </div>
           <draggable element="ul" :options="{ghostClass:'movelist'}" v-model="tagOrder" >
             <li v-for="(item, index) in tagOrder" class="flex-v-center orderitem">
@@ -126,6 +122,26 @@
       <div class="option-item flex-v-center">
         <span>虚拟分享数</span>
         <input class="flex-item t-right" type="number" placeholder="请输入" v-model="form.virtualShare">
+      </div>
+      <div class="option-item flex-v-center">
+        <span class="flex-item" style="margin-right: 10px;">是否开启聊天室</span>
+        <switcher mode="Number" v-model="form.openChatroom"/>
+      </div>
+      <div class="option-item flex-v-center">
+        <span class="flex-item" style="margin-right: 10px;">是否显示阅读数</span>
+        <switcher mode="Number" v-model="form.showPv"/>
+      </div>
+      <div class="option-item flex-v-center">
+        <span class="flex-item" style="margin-right: 10px;">是否显示点赞数</span>
+        <switcher mode="Number" v-model="form.showDigg"/>
+      </div>
+      <div class="option-item flex-v-center">
+        <span class="flex-item" style="margin-right: 10px;">是否显示分享数</span>
+        <switcher mode="Number" v-model="form.showShare"/>
+      </div>
+      <div class="option-item flex-v-center">
+        <span class="flex-item" style="margin-right: 10px;">是否显示评论数</span>
+        <switcher mode="Number" v-model="form.showComment"/>
       </div>
     </div>
   </div>
@@ -225,6 +241,11 @@ export default {
         // terminalApp: 0,
         // terminalWeb: 0,
         // attachmentIds: ''
+        showPv: 1,
+        showDigg: 1,
+        showShare: 1,
+        showComment: 1,
+        openChatroom: 1
       },
       thumb: {
         thumb1: null,
@@ -375,7 +396,7 @@ export default {
           this.form.virtualShare = res.content.virtualShare
           this.form.openBulletScreen = res.content.openBulletScreen
           this.form.introduction = res.live.introduction
-          this.form.playback = res.content.playback
+          this.form.playback = res.live.playback
           this.form.keywords = res.content.keywords
           this.form.headThumb = res.live.headThumb[0]
           this.thumb.thumb1 = res.content.thumb[0]
@@ -384,7 +405,11 @@ export default {
           this.form.terminalWeb = res.content.terminalWeb
           this.form.category = res.live.category
           this.form.liveSource = res.live.liveSource
-
+          this.form.showPv = parseInt(res.live.showPv)
+          this.form.showDigg = parseInt(res.live.showDigg)
+          this.form.showShare = parseInt(res.live.showShare)
+          this.form.showComment = parseInt(res.live.showComment)
+          this.form.openChatroom = parseInt(res.live.openChatroom)
           this.getif = true
         })
       }
