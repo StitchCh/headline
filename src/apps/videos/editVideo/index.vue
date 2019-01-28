@@ -20,6 +20,7 @@
         </div>
         <div class="flex-item scroll-y">
           <video-editor ref="editor"/>
+          <editor ref="editor_box"></editor>
         </div>
       </div>
       <video-option :res="res" ref="option" :style="{ width: ui.optionShow ? '320px' : '0px' }"/>
@@ -31,6 +32,7 @@
 import moment from 'moment'
 import VideoEditor from './editor'
 import VideoOption from './options'
+import editor from './editorbox'
 
 const ORIGIN = 'http://60.247.77.208:58088'
 
@@ -45,7 +47,7 @@ const from = {
 
 export default {
   name: 'app-video-edit',
-  components: { VideoEditor, VideoOption },
+  components: { VideoEditor, VideoOption, editor },
   props: [ 'from', 'id' ],
   data () {
     return {
@@ -78,6 +80,7 @@ export default {
             editor.titleColor = res.video.titleColor
             editor.playerOptions.sources[0].src = ORIGIN + res.video.video
             editor.video = res.video
+            this.$refs.editor_box.content = res.audio.content
           })
         }).catch(e => {
           console.log(e)
@@ -87,6 +90,7 @@ export default {
     submit () {
       let url = this.id && this.from === 'video' ? '/cri-cms-platform/video/update.monitor' : '/cri-cms-platform/video/save.monitor'
       let { title, titleColor, video } = this.$refs.editor
+      let { content } = this.$refs.editor_box
       if (!title) {
         this.$toast('请输入标题')
         return
@@ -99,7 +103,7 @@ export default {
         this.$toast('请选择栏目')
         return
       }
-      let form = Object.assign({title, titleColor, videoUrl: video.video, videoId: video.id}, this.$refs.option.form)
+      let form = Object.assign({title, content, titleColor, videoUrl: video.video, videoId: video.id}, this.$refs.option.form)
       if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
       if (this.id) form.id = this.id
       this.$http.post(url, form).then(
