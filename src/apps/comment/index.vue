@@ -5,9 +5,9 @@
       </navigator-item>
       <navigator-item icon="hourglass_full" @click="$router.replace('/comment/list?audit=2&delete=1')" index="CommentListWaiting">待审
       </navigator-item>
-      <navigator-item icon="check_circle" @click="$router.replace('/comment/list?audit=1&delete=1')" index="CommentListAudited">通过
+      <navigator-item icon="check_circle" @click="$router.replace('/comment/list?auditStatus=1&delete=1')" index="CommentListAudited">通过
       </navigator-item>
-      <navigator-item icon="error" @click="$router.replace('/comment/list?audit=3&auditStatus=0&delete=1')" index="CommentListBohui">驳回
+      <navigator-item icon="error" @click="$router.replace('/comment/list?auditStatus=0&delete=1')" index="CommentListBohui">驳回
       </navigator-item>
       <navigator-item icon="delete" @click="$router.replace('/comment/list?delete=0')" index="CommentListDelete">已删除
       </navigator-item>

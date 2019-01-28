@@ -190,15 +190,15 @@ export default {
         if (auditStatus === '0') return 3
       }
     },
-    pass (id) {
-      this.$http.post('/cri-cms-platform/comment/audit/pass.monitor', { id }).then(
+    pass (ids) {
+      this.$http.post('/cri-cms-platform/comment/audit/pass.monitor', { ids }).then(
         () => {
           this.getList()
         }
       ).catch(console.log)
     },
-    reject (id) {
-      this.$http.post('/cri-cms-platform/comment/audit/reject.monitor', { id }).then(
+    reject (ids) {
+      this.$http.post('/cri-cms-platform/comment/audit/reject.monitor', { ids }).then(
         () => {
           this.getList()
         }
