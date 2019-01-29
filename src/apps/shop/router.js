@@ -21,6 +21,11 @@ export default [{
       path: 'category',
       name: 'category',
       component: resolve => require(['@/apps/shop/category/index.vue'], resolve)
+    },
+    {
+      path: 'credit',
+      name: 'credit',
+      component: resolve => require(['@/apps/shop/credit/index.vue'], resolve)
     }
   ]
 }, {

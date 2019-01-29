@@ -1,8 +1,8 @@
 <template>
   <div class="abs bg-f flex app-audit" style="margin-bottom: 50px;">
     <af-left color="#00897B" vibrant-color="#00897B" bg-color="#E0F2F1" title="操作日志" >
-      <navigator-item icon="folder" index="0" @click="$router.replace('/userOperLog?operType=login')">登录</navigator-item>
-      <navigator-item icon="folder" index="1" @click="$router.replace('/userOperLog?operType=oper')">操作</navigator-item>
+      <navigator-item icon="folder" index="login" @click="$router.replace('/userOperLog?operType=login')">登录</navigator-item>
+      <navigator-item icon="folder" index="oper" @click="$router.replace('/userOperLog?operType=oper')">操作</navigator-item>
     </af-left>
 
     <div class="operlog_list scroll-y">
@@ -22,7 +22,7 @@
           <div class="search_navbox" style="margin-bottom: 20px;">
             <div class="flex-v-center">
               <!--<span class="flex-item" style="display: inline-block;width: 70px;">选择类型：</span>-->
-              <div style="display: inline-block;width: 80px;height: 23px;margin-right: 20px;" class="option-item flex-item relative a" @click="flagShow=!flagShow">
+              <div v-if="$route.query.operType != 'login'" style="display: inline-block;width: 80px;height: 23px;margin-right: 20px;" class="option-item flex-item relative a" @click="flagShow=!flagShow">
                 <span class="flex-item" style="text-align: center;">选择类型</span>
                 <i class="icon f-20 c-a" style="position: absolute;right: 0;top: 0;">keyboard_arrow_down</i>
                 <bubble v-if="flagShow" pos="bottom" align="center" @close="flagShow=false">
@@ -37,7 +37,7 @@
                 </bubble>
               </div>
 
-              <div style="display: inline-block;width: 80px;height: 23px;" class="option-item flex-item relative a" @click="operFlagShow=!operFlagShow">
+              <div v-if="$route.query.operType != 'login'" style="display: inline-block;width: 80px;height: 23px;" class="option-item flex-item relative a" @click="operFlagShow=!operFlagShow">
                 <span class="flex-item" style="text-align: center;">操作类型</span>
                 <i class="icon f-20 c-a" style="position: absolute;right: 0;top: 0;">keyboard_arrow_down</i>
                 <bubble v-if="operFlagShow" pos="bottom" align="center" @close="operFlagShow=false">
@@ -76,7 +76,7 @@
                 <td nowrap>{{item.createUser}}</td>
                 <td nowrap>{{item.createDate}}</td>
                 <td nowrap>{{item.operIp}}</td>
-                <td nowrap>{{item.typeDemo}}</td>
+                <td nowrap style="text-overflow: ellipsis;" :title="item.typeDemo">{{item.typeDemo}}</td>
                 <td nowrap>{{item.demo}}</td>
               </tr>
             </tbody>
@@ -122,7 +122,7 @@ export default {
           state: false
         },
         {
-          name: '审核',
+          name: '发布',
           app: 'issue',
           state: false
         },

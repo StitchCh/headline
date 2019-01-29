@@ -80,7 +80,7 @@ export default {
             editor.titleColor = res.video.titleColor
             editor.playerOptions.sources[0].src = ORIGIN + res.video.video
             editor.video = res.video
-            this.$refs.editor_box.content = res.audio.content
+            this.$refs.editor_box.content = res.video.content
           })
         }).catch(e => {
           console.log(e)

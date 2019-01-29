@@ -7,6 +7,8 @@
       </navigator-item>
       <navigator-item icon="widgets" @click="$router.replace('/shop/category')" index="category">分类管理
       </navigator-item>
+      <navigator-item icon="credit_card" @click="$router.replace('/shop/credit')" index="credit">积分设置
+      </navigator-item>
     </af-left>
 
     <div class="flex-item flex-col">
