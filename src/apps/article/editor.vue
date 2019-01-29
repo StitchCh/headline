@@ -188,7 +188,7 @@ export default {
           url: origin + v.audio
         }
       })
-      if (selected.length) this.editor.execCommand('insertvideo', selected, 'upload')
+      if (selected.length) this.editor.execCommand('insertvideo', selected, 'upload', true)
       this.ui.audioSelectorShow = false
     },
     ready (UE) {
