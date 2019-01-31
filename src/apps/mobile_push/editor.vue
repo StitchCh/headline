@@ -220,7 +220,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style scoped>
   #edui7{
     left: 0 !important;
   }
@@ -243,6 +243,9 @@ export default {
     padding: 6px;
     box-sizing: border-box;
   }
+</style>
+
+<style lang="less">
 .mobile-push-editor{max-width: 100%;margin: 0 auto;padding: 10px;
   .flex-v-center{
     font-size: 14px !important;
