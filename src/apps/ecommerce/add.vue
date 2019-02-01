@@ -159,7 +159,7 @@
       </app-article-add-relates>
       <app-article-add-relates :channels="ui.channels" v-model="form.relateIds" title="相关阅读" icon="book" url="/cri-cms-platform/ecommerce/associate/ecommerce.monitor"></app-article-add-relates>
       <app-article-add-relates single :channels="ui.channels" v-model="form.specialId" title="相关专题" icon="assignment" url="/cri-cms-platform/ecommerce/associate/special.monitor"></app-article-add-relates>
-      <app-article-add-attachment v-model="form.attachmentIds" :default-list="attachmentDefaultList"></app-article-add-attachment>
+      <!--<app-article-add-attachment v-model="form.attachmentIds" :default-list="attachmentDefaultList"></app-article-add-attachment>-->
       <!--<div class="option-item flex-v-center blue a">-->
         <!--<i class="icon f-20 add-other-icon">attach_file</i>-->
         <!--<span class="flex-item">添加附件</span>-->
