@@ -398,7 +398,7 @@ export default {
   .layer-ctn{max-width: 800px!important;}
   .content{height: 500px;width: 700px;position: absolute;top: 0px;left: 0px;right: 0px;bottom: 0px;margin: auto;background: #fff;border-radius: 10px;}
   .tool-bar{width: 60px;border-right: 1px solid rgba(0, 0, 0, .1);}
-  .option-bar{position: absolute;left: 60px;top: 0;height: 100%;z-index: 10;border-right: 1px solid rgba(0, 0, 0, .1);
+  .option-bar{position: absolute;left: -60px;top: 0;bottom: 0;margin: auto 0;height: 80%;z-index: 10;border-right: 1px solid rgba(0, 0, 0, .1);border-radius: 10px 0 0 10px;
     background: rgba(255, 255, 255, .7);
     .btn{color: #fff;}
     .icon-btn{opacity: .6;}

@@ -25,7 +25,7 @@
             <img :src="content.headimg" alt="" style="width: 100%;">
           </div>
 
-          <div v-if="content.auditStatus != 'REJECT'" class="initbtn" @click="inRoom">进入直播</div>
+          <div v-if="content.auditStatus != 'REJECT' && content.auditStatus != 'AUDITING'" class="initbtn" @click="inRoom">进入直播</div>
           <div v-if="content.auditStatus == 'REJECT'">
             <p>驳回理由</p>
 

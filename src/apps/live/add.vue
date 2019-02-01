@@ -18,8 +18,8 @@
     </div>
     <div class="flex-item scroll-y">
       <article-editor v-if="getif" :otitle="form.title" ref="editor" @getKeyGenerate="getKeyGenerate"></article-editor>
-      <div style="margin: 0 auto;max-width: 900px;padding: 0 24px; margin-bottom: 20px;border-top: 1px solid #ddd;padding-top: 16px;">
-        <input style="height: 40px;font-size: 26px;width: 100%;border: 0;" type="text" placeholder="直播源" v-model="form.liveSource"/>
+      <div v-if="form.category != 'PICTURE'" style="margin: 0 auto;max-width: 900px;padding: 0 24px; margin-bottom: 20px;border-top: 1px solid #ddd;padding-top: 16px;">
+        <input style="height: 40px;font-size: 26px;width: 100%;border: 0;" type="text" :placeholder="form.category == 'VIDEO' ? '添加视频直播源' : '添加音频直播源'" v-model="form.liveSource"/>
       </div>
       <div style="max-width: 900px;margin: 0 auto;padding: 0 20px 10px;border-top: 1px solid #ddd;display: flex;justify-content: space-between;">
         <div style="width: 50%;">
@@ -327,15 +327,14 @@ export default {
         this.$toast('请选择栏目')
         return
       }
-
       if (!this.form.liveSource && this.form.category != 'PICTURE') {
         this.$toast('请输入直播源')
         return
       }
-      if (!reg.test(this.form.liveSource)) {
-        this.$toast('请输入正确格式的直播源地址')
-        return
-      }
+      // if (!reg.test(this.form.liveSource)) {
+      //   this.$toast('请输入正确格式的直播源地址')
+      //   return
+      // }
       this.form.title = title
       this.form.titleColor = titleColor
 

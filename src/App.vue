@@ -83,4 +83,18 @@ export default {
 .edui-editor-iframeholder{
   width: 100% !important;
 }
+.vjs-big-play-button{
+  left: 0 !important;
+  right: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  margin: auto !important;
+  margin-top: auto !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  margin-bottom: auto !important;
+}
+.vjs-custom-skin > .video-js .vjs-big-play-button{
+  transform: translateY(300%);
+}
 </style>

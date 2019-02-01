@@ -5,16 +5,18 @@
     </div>
     <div style="float: right;" class="textbox">
       <p class="text_title">{{data.messageUserAlias}}<span class="toptag" v-if="data.stick === '01'">置顶</span></p>
-      <p class="text_content">{{data.textContent}}</p>
+      <p v-if="data.textContent" class="text_content">{{data.textContent}}</p>
       <p class="text_time">{{data.createTime}}</p>
-      <div v-if="data.items" style="padding-top: 10px;display: flex;flex-wrap: wrap;">
-        <div class="imgbox imgimgbox" v-for="item in data.items">
-          <img v-if="item.category == 1" :src="item.mediaUrl" alt="">
-          <div v-if="item.category == 2" style="background: #318fff;text-align: center;width: 100%;">
-            <i class="icon c-a" style="font-size: 30px;color: #fff;line-height: 60px;">video_call</i>
+      <div v-if="data.items" style="padding-top: 10px;">
+        <div class="imgbox imgimgbox" style="background: #fff;" v-for="item in data.items">
+          <img style="width: 100px;" v-if="item.category == 1" :src="item.mediaUrl" alt="">
+          <div v-if="item.category == 2" style="background: #fff;text-align: center;width: 100%;overflow: hidden;">
+            <!--<i class="icon c-a" style="font-size: 30px;color: #fff;line-height: 60px;">video_call</i>-->
+            <video style="width: 200px;float: left;" controls="controls" :src="item.mediaUrl"></video>
           </div>
-          <div v-if="item.category == 3" style="background: #318fff;text-align: center;width: 100%;">
-            <i class="icon c-a" style="font-size: 30px;color: #fff;line-height: 60px;">audiotrack</i>
+          <div v-if="item.category == 3" style="width: 100%;background: #fff;">
+            <!--<i class="icon c-a" style="font-size: 30px;color: #fff;line-height: 60px;">audiotrack</i>-->
+            <audio controls="controls" :src="item.mediaUrl"></audio>
           </div>
         </div>
       </div>
@@ -214,11 +216,7 @@ export default {
 
 <style scoped>
   .imgimgbox{
-    width: 60px;
-    height: 60px;
     background: #ddd;
-    display: flex;
-    align-items: center;
     margin: 0 10px 10px 0;
   }
   .sbtn{

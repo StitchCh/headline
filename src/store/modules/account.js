@@ -17,8 +17,8 @@ const state = {
   }
 }
 
-if (sessionStorage.menu) {
-  state.menu = JSON.parse(sessionStorage.menu)
+if (localStorage.menu) {
+  state.menu = JSON.parse(localStorage.menu)
 }
 if (sessionStorage.waterImg) {
   state.waterImg = sessionStorage.waterImg
@@ -33,10 +33,12 @@ const mutations = {
   },
   LOGOUT (state) {
     for (let key in state) state[key] = ''
+    state.menu = []
   },
   setMenu (state, data) {
     state.menu = data
-    sessionStorage.menu = JSON.stringify(data)
+    console.log(state.menu)
+    localStorage.menu = JSON.stringify(data)
   },
   setFirstLogin (state, data) {
     state.firstLogin = data

@@ -30,7 +30,7 @@
           <p style="font-size: 12px;color: #f00;">建议择尺寸为16：9的图片作为头图</p>
         </div>
         <div v-show="form.headPicType == 2">
-          <app-article-add-relates v-if="getif && getif1" :channels="ui.channels.channels" :limit="form.headPicType" v-model="headList_type2" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/special/getArticList.monitor"></app-article-add-relates>
+          <app-article-add-relates v-if="getif && getif1" :channels="ui.channels" :limit="form.headPicType" v-model="headList_type2" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/special/getArticList.monitor"></app-article-add-relates>
         </div>
       </div>
 
@@ -46,7 +46,7 @@
                 </span>
               </p>
               <div style="padding: 10px;">
-                <app-article-add-relates v-if="getif" :channels="ui.channels.channels" v-model="item.list" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/special/getArticList.monitor"></app-article-add-relates>
+                <app-article-add-relates v-if="getif" :channels="ui.channels" v-model="item.list" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/special/getArticList.monitor"></app-article-add-relates>
               </div>
             </div>
           </div>

@@ -143,7 +143,7 @@ export default {
           'selectimage': '插入图片'
         },
         wordCount: false,
-        autoHeightEnabled: false,
+        autoHeightEnabled: true,
         initialFrameHeight: window.innerHeight - 250,
         serverUrl: '/cri-cms-platform/media/uploadIAU.monitor',
         imageActionName: '/cri-cms-platform/media/uploadIAU.monitor'
@@ -152,6 +152,7 @@ export default {
   },
   methods: {
     getText () {
+      console.log(this.content)
       return this.editor.getContentTxt()
       // return this.$refs.editor.quill.getText()
     },
@@ -188,7 +189,8 @@ export default {
           url: origin + v.audio
         }
       })
-      if (selected.length) this.editor.execCommand('insertvideo', selected, 'upload', true)
+      console.log(selected)
+      if (selected.length) this.editor.execCommand('music', selected[0], 'upload', true)
       this.ui.audioSelectorShow = false
     },
     ready (UE) {

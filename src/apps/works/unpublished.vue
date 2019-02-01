@@ -27,6 +27,21 @@
               </bubble>
             </div>
           </div>
+
+          <div class="relative" style="margin-right: 20px;">
+            <div class="relative flex-v-center a item" v-tooltip="'筛选分类'" @click="classShow=true">
+              <span>分类</span><i class="icon c-a">keyboard_arrow_down</i>
+            </div>
+            <bubble v-if="classShow" pos="bottom" align="center" @close="classShow=false">
+              <ul class="filter-bubble">
+                <li class="a flex-v-center" style="width: 50px;padding: 5px 10px;" v-for="item in classList" @click="searchClass(item)">
+                  <span class="flex-item">{{item.name}}</span>
+                  <i v-if="item.state" class="icon f-14 blue check-ico">check</i>
+                </li>
+              </ul>
+            </bubble>
+          </div>
+
           <input v-model="searchKey" class="f-14" type="text" placeholder="标题关键字" style="margin: 0;padding: 4px 6px;width: 150px;border:1px solid #eee;border-radius: 4px;"/>
         </div>
         <div v-if="loading" class="abs flex-center"><loading size="30"/></div>
@@ -106,6 +121,54 @@ export default {
   },
   data () {
     return {
+      classList: [
+        {
+          app: 'SPECIAL',
+          name: '专题',
+          state: false
+        },
+        {
+          app: 'VIDEO',
+          name: '视频',
+          state: false
+        },
+        {
+          app: 'ARTICLE',
+          name: '文章',
+          state: false
+        },
+        {
+          app: 'AUDIO',
+          name: '音频',
+          state: false
+        },
+        {
+          app: 'LIVE',
+          name: '直播',
+          state: false
+        },
+        {
+          app: 'ECOMMERCE',
+          name: '电商',
+          state: false
+        },
+        {
+          app: 'LINK',
+          name: '链接',
+          state: false
+        },
+        {
+          app: 'GALLERY',
+          name: '图集',
+          state: false
+        },
+        {
+          app: 'VOTE',
+          name: '投票',
+          state: false
+        }
+      ],
+      classShow: false,
       treeBubbleShow: false,
       loading: false,
       size: 30,
@@ -116,11 +179,11 @@ export default {
       activeLayoutId: '',
       data: [],
       appTypeList: {},
-      checked: []
+      checked: [],
+      appList: []
     }
   },
   mounted () {
-    console.log(this.$route.query)
     this.activeLayoutId = this.$route.query.typeId
     this.appTypeList = this.$store.state.account.appTypeList
   },
@@ -128,6 +191,9 @@ export default {
     this.getList()
   },
   watch: {
+    '$route.query.typeId' () {
+      this.activeLayoutId = this.$route.query.typeId
+    },
     '$route.query.channelId' (id) {
       this.filterChannelId = id
     },
@@ -159,8 +225,22 @@ export default {
     }
   },
   methods: {
+    searchClass (item) {
+      item.state = !item.state
+      this.appList = []
+      this.classList.forEach(item => {
+        if (item.state) {
+          this.appList.push(item.app)
+        }
+      })
+      this.getList()
+    },
     getList () {
       this.loading = true
+      let app = ''
+      if (this.appList.length > 0) {
+        app = this.appList.join(',')
+      }
       this.$http.post('/cri-cms-platform/issue/getChannelContentList.monitor', {
         // type: type,
         pageSize: this.size,
@@ -168,7 +248,8 @@ export default {
         channelId: this.filterChannelId || this.$route.query.channelId,
         // eslint disable no-unneeded-ternary
         filterChannelId: this.filterChannelId ? true : false,
-        title: this.searchKey
+        title: this.searchKey,
+        app
       }).then(res => {
         this.loading = false
         res.data.forEach(item => { item.checked = false })

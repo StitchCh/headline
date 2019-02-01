@@ -214,11 +214,11 @@ export default {
               videojs(v)
             })
           }
-          if (audio.length) {
-            audio.forEach(v => {
-              videojs(v)
-            })
-          }
+          // if (audio.length) {
+          //   audio.forEach(v => {
+          //     videojs(v)
+          //   })
+          // }
         })
       }).catch(e => {
         this.content = {}

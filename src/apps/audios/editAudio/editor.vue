@@ -25,11 +25,12 @@
           <i class="icon c-a" style="font-size: 50px;position: absolute;left: -10px;top: 0;">add</i>
         </div>
       </div>
-      <div v-else>
-        <video-player class="vjs-custom-skin"
-                      ref="videoPlayer"
-                      :options="playerOptions"
-                      :playsinline="true"/>
+      <div v-else style="text-align: center;">
+        <!--<video-player class="vjs-custom-skin"-->
+                      <!--ref="videoPlayer"-->
+                      <!--:options="playerOptions"-->
+                      <!--:playsinline="true"/>-->
+        <audio style="margin-top: 20px;" controls="controls" :src="playerOptions.sources[0].src"></audio>
         <div class="t-center" style="margin-top: 20px;">
           <btn flat color="#0299ff" @click="ui.audioSelectorShow = true">重新选择</btn>
         </div>
@@ -104,7 +105,7 @@ export default {
     &:hover {border: 1px solid #000000}
   }
   .title-color-list {width: 192px;padding: 10px;}
-  .selector {width: 100%;height: 495px;
+  .selector {width: 100%;height: 200px;
     .selector-add {width: 100%;height: 100%;background: rgba(0, 0, 0, .06);border-radius: 10px;
       &:hover {opacity: .8;}
     }

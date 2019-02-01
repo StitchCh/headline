@@ -24,7 +24,6 @@ export default {
       olink: '',
       err: false,
       olinkShow: '',
-      urlif: /^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/
     }
   },
   mounted () {
@@ -37,21 +36,16 @@ export default {
         this.show = true
         return
       }
-      if (this.olinkShow == 1 && !this.urlif.test(this.olink)) {
-        this.err = true
-        this.$toast('请输入正确的链接')
-      } else {
-        this.err = false
-        this.show = false
-      }
+      this.err = false
+      this.show = false
     },
     testLink () {
-      if (!this.urlif.test(this.olink)) {
-        this.err = true
-        this.$toast('请输入正确的链接')
-      } else {
-        this.err = false
-      }
+      // if (!this.urlif.test(this.olink)) {
+      //   this.err = true
+      //   this.$toast('请输入正确的链接')
+      // } else {
+      //   this.err = false
+      // }
     },
     change () {
       if (this.olink != "") {

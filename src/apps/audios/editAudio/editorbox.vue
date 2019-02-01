@@ -38,6 +38,7 @@
 
 <script>
   import VueUeditorWrap from 'vue-ueditor-wrap'
+  import debounce from 'lodash/debounce'
   import MediaPhotos from '../../medialibrary/pages/photos'
   import MediaVideos from '../../medialibrary/pages/videos'
   import MediaAudios from '../../medialibrary/pages/audios'
@@ -123,7 +124,7 @@
             'selectimage': '插入图片'
           },
           wordCount: false,
-          autoHeightEnabled: false,
+          autoHeightEnabled: true,
           initialFrameHeight: window.innerHeight - 250,
           serverUrl: '/cri-cms-platform/media/uploadIAU.monitor',
           imageActionName: '/cri-cms-platform/media/uploadIAU.monitor'
@@ -183,6 +184,11 @@
           }
         }
       }
+    },
+    watch: {
+      'content': debounce(function () {
+        this.$emit('getKeyGenerate')
+      }, 1000)
     }
   }
 </script>

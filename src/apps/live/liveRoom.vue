@@ -339,6 +339,7 @@ export default {
         type: '3'
       })
       this.audioSelectorShow = false
+      console.log(this.imagelist)
     },
     selectVideo () {
       this.imagelist.push({

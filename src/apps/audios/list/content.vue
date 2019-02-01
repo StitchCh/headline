@@ -13,7 +13,7 @@
           <h1 class="b" :style="{ color: content.titleColor }">{{content.title}}</h1>
           <div class="f-14 c-a vdo-info flex-v-center">
             <span>{{content.createDate}}</span>
-            <span>作者：{{content.author}}</span>
+            <span v-if="content.author">作者：{{content.author}}</span>
             <span>创建者：{{content.createUser}}</span>
             <span class="flex-item"></span>
             <img v-if="content && content.thumb" v-for="item in content.thumb" :key="item.id" :src="item.url" @click="thumbItem.url = item.url;thumbItem.show = true;" style="margin-left: 5px;height: 50px;cursor: pointer;">

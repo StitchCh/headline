@@ -20,10 +20,10 @@
     <layer v-if="ui.roleMenuShow" title="选择菜单" width="600px">
       <div class="layer-text">
 
-        <div v-for="item in menuList" class="melist_box">
-          <div style="margin-bottom: 10px;"><check-box @change="menuChange(item.checked)" v-model="item.checked" style="width: 100%;" :text="item.name"></check-box></div>
+        <div v-for="(item, index) in menuList" class="melist_box">
+          <div style="margin-bottom: 10px;"><check-box @change="menuChange(item, index)" v-model="item.checked" style="width: 100%;" :text="item.name"></check-box></div>
           <div class="melist_sbox">
-            <div v-for="item1 in item.children" :title="item1.name" class="melist_s"><check-box @change="menuChange(item1.checked)" v-model="item1.checked" style="margin: 0;width: 100%;" :text="item1.name"></check-box></div>
+            <div v-for="(item1, index) in item.children" :title="item1.name" class="melist_s"><check-box @change="menuChange(item1, index)" v-model="item1.checked" style="margin: 0;width: 100%;" :text="item1.name"></check-box></div>
           </div>
         </div>
 
@@ -96,9 +96,14 @@ export default {
     }
   },
   methods: {
-    menuChange (data) {
-      if (!data) {
+    menuChange (data,index) {
+      if (!data.checked) {
         this.menuAll = false
+      }
+      if (data.pId == '-1') {
+        this.menuList[index].children.forEach(item => {
+          item.checked = true
+        })
       }
     },
     menuFormat (menu, node) {

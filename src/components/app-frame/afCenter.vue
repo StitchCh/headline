@@ -52,7 +52,7 @@
     </div>
     <!--<i class="icon c-a a item" v-tooltip:top="'显示移动采编内容'">directions_walk</i>-->
     <!--<i class="icon c-a a item" v-tooltip:top="'发布到 PC 网站'" :class="{ active: filter.terminalPc }" @click="filter.terminalPc = ~~!filter.terminalPc || '';getList(true)">computer</i>-->
-    <!--<i class="icon c-a a item" v-tooltip:top="'发布到手机客户端'" :class="{ active: filter.terminalApp }" @click="filter.terminalApp = ~~!filter.terminalApp || '';getList(true)">phone_iphone</i>-->
+    <i class="icon c-a a item" v-tooltip:top="'移动发稿'" :class="{ active: filter.mdFlage }" @click="filter.mdFlage = ~~!filter.mdFlage || '';getList(true)">phone_iphone</i>
     <!--<i class="icon c-a a item" v-tooltip:top="'发布到手机网站'" :class="{ active: filter.terminalWeb }" @click="filter.terminalWeb = ~~!filter.terminalWeb || '';getList(true)">public</i>-->
   </div>
   <div v-if="ui.searchShow" class="flex-v-center search-bar c-6 f-13">

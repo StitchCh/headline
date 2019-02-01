@@ -144,7 +144,7 @@ export default {
           'selectimage': '插入图片'
         },
         wordCount: false,
-        autoHeightEnabled: false,
+        autoHeightEnabled: true,
         initialFrameHeight: window.innerHeight - 250,
         serverUrl: '/cri-cms-platform/media/uploadIAU.monitor'
         // imageUrlPrefix: '/cri-cms-platform/media/uploadIAU.monitor'

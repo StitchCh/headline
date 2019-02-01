@@ -1,11 +1,11 @@
 <template>
 <div class="abs bg-f flex app-special">
   <af-left color="#66637b" bg-color="#e9e7f7" vibrant-color="#4131b5" title="专题" :defaultActive="defaultActive">
-    <navigator-item icon="folder" index="all" @click="$router.replace('/special?status=all')">全部</navigator-item>
+    <navigator-item icon="folder" index="all" @click="() => {if ($route.query.status != 'all') {$router.replace('/special?status=all')}}">全部</navigator-item>
     <!-- <navigator-item-group defaultExtended index="2" icon="face">
     <span slot="title">我的</span> -->
-    <navigator-item icon="check_circle" index="PASS" @click="$router.replace('/special?status=PASS')">已审</navigator-item>
-    <navigator-item icon="hourglass_full" index="AUDITING" @click="$router.replace('/special?status=AUDITING')">待审</navigator-item>
+    <navigator-item icon="check_circle" index="PASS" @click="() => {if ($route.query.status != 'PASS') {$router.replace('/special?status=PASS')}}">已审</navigator-item>
+    <navigator-item icon="hourglass_full" index="AUDITING" @click="() => {if ($route.query.status != 'AUDITING') {$router.replace('/special?status=AUDITING')}}">待审</navigator-item>
     <navigator-item icon="error" index="SpecialReject" @click="$router.replace('/special/reject')">驳回</navigator-item>
     <!-- <navigator-item icon="class" index="my-4" @click="$router.replace('/special?scope=my&status=4')">草稿</navigator-item> -->
     <!-- </navigator-item-group> -->
@@ -58,6 +58,14 @@ export default {
         return status
       }
       return name.replace('Content', '')
+    }
+  },
+  methods: {
+    cons (data) {
+      if (this.$router.history.current.fullPath.indexOf(data) >= 0) {
+        return
+      }
+      this.$router.replace(cons)
     }
   }
 }

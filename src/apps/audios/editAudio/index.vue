@@ -20,7 +20,7 @@
         </div>
         <div class="flex-item scroll-y">
           <audio-editor ref="editor"/>
-          <editor ref="editor_box"></editor>
+          <editor ref="editor_box"  @getKeyGenerate="getKeyGenerate"></editor>
         </div>
       </div>
       <audio-option :res="res" ref="option" :style="{ width: ui.optionShow ? '320px' : '0px' }"/>
@@ -62,6 +62,17 @@ export default {
     }
   },
   methods: {
+    getKeyGenerate () {
+      if (this.from || this.id) return
+      let doc = this.$refs.editor_box.getText()
+      if (!doc.trim()) return
+      this.$http.post('/cri-cms-platform/article/getKeyGenerate.monitor', { doc }).then(
+        res => {
+          this.$refs.option.form.abstarcts = res.gerenate
+          this.$refs.option.form.keywords = res.key.join(',')
+        }
+      )
+    },
     getAudio () {
       if (this.from && this.id) {
         this.ui.loading = true
