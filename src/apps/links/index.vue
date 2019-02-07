@@ -1,11 +1,11 @@
 <template>
 <div class="abs bg-f flex app-article">
   <af-left color="#586c8e" vibrant-color="#2559cc" title="链接" :defaultActive="defaultActive">
-    <navigator-item icon="folder" index="all" @click="$router.replace('/links/list?status=all')">全部</navigator-item>
+    <navigator-item icon="folder" index="all" @click="() => {if ($route.query.status != 'all') {$router.replace('/links/list?status=all')}}">全部</navigator-item>
     <!-- <navigator-item-group defaultExtended index="2" icon="face">
     <span slot="title">我的</span> -->
-    <navigator-item icon="check_circle" index="PASS" @click="$router.replace('/links/list?status=PASS')">已审</navigator-item>
-    <navigator-item icon="hourglass_full" index="AUDITING" @click="$router.replace('/links/list?status=AUDITING')">待审</navigator-item>
+    <navigator-item icon="check_circle" index="PASS" @click="() => {if ($route.query.status != 'PASS') {$router.replace('/links/list?status=PASS')}}">已审</navigator-item>
+    <navigator-item icon="hourglass_full" index="AUDITING" @click="() => {if ($route.query.status != 'AUDITING') {$router.replace('/links/list?status=AUDITING')}}">待审</navigator-item>
     <navigator-item icon="error" index="LinksReject" @click="$router.replace('/links/reject')">驳回</navigator-item>
     <navigator-item icon="class" index="LinksDraft" @click="$router.replace('/links/draft')">草稿</navigator-item>
     <!-- </navigator-item-group> -->

@@ -172,6 +172,7 @@ export default {
       this.loading = true
       this.$http.post('cri-cms-platform/userOperLog/page.monitor', {
         toPage: 1,
+        operType: this.$route.query.operType,
         startTime: moment(this.searchTime[0]).format('YYYY-MM-DD'),
         endTime: moment(this.searchTime[1]).format('YYYY-MM-DD')
       }).then(

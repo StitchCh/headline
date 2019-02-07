@@ -147,11 +147,20 @@ export default {
         }
       )
     }
+  },
+  mounted () {
+    let obox = document.getElementById('app')
+    obox.style.minWidth = '0px'
+    obox.style.position = 'absolute'
+    obox.style.overflow = 'auto'
   }
 }
 </script>
 
 <style scoped>
+  .bigbigbox{
+    width: 100%;
+  }
   textarea{
     outline: none;
     width: 100%;

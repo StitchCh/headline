@@ -246,6 +246,10 @@ export default {
 </style>
 
 <style lang="less">
+  #edui7{
+    left: 0 !important;
+    top: 0 !important;
+  }
 .mobile-push-editor{max-width: 100%;margin: 0 auto;padding: 10px;
   .flex-v-center{
     font-size: 14px !important;

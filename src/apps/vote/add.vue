@@ -16,7 +16,7 @@
         <icon-btn v-tooltip:bottom="'发布选项'" @click="ui.optionShow=!ui.optionShow">menu</icon-btn>
       </div>
     </div>
-    <div class="flex-item scroll-y">
+    <div class="flex-item scroll-y" ref="scrollbox">
       <article-editor v-if="getif" ref="editor" @getKeyGenerate="getKeyGenerate"></article-editor>
 
       <div style="max-width: 900px;margin: 0 auto;padding: 20px 10px;">
@@ -29,9 +29,9 @@
       <div v-if="form.templateType == 1" class="listbox">
         <draggable element="ul" :options="{ghostClass:'movelist'}" v-model="form.options">
           <li v-for="(item, index) in form.options" class="listType1">
-            <div>
+            <div style="display: flex;align-items: center;justify-content: space-between;">
               <span style="width: 30px;display: inline-block;">{{index + 1}}</span>
-              <div v-if="form.templateStyle == 2" style="margin-right: 10px;display: inline-block;width: 80px;position: relative;top: 10px;">
+              <div v-if="form.templateStyle == 2" style="margin-right: 10px;display: inline-block;width: 80px;position: relative;top: 10px;transform: translateY(-20%);">
                 <app-article-add-thumb v-model="item.othumb" height="40px"></app-article-add-thumb>
               </div>
               <span>标题</span>
@@ -49,6 +49,7 @@
         <draggable element="ul" :options="{ghostClass:'movelist'}" v-model="form.options">
           <li v-for="(item, index) in form.options" class="listType2">
             <div>
+              <p style="line-height: 1;margin: 0 0 10px;text-align: center;font-size: 16px;">{{index + 1}}</p>
               <div style="margin-bottom: 6px;">
                 <app-article-add-thumb v-model="item.othumb" height="100px" style="margin-bottom: 8px;"></app-article-add-thumb>
               </div>
@@ -328,6 +329,7 @@ export default {
         width: 120,
         height: 160
       })
+      this.$refs.scrollbox.scrollTo(0,this.$refs.scrollbox.clientHeight + 200)
     },
     setScale1 (data) {
       this.form.templateStyle = data

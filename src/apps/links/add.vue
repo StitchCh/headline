@@ -98,7 +98,11 @@
         <switcher mode="Number" v-model="form.isWatermarked"/>
       </div> -->
       <div class="option-item flex-v-center">
-        <span class="flex-item">是否宽图</span>
+        <span class="flex-item">是否窄图</span>
+        <switcher mode="Number" v-model="form.wide"/>
+      </div>
+      <div class="option-item flex-v-center">
+        <span class="flex-item">是否显示广告图章</span>
         <switcher mode="Number" v-model="form.wide"/>
       </div>
       <!--<div class="option-item flex-v-center">-->
