@@ -26,13 +26,15 @@
           <p style="font-size: 12px;color: #f00;">建议择尺寸为16：9的图片作为头图</p>
         </div>
       </div>
+
       <div v-if="form.templateType == 1" class="listbox">
+        <p style="font-size: 12px;color: #f00;">请选择4：3比例的图片作为投票列表图片</p>
         <draggable element="ul" :options="{ghostClass:'movelist'}" v-model="form.options">
           <li v-for="(item, index) in form.options" class="listType1">
             <div style="display: flex;align-items: center;justify-content: space-between;">
               <span style="width: 30px;display: inline-block;">{{index + 1}}</span>
               <div v-if="form.templateStyle == 2" style="margin-right: 10px;display: inline-block;width: 80px;position: relative;top: 10px;transform: translateY(-20%);">
-                <app-article-add-thumb v-model="item.othumb" height="40px"></app-article-add-thumb>
+                <app-article-add-thumb sle="4:3" v-model="item.othumb" height="40px"></app-article-add-thumb>
               </div>
               <span>标题</span>
               <input type="text" v-model="item.title">
@@ -46,12 +48,13 @@
         </draggable>
       </div>
       <div v-if="form.templateType == 2" class="listbox" style="overflow: hidden;">
+        <p style="font-size: 12px;color: #f00;">请选择 4:3 比例的图片作为投票列表图片</p>
         <draggable element="ul" :options="{ghostClass:'movelist'}" v-model="form.options">
           <li v-for="(item, index) in form.options" class="listType2">
             <div>
               <p style="line-height: 1;margin: 0 0 10px;text-align: center;font-size: 16px;">{{index + 1}}</p>
               <div style="margin-bottom: 6px;">
-                <app-article-add-thumb v-model="item.othumb" height="100px" style="margin-bottom: 8px;"></app-article-add-thumb>
+                <app-article-add-thumb sle="4:3" v-model="item.othumb" height="100px" style="margin-bottom: 8px;"></app-article-add-thumb>
               </div>
               <span>标题</span>
               <input style="width: 100%;" type="text" v-model="item.title">
@@ -65,6 +68,7 @@
             </div>
           </li>
         </draggable>
+        <div style="overflow: hidden;"></div>
       </div>
     </div>
     <div class="listaddbtn">

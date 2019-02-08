@@ -44,7 +44,7 @@
           <div v-if="content.templateType == 1 && content.templateStyle == 2" style="padding: 20px;border: 1px solid #ddd;border-radius: 10px;">
             <table style="border: 0;">
               <tr class="list" v-for="(item, index) in content.list" style="border: 0;">
-                <td><img style="margin-right: 10px;" :src="item.thumb.url" :style="{width: item.width + 'px', height: item.height + 'px'}" alt=""></td>
+                <td><img style="margin-right: 10px;width: 100px;" :src="item.thumb.url" alt=""></td>
                 <td style="width: 140px;">{{item.title}}</td>
                 <td>
                   <div class="flex" style="align-items: center;">
@@ -58,11 +58,11 @@
           </div>
 
           <div v-if="content.templateType == 2" style="overflow: hidden;">
-            <ul>
+            <ul style="display: flex;align-items: center;flex-wrap: wrap;">
               <li v-for="(item, index) in content.list" class="list2">
-                <img style="margin-bottom: 10px;" :src="item.thumb.url" :style="{width: item.width + 'px', height: item.height + 'px'}" alt="">
+                <img style="margin-bottom: 10px;width: 100%;" :src="item.thumb.url" alt="">
                 <p>{{item.title}}</p>
-                <p v-if="content.templateStyle == 3" style="height: 60px;text-align: left;border-top: 1px solid #ddd;">{{item.description}}</p>
+                <p v-if="content.templateStyle == 3" style="height: 90px;text-align: left;border-top: 1px solid #ddd;overflow: hidden;">{{item.description}}</p>
                 <p style="border-top: 1px solid #ddd;padding-top: 8px;">{{parseInt(item.virtualVotes) + parseInt(item.realVotes)}} 票</p>
               </li>
             </ul>
@@ -191,9 +191,13 @@ export default {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 6px;
-    float: left;
+    box-sizing: border-box;
+    width: calc(25% - 15px);
     text-align: center;
     line-height: 30px;
+  }
+  .list2:nth-child(4n){
+    margin-right: 0;
   }
   .list2 p{
     margin: 0;

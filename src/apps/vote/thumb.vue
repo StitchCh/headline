@@ -48,6 +48,9 @@ export default {
     height: {
       type: String,
       default: ''
+    },
+    sle: {
+      type: String,
     }
   },
   data () {
@@ -74,8 +77,13 @@ export default {
     },
     selectImage () {
       let image = this.$refs.mediaPhotos.selected[0] || null
+      if (this.sle) {
+        if (image.scale != this.sle) {
+          this.$toast('请选择比例为' + this.sle + '的图片')
+          return false
+        }
+      }
       if (this.scale) {
-        console.log(image.scale == sessionStorage.imageratio)
         if (image.scale != sessionStorage.imageratio) {
           this.$toast('请选择比例为' + sessionStorage.imageratio + '的图片')
           return false
