@@ -23,6 +23,7 @@
         <div style="width: 60px;padding: 12px;" v-if="toolActive === 'crop'">
           <icon-btn v-tooltip:right="'16 : 9'" :class="{ on: optionActive === '16 : 9'}" @click="setRatio(1)">crop_16_9</icon-btn>
           <icon-btn v-tooltip:right="'4 : 3'" :class="{ on: optionActive === '4 : 3'}" @click="setRatio(2)">crop_5_4</icon-btn>
+          <icon-btn v-tooltip:right="'2 : 1'" :class="{ on: optionActive === '2 : 1'}" @click="setRatio(4)">crop_16_9</icon-btn>
           <icon-btn v-tooltip:right="'1 : 1'" :class="{ on: optionActive === '1 : 1'}" @click="setRatio(3)">crop_din</icon-btn>
           <icon-btn v-tooltip:right="'自由裁切'" :class="{ on: optionActive === 'free' }" @click="setRatio">crop_free</icon-btn>
           <icon-btn v-tooltip:right="'应用'" color="#45ff45" class="on" @click="crop">done</icon-btn>
@@ -227,8 +228,13 @@ export default {
         this.cropper.setAspectRatio(1 / 1)
         this.optionActive = '1 : 1'
       }
+      if (type === 4) {
+        this.cropper.setAspectRatio(2 / 1)
+        this.optionActive = '2 : 1'
+      }
       this.cropper.setDragMode('crop')
     },
+
     crop () {
       this.pushHistory('crop')
       let cropperCanvas = this.cropper.getCroppedCanvas().toDataURL()

@@ -44,12 +44,16 @@
         <!--<icon-btn small v-tooltip:top="'发布到移动网页'" :class="{ active: form.terminalWeb }" @click="form.terminalWeb = ~~!form.terminalWeb">public</icon-btn>-->
       <!---->
       </div>
-      <div style="margin: 10px 0;">
+      <div v-show="form.wide == 0" style="margin: 10px 0;">
         <app-article-add-thumb scale v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
-        <div v-if="form.thumbType == 2" class="flex">
-          <app-article-add-thumb scale v-model="thumb.thumb2" height="80px" class="flex-item" style="margin-right: 8px;"></app-article-add-thumb>
-          <app-article-add-thumb scale v-model="thumb.thumb3" height="80px" class="flex-item"></app-article-add-thumb>
-        </div>
+        <!-- <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
+          <div class="flex-item"><radio-box text="默认" :label="1" v-model="form.thumbType"/></div>
+          <div class="flex-item"><radio-box text="三图" :label="2" v-model="form.thumbType"/></div>
+          <div><radio-box text="16:9 大图" style="margin: 0;" :label="3" v-model="form.thumbType"/></div>
+        </div> -->
+      </div>
+      <div v-show="form.wide == 1" style="margin: 10px 0;">
+        <app-article-add-thumb sle="2:1" v-model="thumb.thumb2" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
         <!-- <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
           <div class="flex-item"><radio-box text="默认" :label="1" v-model="form.thumbType"/></div>
           <div class="flex-item"><radio-box text="三图" :label="2" v-model="form.thumbType"/></div>
@@ -101,10 +105,10 @@
         <span class="flex-item">是否窄图</span>
         <switcher mode="Number" v-model="form.wide"/>
       </div>
-      <div class="option-item flex-v-center">
-        <span class="flex-item">是否显示广告图章</span>
-        <switcher mode="Number" v-model="form.wide"/>
-      </div>
+      <!--<div class="option-item flex-v-center">-->
+        <!--<span class="flex-item">是否显示广告图章</span>-->
+        <!--<switcher mode="Number" v-model="form.wide"/>-->
+      <!--</div>-->
       <!--<div class="option-item flex-v-center">-->
         <!--<div class="flex-item">定时上线</div>-->
         <!--<div class="relative flex-v-center a">-->
@@ -360,6 +364,11 @@ export default {
         this.$toast('请输入链接')
         return
       }
+      if (this.form.wide == 0) {
+        this.form.thumb = this.thumb.thumb1
+      } else {
+        this.form.thumb = this.thumb.thumb2
+      }
       this.form.title = title
       this.form.titleColor = titleColor
       this.form.content = linkhead + link
@@ -422,12 +431,13 @@ export default {
             this.thumb.thumb2 = res.content.thumb[1]
             this.thumb.thumb3 = res.content.thumb[2]
           }
-          if (k === 'isDelete' || k === 'isOpenComment' || k === 'isOriginal' || k === 'isRecommnd' || k === 'isWatermarked' || k === 'terminalApp' || k === 'terminalPc' || k === 'terminalWeb' || k === 'hasThumb' || k === 'wide') {
+          if (k === 'isDelete' || k === 'isOpenComment' || k === 'isOriginal' || k === 'isRecommnd' || k === 'isWatermarked' || k === 'terminalApp' || k === 'terminalPc' || k === 'terminalWeb' || k === 'hasThumb') {
             this.form[k] = Number(res.content[k])
             continue
           }
           this.form[k] = res.content[k]
         }
+        this.form.wide = Number(res.link.wide)
         this.form.createDate = res.content.createDate
         // this.form.content = res.article.content
         this.form.channelIds = res.channelIds || ''
@@ -455,7 +465,6 @@ export default {
   },
   watch: {
     'thumb.thumb1' (newValue) {
-      console.log(newValue)
       if (this.form.thumbType === 2) {
         if (!(newValue || this.thumb.thumb2 || this.thumb.thumb3)) {
           this.form.hasThumb = 0
@@ -475,12 +484,22 @@ export default {
       }
     },
     'thumb.thumb2' (newValue) {
-      if (!(this.thumb.thumb1 || newValue || this.thumb.thumb3)) {
-        this.form.hasThumb = 0
-        this.form.thumb = ''
+      if (this.form.thumbType === 2) {
+        if (!(newValue || this.thumb.thumb2 || this.thumb.thumb3)) {
+          this.form.hasThumb = 0
+          this.form.thumb = ''
+        } else {
+          this.form.hasThumb = 1
+          this.form.thumb = [ newValue, this.thumb.thumb2, this.thumb.thumb3 ].filter(v => v).map(v => v.id).join(',')
+        }
       } else {
-        this.form.hasThumb = 1
-        this.form.thumb = [ this.thumb.thumb1, newValue, this.thumb.thumb3 ].filter(v => v).map(v => v.id).join(',')
+        if (!newValue) {
+          this.form.hasThumb = 0
+          this.form.thumb = ''
+        } else {
+          this.form.hasThumb = 1
+          this.form.thumb = newValue.id
+        }
       }
     },
     'thumb.thumb3' (newValue) {

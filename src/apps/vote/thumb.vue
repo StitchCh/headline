@@ -50,7 +50,7 @@ export default {
       default: ''
     },
     sle: {
-      type: String,
+      type: String
     }
   },
   data () {

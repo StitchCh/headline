@@ -3,11 +3,11 @@
     <af-left color="#555" vibrant-color="#008cff" bg-color="#fafafa" title="评论" :defaultActive="defaultActive">
       <navigator-item icon="folder" @click="() => {if ($route.query.status != 'all') {$router.replace('/comment/list?status=all')}}" index="CommentList">全部
       </navigator-item>
-      <navigator-item icon="hourglass_full" @click="() => {if ($route.query.audit != '2' && $route.query.delete != '1') {$router.replace('/comment/list?audit=2&delete=1')}}" index="CommentListWaiting">待审
+      <navigator-item icon="hourglass_full" @click="() => {if ($route.query.audit != '2' || $route.query.delete != '1') {$router.replace('/comment/list?audit=2&delete=1')}}" index="CommentListWaiting">待审
       </navigator-item>
-      <navigator-item icon="check_circle" @click="() => {if ($route.query.auditStatus != '1' && $route.query.delete != '1') {$router.replace('/comment/list?auditStatus=1&delete=1')}}" index="CommentListAudited">通过
+      <navigator-item icon="check_circle" @click="() => {if ($route.query.auditStatus != '1' || $route.query.delete != '1') {$router.replace('/comment/list?auditStatus=1&delete=1')}}" index="CommentListAudited">通过
       </navigator-item>
-      <navigator-item icon="error" @click="() => {if ($route.query.auditStatus != '0' && $route.query.delete != '1') {$router.replace('/comment/list?auditStatus=0&delete=1')}}" index="CommentListBohui">驳回
+      <navigator-item icon="error" @click="() => {if ($route.query.auditStatus != '0' || $route.query.delete != '1') {$router.replace('/comment/list?auditStatus=0&delete=1')}}" index="CommentListBohui">驳回
       </navigator-item>
       <navigator-item icon="delete" @click="() => {if ($route.query.delete != '0') {$router.replace('/comment/list?delete=0')}}" index="CommentListDelete">已删除
       </navigator-item>

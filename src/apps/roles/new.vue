@@ -116,6 +116,7 @@ export default {
       return channel + (node.checked ? '<i class="icon" style="color: #52d277;font-size: 14px;margin-left: 10px;">check</i>' : '')
     },
     selectSite (id, identifyId) {
+      console.log(id, identifyId)
       this.ui.roleSiteActive.id = id
       this.ui.roleSiteActive.identifyId = identifyId
       this.ui.roleSiteFlag = false

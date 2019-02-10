@@ -32,11 +32,11 @@
             <span class="flex-item"></span>
             <span>{{item.createTime}}</span>
           </div>
-          <div class="comment-item-info pre-wrap">{{item.content}}</div>
+          <div class="comment-item-info pre-wrap" style="word-wrap:break-word;">{{item.content}}</div>
           <div v-if="item.deleteStatus === '1' && !checkedShow" class="flex comment-item-info">
             <span class="flex-item"></span>
-            <icon-btn v-tooltip="'通过'" color="#4caf50" style="margin-right: 5px;" v-if="item.isAudit === '2' || (item.isAudit === '3' && item.auditStatus === '0')" @click="pass(item.id)">check_circle</icon-btn>
-            <icon-btn v-tooltip="'驳回'" color="#ff5252" style="margin-right: 5px;" v-if="item.isAudit === '2' || (item.isAudit === '3' && item.auditStatus === '1')" @click="reject(item.id)">error</icon-btn>
+            <icon-btn v-tooltip="'通过'" color="#4caf50" style="margin-right: 5px;" v-if="(item.isAudit === '2' || (item.isAudit === '3' && item.auditStatus === '0')) && $route.query.auditStatus != 0" @click="pass(item.id)">check_circle</icon-btn>
+            <icon-btn v-tooltip="'驳回'" color="#ff5252" style="margin-right: 5px;" v-if="(item.isAudit === '2' || (item.isAudit === '3' && item.auditStatus === '1')) && $route.query.auditStatus != 1" @click="reject(item.id)">error</icon-btn>
             <icon-btn v-tooltip="'修改评论'" style="margin-right: 5px;" @click="openEdit(item)">edit</icon-btn>
             <icon-btn v-tooltip="'删除'" color="#D81B60" @click="deleteItem(item.id)">delete</icon-btn>
           </div>
@@ -217,16 +217,17 @@ export default {
         }
       ).catch(console.log)
     },
-    deleteItem (id) {
+    deleteItem (ids) {
+      let othis = this
       this.$confirm({
         title: '提示',
         text: '是否删除本条评论？',
         btns: ['取消', '删除'],
         color: 'red',
         yes () {
-          this.$http.post('/cri-cms-platform/comment/delete.monitor', { id }).then(
+          othis.$http.post('/cri-cms-platform/comment/delete.monitor', { ids }).then(
             () => {
-              this.getList()
+              othis.getList()
             }
           ).catch(console.log)
         },
