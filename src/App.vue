@@ -97,4 +97,7 @@ export default {
 .vjs-custom-skin > .video-js .vjs-big-play-button{
   transform: translateY(300%);
 }
+  .edui6 tr td{
+    overflow: visible;
+  }
 </style>
