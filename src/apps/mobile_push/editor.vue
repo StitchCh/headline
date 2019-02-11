@@ -251,6 +251,9 @@ export default {
       left: 0 !important;
       top: 0 !important;
     }
+    td, th {
+      overflow: visible;
+    }
   }
 .mobile-push-editor{max-width: 100%;margin: 0 auto;padding: 10px;
   .flex-v-center{
