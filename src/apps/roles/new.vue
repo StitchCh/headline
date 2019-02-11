@@ -31,7 +31,7 @@
       <div class="layer-btns">
         <btn flat @click="ui.roleMenuShow = false">关闭</btn>
       </div>
-      <check-box v-model="menuAll" class="qxbtn" text="全选"></check-box>
+      <check-box v-model="menuAll" @change="menuAllFalse" class="qxbtn" text="全选"></check-box>
     </layer>
     <layer v-if="ui.roleSiteShow" title="选择站点频道" width="600px">
       <div class="layer-text flex">
@@ -96,14 +96,30 @@ export default {
     }
   },
   methods: {
-    menuChange (data,index) {
+    menuAllFalse () {
+      if (!this.menuAll) {
+        this.menuList.forEach(item => {
+          item.checked = false
+          item.children.forEach(item1 => {
+            item1.checked = false
+          })
+        })
+      }
+    },
+    menuChange (data, index) {
       if (!data.checked) {
         this.menuAll = false
       }
       if (data.pId == '-1') {
-        this.menuList[index].children.forEach(item => {
-          item.checked = true
-        })
+        if (data.checked) {
+          this.menuList[index].children.forEach(item => {
+            item.checked = true
+          })
+        } else {
+          this.menuList[index].children.forEach(item => {
+            item.checked = false
+          })
+        }
       }
     },
     menuFormat (menu, node) {
@@ -120,8 +136,9 @@ export default {
       this.ui.roleSiteActive.id = id
       this.ui.roleSiteActive.identifyId = identifyId
       this.ui.roleSiteFlag = false
-      this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor', { id }).then(
+      this.$http.post('/cri-cms-platform/sysRoles/getChannelsToRole.monitor', { id, siteIdToRole: identifyId }).then(
         res => {
+          console.log(res)
           this.ui.channels = res
           this.ui.roleSiteFlag = true
         }
