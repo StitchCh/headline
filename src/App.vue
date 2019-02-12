@@ -97,7 +97,16 @@ export default {
 .vjs-custom-skin > .video-js .vjs-big-play-button{
   transform: translateY(300%);
 }
-  .edui6 tr td{
-    overflow: visible;
+#edui6 tr td{
+  overflow: visible;
+}
+#ueditor_0 *{
+  max-width: 100%;
+}
+  #edui_fixedlayer{
+    min-height: 1000px;
+  }
+  #edui7_body{
+    width: 480px !important;
   }
 </style>

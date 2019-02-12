@@ -100,8 +100,8 @@ export default {
     &:hover {border: 1px solid #000000}
   }
   .title-color-list {width: 192px;padding: 10px;}
-  .selector {width: 100%;height: 495px;
-    .selector-add {width: 100%;height: 100%;background: rgba(0, 0, 0, .06);border-radius: 10px;
+  .selector {width: 100%;min-height: 495px;
+    .selector-add {width: 100%;height: 495px;background: rgba(0, 0, 0, .06);border-radius: 10px;
       &:hover {opacity: .8;}
     }
   }

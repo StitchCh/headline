@@ -341,7 +341,8 @@ export default {
         this.$toast('请输入标题')
         return
       }
-      let text = getText().replace(/\s/g, '')
+      let text = getText()
+      console.log(getText())
       if (!text) {
         this.$toast('请输入内容')
         return

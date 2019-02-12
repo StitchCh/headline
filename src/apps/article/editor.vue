@@ -175,8 +175,10 @@ export default {
     insertVideo () {
       let origin = this.$refs.mediaVideos.origin
       let selected = this.$refs.mediaVideos.selected.map(v => {
+        console.log(v)
         return {
-          url: origin + v.video
+          url: origin + v.video,
+          thumb: origin + v.thumb
         }
       })
       if (selected.length) this.editor.execCommand('insertvideo', selected, 'upload')
