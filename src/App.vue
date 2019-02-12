@@ -106,7 +106,7 @@ export default {
   #edui_fixedlayer{
     min-height: 1000px;
   }
-  #edui7_body{
+  .edui-popup-body{
     width: 480px !important;
   }
 </style>
