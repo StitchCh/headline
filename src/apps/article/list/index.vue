@@ -58,6 +58,9 @@
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'复制并重新发布'" @click="copyArticle">file_copy</icon-btn>
           </div>
+          <div class="tool-item">
+            <icon-btn small v-tooltip:bottom="'链接'" @click="getLinkList(id)">link</icon-btn>
+          </div>
         </div>
         <div class="flex-item"></div>
 
@@ -73,6 +76,20 @@
           </div>
         </div>
         <router-view :channels="ui.channels"/>
+      </div>
+    </div>
+
+    <div v-if="urlListShow" @click="urlListShow = false" class="urlList">
+      <div @click.stop class="urlList_box">
+        <ul v-if="urlList.length > 0">
+          <li v-for="(item, index) in urlList" class="urlList_list">
+            <p class="newTitle"><span style="margin-right: 10px;">{{index + 1}}.</span>{{item.newTitle}}</p>
+            <p class="newUrl">{{item.url}}</p>
+          </li>
+        </ul>
+        <div  v-if="urlList.length <= 0" style="padding: 20px;text-align: center;line-height: 340px;">
+          暂无数据
+        </div>
       </div>
     </div>
   </div>
@@ -92,10 +109,19 @@ export default {
         channels: [],
         qrcodeShow: false
       },
-      list: []
+      list: [],
+      urlList: [],
+      urlListShow: false
     }
   },
   methods: {
+    getLinkList (id) {
+      this.$http.post('/cri-cms-platform/article/published.monitor', { id }).then(res => {
+        console.log(res)
+        this.urlList = res
+        this.urlListShow = true
+      })
+    },
     getChannels () {
       this.$http.post('/cri-cms-platform/article/getChannels.monitor').then(res => {
         this.ui.channels = res || []
@@ -153,6 +179,51 @@ export default {
 
 <style lang="less">
 .article-list{
+  .urlList{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: rgba(0,0,0,0.5);
+  }
+  .urlList p{
+    margin: 0 0 10px;
+  }
+  .urlList_box{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 800px;
+    height: 400px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 2px 2px 15px rgba(0,0,0,0.2);
+    padding: 10px;
+    overflow: auto;
+  }
+  .newTitle{
+    font-size: 16px;
+  }
+  .newUrl{
+    font-size: 14px;
+    background: #eee;
+    border-radius: 4px;
+    padding: 5px;
+    color: #666;
+    word-wrap: break-word
+  }
+  .urlList_list{
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  .urlList_list:last-child{
+    border: 0;
+  }
   .list-item.on{background: #73a9ea;color: #fff;
     .list-title span{color: #fff;}
     .list-info{color: rgba(255, 255, 255, .8)}
