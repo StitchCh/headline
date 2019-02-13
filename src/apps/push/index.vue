@@ -103,9 +103,6 @@ export default {
     align-items: center;
     justify-content: space-between;
   }
-  th,td {padding: 10px 10px;max-width: 300px;overflow: hidden;}
-  tr {border-top: 1px solid #e1e1e1;cursor: pointer;}
-  tr:hover {background: rgba(0, 0, 0, .05);}
   .search_navbox .datepicker-range .datepicker-popup{
     width: 415px !important;
   }
