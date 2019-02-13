@@ -341,9 +341,8 @@ export default {
         this.$toast('请输入标题')
         return
       }
-      let text = getText()
-      console.log(getText())
-      if (!text) {
+      console.log(content)
+      if (!content) {
         this.$toast('请输入内容')
         return
       }

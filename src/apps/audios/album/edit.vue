@@ -259,7 +259,7 @@ export default {
     .title{font-size: 30px;font-weight: bold;border: none;width: 100%;background: transparent;padding: 20px 15px;color: #555;
       &::-webkit-input-placeholder{color: #aaa;}
     }
-    .selector {width: 100%;height: 495px;
+    .selector {width: 100%;min-height: auto;
       .selector-add {width: 100%;height: 100%;background: rgba(0, 0, 0, .06);border-radius: 10px;
         &:hover {opacity: .8;}
       }
