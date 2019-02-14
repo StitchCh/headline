@@ -63,7 +63,7 @@
             </div>
             <div v-if="item.appValue[0]" style="overflow: hidden;padding-top: 10px;">
               <span style="display: inline-block;line-height: 34px;">广告跳转时间</span>
-              <input style="height: 30px;width: calc(100% - 150px);float: right;padding: 0 10px;" type="number" placeholder="请输入时间">
+              <input v-model="item.appValue[0].jumpTime" style="height: 30px;width: calc(100% - 150px);float: right;padding: 0 10px;" type="number" placeholder="请输入时间(秒)">
             </div>
           </div>
 
@@ -115,19 +115,21 @@ export default {
   },
   methods: {
     change (item, index) {
-      let list = []
-      if (item.appKey == 'ad_page' && !this.urlif.test(item.appValue[0].url)) {
-        this.$toast('请输入正确的URL地址')
-        return false
-      }
+      console.log(item)
+      let list1 = []
+      // if (item.appKey == 'ad_page' && !this.urlif.test(item.appValue[0].url)) {
+      //   this.$toast('请输入正确的URL地址')
+      //   return false
+      // }
       item.appValue.forEach(item1 => {
-        list.push({
+        list1.push({
           pic: item1.pic,
-          url: item1.url
+          url: item1.url,
+          jumpTime: item1.jumpTime
         })
       })
       this.$http.post('/cri-cms-platform/appGuide/update.monitor', {
-        appValue: JSON.stringify(list),
+        appValue: JSON.stringify(list1),
         status: this.showList[index],
         demo: item.demo,
         id: item.id

@@ -47,8 +47,8 @@ export default {
   components: { LangSwitch },
   data () {
     return {
-      loginName: 'admin',
-      password: 'asdfasdf',
+      loginName: '',
+      password: '',
       keepLogin: false,
       loading: false,
       error: {
