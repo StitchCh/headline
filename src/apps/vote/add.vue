@@ -294,7 +294,8 @@ export default {
         options: [],
         terminalPc: 1,
         terminalApp: 1,
-        terminalWeb: 1
+        terminalWeb: 1,
+        virtualShare: ''
       },
       thumb: {
         thumb1: null,
@@ -433,8 +434,7 @@ export default {
             console.log(res)
             this.form.maxVotes = res.vote.maxVotes || 2
             this.form.cycle = res.vote.cycle || 1
-            this.form.voteAll = Number(res.vote.voteAll) || 1
-            console.log(Number(res.vote.voteAll))
+            this.form.voteAll = Number(res.vote.voteAll)
             this.form.content = res.vote.content || ''
             this.form.cycleCount = res.vote.cycleCount || 1
             this.form.memberLoginLimit = Number(res.vote.memberLoginLimit) || 1
@@ -448,6 +448,7 @@ export default {
             this.form.category = res.vote.category || 1
             this.form.listType = 1
             this.form.headPicType = 1
+            this.form.virtualShare = res.content.virtualShare
             this.form.title = res.content.title || ''
             this.form.titleColor = res.content.titleColor || ''
             this.form.channelIds = res.channelIds || ''
