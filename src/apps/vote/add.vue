@@ -430,9 +430,11 @@ export default {
           this.$http.post('/cri-cms-platform/vote/get.monitor', {
             id: this.id
           }).then(res => {
+            console.log(res)
             this.form.maxVotes = res.vote.maxVotes || 2
             this.form.cycle = res.vote.cycle || 1
             this.form.voteAll = Number(res.vote.voteAll) || 1
+            console.log(Number(res.vote.voteAll))
             this.form.content = res.vote.content || ''
             this.form.cycleCount = res.vote.cycleCount || 1
             this.form.memberLoginLimit = Number(res.vote.memberLoginLimit) || 1

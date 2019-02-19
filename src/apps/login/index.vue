@@ -59,7 +59,11 @@ export default {
     }
   },
   mounted () {
-    this.keydownFun(13, this.login)
+    this.keydownFun(13, () => {
+      if (this.$route.path == '/login') {
+        this.login()
+      }
+    })
     if (this.$route.params.setPassword) {
       this.$toast('密码修改成功，请重新登录')
     }

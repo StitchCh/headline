@@ -51,7 +51,7 @@
           <div v-if="item.appKey == 'ad_page' && showList[index] == 1">
             <ul class="flex-v-center">
               <li class="list" style="margin: 0 auto;">
-                <div class="pic-item flex-center add-btn a" @click="ui.photoSelectorShow = true; type = 2">
+                <div class="pic-item flex-center add-btn a" @click="ui.photoSelectorShow = true; type = index">
                   <p v-if="item.appValue.length == 0"><i class="icon">add_photo_alternate</i>添加图片</p>
                   <img v-if="item.appValue.length > 0" :src="item.appValue[0].pic" alt="">
                 </div>
@@ -149,17 +149,26 @@ export default {
     },
     selectPhoto () {
       let imgOrigin = this.$refs.mediaPhotos.imgOrigin
-      this.list[this.type].appValue = this.list[this.type].appValue.concat(this.$refs.mediaPhotos.selected.map(v => {
-        v.description = ''
-        v.pic = imgOrigin + v.filePath + v.fileName
-        v.url = ''
-        return v
-      }))
+      if (this.list[this.type].appKey == "ad_page") {
+        this.list[this.type].appValue = (this.$refs.mediaPhotos.selected.map(v => {
+          v.description = ''
+          v.pic = imgOrigin + v.filePath + v.fileName
+          v.url = ''
+          return v
+        }))
+      } else {
+        this.list[this.type].appValue = this.list[this.type].appValue.concat(this.$refs.mediaPhotos.selected.map(v => {
+          v.description = ''
+          v.pic = imgOrigin + v.filePath + v.fileName
+          v.url = ''
+          return v
+        }))
+      }
+      console.log(this.list)
       this.ui.photoSelectorShow = false
     },
     getList () {
       this.$http.post('/cri-cms-platform/appGuide/page.monitor').then(res => {
-        console.log(res)
         this.list = res
         this.list.forEach(item => {
           this.showList.push(Number(item.status))
