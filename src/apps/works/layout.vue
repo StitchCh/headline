@@ -122,6 +122,12 @@ export default {
     },
     add (val) {
       this.viewList = val.concat(this.list)
+      console.log(this.viewList)
+      this.viewList.forEach(item => {
+        if (item.issueStatus == 1) {
+          item.dateRange = '123'
+        }
+      })
       this.sort()
     },
     item (val) {
@@ -259,8 +265,12 @@ export default {
           res.push(item)
         }
         if (item.sortOrder !== item.order && !item.new) item.changed = true
-        if (!item.issueStatus) {
-          item.issueStatus = 0
+        if (item.issueStatus == 1) {
+          if (item.endDate != '9998-12-31 23:59:59') {
+            item.dateRange = [item.sendDate ? item.sendDate : item.dateRange[0], this.thistime ]
+          } else {
+            item.dateRange = [item.sendDate ? item.sendDate : item.dateRange[0], item.endDate ]
+          }
         }
       })
       this.viewList = res

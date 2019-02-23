@@ -37,6 +37,7 @@ export default {
         channelId: this.$route.query.channelId
       }).then(res => {
         this.list = res.data
+        console.log(res)
       })
     }
   },

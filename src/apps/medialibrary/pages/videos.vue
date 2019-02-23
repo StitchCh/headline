@@ -36,7 +36,7 @@
       <span class="f-14" v-if="selected.length" style="margin-right: 10px;">已选择 {{selected.length}} 项</span>
       <btn flat v-if="selected.length" color="#008eff" @click="cancelSelect">取消选择</btn>
       <div class="flex-v-center opera-btns">
-        <btn flat :disabled="!selected.length" color="#008eff" @click="del">批量删除</btn>
+        <btn v-if="$route.path === '/media'" flat :disabled="!selected.length" color="#008eff" @click="del">批量删除</btn>
         <media-upload :type="2" @uploaded="onUploaded" :folder-id="$route.query.folderId || 0"/>
       </div>
     </div>

@@ -42,7 +42,7 @@
       </div>
       <div class="flex-v-center opera-btns">
         <!-- <span class="a blue">全选</span> -->
-        <btn flat :disabled="!selected.length" color="#008eff" @click="del">删除</btn>
+        <btn v-if="$route.path === '/media'" flat :disabled="!selected.length" color="#008eff" @click="del">删除</btn>
         <media-upload :type="0" @uploaded="onUploaded" :folder-id="$route.query.folderId || 0"/>
         <!-- <span class="a blue"></span> -->
         <!-- <label>

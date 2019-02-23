@@ -269,6 +269,7 @@ export default {
     },
     channelNames () {
       if (!this.channelIds.length) return '选择栏目'
+      console.log(this.channelIds)
       return this.channelIds.map(val => this.ui.channels.find(v => v.id === val).channelName).join('，')
     }
   },
