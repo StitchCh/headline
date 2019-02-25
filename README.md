@@ -1,6 +1,6 @@
 # CCTP
 
-> A Vue.js project
+> CCTP
 
 ## Build Setup
 
