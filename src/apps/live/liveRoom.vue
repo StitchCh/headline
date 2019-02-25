@@ -112,7 +112,6 @@
           <div v-for="(item, index) in zhiboyuanList" class="flex-v-center" style="align-items: center;margin-bottom: 10px;">
             <div class="imgbox txbox" style="margin-right: 10px;">
               <img v-if="!item.thumb.url" src="../../../static/img/icon-user.png" @click="mediaShow = true;txChange = true;txIndex = index;">
-
               <img v-if="item.thumb.url" :src="item.thumb.url" @click="mediaShow = true;txChange = true;txIndex = index;">
             </div>
             <input style="width: 110px;" type="text" v-model="item.aliasName" @blur="changeZ(index)">
@@ -327,7 +326,9 @@ export default {
         liveId: this.liveId
       }).then(res => {
         this.zhiboyuanList = res.broadcasters
-        this.zhiboyuanList.checked = res.broadcasters.auditPermission == 0 ? false : true
+        this.zhiboyuanList.forEach(item => {
+          item.checked = item.auditPermission == 0 ? false : true
+        })
       })
     })
   },

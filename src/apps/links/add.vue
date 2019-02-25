@@ -365,9 +365,9 @@ export default {
         return
       }
       if (this.form.wide == 0) {
-        this.form.thumb = this.thumb.thumb1
+        this.form.thumb = this.thumb.thumb1.id
       } else {
-        this.form.thumb = this.thumb.thumb2
+        this.form.thumb = this.thumb.thumb2.id
       }
       this.form.title = title
       this.form.titleColor = titleColor
@@ -464,53 +464,6 @@ export default {
     }
   },
   watch: {
-    'thumb.thumb1' (newValue) {
-      if (this.form.thumbType === 2) {
-        if (!(newValue || this.thumb.thumb2 || this.thumb.thumb3)) {
-          this.form.hasThumb = 0
-          this.form.thumb = ''
-        } else {
-          this.form.hasThumb = 1
-          this.form.thumb = [ newValue, this.thumb.thumb2, this.thumb.thumb3 ].filter(v => v).map(v => v.id).join(',')
-        }
-      } else {
-        if (!newValue) {
-          this.form.hasThumb = 0
-          this.form.thumb = ''
-        } else {
-          this.form.hasThumb = 1
-          this.form.thumb = newValue.id
-        }
-      }
-    },
-    'thumb.thumb2' (newValue) {
-      if (this.form.thumbType === 2) {
-        if (!(newValue || this.thumb.thumb2 || this.thumb.thumb3)) {
-          this.form.hasThumb = 0
-          this.form.thumb = ''
-        } else {
-          this.form.hasThumb = 1
-          this.form.thumb = [ newValue, this.thumb.thumb2, this.thumb.thumb3 ].filter(v => v).map(v => v.id).join(',')
-        }
-      } else {
-        if (!newValue) {
-          this.form.hasThumb = 0
-          this.form.thumb = ''
-        } else {
-          this.form.hasThumb = 1
-          this.form.thumb = newValue.id
-        }
-      }
-    },
-    'thumb.thumb3' (newValue) {
-      if (!(this.thumb.thumb1 || this.thumb.thumb2 || newValue)) {
-        this.form.hasThumb = 0
-        this.form.thumb = ''
-      } else {
-        this.form.hasThumb = 1
-        this.form.thumb = [ this.thumb.thumb1, this.thumb.thumb2, newValue ].filter(v => v).map(v => v.id).join(',')
-      }
-    },
     'form.thumbType' (newValue) {
       if (newValue === 2) {
         if (!(this.thumb.thumb1 || this.thumb.thumb2 || this.thumb.thumb3)) {

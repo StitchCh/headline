@@ -51,7 +51,7 @@
           <div v-if="item.appKey == 'ad_page' && showList[index] == 1">
             <ul class="flex-v-center">
               <li class="list" style="margin: 0 auto;">
-                <div class="pic-item flex-center add-btn a" @click="ui.photoSelectorShow = true; type = 2">
+                <div class="pic-item flex-center add-btn a" @click="ui.photoSelectorShow = true; type = index">
                   <p v-if="item.appValue.length == 0"><i class="icon">add_photo_alternate</i>添加图片</p>
                   <img v-if="item.appValue.length > 0" :src="item.appValue[0].pic" alt="">
                 </div>
@@ -63,7 +63,7 @@
             </div>
             <div v-if="item.appValue[0]" style="overflow: hidden;padding-top: 10px;">
               <span style="display: inline-block;line-height: 34px;">广告跳转时间</span>
-              <input style="height: 30px;width: calc(100% - 150px);float: right;padding: 0 10px;" type="number" placeholder="请输入时间">
+              <input v-model="item.appValue[0].jumpTime" style="height: 30px;width: calc(100% - 150px);float: right;padding: 0 10px;" type="number" placeholder="请输入时间(秒)">
             </div>
           </div>
 
@@ -115,19 +115,21 @@ export default {
   },
   methods: {
     change (item, index) {
-      let list = []
-      if (item.appKey == 'ad_page' && !this.urlif.test(item.appValue[0].url)) {
-        this.$toast('请输入正确的URL地址')
-        return false
-      }
+      console.log(item)
+      let list1 = []
+      // if (item.appKey == 'ad_page' && !this.urlif.test(item.appValue[0].url)) {
+      //   this.$toast('请输入正确的URL地址')
+      //   return false
+      // }
       item.appValue.forEach(item1 => {
-        list.push({
+        list1.push({
           pic: item1.pic,
-          url: item1.url
+          url: item1.url,
+          jumpTime: item1.jumpTime
         })
       })
       this.$http.post('/cri-cms-platform/appGuide/update.monitor', {
-        appValue: JSON.stringify(list),
+        appValue: JSON.stringify(list1),
         status: this.showList[index],
         demo: item.demo,
         id: item.id
@@ -147,17 +149,26 @@ export default {
     },
     selectPhoto () {
       let imgOrigin = this.$refs.mediaPhotos.imgOrigin
-      this.list[this.type].appValue = this.list[this.type].appValue.concat(this.$refs.mediaPhotos.selected.map(v => {
-        v.description = ''
-        v.pic = imgOrigin + v.filePath + v.fileName
-        v.url = ''
-        return v
-      }))
+      if (this.list[this.type].appKey == "ad_page") {
+        this.list[this.type].appValue = (this.$refs.mediaPhotos.selected.map(v => {
+          v.description = ''
+          v.pic = imgOrigin + v.filePath + v.fileName
+          v.url = ''
+          return v
+        }))
+      } else {
+        this.list[this.type].appValue = this.list[this.type].appValue.concat(this.$refs.mediaPhotos.selected.map(v => {
+          v.description = ''
+          v.pic = imgOrigin + v.filePath + v.fileName
+          v.url = ''
+          return v
+        }))
+      }
+      console.log(this.list)
       this.ui.photoSelectorShow = false
     },
     getList () {
       this.$http.post('/cri-cms-platform/appGuide/page.monitor').then(res => {
-        console.log(res)
         this.list = res
         this.list.forEach(item => {
           this.showList.push(Number(item.status))
