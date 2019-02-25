@@ -33,7 +33,7 @@
           <li v-for="(item, index) in form.options" class="listType1">
             <div style="display: flex;align-items: center;justify-content: space-between;">
               <span style="width: 30px;display: inline-block;">{{index + 1}}</span>
-              <div v-if="form.templateStyle == 2" style="margin-right: 10px;display: inline-block;width: 80px;position: relative;top: 10px;">
+              <div v-if="form.templateStyle == 2" style="margin-right: 10px;display: inline-block;width: 80px;position: relative;">
                 <app-article-add-thumb sle="4:3" v-model="item.othumb" height="40px"></app-article-add-thumb>
               </div>
               <span>标题</span>

@@ -128,7 +128,7 @@ export default {
   }
   .set_password{
     width: 300px;
-    height: 230px;
+    min-height: 230px;
     padding: 20px;
     border-radius: 10px;
     position: absolute;

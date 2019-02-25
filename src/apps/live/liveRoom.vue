@@ -22,7 +22,7 @@
           </div>
           <div v-if="navindex == 0">
             <div class="textareabox" style="max-width: 900px;margin: 0 auto 20px;">
-              <textarea v-model="liveContent" placeholder="发直播..." style="font-family: Microsoft Yahei"></textarea>
+              <textarea v-model="liveContent" placeholder="发直播..." style="font-family: Microsoft Yahei;font-size: 16px;"></textarea>
               <div style="margin-bottom: 10px;">
                 <i class="icon c-a" style="font-size: 50px;margin-right: 10px;" @click="mediaShow = true">add_photo_alternate</i>
                 <i class="icon c-a" style="font-size: 55px;margin-right: 10px;" @click="videoSelectorShow = true">video_call</i>
@@ -59,7 +59,7 @@
 
           <div v-if="navindex == 1">
             <div class="textareabox" style="max-width: 900px;margin: 0 auto 20px;overflow: hidden;">
-              <textarea placeholder="发聊天..." v-model="pinglun" style="font-family: Microsoft Yahei"></textarea>
+              <textarea placeholder="发聊天..." v-model="pinglun" style="font-family: Microsoft Yahei;font-size: 16px;"></textarea>
               <div style="text-align: right;"><btn @click="pushPinglun">发送</btn></div>
             </div>
 

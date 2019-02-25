@@ -1,6 +1,6 @@
 <template>
   <div class="app-article-add-thumb">
-    <div class="add-photo-btn a flex-center" :style="{ width, height }" @click="show = true">
+    <div class="add-photo-btn a flex-center" style="width:80px;height: 60px;" @click="show = true">
       <img v-if="image.url" :src="image.url" width="100%" alt="">
       <i v-else class="icon f-32 c-a">add_photo_alternate</i>
     </div>
