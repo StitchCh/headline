@@ -13,7 +13,9 @@
         </div>
       </div>
       <div style="padding: 0 10px;">
+        <p>标题：</p>
         <input v-model="form.title" class="title" type="text" placeholder="请输入标题">
+        <p>摘要：</p>
         <textarea v-model="form.abstarcts" @change="" placeholder="摘要"></textarea>
       </div>
       <div class="option-item" style="margin: 0 10px;background: #fff;padding: 10px;">

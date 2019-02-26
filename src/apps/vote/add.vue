@@ -34,7 +34,7 @@
             <div style="display: flex;align-items: center;justify-content: space-between;">
               <span style="width: 30px;display: inline-block;">{{index + 1}}</span>
               <div v-if="form.templateStyle == 2" style="margin-right: 10px;display: inline-block;width: 80px;position: relative;">
-                <app-article-add-thumb sle="4:3" v-model="item.othumb" height="40px"></app-article-add-thumb>
+                <app-article-add-thumb sisan sle="4:3" v-model="item.othumb" height="40px"></app-article-add-thumb>
               </div>
               <span>标题</span>
               <input type="text" v-model="item.title">
@@ -54,7 +54,7 @@
             <div>
               <p style="line-height: 1;margin: 0 0 10px;text-align: center;font-size: 16px;">{{index + 1}}</p>
               <div style="margin-bottom: 6px;">
-                <app-article-add-thumb sle="4:3" v-model="item.othumb" height="100px" style="margin-bottom: 8px;"></app-article-add-thumb>
+                <app-article-add-thumb sisan sle="4:3" v-model="item.othumb" height="100px" style="margin-bottom: 8px;"></app-article-add-thumb>
               </div>
               <span>标题</span>
               <input style="width: 100%;" type="text" v-model="item.title">
@@ -581,6 +581,9 @@ export default {
     textarea, input{border: none;width: 100%;outline: none;font-size: 14px;color: #444;resize: none;background: transparent;
       &::-webkit-input-placeholder{color: #999;}
     }
+  }
+  .listType2 .sisan{
+    width:160px;height: 120px;
   }
   .listType2{
     width: 24%;

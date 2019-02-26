@@ -20,6 +20,7 @@
           <th>序号</th>
           <th>用户姓名</th>
           <th>登录名</th>
+          <th>角色</th>
           <th>用户状态</th>
           <th>本次登录时间</th>
           <th>登录IP</th>
@@ -30,6 +31,7 @@
             <td>{{index+1}}</td>
             <td>{{item.userName}}</td>
             <td>{{item.loginUserName}}</td>
+            <td>{{item.roleName}}</td>
             <td>{{item.userStatus == '00' ? '正常' : '停用'}}</td>
             <td>{{item.userLoginTime}}</td>
             <td>{{item.userLoginIp}}</td>

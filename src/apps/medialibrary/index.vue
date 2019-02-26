@@ -48,6 +48,7 @@ export default {
     refresh (item) {
       console.log(item)
       this.$refs.routerView.getList('', item)
+      this.$refs.routerView.sctop()
       this.preview.show = false
     },
     onPreview (e) {
