@@ -150,7 +150,7 @@ export default {
         // gallerySettingDisplayPosition: '1',
         // relateIds: '',
         // specialId: '',
-        isOpenComment: 0,
+        isOpenComment: 1,
         hasThumb: 1,
         isOriginal: 0,
         originalFrom: '',

@@ -171,7 +171,7 @@ export default {
       this.$http.post('/cri-cms-platform/appGuide/page.monitor').then(res => {
         this.list = res
         this.list.forEach(item => {
-          this.showList.push(Number(item.status))
+          this.showList.push(item.status == 1 ? 0 : 1)
           item.appValue = JSON.parse(item.appValue)
         })
       })

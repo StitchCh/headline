@@ -1,6 +1,6 @@
 <template>
   <div class="app-article-add-thumb">
-    <div class="add-photo-btn a flex-center" style="width:80px;height: 60px;" @click="show = true">
+    <div class="add-photo-btn a flex-center" :class="{sisan: sisan}"  @click="show = true">
       <img v-if="image.url" :src="image.url" width="100%" alt="">
       <i v-else class="icon f-32 c-a">add_photo_alternate</i>
     </div>
@@ -51,6 +51,9 @@ export default {
     },
     sle: {
       type: String
+    },
+    sisan: {
+      type: Boolean
     }
   },
   data () {
@@ -110,6 +113,14 @@ export default {
 
 <style lang="less">
   .app-article-add-thumb {
+    .add-photo-btn{
+      height: 160px;
+    }
+    .sisan{
+      width:80px;height: 60px;
+      margin: 0 auto;
+    }
+
     .layer-ctn {max-width: 1000px;
       .af-left{width: 280px;background: #fff;border-right: 1px solid rgba(0, 0, 0, .05);}
       .nav-item{height: 40px;border-bottom: 1px solid #eee;line-height: 1em;padding: 0 5px 0 15px;

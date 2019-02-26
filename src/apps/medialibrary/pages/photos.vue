@@ -51,7 +51,7 @@
         </label> -->
       </div>
     </div>
-    <div class="flex-item relative scroll-y">
+    <div class="flex-item relative scroll-y" ref="scbox">
       <div v-if="loading" class="abs flex-center bg-light-rgb-2" style="z-index: 20;"><loading/></div>
       <div v-if="!list.length && !loading" class="abs flex-center"><no-data/></div>
       <div class="media-group" v-for="group in list" :key="group.date">
@@ -150,6 +150,9 @@ export default {
     }
   },
   methods: {
+    sctop () {
+      this.$refs.scbox.scrollTo(0, 0)
+    },
     getList (id, changeItem) {
       this.loading = true
       let type = this.selectMode ? '0' : this.$route.meta.type
