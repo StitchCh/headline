@@ -224,6 +224,7 @@ export default {
           item.name = item.name.split('-')[0]
           item.checked = false
           if (item.pId != -1) {
+            item.show = true
             for (let i = 0; i < cnList.length; i++) {
               if (cnList[i].id == item.pId) {
                 cnList[i].children.push(item)

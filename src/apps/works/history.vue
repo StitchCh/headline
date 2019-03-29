@@ -43,7 +43,8 @@ export default {
   },
   beforeMount () {
     this.$http.post('/cri-cms-platform/issue/getIssueLog.monitor', {
-      channelId: this.$route.query.channelId
+      channelId: this.$route.query.channelId,
+      pageSize: 10000
     }).then(res => {
       console.log(res.data)
       this.list = res.data
@@ -66,6 +67,7 @@ export default {
     height: 100%;
     background: #f5f5f5;
     color: #666;
+    overflow: auto;
   }
   .contentbox{
     width: calc(100% - 250px);
@@ -117,7 +119,7 @@ export default {
   .btn_liston{
     background: #fff;
     color: #00a0e9;
-    width: 251px;
+    width: 250px;
     position: relative;
     z-index: 10;
   }
