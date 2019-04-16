@@ -22,7 +22,7 @@
 
         <div v-for="(item, index) in menuList" class="melist_box">
           <div style="margin-bottom: 10px;"><check-box @change="menuChange(item, index)" v-model="item.checked" style="width: 100%;" :text="item.name"></check-box></div>
-          <div class="melist_sbox">
+          <div class="melist_sbox" v-if="item.show">
             <div v-for="(item1, index1) in item.children" :title="item1.name" class="melist_s"><check-box @change="menuChange(item1, index1)" v-model="item1.checked" style="margin: 0;width: 100%;" :text="item1.name"></check-box></div>
           </div>
         </div>
@@ -45,6 +45,8 @@
                 name-txt="channelName"
                 :format="channelFormat"
                 show-checkbox
+                ref="treenode"
+                @handleCheckChange="handleCheckChange"
                 :checked-list.sync="checkList.channels"></tree>
         </div>
       </div>
@@ -99,6 +101,42 @@ export default {
     }
   },
   methods: {
+    handleCheckChange (data) {
+      if (this.checkList.channels.indexOf(data.id) < 0) {
+        this.channelsfor(data.children, true)
+      } else {
+        this.channelsfor(data.children, false)
+      }
+      // this.channelsopen(this.$refs.treenode.model[0].children, data.id)
+    },
+    channelsopen (arr, id) {
+      arr.forEach(item => {
+        if (item.id == id) {
+          item.open = true
+          return
+        }
+        if (item.children.length > 0) {
+          this.channelsopen(item.children)
+        }
+      })
+    },
+    channelsfor (arr, state) {
+      arr.forEach(item => {
+        if (state == true) {
+          let oindex = this.checkList.channels.indexOf(item.id)
+          if (oindex >= 0) {
+            this.checkList.channels.splice(oindex, 1)
+          }
+        } else {
+          if (this.checkList.channels.indexOf(item.id) < 0) {
+            this.checkList.channels.push(item.id)
+          }
+        }
+        if (item.children.length > 0) {
+          this.channelsfor(item.children, state)
+        }
+      })
+    },
     menuAllFalse () {
       if (!this.menuAll) {
         this.menuList.forEach(item => {
@@ -114,6 +152,7 @@ export default {
         this.menuAll = false
       }
       if (data.pId == '-1') {
+        data.show = false
         if (data.checked) {
           this.menuList[index].children.forEach(item => {
             item.checked = true
@@ -123,6 +162,11 @@ export default {
             item.checked = false
           })
         }
+
+        this.$nextTick(function () {
+          data.show = true
+        })
+
       }
     },
     menuFormat (menu, node) {
@@ -203,6 +247,7 @@ export default {
         res.menus.forEach(item => {
           if (item.pId == -1) {
             item.children = []
+            item.show = true
             cnList.push(item)
           }
         })

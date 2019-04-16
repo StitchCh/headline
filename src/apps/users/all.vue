@@ -118,6 +118,13 @@
         <input-box label="手机号码" v-model="newForm.userPhone"></input-box>
         <input-box label="用户邮箱" v-model="newForm.userEmail"></input-box>
         <!--<input-box label="角色ID（多个角色用逗号分开）" v-model="newForm.rolesId"></input-box>-->
+        <div>
+          <check-box style="width: 30%;" v-model="newForm.isAllQuery" text="查看全部记录"></check-box>
+
+          <check-box style="width: 30%;" v-model="newForm.isPassIssue" text="直接发布"></check-box>
+
+          <check-box style="width: 30%;" v-model="newForm.isUpdateDown" text="修改下架"></check-box>
+        </div>
         <div class="relative input-box">
           <label>角色</label>
           <div style="padding-left: 50px;">
@@ -132,12 +139,19 @@
       </div>
     </layer>
 
-    <layer v-if="editShow" title="添加新用户" width="600px">
+    <layer v-if="editShow" title="编辑用户" width="600px">
       <div class="layer-text">
         <input-box label="用户名称" v-model="editForm.userName"></input-box>
         <input-box label="手机号码" v-model="editForm.userPhone"></input-box>
         <input-box label="用户邮箱" v-model="editForm.userEmail"></input-box>
         <!--<input-box label="角色ID（多个角色用逗号分开）" v-model="editForm.rolesId"></input-box>-->
+        <div>
+          <check-box style="width: 30%;" v-model="editForm.isAllQuery" text="查看全部记录"></check-box>
+
+          <check-box style="width: 30%;" v-model="editForm.isPassIssue" text="直接发布"></check-box>
+
+          <check-box style="width: 30%;" v-model="editForm.isUpdateDown" text="修改下架"></check-box>
+        </div>
         <div class="relative input-box">
           <label>角色</label>
           <div style="padding-left: 50px;">
@@ -187,7 +201,10 @@ export default {
         // loginUserPwd: '',
         userPhone: '',
         userEmail: '',
-        rolesId: ''
+        rolesId: '',
+        isAllQuery: false,
+        isPassIssue: false,
+        isUpdateDown: false
       },
       newLoginUserNameHint: '',
       editShow: false,
@@ -254,8 +271,16 @@ export default {
     // 新建用户
     openNew () {
       this.vertify.newLoginUserPwd = ''
-      for (let k in this.newForm) {
-        this.newForm[k] = ''
+      this.newForm = {
+        userName: '',
+        loginUserName: '',
+        // loginUserPwd: '',
+        userPhone: '',
+        userEmail: '',
+        rolesId: '',
+        isAllQuery: false,
+        isPassIssue: false,
+        isUpdateDown: false
       }
       this.newLoginUserNameHint = ''
       this.newShow = true
@@ -301,7 +326,13 @@ export default {
         this.$toast('请输入用户邮箱')
         return
       }
-      this.$http.post('/cri-cms-platform/sysUser/save.monitor', this.newForm).then(
+
+      let obj = {...this.newForm}
+      obj.isAllQuery = obj.isAllQuery == true ? 1 : 0
+      obj.isPassIssue = obj.isPassIssue == true ? 1 : 0
+      obj.isUpdateDown = obj.isUpdateDown == true ? 1 : 0
+
+      this.$http.post('/cri-cms-platform/sysUser/save.monitor', obj).then(
         res => {
           console.log(res)
           this.$toast(res.msg)
@@ -322,6 +353,9 @@ export default {
         this.editForm.userPhone = this.detail.sysUser.userPhone
         this.editForm.userEmail = this.detail.sysUser.userEmail
         this.editForm.rolesId = this.detail.roleIds.join(',')
+        this.editForm.isAllQuery = this.detail.isAllQuery == 0 ? false : true
+        this.editForm.isPassIssue = this.detail.isPassIssue == 0 ? false : true
+        this.editForm.isUpdateDown = this.detail.isUpdateDown == 0 ? false : true
         this.editShow = true
         return
       }
@@ -332,7 +366,11 @@ export default {
           this.editForm.userPhone = res.sysUser.userPhone
           this.editForm.userEmail = res.sysUser.userEmail
           this.editForm.rolesId = res.roleIds.join(',')
+          this.editForm.isAllQuery = res.sysUser.isAllQuery == 0 ? false : true
+          this.editForm.isPassIssue = res.sysUser.isPassIssue == 0 ? false : true
+          this.editForm.isUpdateDown = res.sysUser.isUpdateDown == 0 ? false : true
           this.editShow = true
+          console.log(res)
         }
       ).catch(
         res => {

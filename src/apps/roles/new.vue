@@ -45,6 +45,8 @@
                 name-txt="channelName"
                 :format="channelFormat"
                 show-checkbox
+                ref="treenode"
+                @handleCheckChange="handleCheckChange"
                 :checked-list.sync="checkList.channels"></tree>
         </div>
       </div>
@@ -92,10 +94,46 @@ export default {
       checkList: {
         menu: [],
         channels: []
-      }
+      },
     }
   },
   methods: {
+    handleCheckChange (data) {
+      if (this.checkList.channels.indexOf(data.id) < 0) {
+        this.channelsfor(data.children, true)
+      } else {
+        this.channelsfor(data.children, false)
+      }
+      // this.channelsopen(this.$refs.treenode.model[0].children, data.id)
+    },
+    channelsopen (arr, id) {
+      arr.forEach(item => {
+        if (item.id == id) {
+          item.open = true
+          return
+        }
+        if (item.children.length > 0) {
+          this.channelsopen(item.children)
+        }
+      })
+    },
+    channelsfor (arr, state) {
+      arr.forEach(item => {
+        if (state == true) {
+          let oindex = this.checkList.channels.indexOf(item.id)
+          if (oindex >= 0) {
+            this.checkList.channels.splice(oindex, 1)
+          }
+        } else {
+          if (this.checkList.channels.indexOf(item.id) < 0) {
+            this.checkList.channels.push(item.id)
+          }
+        }
+        if (item.children.length > 0) {
+          this.channelsfor(item.children, state)
+        }
+      })
+    },
     menuAllFalse () {
       if (!this.menuAll) {
         this.menuList.forEach(item => {
@@ -138,7 +176,6 @@ export default {
       this.ui.roleSiteFlag = false
       this.$http.post('/cri-cms-platform/sysRoles/getChannelsToRole.monitor', { id, siteIdToRole: identifyId }).then(
         res => {
-          console.log(res)
           this.ui.channels = res
           this.ui.roleSiteFlag = true
         }

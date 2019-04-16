@@ -86,7 +86,7 @@
         </bubble>
       </div>
       <div class="option-item flex-v-center">
-        <icon-btn small v-tooltip:top="'推荐'" :class="{ active: form.isRecommnd }" @click="form.isRecommnd = ~~!form.isRecommnd">thumb_up</icon-btn>
+        <icon-btn small v-tooltip:top="'推荐'" :class="{ active: form.isRecommnd == 0 ? false : true }" @click="form.isRecommnd = ~~!form.isRecommnd">thumb_up</icon-btn>
         <span class="flex-item"></span>
         <!--<icon-btn small v-tooltip:top="'发布到 PC 页面'" :class="{ active: form.terminalPc }" @click="form.terminalPc = ~~!form.terminalPc">computer</icon-btn>-->
         <!--<icon-btn small v-tooltip:top="'发布到客户端'" :class="{ active: form.terminalApp }" @click="form.terminalApp = ~~!form.terminalApp">phone_iphone</icon-btn>-->
@@ -437,7 +437,7 @@ export default {
             this.form.voteAll = Number(res.vote.voteAll)
             this.form.content = res.vote.content || ''
             this.form.cycleCount = res.vote.cycleCount || 1
-            this.form.memberLoginLimit = Number(res.vote.memberLoginLimit) || 1
+            this.form.memberLoginLimit = Number(res.vote.memberLoginLimit)
             this.form.showResultCategory = res.vote.showResultCategory || 1
             this.form.headThumb = res.vote.headThumb || {}
             this.form.templateStyle = res.vote.templateStyle || 1
