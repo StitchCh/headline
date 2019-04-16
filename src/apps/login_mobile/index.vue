@@ -111,7 +111,7 @@ export default {
 .app-login{
   .ctn{padding-bottom: 120px;}
   // .input{overflow: hidden;}
-  .logo{display: inline-block;width: 100px;height: 100px;background: url('../../assets/img/login-logo.png') center / cover #fff;border-radius: 20px;margin-bottom: 10px;}
+  .logo{display: inline-block;width: 100px;height: 100px;background: url('../../assets/img/login-logo.png') center / cover;border-radius: 20px;margin-bottom: 10px;}
   .form{border-radius: 10px;width: 320px;margin: 30px 0 20px 0;
     input{margin: 0;padding: 0;border: none;height: 46px;padding: 0 15px;background: transparent;}
   }
