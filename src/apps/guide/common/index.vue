@@ -130,7 +130,7 @@ export default {
       })
       this.$http.post('/cri-cms-platform/appGuide/update.monitor', {
         appValue: JSON.stringify(list1),
-        status: this.showList[index],
+        status: this.showList[index] == 1 ? 0 : 1,
         demo: item.demo,
         id: item.id
       }).then(res => {

@@ -7,7 +7,9 @@
       <div v-if="!statistics" class="abs flex-center" style="height: 400px;">
         <no-data/>
       </div>
+
       <div ref="echarts" style="height: 400px;"></div>
+
       <div v-if="statistics" class="flex" style="padding-top: 20px">
         <div class="flex-item">
           <div style="font-weight: 700;color: #000000;margin-bottom: 20px;">{{days.list.find(v => v.value === days.value).text}}总计</div>
@@ -35,30 +37,14 @@
         <div style="flex: 2;margin-left: 100px;">
           <div style="font-weight: 700;color: #000000;margin-bottom: 20px;">各平台统计</div>
           <table>
-            <thead>
-            <th></th>
-            <th>pc</th>
-            <th>app</th>
-            <th>web</th>
-            </thead>
             <tbody>
             <tr>
               <th>pv</th>
-              <td>{{statistics.pv.pc}}</td>
-              <td>{{statistics.pv.app}}</td>
-              <td>{{statistics.pv.web}}</td>
+              <td>{{statistics.pv}}</td>
             </tr>
             <tr>
               <th>uv</th>
-              <td>{{statistics.uv.pc}}</td>
-              <td>{{statistics.uv.app}}</td>
-              <td>{{statistics.uv.web}}</td>
-            </tr>
-            <tr>
-              <th>ip</th>
-              <td>{{statistics.ip.pc}}</td>
-              <td>{{statistics.ip.app}}</td>
-              <td>{{statistics.ip.web}}</td>
+              <td>{{statistics.uv}}</td>
             </tr>
             </tbody>
           </table>
@@ -138,14 +124,14 @@ export default {
         days: this.days.value
       }).then(
         res => {
-          console.log(res)
           this.statistics = res
-          this.option.dataset.source = [
-            this.statistics.trend.map(v => v.day),
-            this.statistics.trend.map(v => v.pv.pc - 0),
-            this.statistics.trend.map(v => v.pv.app - 0),
-            this.statistics.trend.map(v => v.pv.web - 0)
-          ]
+
+          var arr = []
+          for (var k in this.statistics.pv) {
+            arr.push(k);
+          }
+          this.option.dataset.source.push(arr)
+
           this.setOption()
         }
       )

@@ -35,7 +35,7 @@
             </tr>
           </tbody>
         </table>
-        <pagination :total="total" :size="10" :page="page" color="#66BB6A" style="justify-content: center;"></pagination>
+        <pagination @change="p => {page = p; this.getList()}" :total="total" :size="10" :page="page" color="#66BB6A" style="justify-content: center;"></pagination>
       </div>
     </div>
 

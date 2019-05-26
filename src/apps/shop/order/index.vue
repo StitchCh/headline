@@ -62,7 +62,7 @@
               </div>
             </li>
           </ul>
-          <div class="mb_10">
+          <div v-if="item.buyerMessage" class="mb_10">
             <p class="mb_10">买家留言：</p>
             <p class="content_text">{{item.buyerMessage}}</p>
           </div>
@@ -103,7 +103,7 @@ export default {
       list: [],
       searchText: '',
       topNavIndex: 0,
-      topNav: ['全部', '已下单', '已发货', '订单完成'],
+      topNav: ['全部', '待发货', '已发货', '订单完成'],
       topNavType: '全部',
       logisticsName: '',
       logisticsNo: ''

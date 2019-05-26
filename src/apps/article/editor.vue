@@ -1,7 +1,8 @@
 <template>
 <div class="article-editor">
   <div class="relative">
-    <input v-model="title" class="title" type="text" placeholder="请输入标题" :style="{ color: titleColor }">
+    <textarea v-model="title" class="title" type="text" placeholder="请输入标题" :style="{ color: titleColor }"></textarea>
+    <!--<input v-model="title" class="title" type="text" placeholder="请输入标题" :style="{ color: titleColor }">-->
     <div style="position: absolute;right: 20px;top: 28px;">
       <button class="title-colorpicker-btn" @click="titleColorBoxShow = !titleColorBoxShow" :style="{ background: titleColor }"></button>
       <bubble v-if="titleColorBoxShow" @close="titleColorBoxShow = false">
@@ -225,10 +226,16 @@ export default {
 
 <style lang="less">
 .article-editor{max-width: 900px;margin: 0 auto;padding: 10px;
+  .title{
+    outline: none;
+    resize: none;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+  }
   .flex-v-center{
     font-size: 14px !important;
   }
-  .title{font-size: 30px;font-weight: bold;border: none;width: 100%;background: transparent;padding: 20px 15px;color: #555;
+  .title{font-size: 30px;font-weight: bold;border: none;width: 100%;background: transparent;padding: 20px 15px;color: #555;padding-right: 30px;
     &::-webkit-input-placeholder{color: #aaa;}
   }
   .title-colorpicker-btn {width: 25px;height: 25px;border: 1px solid transparent;margin: 3px;

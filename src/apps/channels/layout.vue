@@ -53,7 +53,7 @@
               <div class="flex-item">列表布局</div>
               <select v-model="item.setting.layout" dir="rtl">
                 <option value="3_1">左图有标题无摘要</option>
-                <option value="3_2">左图有标题有摘要</option>
+                <option value="3_2">右图有标题无摘要</option>
                 <option value="3_3">大图列表</option>
               </select>
             </div>

@@ -77,8 +77,20 @@
         <input type="text" class="flex-item" placeholder="来源名称" v-model="form.originalFrom">
         <input type="text" class="flex-item" placeholder="来源URL" v-model="form.originalUrl">
       </div>
-      <div class="option-item">
-        <input type="text" placeholder="作者，逗号分隔" v-model="form.author">
+      <div class="option-item" style="display: flex">
+        <input style="width: calc(100% - 70px);" type="text" placeholder="作者，逗号分隔" v-model="form.author">
+        <div class="relative" style="padding: 0 4px;width: 70px;">
+          <p @click="scaleshow = true" style="cursor: pointer;text-align: right;margin: 0;">
+            选择预设
+          </p>
+          <bubble style="left: -80px;" v-if="scaleshow" @close="scaleshow = false">
+            <ul class="f-14 c-5" style="padding: 4px 0;width: 150px;text-align: center;line-height: 24px;">
+              <li v-for="(item, index) in scaleshowList" class="a flex-v-center listhover" @click="form.author = item; scaleshow = false">
+                <span class="flex-item">{{item}}</span>
+              </li>
+            </ul>
+          </bubble>
+        </div>
       </div>
       <div class="option-item flex-v-center" v-if="form.createDate !== undefined">
         <div class="flex-item">创建时间</div>
@@ -216,6 +228,9 @@ export default {
   props: [ 'from', 'id' ],
   data () {
     return {
+      scaleshowList: ['中俄头条', '中央广播电视总台央视新闻', '中央广播电视总台', '中央广播电视总台央视网', '俄罗斯卫星通讯社'],
+      scaleshow: false,
+      scaleIndex: 0,
       article: null,
       ui: {
         loading: false,
@@ -249,7 +264,7 @@ export default {
         isRecommnd: 0,
         abstarcts: '',
         keywords: '',
-        author: '',
+        author: '中俄头条',
         // weight: '',
         isWatermarked: 0,
         // upLineTime: '',
@@ -515,6 +530,9 @@ export default {
     /*li{padding: 5px 15px;}*/
     /*li:hover{background: #eee;}*/
   /*}*/
+  .listhover:hover{
+    background: #eee;
+  }
   .active {color: #018be6;}
   .datepicker::before {content: none}
   .add-gallery-setting-btn:hover {color:#008eff;}

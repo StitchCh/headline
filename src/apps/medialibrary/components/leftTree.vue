@@ -62,6 +62,11 @@ export default {
         type: this.selectMode ? this.type : (this.$route.meta.type || 0)
       }).then(res => {
         this.list = res || []
+        this.list.push({
+          name: '我的文件夹',
+          type: this.selectMode ? this.type : (this.$route.meta.type || 0),
+          id: 'my'
+        })
       }).catch(e => {
         console.log(e)
       })

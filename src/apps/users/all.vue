@@ -45,7 +45,7 @@
           </tr>
           </tbody>
         </table>
-        <pagination :total="total" :size="10" :page="page" color="#66BB6A" style="justify-content: center;"></pagination>
+        <pagination @change="p => {page = p; this.getList()}" :total="total" :size="10" :page="page" color="#66BB6A" style="justify-content: center;"></pagination>
       </div>
     </div>
 
@@ -119,11 +119,11 @@
         <input-box label="用户邮箱" v-model="newForm.userEmail"></input-box>
         <!--<input-box label="角色ID（多个角色用逗号分开）" v-model="newForm.rolesId"></input-box>-->
         <div>
-          <check-box style="width: 30%;" v-model="newForm.isAllQuery" text="查看全部记录"></check-box>
+          <check-box style="width: 30%;" v-model="newForm.isAllQuery" text="是否查看全部记录"></check-box>
 
-          <check-box style="width: 30%;" v-model="newForm.isPassIssue" text="直接发布"></check-box>
+          <check-box style="width: 30%;" v-model="newForm.isPassIssue" text="是否直接发布"></check-box>
 
-          <check-box style="width: 30%;" v-model="newForm.isUpdateDown" text="修改下架"></check-box>
+          <check-box style="width: 30%;" v-model="newForm.isUpdateDown" text="是否修改后下架"></check-box>
         </div>
         <div class="relative input-box">
           <label>角色</label>
@@ -146,11 +146,11 @@
         <input-box label="用户邮箱" v-model="editForm.userEmail"></input-box>
         <!--<input-box label="角色ID（多个角色用逗号分开）" v-model="editForm.rolesId"></input-box>-->
         <div>
-          <check-box style="width: 30%;" v-model="editForm.isAllQuery" text="查看全部记录"></check-box>
+          <check-box style="width: 30%;" v-model="editForm.isAllQuery" text="是否查看全部记录"></check-box>
 
-          <check-box style="width: 30%;" v-model="editForm.isPassIssue" text="直接发布"></check-box>
+          <check-box style="width: 30%;" v-model="editForm.isPassIssue" text="是否直接发布"></check-box>
 
-          <check-box style="width: 30%;" v-model="editForm.isUpdateDown" text="修改下架"></check-box>
+          <check-box style="width: 30%;" v-model="editForm.isUpdateDown" text="是否修改后下架"></check-box>
         </div>
         <div class="relative input-box">
           <label>角色</label>
