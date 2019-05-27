@@ -45,7 +45,8 @@
             <table style="border: 0;">
               <tr class="list" v-for="(item, index) in content.list" style="border: 0;">
                 <td><img style="margin-right: 10px;width: 100px;" :src="item.thumb.url" alt=""></td>
-                <td style="width: 140px;">{{item.title}}</td>
+                <td>
+                  <p style="max-width: 140px;overflow: hidden;text-overflow: ellipsis;">{{item.title}}</p></td>
                 <td>
                   <div class="flex" style="align-items: center;">
                     <div class="list_div"><span :style="{width: item.ratio + '%'}"></span></div>

@@ -65,6 +65,10 @@
               <span style="display: inline-block;line-height: 34px;">广告跳转时间</span>
               <input v-model="item.appValue[0].jumpTime" style="height: 30px;width: calc(100% - 150px);float: right;padding: 0 10px;" type="number" placeholder="请输入时间(秒)">
             </div>
+            <div v-if="item.appValue[0]" style="overflow: hidden;padding-top: 10px;display: flex;justify-content: space-between;">
+              <span style="display: inline-block;line-height: 34px;">广告是否可以跳过</span>
+              <switcher mode="Number" v-model="item.appValue[0].skip"></switcher>
+            </div>
           </div>
 
         </div>
@@ -117,15 +121,13 @@ export default {
     change (item, index) {
       console.log(item)
       let list1 = []
-      // if (item.appKey == 'ad_page' && !this.urlif.test(item.appValue[0].url)) {
-      //   this.$toast('请输入正确的URL地址')
-      //   return false
-      // }
+
       item.appValue.forEach(item1 => {
         list1.push({
           pic: item1.pic,
           url: item1.url,
-          jumpTime: item1.jumpTime
+          jumpTime: item1.jumpTime,
+          skip: item1.skip == 0 ? 1 : 0
         })
       })
       this.$http.post('/cri-cms-platform/appGuide/update.monitor', {
@@ -173,6 +175,7 @@ export default {
         this.list.forEach(item => {
           this.showList.push(item.status == 1 ? 0 : 1)
           item.appValue = JSON.parse(item.appValue)
+          item.appValue[0].skip = item.appValue[0].skip ? (item.appValue[0].skip == 0 ? 1 : 0) : 1
         })
       })
     }

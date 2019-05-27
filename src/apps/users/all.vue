@@ -334,7 +334,6 @@ export default {
 
       this.$http.post('/cri-cms-platform/sysUser/save.monitor', obj).then(
         res => {
-          console.log(res)
           this.$toast(res.msg)
           this.getList()
           this.newShow = false
@@ -392,9 +391,15 @@ export default {
         this.$toast('请输入用户邮箱')
         return
       }
-      this.$http.post('/cri-cms-platform/sysUser/update.monitor', this.editForm).then(
+
+      let obj = {...this.editForm}
+
+      obj.isAllQuery = obj.isAllQuery == true ? 1 : 0
+      obj.isPassIssue = obj.isPassIssue == true ? 1 : 0
+      obj.isUpdateDown = obj.isUpdateDown == true ? 1 : 0
+
+      this.$http.post('/cri-cms-platform/sysUser/update.monitor', obj).then(
         res => {
-          console.log(res)
           this.getList()
           this.editShow = false
           this.detailShow = false

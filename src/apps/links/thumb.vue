@@ -104,6 +104,8 @@ export default {
   },
   created () {
     if (this.value) this.image = JSON.parse(JSON.stringify(this.value))
+    console.log(this.value)
+    console.log(this.image)
   }
 }
 </script>

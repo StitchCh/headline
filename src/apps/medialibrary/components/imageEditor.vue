@@ -21,10 +21,37 @@
     <transition name="fade">
       <div class="tool-bar flex-center option-bar" v-if="toolActive">
         <div style="width: 60px;padding: 12px;" v-if="toolActive === 'crop'">
-          <icon-btn v-tooltip:right="'16 : 9'" :class="{ on: optionActive === '16 : 9'}" @click="setRatio(1)">crop_16_9</icon-btn>
-          <icon-btn v-tooltip:right="'4 : 3'" :class="{ on: optionActive === '4 : 3'}" @click="setRatio(2)">crop_5_4</icon-btn>
-          <icon-btn v-tooltip:right="'2 : 1'" :class="{ on: optionActive === '2 : 1'}" @click="setRatio(4)">crop_16_9</icon-btn>
-          <icon-btn v-tooltip:right="'1 : 1'" :class="{ on: optionActive === '1 : 1'}" @click="setRatio(3)">crop_din</icon-btn>
+          <div
+            class="hover_cp_btn"
+            style="border-radius: 50%;width: 36px;height: 36px;transition: 0.4s;display: flex;justify-content: center;align-items: center;"
+            v-tooltip:right="'10 : 2'" :class="{ on: optionActive === '10 : 2'}" @click="setRatio(5)">
+            <div style="border: 2px solid #888;width: 16px;height: 3px;"></div>
+          </div>
+          <div
+            class="hover_cp_btn"
+            style="border-radius: 50%;width: 36px;height: 36px;transition: 0.4s;display: flex;justify-content: center;align-items: center;"
+            v-tooltip:right="'16 : 9'" :class="{ on: optionActive === '16 : 9'}" @click="setRatio(1)">
+            <div style="border: 2px solid #888;width: 16px;height: 9px;"></div>
+          </div>
+          <div
+            class="hover_cp_btn"
+            style="border-radius: 50%;width: 36px;height: 36px;transition: 0.4s;display: flex;justify-content: center;align-items: center;"
+            v-tooltip:right="'4 : 3'" :class="{ on: optionActive === '4 : 3'}" @click="setRatio(2)">
+            <div style="border: 2px solid #888;width: 16px;height: 12px;"></div>
+          </div>
+          <div
+            class="hover_cp_btn"
+            style="border-radius: 50%;width: 36px;height: 36px;transition: 0.4s;display: flex;justify-content: center;align-items: center;"
+            v-tooltip:right="'2 : 1'" :class="{ on: optionActive === '2 : 1'}" @click="setRatio(4)">
+            <div style="border: 2px solid #888;width: 16px;height: 8px;"></div>
+          </div>
+          <div
+            class="hover_cp_btn"
+            style="border-radius: 50%;width: 36px;height: 36px;transition: 0.4s;display: flex;justify-content: center;align-items: center;"
+            v-tooltip:right="'1 : 1'" :class="{ on: optionActive === '1 : 1'}" @click="setRatio(3)">
+            <div style="border: 2px solid #888;width: 16px;height: 16px;"></div>
+          </div>
+
           <icon-btn v-tooltip:right="'自由裁切'" :class="{ on: optionActive === 'free' }" @click="setRatio">crop_free</icon-btn>
           <icon-btn v-tooltip:right="'应用'" color="#45ff45" class="on" @click="crop">done</icon-btn>
           <icon-btn v-tooltip:right="'取消'" color="#ff3131" class="on" @click="cancelCrop">close</icon-btn>
@@ -232,6 +259,10 @@ export default {
         this.cropper.setAspectRatio(2 / 1)
         this.optionActive = '2 : 1'
       }
+      if (type === 5) {
+        this.cropper.setAspectRatio(10 / 2)
+        this.optionActive = '10 : 2'
+      }
       this.cropper.setDragMode('crop')
     },
 
@@ -416,13 +447,21 @@ export default {
   .crop-bl{color: rgba(255, 255, 255, .8);display: inline-block;line-height: 1em;padding: 8px 10px;border-radius: 3px;margin: 0 5px;box-sizing: border-box;
     border: 1px solid transparent;
     &:hover{background: rgba(255, 255, 255, .1);}
-    &.on{border-color: rgba(255, 255, 255, .8);}
   }
   .flip-y-btn .icon{transform: rotate(90deg);}
   .rotater{height: 240px;width: 60px;user-select: none;}
   .rot-scale{
     position: relative;overflow: hidden;pointer-events: none;
     div{width: 4px;height: 400%;border-left: 4px dotted rgba(0, 0, 0, .3);position: absolute;left: 45%;top: -100%;pointer-events: none;}
+  }
+  .hover_cp_btn{
+    position: relative;
+  }
+  .on div{
+    border-color: #333 !important;
+  }
+  .hover_cp_btn:hover{
+    background: #eee;
   }
   .move-icon .icon{transform: scale(.85);}
   .cropper-bg{background-image: none!important;}

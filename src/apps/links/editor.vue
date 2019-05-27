@@ -1,7 +1,7 @@
 <template>
 <div class="links-editor">
   <div class="relative">
-    <input v-model="title" class="title" type="text" placeholder="请输入标题" :style="{ color: titleColor }">
+    <textarea v-model="title" class="title" type="text" placeholder="请输入标题" :style="{ color: titleColor }"></textarea>
     <div style="position: absolute;right: 20px;top: 28px;">
       <button class="title-colorpicker-btn" @click="titleColorBoxShow = !titleColorBoxShow" :style="{ background: titleColor }"></button>
       <bubble v-if="titleColorBoxShow" @close="titleColorBoxShow = false">
@@ -152,8 +152,10 @@ export default {
     if (this.flink) {
       if (this.flink.link.indexOf('https://') >= 0) {
         this.link = this.flink.link.replace('https://', '')
+        this.linkhead = 'https://'
       } else if (this.flink.link.indexOf('http://') >= 0) {
         this.link = this.flink.link.replace('http://', '')
+        this.linkhead = 'http://'
       }
       this.title = this.flink.title
       this.titleColor = this.flink.titleColor

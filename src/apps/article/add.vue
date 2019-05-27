@@ -228,7 +228,7 @@ export default {
   props: [ 'from', 'id' ],
   data () {
     return {
-      scaleshowList: ['中俄头条', '中央广播电视总台央视新闻', '中央广播电视总台', '中央广播电视总台央视网', '俄罗斯卫星通讯社'],
+      scaleshowList: ['中俄头条', '中央广播电视总台央视新闻', '中央广播电视总台', '中央广播电视总台央视网', '俄罗斯卫星通讯社', 'Россия-Китай: главное'],
       scaleshow: false,
       scaleIndex: 0,
       article: null,

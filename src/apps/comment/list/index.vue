@@ -5,9 +5,11 @@
       <div v-if="$route.query.audit == 2" style="padding-left: 40px;">
         <btn style="margin-right: 20px;" @click="checkedShow = !checkedShow">批量操作</btn>
         <span v-if="checkedShow">
-          <icon-btn v-tooltip="'通过'" color="#4caf50" @click="plAudit">check_circle</icon-btn>
-          <icon-btn v-tooltip="'驳回'" color="#ff5252" @click="plReject">error</icon-btn>
-          <icon-btn v-tooltip="'删除'" color="#D81B60" @click="plDelete">delete</icon-btn>
+          <check-box style="width: 60px" v-model="allChecked" text="全选"></check-box>
+
+          <icon-btn v-tooltip:bottom="'通过'" color="#4caf50" @click="plAudit">check_circle</icon-btn>
+          <icon-btn v-tooltip:bottom="'驳回'" color="#ff5252" @click="plReject">error</icon-btn>
+          <icon-btn v-tooltip:bottom="'删除'" color="#D81B60" @click="plDelete">delete</icon-btn>
         </span>
       </div>
     </div>
@@ -20,7 +22,7 @@
       <div v-if="list.length">
         <div class="setting-card f-14" v-for="item in list" :key="item.id">
           <div class="flex-v-center comment-item-info">
-            <check-box v-if="checkedShow" v-model="item.checked"></check-box>
+            <check-box v-if="checkedShow && $route.query.audit == 2" v-model="item.checked"></check-box>
             <strong class="f-16"><a :href="item.contentUrl" target="_blank">{{item.contentTitle}}</a></strong>
             <span class="flex-item"></span>
             <i class="icon state-icon f-20" :style="{ color: stateList[item._state].color }">{{stateList[item._state].icon}}</i>
@@ -71,6 +73,7 @@ export default {
   props: [ 'audit' ],
   data () {
     return {
+      allChecked: false,
       toPage: 1,
       checkedShow: false,
       totalPage: 1,
@@ -239,6 +242,17 @@ export default {
     this.getList()
   },
   watch: {
+    'allChecked' (val) {
+      if (val) {
+        this.list.forEach(item => {
+          item.checked = true
+        })
+      } else {
+        this.list.forEach(item => {
+          item.checked = false
+        })
+      }
+    },
     '$route.query' () {
       this.toPage = 1
       this.getList()

@@ -53,7 +53,7 @@
         </div> -->
       </div>
       <div v-show="form.wide == 1" style="margin: 10px 0;">
-        <app-article-add-thumb sle="2:1" v-model="thumb.thumb2" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
+        <app-article-add-thumb sle="10:2" v-model="thumb.thumb1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
         <!-- <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
           <div class="flex-item"><radio-box text="默认" :label="1" v-model="form.thumbType"/></div>
           <div class="flex-item"><radio-box text="三图" :label="2" v-model="form.thumbType"/></div>
@@ -81,8 +81,20 @@
         <!--<input type="text" class="flex-item" placeholder="来源名称" v-model="form.originalFrom">-->
         <!--<input type="text" class="flex-item" placeholder="来源URL" v-model="form.originalUrl">-->
       <!--</div>-->
-      <div class="option-item">
-        <input type="text" placeholder="作者，逗号分隔" v-model="form.author">
+      <div class="option-item" style="display: flex">
+        <input style="width: calc(100% - 70px);" type="text" placeholder="作者，逗号分隔" v-model="form.author">
+        <div class="relative" style="padding: 0 4px;width: 70px;">
+          <p @click="scaleshow = true" style="cursor: pointer;text-align: right;margin: 0;">
+            选择预设
+          </p>
+          <bubble style="left: -80px;" v-if="scaleshow" @close="scaleshow = false">
+            <ul class="f-14 c-5" style="padding: 4px 0;width: 150px;text-align: center;line-height: 24px;">
+              <li v-for="(item, index) in scaleshowList" class="a flex-v-center listhover" @click="form.author = item; scaleshow = false">
+                <span class="flex-item">{{item}}</span>
+              </li>
+            </ul>
+          </bubble>
+        </div>
       </div>
       <div class="option-item flex-v-center" v-if="form.createDate !== undefined">
         <div class="flex-item">创建时间</div>
@@ -228,6 +240,8 @@ export default {
   props: [ 'from', 'id' ],
   data () {
     return {
+      scaleshowList: ['中俄头条', '中央广播电视总台央视新闻', '中央广播电视总台', '中央广播电视总台央视网', '俄罗斯卫星通讯社', 'Россия-Китай: главное'],
+      scaleshow: false,
       getend: false,
       article: null,
       linkdata: {
@@ -364,11 +378,12 @@ export default {
         this.$toast('请输入链接')
         return
       }
-      if (this.form.wide == 0) {
+      if (this.form.wide == 1) {
         this.form.thumb = this.thumb.thumb1.id
       } else {
         this.form.thumb = this.thumb.thumb2.id
       }
+
       this.form.title = title
       this.form.titleColor = titleColor
       this.form.content = linkhead + link
@@ -416,7 +431,7 @@ export default {
         url = '/cri-cms-platform/link/get.monitor'
       }
       this.$http.post(url, obj).then(res => {
-        console.log(res)
+
         for (let k in this.form) {
           if (k === 'virtualComment') {
             if (res.content[k] === '') {
@@ -430,6 +445,7 @@ export default {
             this.thumb.thumb1 = res.content.thumb[0]
             this.thumb.thumb2 = res.content.thumb[1]
             this.thumb.thumb3 = res.content.thumb[2]
+            console.log(this.thumb.thumb1)
           }
           if (k === 'isDelete' || k === 'isOpenComment' || k === 'isOriginal' || k === 'isRecommnd' || k === 'isWatermarked' || k === 'terminalApp' || k === 'terminalPc' || k === 'terminalWeb' || k === 'hasThumb') {
             this.form[k] = Number(res.content[k])
@@ -461,27 +477,6 @@ export default {
       }).catch(e => {
         console.log(e)
       })
-    }
-  },
-  watch: {
-    'form.thumbType' (newValue) {
-      if (newValue === 2) {
-        if (!(this.thumb.thumb1 || this.thumb.thumb2 || this.thumb.thumb3)) {
-          this.form.hasThumb = 0
-          this.form.thumb = ''
-        } else {
-          this.form.hasThumb = 1
-          this.form.thumb = [ this.thumb.thumb1, this.thumb.thumb2, this.thumb.thumb3 ].filter(v => v).map(v => v.id).join(',')
-        }
-      } else {
-        if (!this.thumb.thumb1) {
-          this.form.hasThumb = 0
-          this.form.thumb = ''
-        } else {
-          this.form.hasThumb = 1
-          this.form.thumb = this.thumb.thumb1.id
-        }
-      }
     }
   },
   beforeRouteLeave (from, to, next) {

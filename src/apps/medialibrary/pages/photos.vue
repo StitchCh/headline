@@ -25,6 +25,9 @@
             <li class="a flex-v-center listhover" @click="setScale('16:9')">
               <span class="flex-item">16:9</span>
             </li>
+            <li class="a flex-v-center listhover" @click="setScale('10:2')">
+              <span class="flex-item">10:2</span>
+            </li>
             <li class="a flex-v-center listhover" @click="setScale('4:3')">
               <span class="flex-item">4:3</span>
             </li>
