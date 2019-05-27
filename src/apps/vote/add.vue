@@ -288,14 +288,14 @@ export default {
         isRecommnd: 0,
         abstarcts: '',
         keywords: '',
-        virtualPv: '',
-        virtualDigg: '',
+        virtualPv: '0',
+        virtualDigg: '0',
         thumb: '',
         options: [],
         terminalPc: 1,
         terminalApp: 1,
         terminalWeb: 1,
-        virtualShare: ''
+        virtualShare: '0'
       },
       thumb: {
         thumb1: null,
@@ -448,15 +448,15 @@ export default {
             this.form.category = res.vote.category || 1
             this.form.listType = 1
             this.form.headPicType = 1
-            this.form.virtualShare = res.content.virtualShare
+            this.form.virtualShare = res.content.virtualShare || '0'
             this.form.title = res.content.title || ''
             this.form.titleColor = res.content.titleColor || ''
             this.form.channelIds = res.channelIds || ''
             this.form.isRecommnd = res.content.isRecommnd || 0
             this.form.abstarcts = res.content.abstarcts || ''
             this.form.keywords = res.content.keywords || ''
-            this.form.virtualPv = res.content.virtualPv || ''
-            this.form.virtualDigg = res.content.virtualDigg || ''
+            this.form.virtualPv = res.content.virtualPv || '0'
+            this.form.virtualDigg = res.content.virtualDigg || '0'
             this.form.thumb = ''
             this.form.options = res.options || []
             this.form.terminalPc = res.content.terminalPc || 0
