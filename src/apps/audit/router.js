@@ -1,5 +1,6 @@
 export default {
   path: '/audit',
+  name: 'audit',
   component: resolve => require(['@/apps/audit/index.vue'], resolve),
   props: true,
   meta: { level: 2, title: '审核', identifier: 'audit' },

@@ -1,7 +1,7 @@
 <template>
   <div class="gallery-editor">
     <div class="relative">
-      <textarea v-model="title" class="title" type="text" placeholder="请输入标题" :style="{ color: titleColor }"></textarea>
+      <textarea v-model="title" class="title title_title" type="text" placeholder="请输入标题" :style="{ color: titleColor }"></textarea>
       <div style="position: absolute;right: 20px;top: 28px;">
         <button class="title-colorpicker-btn" @click="ui.titleColorBoxShow = !ui.titleColorBoxShow" :style="{ background: titleColor }"></button>
         <bubble v-if="ui.titleColorBoxShow" @close="ui.titleColorBoxShow = false">

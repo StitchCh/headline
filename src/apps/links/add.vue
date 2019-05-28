@@ -66,6 +66,12 @@
           <switcher mode="Number" v-model="form.hasThumb"/>
         </div>
       </div>
+      <div class="option-item">
+        <div class="flex-v-center">
+          <span class="flex-item">列表中是否显示图片</span>
+          <switcher mode="Number" v-model="form.isListShowPic"/>
+        </div>
+      </div>
       <div class="option-item relative">
         <textarea placeholder="摘要，限制 128 字。" v-model="form.abstarcts" rows="8"></textarea>
         <span style="position: absolute;bottom: 3px;right: 0;" :style="{ color: form.abstarcts.length > 128 ? '#F44336' : '#999' }">{{form.abstarcts.length}} / 128</span>
@@ -247,7 +253,7 @@ export default {
       linkdata: {
         link: '',
         title: '',
-        titleColor: ''
+        titleColor: '#000000'
       },
       ui: {
         loading: false,
@@ -291,7 +297,8 @@ export default {
         virtualDigg: '',
         hasThumb: 1,
         // thumbType: 1,
-        thumb: ''
+        thumb: '',
+        isListShowPic: true
         // terminalPc: 0,
         // terminalApp: 0,
         // terminalWeb: 0
@@ -378,11 +385,8 @@ export default {
         this.$toast('请输入链接')
         return
       }
-      if (this.form.wide == 1) {
-        this.form.thumb = this.thumb.thumb1.id
-      } else {
-        this.form.thumb = this.thumb.thumb2.id
-      }
+
+      this.form.thumb = this.thumb.thumb1.id
 
       this.form.title = title
       this.form.titleColor = titleColor

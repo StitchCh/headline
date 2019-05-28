@@ -109,4 +109,11 @@ export default {
   .edui-popup-body{
     width: 480px !important;
   }
+.title_title{
+  outline: none;
+  resize: none;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  padding-right: 50px !important;
+}
 </style>

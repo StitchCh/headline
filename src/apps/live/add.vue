@@ -80,6 +80,12 @@
           <div class="flex-item"><radio-box text="音频直播" :label="'AUDIO'" v-model="form.category"/></div>
         </div>
       </div>
+      <div class="option-item">
+        <div class="flex-v-center">
+          <span class="flex-item">列表中是否显示图片</span>
+          <switcher mode="Number" v-model="form.isListShowPic"/>
+        </div>
+      </div>
       <div class="option-item relative">
         <textarea placeholder="导语，限制 128 字。" v-model="form.introduction" rows="8"></textarea>
         <span style="position: absolute;bottom: 3px;right: 0;" :style="{ color: form.introduction.length > 128 ? '#F44336' : '#999' }">{{form.introduction.length}} / 128</span>
@@ -245,7 +251,8 @@ export default {
         showDigg: 1,
         showShare: 1,
         showComment: 1,
-        openChatroom: 1
+        openChatroom: 1,
+        isListShowPic: true
       },
       thumb: {
         thumb1: null,
@@ -411,6 +418,7 @@ export default {
           this.form.showComment = parseInt(res.live.showComment)
           this.form.openChatroom = parseInt(res.live.openChatroom)
           this.getif = true
+          this.form.isListShowPic = res.content.isListShowPic
         })
       }
     } else {

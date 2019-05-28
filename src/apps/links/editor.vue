@@ -1,7 +1,7 @@
 <template>
 <div class="links-editor">
   <div class="relative">
-    <textarea v-model="title" class="title" type="text" placeholder="请输入标题" :style="{ color: titleColor }"></textarea>
+    <textarea v-model="title" class="title title_title" type="text" placeholder="请输入标题" :style="{ color: titleColor }"></textarea>
     <div style="position: absolute;right: 20px;top: 28px;">
       <button class="title-colorpicker-btn" @click="titleColorBoxShow = !titleColorBoxShow" :style="{ background: titleColor }"></button>
       <bubble v-if="titleColorBoxShow" @close="titleColorBoxShow = false">
@@ -83,6 +83,7 @@ export default {
   data () {
     let that = this
     return {
+      titleColor: '#000000',
       menuShow: false,
       ui: {
         imageSelectorShow: false,
@@ -94,7 +95,6 @@ export default {
       link: '',
       linkhead: 'http://',
       titleColorBoxShow: false,
-      titleColor: '#000000',
       content: '',
       options: {
         theme: 'snow',

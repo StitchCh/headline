@@ -1,5 +1,6 @@
 export default [{
   path: '/ecommerce',
+  name: 'ecommerce',
   component: resolve => require(['@/apps/ecommerce/index.vue'], resolve),
   meta: { level: 2, title: '电商', identifier: 'ecommerce' },
   children: [

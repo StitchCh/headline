@@ -1,5 +1,6 @@
 export default [{
   path: '/links',
+  name: 'links',
   component: resolve => require(['@/apps/links/index.vue'], resolve),
   meta: { level: 2, title: '链接', identifier: 'links' },
   children: [

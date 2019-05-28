@@ -102,6 +102,14 @@
           <!--<div><radio-box text="16:9 大图" style="margin: 0;" :label="3" v-model="form.thumbType"/></div>-->
         <!--</div>-->
       </div>
+
+      <div class="option-item">
+        <div class="flex-v-center">
+          <span class="flex-item">列表中是否显示图片</span>
+          <switcher mode="Number" v-model="form.isListShowPic"/>
+        </div>
+      </div>
+
       <div>
         <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
           <div class="flex-item"><radio-box text="微图模式" :label="1" v-model="form.listType"/></div>
@@ -256,6 +264,7 @@ export default {
         // hasThumb: 0,
         // thumbType: 1,
         thumb: '',
+        isListShowPic: ''
         // terminalPc: 0,
         // terminalApp: 0,
         // terminalWeb: 0,
@@ -473,6 +482,7 @@ export default {
             this.form.thumb = JSON.parse(res.special.thumb)
             this.thumb.thumb1 = res.special.thumb[0]
           }
+          this.form.isListShowPic = res.special.isListShowPic
           this.form.channelIds = res.channelIds || ''
           this.form.specialListJson = JSON.parse(this.form.specialListJson)
           for (let i = 0; i < res.special.specialListJson.length; i++) {
@@ -495,7 +505,6 @@ export default {
             }
           }
           this.getif = true
-          console.log(this.list)
         })
       }
     } else {

@@ -106,6 +106,12 @@
         <!--</div>-->
       </div>
       <div class="option-item">
+        <div class="flex-v-center">
+          <span class="flex-item">列表中是否显示图片</span>
+          <switcher mode="Number" v-model="form.isListShowPic"/>
+        </div>
+      </div>
+      <div class="option-item">
         <p style="margin-top: 0;">投票类型</p>
         <div class="flex-v-center" style="padding: 0px 5px 0 5px;">
           <div class="flex-item"><radio-box text="普通投票" :label="1" v-model="form.templateType"/></div>
@@ -278,7 +284,7 @@ export default {
         templateType: 1,
         ipLimitInterval: 1,
         startTime: new Date(),
-        endTime: '',
+        endTime: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 7),
         category: 1,
         listType: 1,
         headPicType: 1,
@@ -295,7 +301,8 @@ export default {
         terminalPc: 1,
         terminalApp: 1,
         terminalWeb: 1,
-        virtualShare: '0'
+        virtualShare: '0',
+        isListShowPic: true
       },
       thumb: {
         thumb1: null,
@@ -401,16 +408,12 @@ export default {
       obj.startTime = moment(obj.startTime).format('YYYY-MM-DD HH:mm:ss')
       obj.endTime = moment(obj.endTime).format('YYYY-MM-DD HH:mm:ss')
 
-      console.log(obj)
-
       this.$http.post(url, obj).then(res => {
-        console.log(res)
         this.ui.submited = true
         this.$router.push('/vote/list?status=all')
       }).catch(
         res => {
           this.$toast(res || res.msg || '保存失败')
-          console.log(res)
         }
       )
 
@@ -462,6 +465,7 @@ export default {
             this.form.terminalPc = res.content.terminalPc || 0
             this.form.terminalApp = res.content.terminalApp || 0
             this.form.terminalWeb = res.content.terminalWeb || 0
+            this.form.isListShowPic = res.content.isListShowPic
 
             this.thumb.thumb1 = res.content.thumb[0]
 
