@@ -191,7 +191,7 @@ export default {
         // terminalApp: 0,
         // terminalWeb: 0,
         albumId: '',
-        isListShowPic: true
+        isListShowPic: 1
         // attachmentIds: ''
       },
       thumb: {
@@ -244,7 +244,7 @@ export default {
           this.thumb.thumb2 = res.video.thumb[1]
           this.thumb.thumb3 = res.video.thumb[2]
         }
-        if (k === 'isDelete' || k === 'isOpenComment' || k === 'isOriginal' || k === 'isRecommnd' || k === 'isWatermarked' || k === 'terminalApp' || k === 'terminalPc' || k === 'terminalWeb' || k === 'hasThumb') {
+        if (k === 'isDelete' || k === 'isOpenComment' || k === 'isOriginal' || k === 'isRecommnd' || k === 'isWatermarked' || k === 'terminalApp' || k === 'terminalPc' || k === 'terminalWeb' || k === 'hasThumb' || k === 'isListShowPic') {
           this.form[k] = Number(res.video[k])
           continue
         }

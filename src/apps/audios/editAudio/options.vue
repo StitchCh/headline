@@ -198,7 +198,7 @@ export default {
         thumb2: null,
         thumb3: null
       },
-      isListShowPic: true,
+      isListShowPic: 1,
       // attachmentDefaultList: [],
       // addCommentShow: false
     }
@@ -244,7 +244,7 @@ export default {
           this.thumb.thumb2 = res.audio.thumb[1]
           this.thumb.thumb3 = res.audio.thumb[2]
         }
-        if (k === 'isDelete' || k === 'isOpenComment' || k === 'isOriginal' || k === 'isRecommnd' || k === 'isWatermarked' || k === 'terminalApp' || k === 'terminalPc' || k === 'terminalWeb' || k === 'hasThumb') {
+        if (k === 'isDelete' || k === 'isOpenComment' || k === 'isOriginal' || k === 'isRecommnd' || k === 'isWatermarked' || k === 'terminalApp' || k === 'terminalPc' || k === 'terminalWeb' || k === 'hasThumb' || k === 'isListShowPic') {
           this.form[k] = Number(res.audio[k])
           continue
         }

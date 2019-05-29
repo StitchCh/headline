@@ -252,7 +252,7 @@ export default {
         showShare: 1,
         showComment: 1,
         openChatroom: 1,
-        isListShowPic: true
+        isListShowPic: 1
       },
       thumb: {
         thumb1: null,
@@ -418,7 +418,7 @@ export default {
           this.form.showComment = parseInt(res.live.showComment)
           this.form.openChatroom = parseInt(res.live.openChatroom)
           this.getif = true
-          this.form.isListShowPic = res.content.isListShowPic
+          this.form.isListShowPic = Number(res.content.isListShowPic)
         })
       }
     } else {

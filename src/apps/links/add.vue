@@ -298,7 +298,7 @@ export default {
         hasThumb: 1,
         // thumbType: 1,
         thumb: '',
-        isListShowPic: true
+        isListShowPic: 1
         // terminalPc: 0,
         // terminalApp: 0,
         // terminalWeb: 0
@@ -451,7 +451,7 @@ export default {
             this.thumb.thumb3 = res.content.thumb[2]
             console.log(this.thumb.thumb1)
           }
-          if (k === 'isDelete' || k === 'isOpenComment' || k === 'isOriginal' || k === 'isRecommnd' || k === 'isWatermarked' || k === 'terminalApp' || k === 'terminalPc' || k === 'terminalWeb' || k === 'hasThumb') {
+          if (k === 'isDelete' || k === 'isOpenComment' || k === 'isOriginal' || k === 'isRecommnd' || k === 'isWatermarked' || k === 'terminalApp' || k === 'terminalPc' || k === 'terminalWeb' || k === 'hasThumb' || k === 'isListShowPic') {
             this.form[k] = Number(res.content[k])
             continue
           }

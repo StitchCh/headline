@@ -302,7 +302,7 @@ export default {
         terminalApp: 1,
         terminalWeb: 1,
         virtualShare: '0',
-        isListShowPic: true
+        isListShowPic: 1
       },
       thumb: {
         thumb1: null,
@@ -465,7 +465,7 @@ export default {
             this.form.terminalPc = res.content.terminalPc || 0
             this.form.terminalApp = res.content.terminalApp || 0
             this.form.terminalWeb = res.content.terminalWeb || 0
-            this.form.isListShowPic = res.content.isListShowPic
+            this.form.isListShowPic = Number(res.content.isListShowPic)
 
             this.thumb.thumb1 = res.content.thumb[0]
 

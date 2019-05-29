@@ -30,7 +30,11 @@
             <span class="f-12 fix-top" v-if="li.top">置顶</span>
             <span class="flex-item item-title">【{{appTypeList[li.app]}}】{{li.newTitle}}</span>
             <span class="f-12 c-5">
-              <vue-datepicker-local v-if="li.issueStatus === 1" v-model="li.dateRange" format="YYYY-MM-DD HH:mm:ss" show-buttons></vue-datepicker-local>
+              <vue-datepicker-local
+                v-if="li.issueStatus === 1"
+                v-model="li.dateRange"
+                format="YYYY-MM-DD HH:mm:ss"
+                show-buttons></vue-datepicker-local>
               <span>定时上下架</span>
               <switcher mode="Number" @change="changeTime(li)" v-model="li.issueStatus"/>
               <span style="margin-left: 10px;" :style="{color: getPublishStatus(li).color}">{{getPublishStatus(li).str}}</span>
@@ -122,12 +126,6 @@ export default {
     },
     add (val) {
       this.viewList = val.concat(this.list)
-      console.log(this.viewList)
-      this.viewList.forEach(item => {
-        if (item.issueStatus == 1) {
-          item.dateRange = '123'
-        }
-      })
       this.sort()
     },
     item (val) {
@@ -185,17 +183,11 @@ export default {
   },
   methods: {
     changeTime (item) {
-      console.log(item.dateRange[1])
       if (item.issueStatus === 0) {
-        item.dateRange = [item.sendDate ? item.sendDate : item.dateRange[0], this.overTime]
+        item.dateRange = [this.thistime, this.overTime]
       } else {
-        if (item.endDate != '9998-12-31 23:59:59') {
-          item.dateRange = [item.sendDate ? item.sendDate : item.dateRange[0], this.thistime ]
-        } else {
-          item.dateRange = [item.sendDate ? item.sendDate : item.dateRange[0], item.endDate ]
-        }
+        item.dateRange = [this.thistime, new Date(this.thistime.getTime() + 1000 * 60 * 60 * 24) ]
       }
-      console.log(item.dateRange)
       this.viewListShow = false
       this.$nextTick(() => (this.viewListShow = true))
     },
@@ -206,11 +198,10 @@ export default {
         layoutId: this.layout.id,
         type: this.layout.type
       }).then(res => {
-        console.log(res)
         let len = res.data.length
         res.data.forEach((item, i) => {
           item.issueStatus = Number(item.issueStatus)
-          item.dateRange = [item.sendDate, item.endDate]
+          item.dateRange = [moment(this.thistime).format('YYYY-MM-DD HH:mm:ss'), item.endDate]
           // item.editSendDate = item.sendDate
           // item.editEndDate = item.endDate
           item.changed = false
@@ -222,7 +213,9 @@ export default {
             item.top = false
             item.order = item.sortOrder = (len - i)
           }
+          console.log(item.dateRange)
         })
+        console.log(res.data)
         this.loading = false
         this.list = res.data
         this.viewList = this.add.concat(res.data)
@@ -265,13 +258,7 @@ export default {
           res.push(item)
         }
         if (item.sortOrder !== item.order && !item.new) item.changed = true
-        if (item.issueStatus == 1) {
-          if (item.endDate != '9998-12-31 23:59:59') {
-            item.dateRange = [item.sendDate ? item.sendDate : item.dateRange[0], this.thistime ]
-          } else {
-            item.dateRange = [item.sendDate ? item.sendDate : item.dateRange[0], item.endDate ]
-          }
-        }
+
       })
       this.viewList = res
     },
@@ -293,7 +280,6 @@ export default {
     getPublishStatus (item) {
       if (item.new) return { state: 1, color: '#008eff', str: '未上线' }
       let now = moment()
-      console.log(now)
       if (now.isBefore(item.sendDate)) {
         return { state: 1, color: '#008eff', str: '未上线' }
       }
@@ -307,7 +293,6 @@ export default {
       }
     },
     getIssueResult () {
-      console.log(this.viewList)
       return {
         layoutId: this.layout.id,
         type: this.layout.type,

@@ -482,7 +482,7 @@ export default {
             this.form.thumb = JSON.parse(res.special.thumb)
             this.thumb.thumb1 = res.special.thumb[0]
           }
-          this.form.isListShowPic = res.special.isListShowPic
+          this.form.isListShowPic = Number(res.special.isListShowPic)
           this.form.channelIds = res.channelIds || ''
           this.form.specialListJson = JSON.parse(this.form.specialListJson)
           for (let i = 0; i < res.special.specialListJson.length; i++) {
