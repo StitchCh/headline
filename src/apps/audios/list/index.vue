@@ -115,7 +115,9 @@ export default {
             contentId: that.id
           }).then(
             res => {
-              that.$refs.afCenter.getList()
+              that.$router.push({
+                path: `/audioEdit/audio/${res.id}`,
+              })
             }
           )
         }

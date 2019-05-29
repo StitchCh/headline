@@ -40,11 +40,11 @@
             <tbody>
             <tr>
               <th>pv</th>
-              <td>{{statistics.pv}}</td>
+              <td>{{pv}}</td>
             </tr>
             <tr>
               <th>uv</th>
-              <td>{{statistics.uv}}</td>
+              <td>{{uv}}</td>
             </tr>
             </tbody>
           </table>
@@ -102,19 +102,19 @@ export default {
           source: [],
           dimension: [
             { name: 'day', type: 'string' },
-            { name: 'pc' },
-            { name: 'app' },
-            { name: 'web' }
+            { name: 'pv' },
+            { name: 'uv' }
           ]
         },
         xAxis: {type: 'category'},
         yAxis: {},
         series: [
-          { name: 'pc', type: 'line', seriesLayoutBy: 'row' },
-          { name: 'app', type: 'line', seriesLayoutBy: 'row' },
-          { name: 'web', type: 'line', seriesLayoutBy: 'row' }
+          { name: 'pv', type: 'line', seriesLayoutBy: 'row' },
+          { name: 'uv', type: 'line', seriesLayoutBy: 'row' }
         ]
-      }
+      },
+      pv: 0,
+      uv: 0
     }
   },
   methods: {
@@ -126,11 +126,23 @@ export default {
         res => {
           this.statistics = res
 
-          var arr = []
+          var arr = ['day']
+          var pvArr = ['pv']
+          var uvArr = ['uv']
+          var opv = 0
+          var ouv = 0
+
           for (var k in this.statistics.pv) {
-            arr.push(k);
+            arr.push(k)
+            pvArr.push(this.statistics.pv[k])
+            uvArr.push(this.statistics.uv[k])
+            opv += Number(this.statistics.pv[k])
+            ouv += Number(this.statistics.uv[k])
           }
-          this.option.dataset.source.push(arr)
+
+          this.pv = opv
+          this.uv = ouv
+          this.option.dataset.source = [ arr, pvArr, uvArr ]
 
           this.setOption()
         }
