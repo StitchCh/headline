@@ -383,6 +383,7 @@ export default {
       let form = {...this.form}
       if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
       if (this.id) form.id = this.id
+      form.isListShowPic = form.isListShowPic == 1 ? 0 : 1
       this.$http.post(url, form).then(
         res => {
           this.ui.submited = true
@@ -437,6 +438,7 @@ export default {
           }
           this.form[k] = res.content[k]
         }
+        this.form.isListShowPic = this.form.isListShowPic == 1 ? 0 : 1
         this.form.ecommerceUrl = res.ecommerce.ecommerceUrl
         this.form.createDate = res.content.createDate
         this.form.content = res.ecommerce.content

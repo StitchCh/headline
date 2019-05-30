@@ -378,6 +378,7 @@ export default {
       this.form.titleColor = titleColor
       this.form.content = content
       let form = {...this.form}
+      form.isListShowPic = form.isListShowPic == 1 ? 0 : 1
       if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
       if (this.id) form.id = this.id
       this.$http.post(url, form).then(
@@ -433,6 +434,7 @@ export default {
           }
           this.form[k] = res.content[k]
         }
+        this.form.isListShowPic = this.form.isListShowPic == 1 ? 0 : 1
         this.form.createDate = res.content.createDate
         this.form.content = res.article.content
         this.form.channelIds = res.channelIds || ''

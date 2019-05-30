@@ -117,6 +117,7 @@ export default {
       let form = Object.assign({title, content, titleColor, videoUrl: video.video, videoId: video.id}, this.$refs.option.form)
       if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
       if (this.id) form.id = this.id
+      form.isListShowPic = form.isListShowPic == 1 ? 0 : 1
       this.$http.post(url, form).then(
         res => {
           this.ui.submited = true

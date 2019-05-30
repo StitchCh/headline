@@ -250,6 +250,7 @@ export default {
         }
         this.form[k] = res.audio[k]
       }
+      this.form.isListShowPic = this.form.isListShowPic == 1 ? 0 : 1
       this.form.createDate = res.audio.createDate
       this.form.channelIds = res.channelIds || ''
     }

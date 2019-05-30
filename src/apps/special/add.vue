@@ -430,6 +430,8 @@ export default {
         obj.id = this.id
       }
 
+      obj.isListShowPic = obj.isListShowPic == 1 ? 0 : 1
+
       this.$http.post(url, obj).then(res => {
         this.ui.submited = true
         this.$router.push('/special/list?status=all')
@@ -504,6 +506,7 @@ export default {
               selected: this.form.headJson
             }
           }
+          this.form.isListShowPic = this.form.isListShowPic == 1 ? 0 : 1
           this.getif = true
         })
       }

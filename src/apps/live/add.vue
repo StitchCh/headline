@@ -354,6 +354,8 @@ export default {
         obj.id = this.id
       }
 
+      form.isListShowPic = form.isListShowPic == 1 ? 0 : 1
+
       this.$http.post(url, obj).then(res => {
         this.ui.submited = true
         this.$router.push('/live/list?status=all')
@@ -419,6 +421,7 @@ export default {
           this.form.openChatroom = parseInt(res.live.openChatroom)
           this.getif = true
           this.form.isListShowPic = Number(res.content.isListShowPic)
+          this.form.isListShowPic = this.form.isListShowPic == 1 ? 0 : 1
         })
       }
     } else {

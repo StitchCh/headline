@@ -240,6 +240,7 @@ export default {
         }
         this.form[k] = res.content[k]
       }
+      this.form.isListShowPic = this.form.isListShowPic == 1 ? 0 : 1
       this.form.createDate = res.content.createDate
       this.form.channelIds = res.channelIds || ''
       this.form.relateIds = res.relateGallery.map(v => v.id).join(',')

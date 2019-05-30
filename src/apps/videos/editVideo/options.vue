@@ -248,6 +248,7 @@ export default {
           this.form[k] = Number(res.video[k])
           continue
         }
+        this.form.isListShowPic = this.form.isListShowPic == 1 ? 0 : 1
         this.form[k] = res.video[k]
       }
       this.form.createDate = res.video.createDate

@@ -408,6 +408,8 @@ export default {
       obj.startTime = moment(obj.startTime).format('YYYY-MM-DD HH:mm:ss')
       obj.endTime = moment(obj.endTime).format('YYYY-MM-DD HH:mm:ss')
 
+      obj.isListShowPic = obj.isListShowPic == 1 ? 0 : 1
+
       this.$http.post(url, obj).then(res => {
         this.ui.submited = true
         this.$router.push('/vote/list?status=all')
@@ -466,6 +468,7 @@ export default {
             this.form.terminalApp = res.content.terminalApp || 0
             this.form.terminalWeb = res.content.terminalWeb || 0
             this.form.isListShowPic = Number(res.content.isListShowPic)
+            this.form.isListShowPic = this.form.isListShowPic == 1 ? 0 : 1
 
             this.thumb.thumb1 = res.content.thumb[0]
 
