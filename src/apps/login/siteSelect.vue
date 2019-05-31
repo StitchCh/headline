@@ -77,6 +77,7 @@ export default {
       if (sessionStorage.token) sessionStorage.siteId = this.select
       this.$http.post('/cri-cms-platform/site/setting/getSetting.monitor').then(res => {
         sessionStorage.imageratio = res.imageratio
+        this.$store.commit('setAuthor', this.select)
         this.$store.commit('setWaterImg', res.watermark_path)
         this.$router.push('/')
       })

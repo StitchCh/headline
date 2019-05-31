@@ -65,7 +65,7 @@
           </p>
           <bubble style="left: -80px;" v-if="scaleshow" @close="scaleshow = false">
             <ul class="f-14 c-5" style="padding: 4px 0;width: 150px;text-align: center;line-height: 24px;">
-              <li v-for="(item, index) in scaleshowList" class="a flex-v-center listhover" @click="form.author = item; scaleshow = false">
+              <li v-for="(item, index) in $store.state.account.authorList" class="a flex-v-center listhover" @click="form.author = item; scaleshow = false">
                 <span class="flex-item">{{item}}</span>
               </li>
             </ul>
@@ -150,7 +150,6 @@ export default {
   props: [ 'res' ],
   data () {
     return {
-      scaleshowList: ['中俄头条', '中央广播电视总台央视新闻', '中央广播电视总台', '中央广播电视总台央视网', '俄罗斯卫星通讯社', 'Россия-Китай: главное'],
       scaleshow: false,
       ui: {
         channelShow: false,
@@ -161,7 +160,7 @@ export default {
       getend: false,
       form: {
         app: 'VIDEO',
-        hasThumb: 1,
+        hasThumb: 0,
         channelIds: '',
         // galleryId: '',
         // gallerySettingMaxWidth: '640',
@@ -178,13 +177,13 @@ export default {
         isRecommnd: 0,
         abstarcts: '',
         keywords: '',
-        author: '',
+        author: '中俄头条',
         isWatermarked: 0,
         virtualPv: '',
         virtualComment: '',
         virtualShare: '',
         virtualDigg: '',
-        hasThumb: 1,
+        hasThumb: 0,
         thumbType: 1,
         thumb: '',
         // terminalPc: 0,

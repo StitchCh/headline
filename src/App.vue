@@ -116,4 +116,7 @@ export default {
   margin-bottom: 10px;
   padding-right: 50px !important;
 }
+a{
+  text-decoration: none !important;
+}
 </style>

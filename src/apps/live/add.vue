@@ -231,7 +231,7 @@ export default {
         isRecommnd: 0,
         introduction: '',
         keywords: '',
-        // author: '',
+        // author: '中俄头条',
         // weight: '',
         // isWatermarked: 0,
         // upLineTime: '',

@@ -14,7 +14,8 @@ const state = {
     LINK: '连接',
     GALLERY: '图集',
     VOTE: '投票'
-  }
+  },
+  authorList: []
 }
 
 if (localStorage.menu) {
@@ -25,6 +26,13 @@ if (sessionStorage.waterImg) {
 }
 
 const mutations = {
+  setAuthor (state, siteId) {
+    if (siteId == 1001) {
+      state.authorList = [ '中俄头条', '中央广播电视总台央视新闻', '中央广播电视总台', '中央广播电视总台央视网', '俄罗斯卫星通讯社', ]
+    } else {
+      state.authorList = [ 'Россия-Китай: главное' ]
+    }
+  },
   LOGIN (state, userinfo) {
     if (typeof userinfo !== 'object') return
     for (let key in userinfo) {
@@ -47,6 +55,10 @@ const mutations = {
     state.waterImg = data
     sessionStorage.waterImg = data
   }
+}
+
+if (sessionStorage.siteId) {
+  mutations.setAuthor(state, sessionStorage.siteId)
 }
 
 export default { state, mutations }

@@ -159,7 +159,7 @@
           <p @click="scaleshow = true" style="cursor: pointer;text-align: right;margin: 0;">{{scaleshowList[form.ipLimitInterval-1]}}</p>
           <bubble v-if="scaleshow" @close="scaleshow = false">
             <ul class="f-14 c-5" style="padding: 4px 0;width: 100px;text-align: center;line-height: 24px;">
-              <li v-for="(item, index) in scaleshowList" class="a flex-v-center listhover" @click="setScale(index+1)">
+              <li v-for="(item, index) in $store.state.account.authorList" class="a flex-v-center listhover" @click="setScale(index+1)">
                 <span class="flex-item">{{item}}</span>
               </li>
             </ul>
