@@ -236,10 +236,10 @@ export default {
         // isWatermarked: 0,
         // upLineTime: '',
         // downLineTime: '',
-        virtualPv: '',
+        virtualPv: '0',
         // virtualComment: '',
-        virtualShare: '',
-        virtualDigg: '',
+        virtualShare: '0',
+        virtualDigg: '0',
         // hasThumb: 0,
         // thumbType: 1,
         thumb: '',
@@ -401,9 +401,9 @@ export default {
           this.form.title = res.content.title
           this.form.contentId = res.live.contentId
           this.form.virtualDigg = res.content.virtualDigg
-          this.form.virtualPv = res.content.virtualPv
-          this.form.virtualShare = res.content.virtualShare
-          this.form.openBulletScreen = res.content.openBulletScreen
+          this.form.virtualPv = res.content.virtualPv || '0'
+          this.form.virtualShare = res.content.virtualShare || '0'
+          this.form.openBulletScreen = res.content.openBulletScreen || '0'
           this.form.introduction = res.live.introduction
           this.form.playback = res.live.playback
           this.form.keywords = res.content.keywords
