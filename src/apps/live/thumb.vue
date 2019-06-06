@@ -4,7 +4,7 @@
       <img v-if="image.url" :src="image.url" width="100%" alt="">
       <i v-else class="icon f-32 c-a">add_photo_alternate</i>
     </div>
-    <layer v-if="show" title="选择图片" class="tc_box">
+    <layer v-if="show" title="选择图片" width="1000px">
       <div class="layer-text relative" style="height: 800px;">
         <media-photos select-mode single-select ref="mediaPhotos"  @preview="onPreview"></media-photos>
       </div>

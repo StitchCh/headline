@@ -6,6 +6,7 @@
     <div style="float: right;" class="textbox">
       <p class="text_title">{{data.messageUserAlias}}<span class="toptag" v-if="data.stick === '01'">置顶</span></p>
       <p v-if="data.textContent" class="text_content">{{data.textContent}}</p>
+
       <p class="text_time">{{data.createTime}}</p>
       <div v-if="data.items" style="padding-top: 10px;">
         <div class="imgbox imgimgbox" style="background: #fff;" v-for="item in data.items">
@@ -17,6 +18,16 @@
           <div v-if="item.category == 3" style="width: 100%;background: #fff;">
             <!--<i class="icon c-a" style="font-size: 30px;color: #fff;line-height: 60px;">audiotrack</i>-->
             <audio controls="controls" :src="item.mediaUrl"></audio>
+          </div>
+
+          <div v-if="item.category == 4" style="width: 100%;background: #fff;display: flex;align-items: start;justify-content: space-between;">
+            <div style="width: 50px;height: 50px;border-radius: 50%;overflow: hidden;">
+              <img style="width: 100%;" src="../../../static/img/icon-user.png" alt="">
+            </div>
+            <div style="width: calc(100% - 70px);">
+              <p>{{item.commentUserName}}</p>
+              <p style="background: #eee;padding: 4px 10px;border-radius: 5px;">{{item.commentContent}}</p>
+            </div>
           </div>
         </div>
       </div>

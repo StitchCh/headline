@@ -104,6 +104,11 @@ export default {
 
       form.isListShowPic = form.isListShowPic == 1 ? 0 : 1
 
+      if (!form.thumb) {
+        this.$toast('请选头图')
+        return
+      }
+
       this.$http.post(url, form).then(
         res => {
           this.ui.submited = true

@@ -70,20 +70,20 @@
             <span style="float: right;">订单总积分：{{item.orderIntegral}}</span>
           </p>
 
-          <div v-if="item.orderStatus == '已下单'" style="text-align: right;" class="mb_10">
+          <div v-if="item.orderStatus == '待发货'" style="text-align: right;" class="mb_10">
             <span>快递公司：</span>
             <input type="text" v-model="item.logisticsName" style="margin-right: 20px;width: 200px;">
             <span>快递单号：</span>
             <input type="number" v-model="item.logisticsNo" style="width: 300px;">
           </div>
 
-          <div v-if="item.orderStatus != '已下单'" style="text-align: right;" class="mb_10">
+          <div v-if="item.orderStatus != '待发货'" style="text-align: right;" class="mb_10">
             <span style="margin-right: 20px;">快递公司：{{item.logisticsName}}</span>
             <span>快递单号：{{item.logisticsNo}}</span>
           </div>
 
           <div style="text-align: right;">
-            <btn v-if="item.orderStatus == '已下单'" @click="orderSend(item)">订单发货</btn>
+            <btn v-if="item.orderStatus == '待发货'" @click="orderSend(item)">订单发货</btn>
             <btn v-if="item.orderStatus == '已发货'" @click="orderOver(item.id)">订单完成</btn>
           </div>
         </div>

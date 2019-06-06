@@ -271,7 +271,7 @@ export default {
         isRecommnd: 0,
         abstarcts: '',
         keywords: '',
-        author: '中俄头条',
+        author: this.$store.state.account.authorList[0],
         // weight: '',
         isWatermarked: 0,
         // upLineTime: '',
@@ -373,6 +373,11 @@ export default {
         this.$toast('请选择栏目')
         return
       }
+      if (!this.form.thumb) {
+        this.$toast('请选头图')
+        return
+      }
+
       this.form.title = title
       this.form.titleColor = titleColor
       this.form.content = content

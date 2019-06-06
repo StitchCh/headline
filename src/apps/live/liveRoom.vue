@@ -170,7 +170,7 @@
         <!--</div>-->
       </div>
 
-      <div class="app-article-add-thumb">
+      <div class="app-article-add-thumb tc_box">
         <layer v-if="mediaShow" title="选择图片" width="900px" style="z-index: 200;">
           <div class="layer-text relative" style="height: 800px;width: 900px;">
             <media-photos select-mode single-select ref="mediaPhotos"></media-photos>
@@ -201,7 +201,7 @@
         </div>
       </div>
 
-      <div v-if="videoSelectorShow" class="video-editor">
+      <div v-if="videoSelectorShow" class="video-editor tc_box">
         <layer title="选择视频"  width="1000px">
           <div class="layer-text relative" style="height: 1000px;">
             <media-videos select-mode ref="mediaVideos" single-select></media-videos>
@@ -213,7 +213,7 @@
         </layer>
       </div>
 
-      <div v-if="audioSelectorShow" class="video-editor">
+      <div v-if="audioSelectorShow" class="video-editor tc_box">
         <layer title="选择音频"  width="800px">
           <div class="layer-text relative" style="height: 800px;">
             <media-audios select-mode ref="mediaAudios" single-select/>

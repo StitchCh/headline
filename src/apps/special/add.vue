@@ -367,6 +367,10 @@ export default {
         this.$toast('请选择栏目')
         return
       }
+      if (!this.form.thumb) {
+        this.$toast('请选头图')
+        return
+      }
       this.form.title = title
       this.form.titleColor = titleColor
 

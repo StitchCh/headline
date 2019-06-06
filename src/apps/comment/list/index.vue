@@ -23,7 +23,7 @@
         <div class="setting-card f-14" v-for="item in list" :key="item.id">
           <div class="flex-v-center comment-item-info">
             <check-box v-if="checkedShow && $route.query.audit == 2" v-model="item.checked"></check-box>
-            <strong class="f-16"><a :href="item.contentUrl" target="_blank">{{item.contentTitle}}</a></strong>
+            <strong style="width: calc(100% - 100px)" class="f-16"><a :href="item.contentUrl" target="_blank">{{item.contentTitle}}</a></strong>
             <span class="flex-item"></span>
             <i class="icon state-icon f-20" :style="{ color: stateList[item._state].color }">{{stateList[item._state].icon}}</i>
             <span :style="{ color: stateList[item._state].color }">{{stateList[item._state].text}}</span>
@@ -254,6 +254,7 @@ export default {
       }
     },
     '$route.query' () {
+      this.checkedShow = false
       this.toPage = 1
       this.getList()
     }

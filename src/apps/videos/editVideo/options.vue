@@ -177,7 +177,7 @@ export default {
         isRecommnd: 0,
         abstarcts: '',
         keywords: '',
-        author: '中俄头条',
+        author: this.$store.state.account.authorList[0],
         isWatermarked: 0,
         virtualPv: '',
         virtualComment: '',

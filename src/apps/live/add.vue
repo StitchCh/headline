@@ -236,10 +236,10 @@ export default {
         // isWatermarked: 0,
         // upLineTime: '',
         // downLineTime: '',
-        virtualPv: '',
+        virtualPv: '0',
         // virtualComment: '',
-        virtualShare: '',
-        virtualDigg: '',
+        virtualShare: '0',
+        virtualDigg: '0',
         // hasThumb: 0,
         // thumbType: 1,
         thumb: '',
@@ -339,6 +339,10 @@ export default {
         this.$toast('请输入直播源')
         return
       }
+      if (!this.form.thumb) {
+        this.$toast('请选头图')
+        return
+      }
       // if (!reg.test(this.form.liveSource)) {
       //   this.$toast('请输入正确格式的直播源地址')
       //   return
@@ -354,7 +358,8 @@ export default {
         obj.id = this.id
       }
 
-      form.isListShowPic = form.isListShowPic == 1 ? 0 : 1
+      obj.isListShowPic = obj.isListShowPic == 1 ? 0 : 1
+      this.form.isListShowPic = this.form.isListShowPic == 1 ? 0 : 1
 
       this.$http.post(url, obj).then(res => {
         this.ui.submited = true
@@ -401,9 +406,9 @@ export default {
           this.form.title = res.content.title
           this.form.contentId = res.live.contentId
           this.form.virtualDigg = res.content.virtualDigg
-          this.form.virtualPv = res.content.virtualPv
-          this.form.virtualShare = res.content.virtualShare
-          this.form.openBulletScreen = res.content.openBulletScreen
+          this.form.virtualPv = res.content.virtualPv || '0'
+          this.form.virtualShare = res.content.virtualShare || '0'
+          this.form.openBulletScreen = res.content.openBulletScreen || '0'
           this.form.introduction = res.live.introduction
           this.form.playback = res.live.playback
           this.form.keywords = res.content.keywords
