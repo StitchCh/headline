@@ -200,7 +200,7 @@ export default {
       }).then(res => {
         let len = res.data.length
         res.data.forEach((item, i) => {
-          item.issueStatus = Number(item.issueStatus)
+          item.issueStatus = item.endDate == '9998-12-31 23:59:59' ? 0 : 1
           item.dateRange = [moment(this.thistime).format('YYYY-MM-DD HH:mm:ss'), item.endDate]
           // item.editSendDate = item.sendDate
           // item.editEndDate = item.endDate

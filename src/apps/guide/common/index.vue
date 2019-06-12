@@ -1,7 +1,7 @@
 <template>
   <div class="app-common flex-col c-6">
     <div class="af-topbar">
-      <span class="f-18">客户端引导页设置</span>
+      <span class="f-18">广告设置</span>
     </div>
     <div class="flex-item scroll-y content relative">
       <!--<transition name="fade">-->

@@ -99,7 +99,7 @@
           <p style="line-height: 40px;font-size: 18px;">主持人</p>
           <div class="flex" style="align-items: center">
             <div class="imgbox txbox" style="margin-right: 10px;" @click="mediaShow = true;zbChange = true;">
-              <img v-if="!host.url" src="../../../static/img/icon-user.png">
+              <img v-if="!host.url" src="../../../static/logo.png">
               <img v-if="host.url" :src="host.url" alt="">
             </div>
             <!-- <p>{{host.name}}</p> -->
@@ -111,7 +111,7 @@
           <p style="line-height: 40px;font-size: 18px;">直播员</p>
           <div v-for="(item, index) in zhiboyuanList" class="flex-v-center" style="align-items: center;margin-bottom: 10px;">
             <div class="imgbox txbox" style="margin-right: 10px;">
-              <img v-if="!item.thumb.url" src="../../../static/img/icon-user.png" @click="mediaShow = true;txChange = true;txIndex = index;">
+              <img v-if="!item.thumb.url" src="../../../static/logo.png" @click="mediaShow = true;txChange = true;txIndex = index;">
               <img v-if="item.thumb.url" :src="item.thumb.url" @click="mediaShow = true;txChange = true;txIndex = index;">
             </div>
             <input style="width: 110px;" type="text" v-model="item.aliasName" @blur="changeZ(index)">
