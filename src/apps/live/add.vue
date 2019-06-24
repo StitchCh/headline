@@ -359,7 +359,6 @@ export default {
       }
 
       obj.isListShowPic = obj.isListShowPic == 1 ? 0 : 1
-      this.form.isListShowPic = this.form.isListShowPic == 1 ? 0 : 1
 
       this.$http.post(url, obj).then(res => {
         this.ui.submited = true

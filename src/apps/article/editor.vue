@@ -80,6 +80,7 @@ export default {
       content: '',
       editor: null,
       config: {
+        autoFloatEnabled: false,
         zIndex: 1,
         height: 800,
         toolbars: [

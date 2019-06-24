@@ -85,6 +85,7 @@ export default {
       content: '',
       editor: null,
       config: {
+        autoFloatEnabled: false,
         zIndex: 1,
         toolbars: [
           [
