@@ -154,7 +154,6 @@ export default {
   },
   methods: {
     getText () {
-      console.log(this.content)
       return this.editor.getContentTxt()
       // return this.$refs.editor.quill.getText()
     },

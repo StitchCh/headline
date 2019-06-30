@@ -183,7 +183,6 @@ export default {
         virtualComment: '',
         virtualShare: '',
         virtualDigg: '',
-        hasThumb: 0,
         thumbType: 1,
         thumb: '',
         // terminalPc: 0,
