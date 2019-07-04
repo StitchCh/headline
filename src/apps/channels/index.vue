@@ -5,7 +5,7 @@
     <div class="flex-item"></div>
     <account />
   </div>
-  <div class="flex-item flex">
+  <div class="flex-item flex" style="height: calc(100% - 50px);">
     <channel-editor @changeChannel="changeChannel" @channelsLoad="onChannelsLoad" @refresh="refresh"/>
     <div class="right flex-item flex-col" v-if="$route.query.channelId">
       <div class="flex-v-center" style="padding: 15px 30px;">

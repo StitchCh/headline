@@ -404,7 +404,7 @@ export default {
           this.tagOrder = res.live.tagOrder.split(',')
           this.form.title = res.content.title
           this.form.contentId = res.live.contentId
-          this.form.virtualDigg = res.content.virtualDigg
+          this.form.virtualDigg = res.content.virtualDigg || '0'
           this.form.virtualPv = res.content.virtualPv || '0'
           this.form.virtualShare = res.content.virtualShare || '0'
           this.form.openBulletScreen = res.content.openBulletScreen || '0'
