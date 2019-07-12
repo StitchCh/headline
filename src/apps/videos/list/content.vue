@@ -70,7 +70,7 @@ import 'vue-video-player/src/custom-theme.css'
 import { videoPlayer } from 'vue-video-player'
 import 'videojs-resolution-switcher'
 
-const ORIGIN = 'http://60.247.77.208:58088'
+const ORIGIN = 'http://manage.sinorusfocus.com:8088'
 
 export default {
   name: 'app-video-content',

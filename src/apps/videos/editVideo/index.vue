@@ -34,7 +34,7 @@ import VideoEditor from './editor'
 import VideoOption from './options'
 import editor from './editorbox'
 
-const ORIGIN = 'http://60.247.77.208:58088'
+const ORIGIN = 'http://manage.sinorusfocus.com:8088'
 
 const from = {
   video: {

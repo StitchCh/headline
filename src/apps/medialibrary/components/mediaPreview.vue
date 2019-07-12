@@ -80,7 +80,7 @@ import 'video.js/dist/lang/zh-CN'
 import 'vue-video-player/src/custom-theme.css'
 import { videoPlayer } from 'vue-video-player'
 
-const ORIGIN = 'http://60.247.77.208:58088'
+const ORIGIN = 'http://manage.sinorusfocus.com:8088'
 const typeContent = {
   0: { text: '图片' },
   1: { text: '音频' },

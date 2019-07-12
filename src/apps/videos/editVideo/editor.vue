@@ -51,7 +51,7 @@ import 'vue-video-player/src/custom-theme.css'
 import { videoPlayer } from 'vue-video-player'
 import MediaVideos from '../../medialibrary/pages/videos'
 
-const ORIGIN = 'http://60.247.77.208:58088'
+const ORIGIN = 'http://manage.sinorusfocus.com:8088'
 
 export default {
   name: 'video-editor',

@@ -89,7 +89,7 @@ import debounce from 'lodash/debounce'
 import VueDatepickerLocal from 'vue-datepicker-local'
 import moment from 'moment'
 
-// const IMG_ORIGIN = 'http://60.247.77.208:58088'
+// const IMG_ORIGIN = 'http://manage.sinorusfocus.com:8088'
 
 export default {
   name: 'media-photos',
