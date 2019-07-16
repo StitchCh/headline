@@ -385,6 +385,13 @@ export default {
       form.isListShowPic = form.isListShowPic == 1 ? 0 : 1
       if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
       if (this.id) form.id = this.id
+
+      if (this.form.thumbType == 2) {
+        form.thumb = this.thumb.thumb1.id + ',' + this.thumb.thumb2.id + ',' + this.thumb.thumb3.id
+      }
+
+      console.log(form)
+
       this.$http.post(url, form).then(
         res => {
           this.ui.submited = true
