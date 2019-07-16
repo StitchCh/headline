@@ -53,7 +53,7 @@
             <input type="number" v-model="productData.inventoryNum" placeholder="库存" />
           </div>
 
-          <div class="option-item relative">
+          <div v-if="typeList.length > 0" class="option-item relative">
             <div class="a" @click="addShow=true">
               {{productData.typeId.typeName}}
             </div>
@@ -65,14 +65,17 @@
               </ul>
             </bubble>
           </div>
+          <div v-else class="option-item relative">
+            暂无分类
+          </div>
 
         </div>
       </div>
 
-      <div class="gallery-editor">
-        <layer v-if="photoSelectorShow" title="选择图片"  width="800px">
+      <div class="gallery-editor tc_box">
+        <layer v-if="photoSelectorShow" title="选择图片" width="800px">
           <div class="layer-text relative" style="height: 800px;">
-            <media-photos select-mode single-select ref="mediaPhotos"/>
+            <media-photos select-mode ref="mediaPhotos"></media-photos>
           </div>
           <div class="layer-btns">
             <btn flat @click="photoSelectorShow = false">取消</btn>
@@ -118,7 +121,6 @@ export default {
       this.$http.post('/cri-cms-platform/mall/queryCommodityDetail.monitor', {
         id: this.$route.query.id
       }).then(res => {
-        console.log(res)
         this.productData = res.mallCommodity
         this.productData.isRecommend = this.productData.isRecommend == 1 ? true : false
         this.$nextTick(() => {
