@@ -121,7 +121,7 @@
         <div>
           <check-box style="width: 30%;" v-model="newForm.isAllQuery" text="是否查看全部记录"></check-box>
 
-          <check-box style="width: 30%;" v-model="newForm.isPassIssue" text="是否直接发布"></check-box>
+          <check-box style="width: 30%;" v-model="newForm.isPassIssue" text="是否跳过审核"></check-box>
 
           <check-box style="width: 30%;" v-model="newForm.isUpdateDown" text="是否修改后下架"></check-box>
         </div>
@@ -148,7 +148,7 @@
         <div>
           <check-box style="width: 30%;" v-model="editForm.isAllQuery" text="是否查看全部记录"></check-box>
 
-          <check-box style="width: 30%;" v-model="editForm.isPassIssue" text="是否直接发布"></check-box>
+          <check-box style="width: 30%;" v-model="editForm.isPassIssue" text="是否跳过审核"></check-box>
 
           <check-box style="width: 30%;" v-model="editForm.isUpdateDown" text="是否修改后下架"></check-box>
         </div>
