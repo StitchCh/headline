@@ -34,7 +34,7 @@ import AudioEditor from './editor'
 import AudioOption from './options'
 import editor from './editorbox'
 
-const ORIGIN = 'http://manage.sinorusfocus.com:8088'
+const ORIGIN = window.w_api
 
 const from = {
   audio: {

@@ -1,9 +1,9 @@
 <template>
 <div class="abs flex-item flex media-photos">
-  <media-left-tree :select-mode="selectMode" @changeFolder="getList"/>
+  <media-left-tree v-show="$route.path.indexOf('mobilePush') < 0" :select-mode="selectMode" @changeFolder="getList"/>
   <div class="flex-item flex-col">
     <div class="af-topbar flex-v-center" style="height:36px;">
-      <div class="search-bar flex-v-center">
+      <div v-show="$route.path.indexOf('mobilePush') < 0" class="search-bar flex-v-center">
         <i class="icon f-20 c-a">search</i>
         <input style="width: 100px;margin-right: 10px;" v-model="secrchName" type="text" class="f-14 c-6" placeholder="输入图片名称">
         <vue-datepicker-local v-model="searchTime" format="YYYY-MM-DD" show-buttons></vue-datepicker-local>
@@ -11,11 +11,11 @@
       </div>
 
       <div class="flex-item"></div>
-      <span class="f-14" v-if="selected.length" style="margin-right: 10px;">已选择 {{selected.length}} 项</span>
-      <btn flat v-if="selected.length" color="#008eff" @click="cancelSelect">取消选择</btn>
+      <span v-show="$route.path.indexOf('mobilePush') < 0" class="f-14" v-if="selected.length" style="margin-right: 10px;">已选择 {{selected.length}} 项</span>
+      <btn v-show="$route.path.indexOf('mobilePush') < 0" flat v-if="selected.length" color="#008eff" @click="cancelSelect">取消选择</btn>
 
       <!--<btn style="margin-left: 10px;" @click="search">搜索</btn>-->
-      <div class="relative" style="padding: 0 4px;">
+      <div v-show="$route.path.indexOf('mobilePush') < 0" class="relative" style="padding: 0 4px;">
         <btn @click="scaleshow = true" color="#008eff" flat>筛选</btn>
         <bubble v-if="scaleshow" @close="scaleshow = false">
           <ul class="f-14 c-5" style="padding: 4px 0;width: 60px;text-align: center;line-height: 24px;">
@@ -89,7 +89,7 @@ import debounce from 'lodash/debounce'
 import VueDatepickerLocal from 'vue-datepicker-local'
 import moment from 'moment'
 
-// const IMG_ORIGIN = 'http://manage.sinorusfocus.com:8088'
+// const IMG_ORIGIN = window.w_api
 
 export default {
   name: 'media-photos',

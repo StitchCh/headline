@@ -236,7 +236,7 @@ import draggable from 'vuedraggable'
 import MediaVideos from '../medialibrary/pages/videos'
 import MediaAudios from '../medialibrary/pages/audios'
 
-const ORIGIN = 'http://manage.sinorusfocus.com:8088'
+const ORIGIN = window.w_api
 
 export default {
   components: { MediaPhotos, MediaAudios, MediaVideos, listblock, listReply, draggable },

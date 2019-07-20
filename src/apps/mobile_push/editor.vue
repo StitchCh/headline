@@ -24,35 +24,18 @@
     <vue-ueditor-wrap v-model="content" ref="editor" :config="config" :destroy="true" @ready="ready"/>
   </div>
 
-  <layer v-if="ui.imageSelectorShow" title="选择图片"  width="800px">
-    <div class="layer-text relative" style="height: 800px;">
-      <media-photos select-mode ref="mediaPhotos"></media-photos>
-    </div>
-    <div class="layer-btns">
-      <btn flat @click="ui.imageSelectorShow = false">取消</btn>
-      <btn flat color="#008eff" @click="insertImage">选择</btn>
-    </div>
-  </layer>
+  <div class="gallery-editor tc_box">
+    <layer v-if="ui.imageSelectorShow" title="选择图片"  width="800px">
+      <div class="layer-text relative" style="height: 800px;">
+        <media-photos select-mode ref="mediaPhotos"></media-photos>
+      </div>
+      <div class="layer-btns">
+        <btn flat @click="ui.imageSelectorShow = false">取消</btn>
+        <btn flat color="#008eff" @click="insertImage">选择</btn>
+      </div>
+    </layer>
+  </div>
 
-  <layer v-if="ui.videoSelectorShow" title="选择视频"  width="800px">
-    <div class="layer-text relative" style="height: 800px;">
-      <media-videos select-mode ref="mediaVideos"></media-videos>
-    </div>
-    <div class="layer-btns">
-      <btn flat @click="ui.videoSelectorShow = false">取消</btn>
-      <btn flat color="#008eff" @click="insertVideo">选择</btn>
-    </div>
-  </layer>
-
-  <layer v-if="ui.audioSelectorShow" title="选择音频"  width="800px">
-    <div class="layer-text relative" style="height: 800px;">
-      <media-audios select-mode ref="mediaAudios"></media-audios>
-    </div>
-    <div class="layer-btns">
-      <btn flat @click="ui.audioSelectorShow = false">取消</btn>
-      <btn flat color="#008eff" @click="insertAudio">选择</btn>
-    </div>
-  </layer>
 </div>
 </template>
 
@@ -99,7 +82,7 @@ export default {
             'unlink',
             '|',
             // 'simpleupload',
-            // 'selectimage',
+            'selectimage',
             'imagenone', // 不浮动
             'imageleft', // 左浮动
             'imageright', // 右浮动

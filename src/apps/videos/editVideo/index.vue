@@ -34,7 +34,7 @@ import VideoEditor from './editor'
 import VideoOption from './options'
 import editor from './editorbox'
 
-const ORIGIN = 'http://manage.sinorusfocus.com:8088'
+const ORIGIN = window.w_api
 
 const from = {
   video: {

@@ -44,7 +44,7 @@ import MediaLeftTree from '../components/leftTree'
 import MediaUpload from '../components/upload'
 import debounce from 'lodash/debounce'
 
-const origin = 'http://manage.sinorusfocus.com:8088'
+const origin = window.w_api
 
 export default {
   name: 'media-audios',

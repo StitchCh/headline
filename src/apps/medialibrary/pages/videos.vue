@@ -72,7 +72,7 @@ import MediaLeftTree from '../components/leftTree'
 import MediaUpload from '../components/upload'
 import debounce from 'lodash/debounce'
 
-const origin = 'http://manage.sinorusfocus.com:8088'
+const origin = window.w_api
 
 const states = {
   'success': { color: '#4caf50 ', text: '转码成功' },

@@ -56,7 +56,7 @@ import 'vue-video-player/src/custom-theme.css'
 import { videoPlayer } from 'vue-video-player'
 import MediaAudios from '../../medialibrary/pages/audios'
 
-const ORIGIN = 'http://manage.sinorusfocus.com:8088'
+const ORIGIN = window.w_api
 
 export default {
   name: 'audio-editor',
