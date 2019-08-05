@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="flex-item scroll-y">
-      <article-editor ref="editor" @getKeyGenerate="getKeyGenerate"></article-editor>
+      <article-editor ref="editor" @getKeyGenerate="getKeyGenerate" @changeTitle="(data) => { form.keywords = data }"></article-editor>
     </div>
   </div>
   <div class="art-options c-4 scroll-y" :style="{width: ui.optionShow ? '320px' : '0px'}">
@@ -324,12 +324,15 @@ export default {
     },
     getKeyGenerate () {
       if (this.from || this.id) return
+
       let doc = this.$refs.editor.getText()
       if (!doc.trim()) return
       this.$http.post('/cri-cms-platform/article/getKeyGenerate.monitor', { doc }).then(
         res => {
           this.form.abstarcts = res.gerenate
-          this.form.keywords = res.key.join(',')
+          if (sessionStorage.siteId != 1002) {
+            this.form.keywords = res.key.join(',')
+          }
         }
       )
     },

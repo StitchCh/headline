@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="flex-item scroll-y">
-          <video-editor ref="editor"/>
+          <video-editor @changeTitle="(data) => { $refs.option.form.keywords = data }" ref="editor"/>
           <editor ref="editor_box" @getKeyGenerate="getKeyGenerate"></editor>
         </div>
       </div>
@@ -69,7 +69,9 @@ export default {
       this.$http.post('/cri-cms-platform/article/getKeyGenerate.monitor', { doc }).then(
         res => {
           this.$refs.option.form.abstarcts = res.gerenate
-          this.$refs.option.form.keywords = res.key.join(',')
+          if (sessionStorage.siteId != 1002) {
+            this.$refs.option.form.keywords = res.key.join(',')
+          }
         }
       )
     },

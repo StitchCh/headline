@@ -1,7 +1,7 @@
 <template>
 <div class="article-editor">
   <div class="relative">
-    <textarea v-model="title" class="title title_title" type="text" placeholder="请输入标题" :style="{ color: titleColor }"></textarea>
+    <textarea @blur="titleChange" v-model="title" class="title title_title" type="text" placeholder="请输入标题" :style="{ color: titleColor }"></textarea>
     <!--<input v-model="title" class="title" type="text" placeholder="请输入标题" :style="{ color: titleColor }">-->
     <div style="position: absolute;right: 20px;top: 28px;">
       <button class="title-colorpicker-btn" @click="titleColorBoxShow = !titleColorBoxShow" :style="{ background: titleColor }"></button>
@@ -153,6 +153,15 @@ export default {
     }
   },
   methods: {
+    titleChange () {
+      if ( sessionStorage.siteId == 1002 ) {
+        this.$http.post('/cri-cms-platform/article/getKeyGenerate.monitor', { doc: this.title }).then(
+          res => {
+            this.$emit('changeTitle', res.key.join(','))
+          }
+        )
+      }
+    },
     getText () {
       return this.editor.getContentTxt()
       // return this.$refs.editor.quill.getText()
@@ -219,7 +228,7 @@ export default {
   watch: {
     'content': debounce(function () {
       this.$emit('getKeyGenerate')
-    }, 1000)
+    }, 1000),
   }
 }
 </script>

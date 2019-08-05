@@ -1,7 +1,7 @@
 <template>
 <div class="ecommerce-editor">
   <div class="relative">
-    <textarea v-model="title" class="title title_title" type="text" placeholder="请输入标题" :style="{ color: titleColor }"></textarea>
+    <textarea @blur="titleChange" v-model="title" class="title title_title" type="text" placeholder="请输入标题" :style="{ color: titleColor }"></textarea>
     <div style="position: absolute;right: 20px;top: 28px;">
       <button class="title-colorpicker-btn" @click="titleColorBoxShow = !titleColorBoxShow" :style="{ background: titleColor }"></button>
       <bubble v-if="titleColorBoxShow" @close="titleColorBoxShow = false">
@@ -135,6 +135,15 @@ export default {
     }
   },
   methods: {
+    titleChange () {
+      if ( sessionStorage.siteId == 1002 ) {
+        this.$http.post('/cri-cms-platform/article/getKeyGenerate.monitor', { doc: this.title }).then(
+          res => {
+            this.$emit('changeTitle', res.key.join(','))
+          }
+        )
+      }
+    },
     getText () {
       return this.$refs.editor.quill.getText()
     },

@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="flex-item scroll-y">
-      <article-editor ref="editor" v-if="getif" :url="form.ecommerceUrl" @getKeyGenerate="getKeyGenerate"></article-editor>
+      <article-editor @changeTitle="(data) => { form.keywords = data }" ref="editor" v-if="getif" :url="form.ecommerceUrl" @getKeyGenerate="getKeyGenerate"></article-editor>
     </div>
   </div>
   <div class="art-options c-4 scroll-y" :style="{width: ui.optionShow ? '320px' : '0px'}">
@@ -328,7 +328,9 @@ export default {
       this.$http.post('/cri-cms-platform/ecommerce/getKeyGenerate.monitor', { doc }).then(
         res => {
           this.form.abstarcts = res.gerenate
-          this.form.keywords = res.key.join(',')
+          if (sessionStorage.siteId != 1002) {
+            this.form.keywords = res.key.join(',')
+          }
         }
       )
     },

@@ -1,7 +1,7 @@
 <template>
   <div class="audio-editor">
     <div class="relative">
-      <textarea v-model="title" class="title title_title" type="text" placeholder="请输入标题" :style="{ color: titleColor }"></textarea>
+      <textarea @blur="titleChange" v-model="title" class="title title_title" type="text" placeholder="请输入标题" :style="{ color: titleColor }"></textarea>
       <div style="position: absolute;right: 20px;top: 28px;">
         <button class="title-colorpicker-btn" @click="ui.titleColorBoxShow = !ui.titleColorBoxShow" :style="{ background: titleColor }"></button>
         <bubble v-if="ui.titleColorBoxShow" @close="ui.titleColorBoxShow = false">
@@ -83,6 +83,15 @@ export default {
     }
   },
   methods: {
+    titleChange () {
+      if ( sessionStorage.siteId == 1002 ) {
+        this.$http.post('/cri-cms-platform/article/getKeyGenerate.monitor', { doc: this.title }).then(
+          res => {
+            this.$emit('changeTitle', res.key.join(','))
+          }
+        )
+      }
+    },
     changeTitleColor (color) {
       this.titleColor = color
       this.ui.titleColorBoxShow = false
