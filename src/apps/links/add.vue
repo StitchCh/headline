@@ -339,14 +339,16 @@ export default {
       if (this.from || this.id) return
       let doc = this.$refs.editor.getText()
       if (!doc.trim()) return
-      this.$http.post('/cri-cms-platform/article/getKeyGenerate.monitor', { doc }).then(
-        res => {
-          this.form.abstarcts = res.gerenate
-          if (sessionStorage.siteId != 1002) {
+      if (sessionStorage.siteId == 1002) {
+        this.form.abstarcts = doc.split('.')[0].substring(0, 128)
+      } else {
+        this.$http.post('/cri-cms-platform/article/getKeyGenerate.monitor', { doc }).then(
+          res => {
+            this.form.abstarcts = res.gerenate
             this.form.keywords = res.key.join(',')
           }
-        }
-      )
+        )
+      }
     },
     disabledDate (time, format) {
       return time <= new Date()

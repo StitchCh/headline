@@ -137,7 +137,7 @@ export default {
   methods: {
     titleChange () {
       if ( sessionStorage.siteId == 1002 ) {
-        this.$http.post('/cri-cms-platform/article/getKeyGenerate.monitor', { doc: this.title }).then(
+        this.$http.post('/cri-cms-platform/article/getKeyToTitle.monitor', { doc: this.title }).then(
           res => {
             this.$emit('changeTitle', res.key.join(','))
           }
