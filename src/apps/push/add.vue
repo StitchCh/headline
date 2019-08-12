@@ -121,6 +121,11 @@ export default {
         return
       }
 
+      if (!this.content.length > 140) {
+        this.$toast('推送内容最多为140字')
+        return
+      }
+
       this.$http.post('/cri-cms-platform/appPush/save.monitor', obj).then(res => {
         console.log(res)
 
