@@ -7,10 +7,38 @@
       <div class="flex-item scroll-y bg-e relative">
         <div class="box">
           <textarea v-model="text" placeholder="推送内容..."></textarea>
-          <div>
-            <app-article-add-relates @changetext="changetext" v-if="getif" :channels="ui.channels.channels" v-model="list" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/special/getArticList.monitor"></app-article-add-relates>
-            <btn @click="submit">推送</btn>
+
+          <div class="push_box">
+            <div class="radio_box_push">
+              <span>推送方式：</span>
+
+              <div class="flex-item"><radio-box text="全部推送" :label="0" v-model="device"/></div>
+              <div class="flex-item"><radio-box text="安卓" :label="1" v-model="device"/></div>
+              <div class="flex-item"><radio-box text="IOS" :label="2" v-model="device"/></div>
+            </div>
+
+            <div class="radio_box_push">
+              <span>延迟推送：</span>
+
+              <div class="flex-item"><radio-box text="是" :label="1" v-model="delayPush"/></div>
+              <div class="flex-item"><radio-box text="否" :label="0" v-model="delayPush"/></div>
+
+              <span v-if="delayPush == 1" style="float: right">
+                时间：
+                <vue-datepicker-local show-buttons clearable v-model="delayPushTime" format="YYYY-MM-DD HH:mm:ss"></vue-datepicker-local>
+              </span>
+            </div>
+
+            <div class="radio_box_push"></div>
+
+            <div style="display: flex;align-items: start;justify-content: space-between;">
+              <app-article-add-relates @changetext="changetext" v-if="getif" :channels="ui.channels.channels" v-model="list" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/special/getArticList.monitor"></app-article-add-relates>
+              <btn @click="submit">推送</btn>
+            </div>
           </div>
+
+
+
         </div>
       </div>
 
@@ -20,14 +48,19 @@
 
 <script>
 import AppArticleAddRelates from './relates'
+import VueDatepickerLocal from 'vue-datepicker-local'
+import moment from 'moment'
 
 export default {
-  components: { AppArticleAddRelates },
+  components: { AppArticleAddRelates, VueDatepickerLocal },
   data () {
     return {
       getif: false,
       list: [],
+      device: 0,
+      delayPush: 0,
       text: '',
+      delayPushTime: new Date(),
       ui: {
         channelIds: ''
       },
@@ -68,12 +101,15 @@ export default {
     },
     submit () {
       let obj = {
-
+        contentId: this.list.selected[0].id,
+        content: encodeURI(this.text),
+        device: this.device == 0 ? '1,2' : this.device,
+        delayPush: this.delayPush,
+        delayPushTime: this.delayPush == 1 ? moment(this.delayPushTime).format('YYYY-MM-DD HH:mm:ss') : ''
       }
 
       this.$http.post('/cri-cms-platform/appPush/save.monitor', obj).then(res => {
         console.log(res)
-        this.$router.push('/push/list')
       })
     }
   }
@@ -112,5 +148,20 @@ export default {
   }
   .search_navbox .datepicker-range .datepicker-popup{
     width: 415px !important;
+  }
+  .radio_box_push{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start !important;
+    margin-bottom: 20px;
+  }
+  .radio_box_push .flex-item{
+    max-width: 200px;
+  }
+  .push_box{
+    padding: 20px;
+    background: #fff;
+    display: block !important;
+    border-radius: 10px;
   }
 </style>
