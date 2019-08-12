@@ -7,6 +7,9 @@
       <div class="flex-item scroll-y bg-e relative">
         <div class="box">
           <textarea v-model="text" placeholder="推送内容..."></textarea>
+          <div style="text-align: right;">
+            <span :style="{ color: text.length > 140 ? '#F44336' : '#999' }">{{text.length}} / 140</span>
+          </div>
 
           <div class="push_box">
             <div class="radio_box_push">
@@ -102,14 +105,32 @@ export default {
     submit () {
       let obj = {
         contentId: this.list.selected[0].id,
-        content: encodeURI(this.text),
+        content: this.text,
         device: this.device == 0 ? '1,2' : this.device,
         delayPush: this.delayPush,
         delayPushTime: this.delayPush == 1 ? moment(this.delayPushTime).format('YYYY-MM-DD HH:mm:ss') : ''
       }
 
+      if (!this.contentId) {
+        this.$toast('请选择关联文章')
+        return
+      }
+
+      if (!this.content) {
+        this.$toast('请填写推送内容')
+        return
+      }
+
       this.$http.post('/cri-cms-platform/appPush/save.monitor', obj).then(res => {
         console.log(res)
+
+        this.$toast('推送成功')
+
+        this.list.selected = []
+        this.text = ''
+        this.device = 0
+        this.delayPush = 0
+        this.delayPushTime = new Date()
       })
     }
   }
