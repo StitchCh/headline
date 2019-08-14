@@ -21,6 +21,13 @@
             </div>
 
             <div class="radio_box_push">
+              <span>推送站点：</span>
+
+              <div class="flex-item"><radio-box text="全部站点" :label="'all'" v-model="sites"/></div>
+              <div class="flex-item" v-for="item in sitesList"><radio-box :text="item.siteName" :label="item.siteId" v-model="sites"/></div>
+            </div>
+
+            <div class="radio_box_push">
               <span>延迟推送：</span>
 
               <div class="flex-item"><radio-box text="是" :label="1" v-model="delayPush"/></div>
@@ -61,9 +68,11 @@ export default {
       getif: false,
       list: [],
       device: 0,
+      sites: '',
       delayPush: 0,
       text: '',
       delayPushTime: new Date(),
+      sitesList: [],
       ui: {
         channelIds: ''
       },
@@ -89,8 +98,15 @@ export default {
   },
   beforeMount () {
     this.getChannels()
+    this.getSites()
+    this.sites = sessionStorage.getItem('siteId') + ''
   },
   methods: {
+    getSites () {
+      this.$http.post('/cri-cms-platform/sites.monitor').then(res => {
+        this.sitesList = res.sites || []
+      })
+    },
     getChannels () {
       this.$http.post('/cri-cms-platform/sysRoles/getChannels.monitor').then(res => {
         this.ui.channels = res || []
@@ -107,6 +123,7 @@ export default {
         contentId: this.list.selected[0].id,
         content: this.text,
         device: this.device == 0 ? '1,2' : this.device,
+        sites: this.sites,
         delayPush: this.delayPush,
         delayPushTime: this.delayPush == 1 ? moment(this.delayPushTime).format('YYYY-MM-DD HH:mm:ss') : ''
       }
