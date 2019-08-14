@@ -128,17 +128,17 @@ export default {
         delayPushTime: this.delayPush == 1 ? moment(this.delayPushTime).format('YYYY-MM-DD HH:mm:ss') : ''
       }
 
-      if (!this.contentId) {
+      if (!obj.contentId) {
         this.$toast('请选择关联文章')
         return
       }
 
-      if (!this.content) {
+      if (!obj.content) {
         this.$toast('请填写推送内容')
         return
       }
 
-      if (!this.content.length > 140) {
+      if (!obj.content.length > 140) {
         this.$toast('推送内容最多为140字')
         return
       }
