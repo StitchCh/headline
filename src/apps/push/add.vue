@@ -7,7 +7,7 @@
       <div class="flex-item scroll-y bg-e relative">
         <div class="box">
           <textarea v-model="text" placeholder="推送内容..."></textarea>
-          <div style="text-align: right;">
+          <div style="text-align: right;display: block;margin-bottom: 20px;">
             <span :style="{ color: text.length > 140 ? '#F44336' : '#999' }">{{text.length}} / 140</span>
           </div>
 
@@ -116,7 +116,7 @@ export default {
       })
     },
     changetext (data) {
-      this.text = data.abstracts
+      this.text = data.title
     },
     submit () {
       let obj = {
@@ -173,7 +173,6 @@ export default {
     box-sizing: border-box;
     outline: none;
     resize: none;
-    margin-bottom: 20px;
     height: 100px;
   }
   .box>div{

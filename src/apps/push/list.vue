@@ -14,17 +14,23 @@
       <div class="setting-card f-14">
         <table>
           <thead>
-          <th>序列</th>
-          <th>创建人</th>
-          <th>推送内容</th>
-          <th>创建时间</th>
+          <th style="text-align: center;">序列</th>
+          <th style="text-align: center;">创建人</th>
+          <th style="text-align: center;">推送内容</th>
+          <th style="text-align: center;">创建时间</th>
+          <th style="text-align: center;">状态</th>
           </thead>
           <tbody>
           <tr v-for="(item, index) in list" :key="item.id">
             <td>{{index + 1}}</td>
             <td>{{item.createUser}}</td>
-            <td>{{item.content}}</td>
+            <td>
+              <div style="max-width: 700px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+                {{item.content}}
+              </div>
+            </td>
             <td>{{item.createTime}}</td>
+            <td :style="{'color': returnState(item.status).color}">{{returnState(item.status).value}}</td>
           </tr>
           </tbody>
         </table>
@@ -62,6 +68,24 @@
           this.total = res.totalPage * 15
           this.loading = false
         })
+      },
+      returnState (data) {
+        if (data == '01') {
+          return {
+            value: '已推送',
+            color: '#12a71a'
+          }
+        } else if (data == '02') {
+          return {
+            value: '待推送',
+            color: '#3e50ff'
+          }
+        } else if (data == '00') {
+          return {
+            value: '推送失败',
+            color: '#f00'
+          }
+        }
       }
     },
     beforeMount () {
