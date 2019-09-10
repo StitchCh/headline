@@ -213,6 +213,9 @@ export default {
 
 <style lang="less">
 .media-videos{
+  .flex-item{
+    height: auto !important;
+  }
   .videos-item{width: 200px;
     &:hover{
       .item-check{visibility: visible;}

@@ -163,7 +163,11 @@
             url: origin + v.audio
           }
         })
-        if (selected.length) this.editor.execCommand('insertvideo', selected, 'upload')
+        if (selected.length) {
+        selected.forEach(item => {
+          this.editor.execCommand('music', item, 'upload', true)
+        })
+      }
         this.ui.audioSelectorShow = false
       },
       ready (UE) {

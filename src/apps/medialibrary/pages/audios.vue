@@ -170,6 +170,9 @@ export default {
 
 <style lang="less">
 .media-audios{
+  .flex-item{
+    height: auto !important;
+  }
   .audios-item{width: 200px;border-radius: 8px;outline: none;
     &:hover .item-check{visibility: visible;}
     &.checked {

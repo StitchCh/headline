@@ -185,7 +185,6 @@ export default {
     insertVideo () {
       let origin = this.$refs.mediaVideos.origin
       let selected = this.$refs.mediaVideos.selected.map(v => {
-        console.log(v)
         return {
           url: origin + v.video,
           thumb: origin + v.thumb
@@ -202,7 +201,11 @@ export default {
         }
       })
       console.log(selected)
-      if (selected.length) this.editor.execCommand('music', selected[0], 'upload', true)
+      if (selected.length) {
+        selected.forEach(item => {
+          this.editor.execCommand('music', item, 'upload', true)
+        })
+      }
       this.ui.audioSelectorShow = false
     },
     ready (UE) {

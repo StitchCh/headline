@@ -256,6 +256,9 @@ export default {
 
 <style lang="less">
 .media-photos{
+  .flex-item{
+    height: auto !important;
+  }
   .listhover:hover{
     background: #eee;
   }
