@@ -22,8 +22,8 @@
             <li class="a flex-v-center listhover" @click="setScale('all')">
               <span class="flex-item">全部</span>
             </li>
-            <li class="a flex-v-center listhover" @click="setScale('16:9')">
-              <span class="flex-item">16:9</span>
+            <li class="a flex-v-center listhover" @click="setScale('16:10')">
+              <span class="flex-item">16:10</span>
             </li>
             <li class="a flex-v-center listhover" @click="setScale('10:2')">
               <span class="flex-item">10:2</span>

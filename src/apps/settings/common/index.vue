@@ -46,7 +46,7 @@
     </select-card>
 
     <select-card :value="item.value" v-if="imageratioShow" title="图片尺寸" width="600px" maskClick @close="imageratioShow = false">
-      <select-card-option value="16:9" @click="switchOption(item, '16:9')">16:9</select-card-option>
+      <select-card-option value="16:10" @click="switchOption(item, '16:10')">16:10</select-card-option>
       <select-card-option value="4:3" @click="switchOption(item, '4:3')">4:3</select-card-option>
       <select-card-option value="1:1" @click="switchOption(item, '1:1')">1:1</select-card-option>
     </select-card>

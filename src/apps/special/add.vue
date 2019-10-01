@@ -27,7 +27,7 @@
         </div>
         <div v-show="form.headPicType == 1" style="max-width: 300px;margin: 20px;">
           <app-article-add-thumb v-if="getif" v-model="headList_type1" height="160px" style="margin-bottom: 8px;"></app-article-add-thumb>
-          <p style="font-size: 12px;color: #f00;">建议择尺寸为16：9的图片作为头图</p>
+          <p style="font-size: 12px;color: #f00;">建议择尺寸为16：10的图片作为头图</p>
         </div>
         <div v-show="form.headPicType == 2">
           <app-article-add-relates v-if="getif && getif1" :channels="ui.channels" :limit="form.headPicType" v-model="headList_type2" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/special/getArticList.monitor"></app-article-add-relates>
@@ -99,7 +99,7 @@
         <!--<div class="flex-v-center" style="padding: 10px 5px 0 5px;">-->
           <!--<div class="flex-item"><radio-box text="默认" :label="1" v-model="form.thumbType"/></div>-->
           <!--<div class="flex-item"><radio-box text="三图" :label="2" v-model="form.thumbType"/></div>-->
-          <!--<div><radio-box text="16:9 大图" style="margin: 0;" :label="3" v-model="form.thumbType"/></div>-->
+          <!--<div><radio-box text="16:10 大图" style="margin: 0;" :label="3" v-model="form.thumbType"/></div>-->
         <!--</div>-->
       </div>
 
@@ -515,6 +515,9 @@ export default {
       }
     } else {
       this.getif = true
+      this.form.virtualPv = 400 + parseInt(Math.random() * 200)
+      this.form.virtualShare = 400 + parseInt(Math.random() * 200)
+      this.form.virtualDigg = 400 + parseInt(Math.random() * 200)
     }
   },
   watch: {

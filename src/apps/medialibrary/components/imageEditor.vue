@@ -30,7 +30,7 @@
           <div
             class="hover_cp_btn"
             style="border-radius: 50%;width: 36px;height: 36px;transition: 0.4s;display: flex;justify-content: center;align-items: center;"
-            v-tooltip:right="'16 : 9'" :class="{ on: optionActive === '16 : 9'}" @click="setRatio(1)">
+            v-tooltip:right="'16 : 10'" :class="{ on: optionActive === '16 : 10'}" @click="setRatio(1)">
             <div style="border: 2px solid #888;width: 16px;height: 9px;"></div>
           </div>
           <div
@@ -244,8 +244,8 @@ export default {
         this.optionActive = 'free'
       }
       if (type === 1) {
-        this.cropper.setAspectRatio(16 / 9)
-        this.optionActive = '16 : 9'
+        this.cropper.setAspectRatio(16 / 10)
+        this.optionActive = '16 : 10'
       }
       if (type === 2) {
         this.cropper.setAspectRatio(4 / 3)

@@ -27,7 +27,7 @@
         <div class="flex-v-center" style="padding: 10px 5px 0 5px;">
           <!-- <div class="flex-item"><radio-box text="默认" :label="1" v-model="form.thumbType"/></div> -->
           <!-- <div class="flex-item"><radio-box text="三图" :label="2" v-model="form.thumbType"/></div> -->
-          <!-- <div><radio-box text="16:9 大图" style="margin: 0;" :label="3" v-model="form.thumbType"/></div> -->
+          <!-- <div><radio-box text="16:10 大图" style="margin: 0;" :label="3" v-model="form.thumbType"/></div> -->
         </div>
       </div>
       <div class="option-item">
@@ -251,6 +251,10 @@ export default {
       // this.form.gallerySettingMinHeight = res.gallerySettingMinHeight || '480'
       // this.form.gallerySettingThumbHeight = res.gallerySettingThumbHeight || '80'
       // this.form.gallerySettingThumbWidth = res.gallerySettingThumbWidth || '60'
+    } else {
+      this.form.virtualPv = 400 + parseInt(Math.random() * 200)
+      this.form.virtualShare = 400 + parseInt(Math.random() * 200)
+      this.form.virtualDigg = 400 + parseInt(Math.random() * 200)
     }
   },
   watch: {

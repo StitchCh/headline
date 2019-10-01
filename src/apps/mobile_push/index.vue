@@ -24,15 +24,33 @@
           <switcher mode="Number" v-model="form.hasThumb"/>
         </div>
       </div>
+      <div class="setimg">
+        <p>封面：</p>
+        <btn v-if="!thumb.id" style="line-height: normal;" flat @click="imageSelectorShow = true">选择封面</btn>
+        <img v-else :src="thumb.src" alt="" @click="imageSelectorShow = true">
+      </div>
       <article-editor ref="editor" @getKeyGenerate="getKeyGenerate"></article-editor>
     </div>
 
     <div class="btn" @click="btn">发布文章</div>
+
+    <div class="gallery-editor tc_box">
+      <layer v-if="imageSelectorShow" title="选择图片"  width="800px">
+        <div class="layer-text relative" style="height: 800px;">
+          <media-photos select-mode ref="mediaPhotos"></media-photos>
+        </div>
+        <div class="layer-btns">
+          <btn flat @click="imageSelectorShow = false">取消</btn>
+          <btn flat @click="insertImage">选择</btn>
+        </div>
+      </layer>
+    </div>
   </div>
 </template>
 
 <script>
 import ArticleEditor from './editor'
+import MediaPhotos from '../medialibrary/pages/photosMoble'
 
 const from = {
   article: {
@@ -45,21 +63,24 @@ const from = {
 
 export default {
   name: 'moblePush',
-  components: { ArticleEditor },
+  components: { ArticleEditor, MediaPhotos },
   data () {
     return {
+      imageSelectorShow: false,
       minh: document.documentElement.clientHeight,
       ui: {
         channelShow: false,
         channels: []
       },
       getend: false,
+      thumb: {},
       form: {
         title: '',
         content: '',
         channelIds: '',
         abstarcts: '',
-        hasThumb: 1
+        hasThumb: 1,
+        thumb: ''
       }
     }
   },
@@ -86,6 +107,20 @@ export default {
     this.getChannels()
   },
   methods: {
+    insertImage () {
+      let selected = this.$refs.mediaPhotos.selected.map(v => {
+        console.log(v)
+        return {
+          src: this.$refs.mediaPhotos.imgOrigin + v.filePath + v.fileName,
+          id: v.id
+        }
+      })
+      if (selected.length) {
+        console.log(selected)
+        this.thumb = selected[0]
+      }
+      this.imageSelectorShow = false
+    },
     btn () {
       let { content } = this.$refs.editor
       if (!this.form.title) {
@@ -117,6 +152,7 @@ export default {
     submit () {
       let { content } = this.$refs.editor
       let form = {...this.form}
+      form.thumb = this.thumb.id
       form.content = content
       this.$http.post('/cri-cms-platform/article/mobileDispatchSave.monitor', form).then(res => {
         console.log(res)
@@ -160,6 +196,16 @@ export default {
 </script>
 
 <style scoped>
+  .layer-btns{
+    height: 40px;
+  }
+  .layer-btns *{
+    height: 30px !important;
+    line-height: 30px !important;
+    color: #fff;
+    margin: 5px 5px !important;
+    box-sizing: content-box;
+  }
   .bigbigbox{
     width: 100%;
   }
@@ -190,6 +236,12 @@ export default {
     background: #00a0e9;
     color: #fff;
     z-index: 9999;
+  }
+  .setimg *{
+    margin: 0 auto;
+    max-width: 90%;
+    display: block;
+    position: static !important;
   }
 </style>
 

@@ -42,7 +42,7 @@
 <script>
 import VueUeditorWrap from 'vue-ueditor-wrap'
 import debounce from 'lodash/debounce'
-import MediaPhotos from '../medialibrary/pages/photos'
+import MediaPhotos from '../medialibrary/pages/photosMoble'
 import MediaVideos from '../medialibrary/pages/videos'
 import MediaAudios from '../medialibrary/pages/audios'
 

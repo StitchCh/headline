@@ -35,7 +35,7 @@
           <div>
             <div class="add_top_addimg" @click="photoSelectorShow = true">
               <i class="icon f-32 c-a">add_photo_alternate</i>
-              <p style="margin: 0;color: #f00;font-size: 12px;">请选择 16:9 的图片</p>
+              <p style="margin: 0;color: #f00;font-size: 12px;">请选择 16:10 的图片</p>
             </div>
             <ul class="img_listbox">
               <li v-for="(item, index) in selected" class="img_list relative">
@@ -166,8 +166,8 @@ export default {
         this.$toast('最多选择五张图片')
         return
       }
-      if (this.$refs.mediaPhotos.selected[0].scale != '16:9') {
-        this.$toast('请选择16:9的图片')
+      if (this.$refs.mediaPhotos.selected[0].scale != '16:10') {
+        this.$toast('请选择16:10的图片')
         return
       }
       this.selected = this.selected.concat(this.$refs.mediaPhotos.selected.map(v => {
