@@ -117,7 +117,6 @@ export default {
   methods: {
     getLinkList (id) {
       this.$http.post('/cri-cms-platform/article/published.monitor', { id }).then(res => {
-        console.log(res)
         this.urlList = res
         this.urlListShow = true
       })
