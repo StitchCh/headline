@@ -68,7 +68,7 @@ export default {
         toolbars: [
           [
             'fullscreen',
-            'source',
+
             'autotypeset',
             '|',
             'undo',

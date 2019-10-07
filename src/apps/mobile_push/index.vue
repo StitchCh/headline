@@ -1,5 +1,8 @@
 <template>
   <div class="bigbigbox">
+    <div>
+      <btn style="line-height: normal;height: 30px;padding: 0;line-height: 30px;" flat @click="$router.go(-1)">切换站点</btn>
+    </div>
     <div style="width: 100%;background: #fff;">
       <div class="topbox">
         <div v-if="getend" class="option-item flex-v-center relative a" @click="ui.channelShow=!ui.channelShow">
@@ -208,6 +211,7 @@ export default {
   }
   .bigbigbox{
     width: 100%;
+    background: #fff;
   }
   textarea{
     outline: none;

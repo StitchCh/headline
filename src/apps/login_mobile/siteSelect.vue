@@ -54,6 +54,10 @@ export default {
       this.setPasswordShow = true
     }
   },
+  mounted () {
+    document.getElementById('app').style.minWidth = '100%'
+    document.getElementById('app').style.position = 'relative'
+  },
   methods: {
     setPassword () {
       if (this.loginUserPwdConfirm != this.loginUserPwd) {

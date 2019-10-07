@@ -66,7 +66,7 @@
           toolbars: [
             [
               'fullscreen',
-              'source',
+
               'autotypeset',
               '|',
               'undo',

@@ -395,11 +395,11 @@ var utils = UE.utils = {
      * ```javascript
      *
      * var target = { name: 'target', sex: 1 },
-     *      source = { name: 'source', age: 17 };
+     *      source = { name:  age: 17 };
      *
      * UE.utils.extend( target, source );
      *
-     * //output: { name: 'source', sex: 1, age: 17 }
+     * //output: { name:  sex: 1, age: 17 }
      * console.log( target );
      *
      * ```
@@ -417,7 +417,7 @@ var utils = UE.utils = {
      * ```javascript
      *
      * var target = { name: 'target', sex: 1 },
-     *      source = { name: 'source', age: 17 };
+     *      source = { name:  age: 17 };
      *
      * UE.utils.extend( target, source, true );
      *
@@ -450,12 +450,12 @@ var utils = UE.utils = {
      * ```javascript
      *
      * var target = {},
-     *     source1 = { name: 'source', age: 17 },
+     *     source1 = { name:  age: 17 },
      *     source2 = { title: 'dev' };
      *
      * UE.utils.extend2( target, source1, source2 );
      *
-     * //output: { name: 'source', age: 17, title: 'dev' }
+     * //output: { name:  age: 17, title: 'dev' }
      * console.log( target );
      *
      * ```
@@ -27807,7 +27807,7 @@ UE.ui = baidu.editor.ui = {};
     //为工具栏添加按钮，以下都是统一的按钮触发命令，所以写在一起
     var btnCmds = ['undo', 'redo', 'formatmatch',
         'bold', 'italic', 'underline', 'fontborder', 'touppercase', 'tolowercase',
-        'strikethrough', 'subscript', 'superscript', 'source', 'indent', 'outdent',
+        'strikethrough', 'subscript', 'superscript',  'indent', 'outdent',
         'blockquote', 'pasteplain', 'pagebreak',
         'selectall', 'print','horizontal', 'removeformat', 'time', 'date', 'unlink',
         'insertparagraphbeforetable', 'insertrow', 'insertcol', 'mergeright', 'mergedown', 'deleterow',
