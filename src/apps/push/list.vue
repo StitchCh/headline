@@ -17,6 +17,8 @@
           <th style="text-align: center;">序列</th>
           <th style="text-align: center;">创建人</th>
           <th style="text-align: center;">推送内容</th>
+          <th style="text-align: center;">站点</th>
+          <th style="text-align: center;">延迟推送</th>
           <th style="text-align: center;">创建时间</th>
           <th style="text-align: center;">状态</th>
           </thead>
@@ -25,10 +27,12 @@
             <td>{{index + 1}}</td>
             <td>{{item.createUser}}</td>
             <td>
-              <div style="max-width: 700px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+              <div style="max-width: 400px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
                 {{item.content}}
               </div>
             </td>
+            <td>{{sitesObj[item.sites]}}</td>
+            <td style="text-align: center;">{{item.delayPush == 1 ? '是' : '否'}}</td>
             <td>{{item.createTime}}</td>
             <td :style="{'color': returnState(item.status).color}">{{returnState(item.status).value}}</td>
           </tr>
@@ -55,9 +59,18 @@
           toPage: 1
         },
         total: 1,
+        sitesObj: {}
       }
     },
     methods: {
+      getSites () {
+        this.$http.post('/cri-cms-platform/sites.monitor').then(res => {
+          res.sites.forEach(item => {
+            this.sitesObj[item.siteId] = item.siteName
+          })
+          this.sitesObj.all = '全站点'
+        })
+      },
       getList () {
         this.$http.post('/cri-cms-platform/appPush/list.monitor', this.filter).then(res => {
           console.log(res)
@@ -90,6 +103,7 @@
     },
     beforeMount () {
       this.getList()
+      this.getSites()
     }
   }
 </script>

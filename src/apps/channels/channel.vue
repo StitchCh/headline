@@ -187,7 +187,7 @@ export default {
 
 <style lang="less">
 .channel-editor{width: 450px;border-right: 1px solid #ddd;
-  .channel-name{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+  .channel-name{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 40px;}
   .channel-tree-item{line-height: 1em;border: 1px solid rgba(0,0,0,.08);padding-left: 7px;
     .icon-btn{opacity: .2;}
     input{height: 30px;background: #fff;border: 1px solid #ddd;padding: 0 5px;border-width: 0 1px;}

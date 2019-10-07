@@ -239,7 +239,7 @@ export default {
     text-align: center;
     background: #00a0e9;
     color: #fff;
-    z-index: 9999;
+    z-index: 10;
   }
   .setimg *{
     margin: 0 auto;

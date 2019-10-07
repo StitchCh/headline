@@ -1,7 +1,7 @@
 <template>
   <div class="app-article-add-thumb">
     <div class="add-photo-btn a flex-center" :style="{ width, height }" @click="show = true">
-      <img :src="image.url" width="100%" alt="">
+      <img :src="image.url" style="max-width: 100%;max-height: 31px;" alt="">
       <i v-if="!image.url" class="icon f-32 c-a">add_photo_alternate</i>
     </div>
     <layer v-if="show" title="选择图片"  width="1000px" class="tc_box">

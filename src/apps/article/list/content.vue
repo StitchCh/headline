@@ -248,6 +248,9 @@ export default {
 
 <style lang="less">
 .article-content{
+  .video_not_show{
+    display: none !important;
+  }
   h1{line-height: 1.3em;font-size: 26px;}
   .art-ctn{max-width: 900px;margin: 0 auto;padding: 30px;}
   .art-info {height: 50px;

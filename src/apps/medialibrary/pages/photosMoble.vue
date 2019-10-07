@@ -15,7 +15,7 @@
         <btn v-show="$route.path.indexOf('mobilePush') < 0" flat v-if="selected.length" color="#008eff" @click="cancelSelect">取消选择</btn>
 
         <!--<btn style="margin-left: 10px;" @click="search">搜索</btn>-->
-        <div v-show="$route.path.indexOf('mobilePush') < 0" class="relative" style="padding: 0 4px;">
+        <div class="relative" style="padding: 0 4px;">
           <btn @click="scaleshow = true" color="#008eff" flat>筛选</btn>
           <bubble v-if="scaleshow" @close="scaleshow = false">
             <ul class="f-14 c-5" style="padding: 4px 0;width: 60px;text-align: center;line-height: 24px;">
