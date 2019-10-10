@@ -86,8 +86,8 @@ export default {
           id: this.id,
           app: 'VIDEO'
         }).then(res => {
-          console.log(res)
           this.res = res
+          res.video.isListShowPic = res.video.isListShowPic == 1 ? 0 : 1
           this.ui.loading = false
           this.$nextTick(() => {
             let { editor } = this.$refs
