@@ -151,7 +151,7 @@ export default {
     }
   },
   mounted () {
-    this.waterImg = this.src
+    this.waterImg = this.$store.state.account.waterImg
     this.watermarkData.top
     this.imgboxData = {
       x: this.$refs.imgbox.offsetLeft,

@@ -69,7 +69,7 @@
       </div>
     </div>
   </div>
-  <image-editor v-if="show.imageEditor" @close="show.imageEditor = false" @refresh="refresh" :src="$store.state.waterImg + current.filePath+current.fileName" :current="current"/>
+  <image-editor v-if="show.imageEditor" @close="show.imageEditor = false" @refresh="refresh" :src="origin+current.filePath+current.fileName" :current="current"/>
 </layer>
 </template>
 
@@ -80,7 +80,7 @@ import 'video.js/dist/lang/zh-CN'
 import 'vue-video-player/src/custom-theme.css'
 import { videoPlayer } from 'vue-video-player'
 
-const ORIGIN = ''
+const ORIGIN = window.w_api
 const typeContent = {
   0: { text: '图片' },
   1: { text: '音频' },
