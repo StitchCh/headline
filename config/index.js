@@ -12,7 +12,17 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       // '/cri-cms-platform': { target: 'http://112.103.196.145:9099' }
-      '/cri-cms-platform': { target: 'http://manage.sinorusfocus.com' }
+      '/cri-cms-platform': {
+        target: 'https://manage.sinorusfocus.com',
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: {
+          '^/cri-cms-platform': '/cri-cms-platform'  // 路径重写，第一个与上面相同，第二个/queue-admin 为server.context-path（服务器的上下文）
+        },
+        headers: {
+          Referer: 'https://manage.sinorusfocus.com'
+        }
+      },
       //'/cri-cms-platform': { target: 'http://60.247.77.208:59099' }
     },
 
