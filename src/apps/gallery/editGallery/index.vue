@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="flex-item scroll-y">
-          <gallery-editor ref="editor"/>
+          <gallery-editor @getKeyGenerate="getKeyGenerate" ref="editor"/>
         </div>
       </div>
       <gallery-option :res="res" ref="option" :style="{ width: ui.optionShow ? '320px' : '0px' }"/>
@@ -58,6 +58,22 @@ export default {
     }
   },
   methods: {
+    getKeyGenerate () {
+      if (this.id) return
+
+      let doc = this.$refs.editor.allDescription
+      if (doc == '') return
+      if (sessionStorage.siteId == 1002) {
+        this.$refs.option.form.abstarcts = doc.split('.')[0].substring(0, 128)
+      } else {
+        this.$http.post('/cri-cms-platform/article/getKeyGenerate.monitor', { doc }).then(
+          res => {
+            this.$refs.option.form.abstarcts = res.gerenate
+            this.$refs.option.form.keywords = res.key.join(',')
+          }
+        )
+      }
+    },
     getGallery () {
       if (this.from && this.id) {
         this.ui.loading = true

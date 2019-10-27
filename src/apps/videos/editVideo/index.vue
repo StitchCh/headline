@@ -67,12 +67,12 @@ export default {
       let doc = this.$refs.editor_box.getText()
       if (!doc.trim()) return
       if (sessionStorage.siteId == 1002) {
-        this.form.abstarcts = doc.split('.')[0].substring(0, 128)
+        this.$refs.option.form.abstarcts = doc.split('.')[0].substring(0, 128)
       } else {
         this.$http.post('/cri-cms-platform/article/getKeyGenerate.monitor', { doc }).then(
           res => {
-            this.form.abstarcts = res.gerenate
-            this.form.keywords = res.key.join(',')
+            this.$refs.option.form.abstarcts = res.gerenate
+            this.$refs.option.form.keywords = res.key.join(',')
           }
         )
       }

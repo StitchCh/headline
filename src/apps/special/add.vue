@@ -306,7 +306,6 @@ export default {
       }
       this.list.push({
         name: '新建板块',
-        time: '',
         time: this.nowDate,
         edit: false,
         list: {
@@ -432,6 +431,8 @@ export default {
         obj.specialId = obj.id
         obj.id = this.id
       }
+
+      if (this.form.createDate) obj.createDate = moment(this.form.createDate).format('YYYY-MM-DD hh:mm:ss')
 
       obj.isListShowPic = obj.isListShowPic == 1 ? 0 : 1
 

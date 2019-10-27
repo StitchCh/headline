@@ -70,6 +70,7 @@ import { videoPlayer } from 'vue-video-player'
 import MediaVideos from '../../medialibrary/pages/videos'
 import MediaPhotos from '../../medialibrary/pages/photos'
 import draggable from 'vuedraggable'
+import debounce from 'lodash/debounce'
 
 export default {
   name: 'video-editor',
@@ -114,6 +115,11 @@ export default {
       if (index === this.selected.length - 1 && this.activeIndex === index) this.activeIndex = index - 1
       this.selected.splice(index, 1)
     }
+  },
+  watch: {
+    'allDescription': debounce(function () {
+      this.$emit('getKeyGenerate')
+    }, 1000)
   }
 }
 </script>

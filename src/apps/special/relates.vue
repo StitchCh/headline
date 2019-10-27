@@ -8,14 +8,14 @@
     <ul v-if="list.selected.length" style="margin-top: 10px;">
       <draggable element="ul" :options="{ghostClass:'movelist'}" v-model="list.selected" >
         <li v-for="(item, index) in list.selected" :key="item.id" class="flex-v-center item" :title="item.title">
-          <span style="margin-right: 10px;">{{item.title}}</span>
+          <span style="margin-right: 10px;max-width: 500px;">{{item.title}}</span>
           <span class="flex-item"></span>
           <i class="icon a" style="font-size: 18px;" @click="remove(index)">delete</i>
         </li>
       </draggable>
     </ul>
     <slot></slot>
-    <layer v-show="show" :title="'添加' + title" width="800px" mask-click @close="show = false">
+    <layer v-show="show" :title="'添加' + title" width="1000px" mask-click @close="show = false">
       <div class="layer-text bg-e relative">
         <transition name="fade">
           <div v-if="loading" class="flex-center abs bg-e" style="z-index: 10;">

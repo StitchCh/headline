@@ -56,6 +56,9 @@
           <!--<div class="tool-item">-->
             <!--<icon-btn small v-tooltip:bottom="'复制并重新发布'" @click="copyArticle">file_copy</icon-btn>-->
           <!--</div>-->
+          <div class="tool-item">
+            <icon-btn small v-tooltip:bottom="'链接'" @click="getLinkList(id)">link</icon-btn>
+          </div>
         </div>
         <div class="flex-item"></div>
 
@@ -73,6 +76,20 @@
         <router-view :channels="ui.channels"/>
       </div>
     </div>
+
+    <div v-if="urlListShow" @click="urlListShow = false" class="urlList">
+      <div @click.stop class="urlList_box">
+        <ul v-if="urlList.length > 0">
+          <li v-for="(item, index) in urlList" class="urlList_list">
+            <p class="newTitle"><span style="margin-right: 10px;">{{index + 1}}.</span>{{item.newTitle}}</p>
+            <p class="newUrl">{{item.url}}</p>
+          </li>
+        </ul>
+        <div  v-if="urlList.length <= 0" style="padding: 20px;text-align: center;line-height: 340px;">
+          暂无数据
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -86,6 +103,8 @@ export default {
   props: ['id'],
   data () {
     return {
+      urlList: [],
+      urlListShow: false,
       ui: {
         channels: [],
         qrcodeShow: false
@@ -94,6 +113,12 @@ export default {
     }
   },
   methods: {
+    getLinkList (id) {
+      this.$http.post('/cri-cms-platform/special/published.monitor', { id }).then(res => {
+        this.urlList = res
+        this.urlListShow = true
+      })
+    },
     getChannels () {
       this.$http.post('/cri-cms-platform/special/getChannels.monitor').then(res => {
         this.ui.channels = res || []

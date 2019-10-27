@@ -11,23 +11,6 @@
     </div>
     <div><icon-btn class="next-btn" color="rgba(255, 255, 255, .8)" :disabled="!select" @click="next">arrow_forward</icon-btn></div>
   </div>
-  <div v-if="setPasswordShow" class="set_password_box">
-    <div class="set_password">
-      <p class="set_password_title">首次登录请修改密码</p>
-      <div class="set_password_input">
-        <input v-model="oldPasswd" type="password" placeholder="请输入旧密码">
-      </div>
-      <div class="set_password_input">
-        <input v-model="loginUserPwd" type="password" placeholder="请输入新密码">
-      </div>
-      <div class="set_password_input">
-        <input v-model="loginUserPwdConfirm" type="password" placeholder="确认新密码">
-      </div>
-      <div class="set_password_btn">
-        <span @click="setPassword">确定</span>
-      </div>
-    </div>
-  </div>
 </div>
 </template>
 
@@ -50,9 +33,6 @@ export default {
     getUserInfo().then(res => {
       this.list = res.sites || []
     })
-    if (this.$store.state.account.firstLogin) {
-      this.setPasswordShow = true
-    }
   },
   mounted () {
     document.getElementById('app').style.minWidth = '100%'

@@ -358,6 +358,8 @@ export default {
         obj.id = this.id
       }
 
+      if (this.form.createDate) obj.createDate = moment(this.form.createDate).format('YYYY-MM-DD hh:mm:ss')
+
       obj.isListShowPic = obj.isListShowPic == 1 ? 0 : 1
 
       this.$http.post(url, obj).then(res => {
@@ -402,6 +404,7 @@ export default {
           console.log(res)
           this.form.channelIds = res.channelIds
           this.tagOrder = res.live.tagOrder.split(',')
+          this.form.createDate = res.content.createDate
           this.form.title = res.content.title
           this.form.contentId = res.live.contentId
           this.form.virtualDigg = res.content.virtualDigg || '0'

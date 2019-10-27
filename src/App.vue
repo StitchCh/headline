@@ -119,4 +119,58 @@ export default {
 a{
   text-decoration: none !important;
 }
+  .channel-name{
+    line-height: 40px;
+  }
+  .item-title{
+    line-height: 29px;
+  }
+.urlList{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: rgba(0,0,0,0.5);
+}
+.urlList p{
+  margin: 0 0 10px;
+}
+.urlList_box{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 800px;
+  height: 400px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 2px 2px 15px rgba(0,0,0,0.2);
+  padding: 10px;
+  overflow: auto;
+}
+.newTitle{
+  font-size: 16px;
+}
+.newUrl{
+  font-size: 14px;
+  background: #eee;
+  border-radius: 4px;
+  padding: 5px;
+  color: #666;
+  word-wrap: break-word
+}
+.urlList_list{
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+.urlList_list:last-child{
+  border: 0;
+}
+.list-item>.flex-item{
+  width: calc(100% - 90px);
+}
 </style>

@@ -56,6 +56,10 @@
               </div>
             </bubble>
           </div>
+
+          <div class="tool-item">
+            <icon-btn small v-tooltip:bottom="'链接'" @click="getLinkList(id)">link</icon-btn>
+          </div>
           <!--<div class="tool-item">-->
             <!--<icon-btn small v-tooltip:bottom="'复制并重新发布'" @click="copyAudio">file_copy</icon-btn>-->
           <!--</div>-->
@@ -72,6 +76,21 @@
           </div>
         </div>
         <router-view :channels="channels"/>
+      </div>
+    </div>
+
+
+    <div v-if="urlListShow" @click="urlListShow = false" class="urlList">
+      <div @click.stop class="urlList_box">
+        <ul v-if="urlList.length > 0">
+          <li v-for="(item, index) in urlList" class="urlList_list">
+            <p class="newTitle"><span style="margin-right: 10px;">{{index + 1}}.</span>{{item.newTitle}}</p>
+            <p class="newUrl">{{item.url}}</p>
+          </li>
+        </ul>
+        <div  v-if="urlList.length <= 0" style="padding: 20px;text-align: center;line-height: 340px;">
+          暂无数据
+        </div>
       </div>
     </div>
   </div>
@@ -93,12 +112,20 @@ export default {
   },
   data () {
     return {
+      urlList: [],
+      urlListShow: false,
       ui: {
         qrcodeShow: false
       }
     }
   },
   methods: {
+    getLinkList (id) {
+      this.$http.post('/cri-cms-platform/audio/published.monitor', { id }).then(res => {
+        this.urlList = res
+        this.urlListShow = true
+      })
+    },
     onItemClick (item) {
       this.$router.replace({
         path: `/audio/list/${item.id}`,

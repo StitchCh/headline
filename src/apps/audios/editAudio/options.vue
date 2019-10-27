@@ -30,12 +30,12 @@
           <div><radio-box text="16:10 大图" style="margin: 0;" :label="3" v-model="form.thumbType"/></div>
         </div> -->
       </div>
-      <div class="option-item">
-        <div class="flex-v-center">
-          <span class="flex-item">显示头图</span>
-          <switcher mode="Number" v-model="form.hasThumb"/>
-        </div>
-      </div>
+      <!--<div class="option-item">-->
+        <!--<div class="flex-v-center">-->
+          <!--<span class="flex-item">显示头图</span>-->
+          <!--<switcher mode="Number" v-model="form.hasThumb"/>-->
+        <!--</div>-->
+      <!--</div>-->
       <div class="option-item">
         <div class="flex-v-center">
           <span class="flex-item">列表中是否显示图片</span>
