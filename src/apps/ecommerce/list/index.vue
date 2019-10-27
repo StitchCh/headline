@@ -45,7 +45,9 @@
             <icon-btn small v-tooltip:bottom="'删除'" @click="deleteArticle">delete</icon-btn>
           </div>
           <div class="tool-item relative">
-            <icon-btn small v-tooltip:bottom="'二维码'" @click="ui.qrcodeShow=!ui.qrcodeShow"><img class="qr-icon" src="../../../assets/img/QR_code.svg"></icon-btn>
+            <icon-btn small v-tooltip:bottom="'二维码'" @click="ui.qrcodeShow=!ui.qrcodeShow">
+              <img class="qr-icon" src="../../../assets/img/QR_code.svg">
+            </icon-btn>
             <bubble v-if="ui.qrcodeShow" @close="ui.qrcodeShow=false">
               <div style="width: 200px;height: 200px;">
                 <img :src="qrcode(id)">

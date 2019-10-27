@@ -79,7 +79,7 @@
             <span>设置</span>
             <i class="icon f-18 c-a">keyboard_arrow_down</i>
           </span>
-          <vue-datepicker-local show-buttons clearable format="YYYY-MM-DD HH:mm:ss" v-model="form.createDate"></vue-datepicker-local>
+          <vue-datepicker-local show-buttons :clearable="false" format="YYYY-MM-DD HH:mm:ss" v-model="form.createDate"></vue-datepicker-local>
         </div>
       </div>
 

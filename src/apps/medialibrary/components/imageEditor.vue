@@ -248,27 +248,27 @@ export default {
       if (type === 1) {
         this.cropper.setAspectRatio(16 / 10)
         this.optionActive = '16 : 10'
-        this.cropNumber = '16 : 10'
+        this.cropNumber = '16:10'
       }
       if (type === 2) {
         this.cropper.setAspectRatio(4 / 3)
         this.optionActive = '4 : 3'
-        this.cropNumber = '4 : 3'
+        this.cropNumber = '4:3'
       }
       if (type === 3) {
         this.cropper.setAspectRatio(1 / 1)
         this.optionActive = '1 : 1'
-        this.cropNumber = '1 : 1'
+        this.cropNumber = '1:1'
       }
       if (type === 4) {
         this.cropper.setAspectRatio(2 / 1)
         this.optionActive = '2 : 1'
-        this.cropNumber = '2 : 1'
+        this.cropNumber = '2:1'
       }
       if (type === 5) {
         this.cropper.setAspectRatio(10 / 2)
         this.optionActive = '10 : 2'
-        this.cropNumber = '10 : 2'
+        this.cropNumber = '10:2'
       }
       this.cropper.setDragMode('crop')
     },

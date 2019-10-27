@@ -32,14 +32,14 @@
           </div>
         </div>
         <div class="flex">
-          <div class="flex-item" style="margin-right: 10px;">
+          <div class="flex-item" style="margin-right: 10px;max-width: 50%;">
             <div class="title">点击选取</div>
             <ul class="content">
               <li v-if="!list.unselected.length" class="flex-center none"><no-data/></li>
               <li v-for="(item, index) in list.unselected" :key="item.id" @click="select(index)"><div>{{item.title}}</div></li>
             </ul>
           </div>
-          <div class="flex-item">
+          <div class="flex-item" style="max-width: 50%;">
             <div class="title">已选取</div>
             <ul class="content">
               <li v-if="!list.selected.length" class="flex-center none"><no-data/></li>

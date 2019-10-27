@@ -8,7 +8,7 @@
     <ul v-if="list.selected.length" style="margin-top: 10px;">
       <draggable element="ul" :options="{ghostClass:'movelist'}" v-model="list.selected" >
         <li v-for="(item, index) in list.selected" :key="item.id" class="flex-v-center item" :title="item.title">
-          <span style="margin-right: 10px;max-width: 500px;">{{item.title}}</span>
+          <span style="margin-right: 10px;">{{item.title}}</span>
           <span class="flex-item"></span>
           <i class="icon a" style="font-size: 18px;" @click="remove(index)">delete</i>
         </li>
@@ -34,14 +34,14 @@
           </div>
         </div>
         <div class="flex">
-          <div class="flex-item" style="margin-right: 10px;">
+          <div class="flex-item" style="margin-right: 10px;max-width: 50%;">
             <div class="title">点击选取</div>
             <ul class="content">
               <li v-if="!list.unselected.length" class="flex-center none"><no-data/></li>
               <li v-for="(item, index) in list.unselected" :key="item.id" @click="select(index)"><div>{{item.title}}</div></li>
             </ul>
           </div>
-          <div class="flex-item">
+          <div class="flex-item" style="max-width: 50%;">
             <div class="title">已选取</div>
             <ul class="content">
               <li v-if="!list.selected.length" class="flex-center none"><no-data/></li>

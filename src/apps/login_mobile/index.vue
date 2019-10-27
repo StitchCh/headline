@@ -30,7 +30,7 @@
           </bubble>
         </div>
       </div>
-      <div class="c-f f-16"><check-box text="保持我的登录状态" v-model="keepLogin"></check-box></div>
+      <!--<div class="c-f f-16"><check-box text="保持我的登录状态" v-model="keepLogin"></check-box></div>-->
       <div class="line"></div>
       <!--<div class="f-12"><span>忘记了邮箱或密码？</span><a class="c-f a" @click="$router.push('/findPassword')">找回密码</a></div>-->
     </div>
