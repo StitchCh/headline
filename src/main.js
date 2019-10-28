@@ -84,6 +84,13 @@ Vue.prototype.qrcode = function (id) {
   return `${previewUrl}/${siteId}/${id}`
 }
 
+Vue.prototype.openWindow = (path, data) => {
+  let routeData = router.resolve({
+    path: path
+  })
+  window.open(routeData.href, '_blank')
+}
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -91,3 +98,4 @@ new Vue({
   store,
   render: h => h(App)
 })
+

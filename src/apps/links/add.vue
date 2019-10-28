@@ -3,7 +3,7 @@
   <template v-if="!ui.loading">
   <div class="flex-item flex-col">
     <div class="top-bar flex-v-center" style="height: 55px;padding: 0 20px;">
-      <div class="a flex-v-center" @click="$router.back()">
+      <div class="a flex-v-center" @click="beforeClose">
         <icon-btn style="margin-right:10px;">arrow_back</icon-btn>
         <span class="f-18">返回</span>
       </div>
@@ -329,6 +329,29 @@ export default {
     }
   },
   methods: {
+    beforeClose () {
+      if (this.ui.submited) {
+        clearInterval(this.autoSaveTimer)
+        window.opener = null
+        window.close()
+        return
+      }
+      let that = this
+      this.$confirm({
+        title: '您确定要离开吗？',
+        text: '未保存的内容将无法恢复。',
+        btns: ['取消', '离开'],
+        color: 'red',
+        yes () {
+          clearInterval(that.autoSaveTimer)
+          window.opener = null
+          window.close()
+        },
+        no () {
+
+        }
+      })
+    },
     getChannels () {
       this.$http.post('/cri-cms-platform/link/getChannels.monitor').then(res => {
         this.ui.channels = res || []
@@ -407,7 +430,8 @@ export default {
         res => {
           console.log(res)
           this.ui.submited = true
-          this.$router.replace('/links/list?status=all')
+          window.opener = null
+          window.close()
         }
       ).catch(
         res => {
@@ -492,31 +516,10 @@ export default {
         console.log(e)
       })
     } else {
-      this.form.virtualPv = 400 + parseInt(Math.random() * 200)
-      this.form.virtualShare = 400 + parseInt(Math.random() * 200)
-      this.form.virtualDigg = 400 + parseInt(Math.random() * 200)
+      this.form.virtualPv = 5 + parseInt(Math.random() * 16)
+      this.form.virtualShare = 5 + parseInt(Math.random() * 16)
+      this.form.virtualDigg = 5 + parseInt(Math.random() * 16)
     }
-  },
-  beforeRouteLeave (from, to, next) {
-    if (this.ui.submited) {
-      clearInterval(this.autoSaveTimer)
-      next()
-      return
-    }
-    let that = this
-    this.$confirm({
-      title: '您确定要离开吗？',
-      text: '未保存的内容将无法恢复。',
-      btns: ['取消', '离开'],
-      color: 'red',
-      yes () {
-        clearInterval(that.autoSaveTimer)
-        next()
-      },
-      no () {
-        next(false)
-      }
-    })
   }
 }
 </script>

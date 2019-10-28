@@ -6,7 +6,7 @@
     <template v-else>
       <div class="flex-item flex-col">
         <div class="top-bar flex-v-center" style="height: 55px;padding: 0 20px;">
-          <div class="a flex-v-center" @click="$router.back()">
+          <div class="a flex-v-center" @click="beforeClose">
             <icon-btn style="margin-right:10px;">arrow_back</icon-btn>
             <span class="f-18">返回</span>
           </div>
@@ -62,6 +62,29 @@ export default {
     }
   },
   methods: {
+    beforeClose () {
+      if (this.ui.submited) {
+        clearInterval(this.autoSaveTimer)
+        window.opener = null
+        window.close()
+        return
+      }
+      let that = this
+      this.$confirm({
+        title: '您确定要离开吗？',
+        text: '未保存的内容将无法恢复。',
+        btns: ['取消', '离开'],
+        color: 'red',
+        yes () {
+          clearInterval(that.autoSaveTimer)
+          window.opener = null
+          window.close()
+        },
+        no () {
+
+        }
+      })
+    },
     getKeyGenerate () {
       if (this.from || this.id) return
       let doc = this.$refs.editor_box.getText()
@@ -131,7 +154,8 @@ export default {
       this.$http.post(url, form).then(
         res => {
           this.ui.submited = true
-          this.$router.replace('/video/list?status=all')
+          window.opener = null
+          window.close()
         }
       ).catch(
         res => {
@@ -163,27 +187,6 @@ export default {
   },
   mounted () {
     this.getVideo()
-  },
-  beforeRouteLeave (from, to, next) {
-    if (this.ui.submited) {
-      clearInterval(this.autoSaveTimer)
-      next()
-      return
-    }
-    let that = this
-    this.$confirm({
-      title: '您确定要离开吗？',
-      text: '未保存的内容将无法恢复。',
-      btns: ['取消', '离开'],
-      color: 'red',
-      yes () {
-        clearInterval(that.autoSaveTimer)
-        next()
-      },
-      no () {
-        next(false)
-      }
-    })
   }
 }
 </script>

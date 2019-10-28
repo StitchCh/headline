@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-item article-list">
     <af-center
-      @add="$router.push('/articleAdd')"
+      @add="openWindow('/articleAdd')"
       @getListEnd="onItemClick"
       :status="$route.query.status"
       url="/cri-cms-platform/article/list.monitor"
@@ -42,7 +42,7 @@
             <icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn>
           </div> -->
           <div class="tool-item">
-            <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/articleEdit/article/${id}`)">edit</icon-btn>
+            <icon-btn small v-tooltip:bottom="'编辑'" @click="openWindow(`/articleEdit/article/${id}`)">edit</icon-btn>
           </div>
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'删除'" @click="deleteArticle">delete</icon-btn>

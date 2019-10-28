@@ -32,10 +32,10 @@
             <span class="f-12 c-5">
               <vue-datepicker-local
                 v-if="li.issueStatus === 1"
-                v-model="li.dateRange"
+                v-model="li.dateRange[0]"
                 format="YYYY-MM-DD HH:mm:ss"
                 show-buttons></vue-datepicker-local>
-              <span>定时上下架</span>
+              <span>定时上架</span>
               <switcher mode="Number" @change="changeTime(li)" v-model="li.issueStatus"/>
               <span style="margin-left: 10px;" :style="{color: getPublishStatus(li).color}">{{getPublishStatus(li).str}}</span>
             </span>
@@ -186,7 +186,7 @@ export default {
       if (item.issueStatus === 0) {
         item.dateRange = [this.thistime, this.overTime]
       } else {
-        item.dateRange = [this.thistime, new Date(this.thistime.getTime() + 1000 * 60 * 60 * 24) ]
+        item.dateRange = [this.thistime, '9990-12-31 23:59:59' ]
       }
       this.viewListShow = false
       this.$nextTick(() => (this.viewListShow = true))
@@ -200,7 +200,7 @@ export default {
       }).then(res => {
         let len = res.data.length
         res.data.forEach((item, i) => {
-          item.issueStatus = item.endDate == '9998-12-31 23:59:59' ? 0 : 1
+          item.issueStatus = item.endDate == '9990-12-31 23:59:59' ? 1 : 0
           item.dateRange = [moment(this.thistime).format('YYYY-MM-DD HH:mm:ss'), item.endDate]
           // item.editSendDate = item.sendDate
           // item.editEndDate = item.endDate
@@ -340,7 +340,7 @@ export default {
   .date-picker-container{position: absolute;left: 0;top: 0;}
   .datepicker{
     &.datepicker-range{min-width: 280px;}
-    input{padding: 0 10px 0 10px;width: 280px;height: 30px;border: none;font-size: 12px;background: transparent;}
+    input{padding: 0 10px 0 10px;height: 30px;border: none;font-size: 12px;background: transparent;}
     &:before{content: none;}
   }
   .opera-btns{
@@ -353,6 +353,6 @@ export default {
   .fix-top{display: inline-block;line-height: 1em;margin-right: 10px;border: 1px solid orange;padding: 3px;border-radius: 3px;color: darkorange;}
   .un-top .icon{transform: rotate(180deg)}
   .item-title{overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
-  .datepicker-popup{width: 500px!important;right: -50px;left: auto;}
+  .datepicker-popup{right: -50px;left: auto;}
 }
 </style>

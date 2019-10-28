@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-item video-list">
     <af-center
-      @add="$router.push('/videoAdd')"
+      @add="openWindow('/videoAdd')"
       :status="$route.query.status"
       @getListEnd="onItemClick"
       url="/cri-cms-platform/video/queryList.monitor"
@@ -43,7 +43,7 @@
             <icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn>
           </div> -->
           <div class="tool-item">
-            <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/videoEdit/video/${id}`)">edit</icon-btn>
+            <icon-btn small v-tooltip:bottom="'编辑'" @click="openWindow(`/videoEdit/video/${id}`)">edit</icon-btn>
           </div>
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'删除'" @click="deleteVideo">delete</icon-btn>

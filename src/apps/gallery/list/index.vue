@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-item gallery-list">
     <af-center
-      @add="$router.push('/GalleryAdd')"
+      @add="openWindow('/GalleryAdd')"
       :scope="$route.query.scope"
       @getListEnd="onItemClick"
       :status="$route.query.status"
@@ -44,7 +44,7 @@
             <icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn>
           </div> -->
           <div class="tool-item">
-            <icon-btn small v-tooltip:bottom="'编辑'" @click="$router.push(`/galleryEdit/gallery/${id}`)">edit</icon-btn>
+            <icon-btn small v-tooltip:bottom="'编辑'" @click="openWindow(`/galleryEdit/gallery/${id}`)">edit</icon-btn>
           </div>
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'删除'" @click="deleteGallery">delete</icon-btn>

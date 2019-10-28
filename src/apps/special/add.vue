@@ -3,7 +3,7 @@
   <template v-if="!ui.loading">
   <div class="flex-item flex-col">
     <div class="top-bar flex-v-center" style="height: 55px;padding: 0 20px;">
-      <div class="a flex-v-center" @click="$router.back()">
+      <div class="a flex-v-center" @click="beforeClose">
         <icon-btn style="margin-right:10px;">arrow_back</icon-btn>
         <span class="f-18">返回</span>
       </div>
@@ -37,23 +37,27 @@
       <div class="setlistbox">
         <div style="width: 80%;float: right">
           <div class="list_content">
-            <div v-for="(item, index) in list" v-show="moble_index == index">
-              <p class="list_content_title">
-                {{item.name}}
-                <span v-if="form.listType == 2" style="float: right">
+            <div v-for="(item, index) in list">
+              <div v-if="moble_index == item.id">
+                <p class="list_content_title">
+                  {{item.name}}
+                  <span v-if="form.listType == 2" style="float: right">
                   时间：
                   <vue-datepicker-local v-model="item.time" format="YYYY-MM-DD" show-buttons></vue-datepicker-local>
                 </span>
-              </p>
-              <div style="padding: 10px;">
-                <app-article-add-relates v-if="getif" :channels="ui.channels" v-model="item.list" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/special/getArticList.monitor"></app-article-add-relates>
+                </p>
+                <div style="padding: 10px;">
+                  <app-article-add-relates v-if="getif" :channels="ui.channels" v-model="item.list" :channelId="form.channelIds" title="文章" icon="book" url="/cri-cms-platform/special/getArticList.monitor"></app-article-add-relates>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         <div style="width: 20%;float: left;padding-top: 10px;">
-            <div v-for="(item,index) in list" @click="moble_index = index" class="channel-tree-item flex-v-center">
+
+          <draggable element="div" :options="{ghostClass:'movelist'}" v-model="list" >
+            <div v-for="(item,index) in list" @click="conl(item.id)" class="channel-tree-item flex-v-center">
               <div class="flex-item flex-v-center" style="height: 40px;overflow:hidden;">
                 <span class="flex-item channel-name" v-if="!item.edit">{{item.name}}</span>
                 <input type="text" v-else v-model="item.name" class="flex-item f-14">
@@ -62,10 +66,13 @@
               <icon-btn small v-if="!item.edit" @click.native.stop="item.edit = true">edit</icon-btn>
               <icon-btn small @click="removeList(index)" >delete</icon-btn>
             </div>
-            <div @click="addlist" class="channel-tree-item channel-tree-item1 flex-v-center" style="cursor: pointer;">
-              <icon-btn small style="margin-right: 10px;">add</icon-btn>
-              <span class="flex-item channel-name" style="height: 40px;line-height: 40px;">添加板块</span>
-            </div>
+          </draggable>
+
+          <div @click="addlist" class="channel-tree-item channel-tree-item1 flex-v-center" style="cursor: pointer;">
+            <icon-btn small style="margin-right: 10px;">add</icon-btn>
+            <span class="flex-item channel-name" style="height: 40px;line-height: 40px;">添加板块</span>
+          </div>
+
         </div>
       </div>
 
@@ -205,9 +212,10 @@ export default {
   props: [ 'from', 'id' ],
   data () {
     return {
+      idnumber: 0,
       scaleshow: false,
       getend: false,
-      moble_index: 0,
+      moble_index: 1,
       list: [],
       getif: false,
       getif1: false,
@@ -296,6 +304,32 @@ export default {
     }
   },
   methods: {
+    conl (id) {
+      this.moble_index = id
+    },
+    beforeClose () {
+      if (this.ui.submited) {
+        clearInterval(this.autoSaveTimer)
+        window.opener = null
+        window.close()
+        return
+      }
+      let that = this
+      this.$confirm({
+        title: '您确定要离开吗？',
+        text: '未保存的内容将无法恢复。',
+        btns: ['取消', '离开'],
+        color: 'red',
+        yes () {
+          clearInterval(that.autoSaveTimer)
+          window.opener = null
+          window.close()
+        },
+        no () {
+
+        }
+      })
+    },
     removeList (index) {
       this.list.splice(index, 1)
     },
@@ -304,10 +338,12 @@ export default {
         this.$toast('请选择频道')
         return false
       }
+      this.idnumber++
       this.list.push({
         name: '新建板块',
         time: this.nowDate,
         edit: false,
+        id: this.idnumber,
         list: {
           selected: [],
           unselected: []
@@ -438,7 +474,8 @@ export default {
 
       this.$http.post(url, obj).then(res => {
         this.ui.submited = true
-        this.$router.push('/special/list?status=all')
+        window.opener = null
+        window.close()
       }).catch(
         res => {
           this.$toast(res || res.msg || '保存失败')
@@ -491,8 +528,11 @@ export default {
           this.form.isListShowPic = Number(res.special.isListShowPic)
           this.form.channelIds = res.channelIds || ''
           this.form.specialListJson = JSON.parse(this.form.specialListJson)
+
           for (let i = 0; i < res.special.specialListJson.length; i++) {
+            this.idnumber++
             this.list.push({
+              id: this.idnumber,
               name: res.special.specialListJson[i].templateName,
               time: res.special.specialListJson[i].orderDate ? res.special.specialListJson[i].orderDate : this.nowDate,
               edit: false,
@@ -501,6 +541,9 @@ export default {
               }
             })
           }
+
+          console.log(this.list)
+
           if (this.form.headPicType == 1 && this.form.headJson.length != 0) {
             this.headList_type1 = {
               url: this.form.headJson[0].thumb
@@ -516,9 +559,9 @@ export default {
       }
     } else {
       this.getif = true
-      this.form.virtualPv = 400 + parseInt(Math.random() * 200)
-      this.form.virtualShare = 400 + parseInt(Math.random() * 200)
-      this.form.virtualDigg = 400 + parseInt(Math.random() * 200)
+      this.form.virtualPv = 5 + parseInt(Math.random() * 16)
+      this.form.virtualShare = 5 + parseInt(Math.random() * 16)
+      this.form.virtualDigg = 5 + parseInt(Math.random() * 16)
     }
   },
   watch: {
@@ -578,27 +621,6 @@ export default {
         }
       }
     }
-  },
-  beforeRouteLeave (from, to, next) {
-    if (this.ui.submited) {
-      // clearInterval(this.autoSaveTimer)
-      next()
-      return
-    }
-    let that = this
-    this.$confirm({
-      title: '您确定要离开吗？',
-      text: '未保存的内容将无法恢复。',
-      btns: ['取消', '离开'],
-      color: 'red',
-      yes () {
-        clearInterval(that.autoSaveTimer)
-        next()
-      },
-      no () {
-        next(false)
-      }
-    })
   }
 }
 </script>
@@ -634,6 +656,11 @@ export default {
   }
   .list_content{
     padding: 10px;
+  }
+  .movelist{
+    background: #008eff;
+    color: #008eff;
+    opacity: 0.5;
   }
   .channel-name{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
   .channel-tree-item{line-height: 1em;border: 1px solid rgba(0,0,0,.08);

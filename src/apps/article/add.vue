@@ -3,7 +3,7 @@
   <template v-if="!ui.loading">
   <div class="flex-item flex-col">
     <div class="top-bar flex-v-center" style="height: 55px;padding: 0 20px;">
-      <div class="a flex-v-center" @click="$router.back()">
+      <div class="a flex-v-center" @click="beforeClose">
         <icon-btn style="margin-right:10px;">arrow_back</icon-btn>
         <span class="f-18">返回</span>
       </div>
@@ -314,6 +314,29 @@ export default {
     }
   },
   methods: {
+    beforeClose () {
+      if (this.ui.submited) {
+        clearInterval(this.autoSaveTimer)
+        window.opener = null
+        window.close()
+        return
+      }
+      let that = this
+      this.$confirm({
+        title: '您确定要离开吗？',
+        text: '未保存的内容将无法恢复。',
+        btns: ['取消', '离开'],
+        color: 'red',
+        yes () {
+          clearInterval(that.autoSaveTimer)
+          window.opener = null
+          window.close()
+        },
+        no () {
+
+        }
+      })
+    },
     getChannels () {
       this.$http.post('/cri-cms-platform/article/getChannels.monitor').then(res => {
         this.ui.channels = res || []
@@ -351,14 +374,11 @@ export default {
       if (this.autoSaveId) form.id = this.autoSaveId
       return this.$http.post('/cri-cms-platform/articleAutoSave/saveAuto.monitor', form).then(
         res => {
-          console.log(res)
-          console.log(this.autoSaveId)
           this.autoSaveId = res.autoSaveId
           this.$toast('保存成功')
         }
       ).catch(
         res => {
-          console.log(res)
           this.$toast(res.msg || res || '保存失败')
         }
       )
@@ -370,7 +390,6 @@ export default {
         this.$toast('请输入标题')
         return
       }
-      console.log(content)
       if (!content) {
         this.$toast('请输入内容')
         return
@@ -396,12 +415,11 @@ export default {
         form.thumb = this.thumb.thumb1.id + ',' + this.thumb.thumb2.id + ',' + this.thumb.thumb3.id
       }
 
-      console.log(form)
-
       this.$http.post(url, form).then(
         res => {
           this.ui.submited = true
-          this.$router.replace('/article/list?status=all')
+          window.opener = null
+          window.close()
         }
       ).catch(
         res => {
@@ -473,9 +491,9 @@ export default {
         console.log(e)
       })
     } else {
-      this.form.virtualPv = 400 + parseInt(Math.random() * 200)
-      this.form.virtualShare = 400 + parseInt(Math.random() * 200)
-      this.form.virtualDigg = 400 + parseInt(Math.random() * 200)
+      this.form.virtualPv = 5 + parseInt(Math.random() * 16)
+      this.form.virtualShare = 5 + parseInt(Math.random() * 16)
+      this.form.virtualDigg = 5 + parseInt(Math.random() * 16)
     }
   },
   watch: {
@@ -524,27 +542,6 @@ export default {
       }
     }
   },
-  beforeRouteLeave (from, to, next) {
-    if (this.ui.submited) {
-      clearInterval(this.autoSaveTimer)
-      next()
-      return
-    }
-    let that = this
-    this.$confirm({
-      title: '您确定要离开吗？',
-      text: '未保存的内容将无法恢复。',
-      btns: ['取消', '离开'],
-      color: 'red',
-      yes () {
-        clearInterval(that.autoSaveTimer)
-        next()
-      },
-      no () {
-        next(false)
-      }
-    })
-  }
 }
 </script>
 
