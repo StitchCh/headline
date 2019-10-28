@@ -85,10 +85,15 @@ Vue.prototype.qrcode = function (id) {
 }
 
 Vue.prototype.openWindow = (path, data) => {
-  let routeData = router.resolve({
-    path: path
-  })
-  window.open(routeData.href, '_blank')
+  // window.aaa = function () {
+  //   console.log('aaa')
+  // }
+  // let routeData = router.resolve({
+  //   path: path
+  // })
+  // window.open(routeData.href, '_blank')
+
+  router.push(path)
 }
 
 /* eslint-disable no-new */

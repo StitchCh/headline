@@ -333,7 +333,8 @@ export default {
       if (this.ui.submited) {
         clearInterval(this.autoSaveTimer)
         window.opener = null
-        window.close()
+        //window.close()
+        this.$router.go(-1)
         return
       }
       let that = this
@@ -345,7 +346,8 @@ export default {
         yes () {
           clearInterval(that.autoSaveTimer)
           window.opener = null
-          window.close()
+          //window.close()
+          that.$router.go(-1)
         },
         no () {
 
@@ -431,7 +433,8 @@ export default {
           console.log(res)
           this.ui.submited = true
           window.opener = null
-          window.close()
+          //window.close()
+          this.$router.go(-1)
         }
       ).catch(
         res => {

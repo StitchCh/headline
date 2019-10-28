@@ -206,7 +206,7 @@ export default {
         this.$refs.listView.loading = false
         this.totalPage = res.totalPage || 1
         this.list = res.pages || []
-        if (this.list.length > 0) {
+        if (this.list.length > 0 && !this.$route.params.id) {
           this.$emit('getListEnd', this.list[0])
         }
       }).catch(e => {
