@@ -1,8 +1,9 @@
 <template>
 <div class="c-6 f-14 works-unpublished">
-  <div class="flex" style="width: 100%;">
+  <div class="flex" style="width: 100%;height: 100%;">
     <div class="left flex-item" style="width: 50%;">
-      <div class="card relative">
+      <div class="card relative" style="height: 100%;">
+
         <div class="flex-v-center card-title">
           <div class="flex-item">
             <div class="relative" style="display:inline-block;">
@@ -44,9 +45,11 @@
 
           <input v-model="searchKey" class="f-14" type="text" placeholder="标题关键字" style="margin: 0;padding: 4px 6px;width: 150px;border:1px solid #eee;border-radius: 4px;"/>
         </div>
+
         <div v-if="loading" class="abs flex-center"><loading size="30"/></div>
         <div class="f-12 c-a t-center" v-if="!data.length && !loading" style="margin-top: 15px;">暂无数据</div>
-        <ul>
+
+        <ul style="height: calc(100% - 70px);overflow: auto;">
           <li class="flex-v-center li-item" v-for="item in data" :key="item.id">
             <span class="flex-item li-title">【{{appTypeList[item.app]}}】{{item.title}}</span>
             <icon-btn small
@@ -55,6 +58,7 @@
             >arrow_forward</icon-btn>
           </li>
         </ul>
+
         <pagination
           v-if="totalPage > 1"
           :page="page"
@@ -294,6 +298,10 @@ export default {
 
 <style lang="less">
 .works-unpublished{
+  height: 100%;
+  *{
+    max-height: 100%;
+  }
   .card{border-radius: 5px;box-shadow: none;margin-bottom: 15px;padding: 15px;white-space: nowrap;}
   .li-item{line-height: 1em;
     &:hover{background: #eee;}
