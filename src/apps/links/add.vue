@@ -432,7 +432,8 @@ export default {
         res => {
           console.log(res)
           this.ui.submited = true
-          window.opener = null
+          // window.opener.location.reload()
+          // window.opener = null
           //window.close()
           this.$router.go(-1)
         }

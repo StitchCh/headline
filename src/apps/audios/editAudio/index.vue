@@ -154,7 +154,10 @@ export default {
       this.$http.post(url, form).then(
         res => {
           this.ui.submited = true
-          this.$router.replace('/audio/list?status=all')
+          // window.opener.location.reload()
+          // window.opener = null
+          //window.close()
+          this.$router.go(-1)
         }
       ).catch(
         res => {

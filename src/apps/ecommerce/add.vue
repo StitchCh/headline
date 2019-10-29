@@ -417,7 +417,8 @@ export default {
       this.$http.post(url, form).then(
         res => {
           this.ui.submited = true
-          window.opener = null
+          // window.opener.location.reload()
+          // window.opener = null
           //window.close()
           this.$router.go(-1)
         }
