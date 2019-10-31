@@ -144,7 +144,7 @@ export default {
         return
       }
       let form = Object.assign({title, content, titleColor, videoUrl: video.video, videoId: video.id}, this.$refs.option.form)
-      if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
+      if (form.createDate) form.createDate = moment(form.createDate).format('yyyy-MM-dd HH:mm:ss')
       if (this.id) form.id = this.id
       form.isListShowPic = form.isListShowPic == 1 ? 0 : 1
 

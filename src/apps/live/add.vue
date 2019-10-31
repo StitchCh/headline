@@ -114,7 +114,7 @@
             <span>设置</span>
             <i class="icon f-18 c-a">keyboard_arrow_down</i>
           </span>
-          <vue-datepicker-local show-buttons :clearable="false" format="YYYY-MM-DD HH:mm:ss" v-model="form.createDate"></vue-datepicker-local>
+          <vue-datepicker-local show-buttons :clearable="false" format="yyyy-MM-dd HH:mm:ss" v-model="form.createDate"></vue-datepicker-local>
         </div>
       </div>
       <div class="option-item flex-v-center">
@@ -383,7 +383,7 @@ export default {
         obj.id = this.id
       }
 
-      if (this.form.createDate) obj.createDate = moment(this.form.createDate).format('YYYY-MM-DD hh:mm:ss')
+      if (this.form.createDate) obj.createDate = moment(this.form.createDate).format('yyyy-MM-dd HH:mm:ss')
 
       obj.isListShowPic = obj.isListShowPic == 1 ? 0 : 1
 
@@ -400,7 +400,7 @@ export default {
       )
 
       // let form = {...this.form}
-      // if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-DD hh:mm:ss')
+      // if (form.createDate) form.createDate = moment(form.createDate).format('yyyy-MM-dd HH:mm:ss')
       // if (this.id) form.id = this.id
 
       // this.$http.post(url, form).then(

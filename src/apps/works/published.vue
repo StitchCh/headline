@@ -53,8 +53,8 @@ export default {
           item.top = false
           item.changed = false
           item.timeing = 0
-          item.dateRange = [moment().format('YYYY-MM-DD HH:mm:ss'), '9998-12-31 23:59:59']
-          // item.editSendDate = item.sendDate || moment().format('YYYY-MM-DD HH:mm:ss')
+          item.dateRange = [moment().format('yyyy-MM-dd HH:mm:ss'), '9998-12-31 23:59:59']
+          // item.editSendDate = item.sendDate || moment().format('yyyy-MM-dd HH:mm:ss')
           // item.editEndDate = item.endDate || '9999-12-30 23:59:59'
           item.sortOrder = item.order = 1
           item.key = Math.random().toString(16).replace('0.', '')
