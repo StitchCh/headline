@@ -173,7 +173,7 @@
             <span>设置</span>
             <i class="icon f-18 c-a">keyboard_arrow_down</i>
           </span>
-          <vue-datepicker-local show-buttons clearable format="YYYY-MM-dd HH:mm:ss" v-model="form.startTime"></vue-datepicker-local>
+          <vue-datepicker-local show-buttons clearable format="YYYY-MM-DD HH:mm:ss" v-model="form.startTime"></vue-datepicker-local>
         </div>
       </div>
       <div class="option-item flex-v-center">
@@ -183,7 +183,7 @@
             <span>设置</span>
             <i class="icon f-18 c-a">keyboard_arrow_down</i>
           </span>
-          <vue-datepicker-local show-buttons clearable format="YYYY-MM-dd HH:mm:ss" v-model="form.endTime"></vue-datepicker-local>
+          <vue-datepicker-local show-buttons clearable format="YYYY-MM-DD HH:mm:ss" v-model="form.endTime"></vue-datepicker-local>
         </div>
       </div>
       <div class="option-item">
@@ -405,8 +405,8 @@ export default {
       })
       obj.options = JSON.stringify(obj.options)
       obj.headThumb = obj.headThumb.id
-      obj.startTime = moment(obj.startTime).format('YYYY-MM-dd HH:mm:ss')
-      obj.endTime = moment(obj.endTime).format('YYYY-MM-dd HH:mm:ss')
+      obj.startTime = moment(obj.startTime).format('YYYY-MM-DD HH:mm:ss')
+      obj.endTime = moment(obj.endTime).format('YYYY-MM-DD HH:mm:ss')
 
       obj.isListShowPic = obj.isListShowPic == 1 ? 0 : 1
 

@@ -33,7 +33,7 @@
               <vue-datepicker-local
                 v-if="li.issueStatus === 1"
                 v-model="li.dateRange[0]"
-                format="YYYY-MM-dd HH:mm:ss"
+                format="YYYY-MM-DD HH:mm:ss"
                 show-buttons></vue-datepicker-local>
               <span>定时上架</span>
               <switcher mode="Number" @change="changeTime(li)" v-model="li.issueStatus"/>
@@ -201,7 +201,7 @@ export default {
         let len = res.data.length
         res.data.forEach((item, i) => {
           item.issueStatus = item.endDate == '9990-12-31 23:59:59' ? 1 : 0
-          item.dateRange = [moment(this.thistime).format('YYYY-MM-dd HH:mm:ss'), item.endDate]
+          item.dateRange = [moment(this.thistime).format('YYYY-MM-DD HH:mm:ss'), item.endDate]
           // item.editSendDate = item.sendDate
           // item.editEndDate = item.endDate
           item.changed = false
@@ -307,8 +307,8 @@ export default {
             sortOrder: item.sortOrder,
             type: this.layout.type,
             contentLayoutId: item.contentLayoutId || '',
-            sendDate: moment(item.dateRange[0]).format('YYYY-MM-dd HH:mm:ss') || '',
-            endDate: moment(item.dateRange[1]).format('YYYY-MM-dd HH:mm:ss') || ''
+            sendDate: moment(item.dateRange[0]).format('YYYY-MM-DD HH:mm:ss') || '',
+            endDate: moment(item.dateRange[1]).format('YYYY-MM-DD HH:mm:ss') || ''
           }
         })
       }
