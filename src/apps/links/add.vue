@@ -109,7 +109,7 @@
             <span>设置</span>
             <i class="icon f-18 c-a">keyboard_arrow_down</i>
           </span>
-          <vue-datepicker-local show-buttons :clearable="false" format="yyyy-MM-dd HH:mm:ss" v-model="form.createDate"></vue-datepicker-local>
+          <vue-datepicker-local show-buttons :clearable="false" format="YYYY-MM-dd HH:mm:ss" v-model="form.createDate"></vue-datepicker-local>
         </div>
       </div>
       <!--<div class="option-item">-->
@@ -134,7 +134,7 @@
             <!--<span>设置</span>-->
             <!--<i class="icon f-18 c-a">keyboard_arrow_down</i>-->
           <!--</span>-->
-          <!--<vue-datepicker-local show-buttons clearable format="yyyy-MM-dd HH:mm:ss" v-model="form.upLineTime"></vue-datepicker-local>-->
+          <!--<vue-datepicker-local show-buttons clearable format="YYYY-MM-dd HH:mm:ss" v-model="form.upLineTime"></vue-datepicker-local>-->
         <!--</div>-->
       <!--</div>-->
       <!--<div class="option-item flex-v-center">-->
@@ -144,7 +144,7 @@
             <!--<span>设置</span>-->
             <!--<i class="icon f-18 c-a">keyboard_arrow_down</i>-->
           <!--</span>-->
-          <!--<vue-datepicker-local show-buttons clearable format="yyyy-MM-dd HH:mm:ss" v-model="form.downLineTime"></vue-datepicker-local>-->
+          <!--<vue-datepicker-local show-buttons clearable format="YYYY-MM-dd HH:mm:ss" v-model="form.downLineTime"></vue-datepicker-local>-->
         <!--</div>-->
       <!--</div>-->
       <div class="option-item flex-v-center">
@@ -425,7 +425,7 @@ export default {
       this.form.titleColor = titleColor
       this.form.content = linkhead + link
       let form = {...this.form}
-      if (form.createDate) form.createDate = moment(form.createDate).format('yyyy-MM-dd HH:mm:ss')
+      if (form.createDate) form.createDate = moment(form.createDate).format('YYYY-MM-dd HH:mm:ss')
       if (this.id) form.id = this.id
       form.isListShowPic = form.isListShowPic == 1 ? 0 : 1
       this.$http.post(url, form).then(

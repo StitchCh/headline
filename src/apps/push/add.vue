@@ -35,7 +35,7 @@
 
               <span v-if="delayPush == 1" style="float: right">
                 时间：
-                <vue-datepicker-local show-buttons clearable v-model="delayPushTime" format="yyyy-MM-dd HH:mm:ss"></vue-datepicker-local>
+                <vue-datepicker-local show-buttons clearable v-model="delayPushTime" format="YYYY-MM-dd HH:mm:ss"></vue-datepicker-local>
               </span>
             </div>
 
@@ -125,7 +125,7 @@ export default {
         device: this.device == 0 ? '1,2' : this.device,
         sites: this.sites,
         delayPush: this.delayPush,
-        delayPushTime: this.delayPush == 1 ? moment(this.delayPushTime).format('yyyy-MM-dd HH:mm:ss') : ''
+        delayPushTime: this.delayPush == 1 ? moment(this.delayPushTime).format('YYYY-MM-dd HH:mm:ss') : ''
       }
 
       if (!obj.contentId) {
