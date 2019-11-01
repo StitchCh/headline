@@ -90,7 +90,7 @@
         </div>
         <list-view :list="list" class="flex-item relative" @prev="onPrev" @next="onNext" :page="filter.toPage" :totalPage="ui.totalPage" ref="listView">
           <li slot-scope="slotProps">
-            <div class="list-item flex-v-center a" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.id == $route.params.id}">
+            <div class="list-item flex-v-center a" @click="onItemClick(slotProps.item, slotProps.index)" :class="{'on': slotProps.item.id == $route.params.id}">
               <div class="list-thumb flex-center relative">
                 <img v-if="slotProps.item.thumb.length" :src="slotProps.item.thumb[0].url" alt="">
               </div>

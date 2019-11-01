@@ -66,8 +66,8 @@ export default {
       if (this.ui.submited) {
         clearInterval(this.autoSaveTimer)
         window.opener = null
-        //window.close()
-        this.$router.go(-1)
+        window.close()
+        //this.$router.go(-1)
         return
       }
       let that = this
@@ -154,10 +154,10 @@ export default {
       this.$http.post(url, form).then(
         res => {
           this.ui.submited = true
-          // window.opener.location.reload()
-          // window.opener = null
-          //window.close()
-          this.$router.go(-1)
+          window.opener.location.reload()
+          window.opener = null
+          window.close()
+          //this.$router.go(-1)
         }
       ).catch(
         res => {
@@ -175,8 +175,8 @@ export default {
           this.autoSaveId = res.autoSaveId
           this.$toast('保存成功')
           window.opener = null
-          //window.close()
-          this.$router.go(-1)
+          window.close()
+          //this.$router.go(-1)
         }
       ).catch(
         res => {

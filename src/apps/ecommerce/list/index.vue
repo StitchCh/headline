@@ -7,7 +7,7 @@
       url="/cri-cms-platform/ecommerce/list.monitor"
       ref="afCenter">
 
-      <div class="list-item a" slot-scope="slotProps" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.id == $route.params.id}">
+      <div class="list-item a" slot-scope="slotProps" @click="onItemClick(slotProps.item, slotProps.index)" :class="{'on': slotProps.item.id == $route.params.id}">
         <div class="list-title flex-v-center">
           <i v-if="~~(slotProps.item.isRecommnd)" class="icon f-16 blue">thumb_up</i>
           <!-- <i v-if="~~(slotProps.item.hasThumb)" class="icon f-16 orange">image</i> -->
@@ -102,7 +102,8 @@ export default {
         this.$toast(e.msg)
       })
     },
-    onItemClick (item) {
+    onItemClick (item, index) {
+      sessionStorage.setItem("viewScroll", index * 85 - 100 )
       this.$router.replace({
         path: `/ecommerce/list/${item.id}`,
         query: this.$route.query

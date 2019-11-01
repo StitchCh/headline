@@ -1,9 +1,9 @@
 <template>
 <div class="relative list-view">
-  <div class="abs scroll-y list-scroller" ref="box">
+  <div class="abs scroll-y list-scroller" id="scscscsc" ref="box">
     <ul>
       <li class="c-6 t-center a page-btn f-14" v-if="page > 1" @click="$emit('prev')">上一页</li>
-      <slot v-for="item in list" :item="item"></slot>
+      <slot v-for="(item, index) in list" :index="index" :item="item"></slot>
       <li class="c-6 t-center a page-btn f-14" v-if="page < totalPage" @click="$emit('next')">下一页</li>
       <!--<li v-if="page >= totalPage && list.length" class="c-a f-12 t-center">没有更多了</li>-->
     </ul>
@@ -34,12 +34,23 @@ export default {
   },
   data () {
     return {
-      loading: false
+      loading: false,
+      firstload: true
     }
   },
   watch: {
     page () {
-      this.$refs.box.scrollTop = 0
+      if (!this.firstload) {
+        this.$refs.box.scrollTop = 0
+      }
+    },
+    'list' () {
+      if (this.firstload) {
+        this.$nextTick( () => {
+          this.$refs.box.scrollTop = sessionStorage.getItem("viewScroll")
+        })
+        this.firstload = false
+      }
     }
   }
 }

@@ -6,7 +6,7 @@
       @getListEnd="onItemClick"
       url="/cri-cms-platform/video/queryList.monitor"
       ref="afCenter">
-      <div class="list-item flex-v-center a" slot-scope="slotProps" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.id == $route.params.id}">
+      <div class="list-item flex-v-center a" slot-scope="slotProps" @click="onItemClick(slotProps.item, slotProps.index)" :class="{'on': slotProps.item.id == $route.params.id}">
         <div class="list-thumb flex-center">
           <img v-if="slotProps.item.thumb.length" :src="slotProps.item.thumb[0].url" alt="">
         </div>
@@ -125,7 +125,8 @@ export default {
         this.urlListShow = true
       })
     },
-    onItemClick (item) {
+    onItemClick (item, index) {
+      sessionStorage.setItem("viewScroll", index * 85 - 100 )
       this.$router.replace({
         path: `/video/list/${item.id}`,
         query: this.$route.query

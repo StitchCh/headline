@@ -77,7 +77,7 @@
   </div>
   <list-view :list="list" class="flex-item relative" @prev="onPrev" @next="onNext" :page="filter.toPage" :totalPage="totalPage" ref="listView">
     <li slot-scope="slotProps">
-      <slot :item="slotProps.item"></slot>
+      <slot :index="slotProps.index" :item="slotProps.item"></slot>
     </li>
   </list-view>
   <div class="af-bottombar flex-center relative">
@@ -143,6 +143,9 @@ export default {
     }
   },
   watch: {
+    'filter.toPage' () {
+      sessionStorage.setItem("toPage", this.filter.toPage)
+    },
     '$route.query' (query) {
       let { filter } = this
       if (query.status !== filter.status) {
@@ -190,6 +193,9 @@ export default {
     let query = this.$route.query
     if (query.status !== filter.status) {
       filter.status = query.status
+    }
+    if (sessionStorage.getItem("toPage")) {
+      this.filter.toPage = Number(sessionStorage.getItem("toPage"))
     }
     this.getList()
   },

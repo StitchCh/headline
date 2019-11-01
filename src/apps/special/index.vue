@@ -17,7 +17,7 @@
     <!--:status="$route.query.status"-->
     <!--url="/cri-cms-platform/special/queryList.monitor"-->
     <!--ref="afCenter">-->
-    <!--<div class="list-item a" slot-scope="slotProps" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.id == $route.params.id}">-->
+    <!--<div class="list-item a" slot-scope="slotProps" @click="onItemClick(slotProps.item, slotProps.index)" :class="{'on': slotProps.item.id == $route.params.id}">-->
       <!--<div class="list-title flex-v-center">-->
         <!--<i v-if="~~(slotProps.item.isRecommnd)" class="icon f-16 blue">thumb_up</i>-->
         <!--<i v-if="~~(slotProps.item.hasThumb)" class="icon f-16 orange">image</i>-->

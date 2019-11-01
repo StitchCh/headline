@@ -57,7 +57,7 @@
             <layer v-if="ui.audioSelectorShow" title="选择视频"  width="800px">
               <div class="layer-text flex-col" style="height: 800px;">
                 <list-view :list="list" class="flex-item">
-                  <li class="list-item flex-v-center a relative" slot-scope="slotProps" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.check}">
+                  <li class="list-item flex-v-center a relative" slot-scope="slotProps" @click="onItemClick(slotProps.item, slotProps.index)" :class="{'on': slotProps.item.check}">
                     <div class="list-thumb flex-center">
                       <img v-if="slotProps.item.thumb.length" :src="slotProps.item.thumb[0].url" alt="">
                     </div>

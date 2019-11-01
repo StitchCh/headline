@@ -7,7 +7,7 @@
       url="/cri-cms-platform/vote/list.monitor"
       ref="afCenter">
 
-      <div class="list-item a" slot-scope="slotProps" @click="onItemClick(slotProps.item)" :class="{'on': slotProps.item.id == $route.params.id}">
+      <div class="list-item a" slot-scope="slotProps" @click="onItemClick(slotProps.item, slotProps.index)" :class="{'on': slotProps.item.id == $route.params.id}">
         <div class="list-title flex-v-center">
         <!-- {{slotProps.item.isRecommnd || 'und'}} -->
           <i v-if="~~(slotProps.item.isRecommnd)" class="icon f-16 blue">thumb_up</i>
@@ -101,7 +101,8 @@ export default {
         this.$toast(e.msg)
       })
     },
-    onItemClick (item) {
+    onItemClick (item, index) {
+      sessionStorage.setItem("viewScroll", index * 85 - 100 )
       this.$router.replace({
         path: `/vote/list/${item.id}`,
         query: this.$route.query

@@ -47,7 +47,14 @@ function setTransition (to, from) {
 }
 
 router.beforeEach((to, from, next) => {
-  console.log(to.name)
+  sessionStorage.setItem("pathName", to.name)
+
+  if (to.name != sessionStorage.getItem("pathName")) {
+    sessionStorage.removeItem("viewScroll")
+    sessionStorage.removeItem("toPage")
+    console.log('a')
+  }
+
   setTransition(to, from)
   next()
 })
