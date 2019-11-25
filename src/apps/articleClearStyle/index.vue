@@ -1,64 +1,78 @@
 <template>
-  <div class="article-editor">
-    <!--<div class="relative">-->
+  <div style="max-height: 100%; position: fixed; top: 0;left: 0;overflow: auto;width: 100%;">
+    <div class="article-editor">
+      <!--<div class="relative">-->
       <!--<textarea @blur="titleChange" v-model="title" class="title title_title" type="text" placeholder="请输入标题" :style="{ color: titleColor }"></textarea>-->
       <!--&lt;!&ndash;<input v-model="title" class="title" type="text" placeholder="请输入标题" :style="{ color: titleColor }">&ndash;&gt;-->
       <!--<div style="position: absolute;right: 20px;top: 28px;">-->
-        <!--<button class="title-colorpicker-btn" @click="titleColorBoxShow = !titleColorBoxShow" :style="{ background: titleColor }"></button>-->
-        <!--<bubble v-if="titleColorBoxShow" @close="titleColorBoxShow = false">-->
-          <!--<div class="title-color-list">-->
-            <!--<button class="title-colorpicker-btn" style="background: #000000;" @click="changeTitleColor('#000000')"></button>-->
-            <!--<button class="title-colorpicker-btn" style="background: #F44336;" @click="changeTitleColor('#F44336')"></button>-->
-            <!--<button class="title-colorpicker-btn" style="background: #FF9800;" @click="changeTitleColor('#FF9800')"></button>-->
-            <!--<button class="title-colorpicker-btn" style="background: #FFEB3B;" @click="changeTitleColor('#FFEB3B')"></button>-->
-            <!--<button class="title-colorpicker-btn" style="background: #4CAF50;" @click="changeTitleColor('#4CAF50')"></button>-->
-            <!--<button class="title-colorpicker-btn" style="background: #00BCD4;" @click="changeTitleColor('#00BCD4')"></button>-->
-            <!--<button class="title-colorpicker-btn" style="background: #2196F3;" @click="changeTitleColor('#2196F3')"></button>-->
-            <!--<button class="title-colorpicker-btn" style="background: #9C27B0;" @click="changeTitleColor('#9C27B0')"></button>-->
-          <!--</div>-->
-        <!--</bubble>-->
+      <!--<button class="title-colorpicker-btn" @click="titleColorBoxShow = !titleColorBoxShow" :style="{ background: titleColor }"></button>-->
+      <!--<bubble v-if="titleColorBoxShow" @close="titleColorBoxShow = false">-->
+      <!--<div class="title-color-list">-->
+      <!--<button class="title-colorpicker-btn" style="background: #000000;" @click="changeTitleColor('#000000')"></button>-->
+      <!--<button class="title-colorpicker-btn" style="background: #F44336;" @click="changeTitleColor('#F44336')"></button>-->
+      <!--<button class="title-colorpicker-btn" style="background: #FF9800;" @click="changeTitleColor('#FF9800')"></button>-->
+      <!--<button class="title-colorpicker-btn" style="background: #FFEB3B;" @click="changeTitleColor('#FFEB3B')"></button>-->
+      <!--<button class="title-colorpicker-btn" style="background: #4CAF50;" @click="changeTitleColor('#4CAF50')"></button>-->
+      <!--<button class="title-colorpicker-btn" style="background: #00BCD4;" @click="changeTitleColor('#00BCD4')"></button>-->
+      <!--<button class="title-colorpicker-btn" style="background: #2196F3;" @click="changeTitleColor('#2196F3')"></button>-->
+      <!--<button class="title-colorpicker-btn" style="background: #9C27B0;" @click="changeTitleColor('#9C27B0')"></button>-->
       <!--</div>-->
-    <!--</div>-->
-    <!--<quill-editor v-model="content" ref="editor" :options="options" @change="getKeyGenerate"/>-->
+      <!--</bubble>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--<quill-editor v-model="content" ref="editor" :options="options" @change="getKeyGenerate"/>-->
 
 
-    <div>
-      <vue-ueditor-wrap v-model="content" ref="editor" :config="config" :destroy="true" @ready="ready"/>
+      <div>
+        <vue-ueditor-wrap v-model="content" ref="editor" :config="config" :destroy="true" @ready="ready"/>
+      </div>
+
+      <div>
+        <div>
+          共：{{allLength}}
+        </div>
+        <input type="text" v-model="startNumber">
+        到
+        <input type="text" v-model="end">
+        <btn @click="start">开始</btn>
+      </div>
+
+      <div>ids:</div>
+      <textarea  v-model="liststr">
+
+
+    </textarea>
+
+      <!--<layer v-if="ui.imageSelectorShow" title="选择图片"  width="800px" class="tc_box">-->
+      <!--<div class="layer-text relative" style="height: 800px;">-->
+      <!--<media-photos select-mode ref="mediaPhotos"></media-photos>-->
+      <!--</div>-->
+      <!--<div class="layer-btns">-->
+      <!--<btn flat @click="ui.imageSelectorShow = false">取消</btn>-->
+      <!--<btn flat color="#008eff" @click="insertImage">选择</btn>-->
+      <!--</div>-->
+      <!--</layer>-->
+
+      <!--<layer v-if="ui.videoSelectorShow" title="选择视频"  width="800px" class="tc_box">-->
+      <!--<div class="layer-text relative" style="height: 800px;">-->
+      <!--<media-videos select-mode ref="mediaVideos"></media-videos>-->
+      <!--</div>-->
+      <!--<div class="layer-btns">-->
+      <!--<btn flat @click="ui.videoSelectorShow = false">取消</btn>-->
+      <!--<btn flat color="#008eff" @click="insertVideo">选择</btn>-->
+      <!--</div>-->
+      <!--</layer>-->
+
+      <!--<layer v-if="ui.audioSelectorShow" title="选择音频"  width="800px" class="tc_box">-->
+      <!--<div class="layer-text relative" style="height: 800px;">-->
+      <!--<media-audios select-mode ref="mediaAudios"></media-audios>-->
+      <!--</div>-->
+      <!--<div class="layer-btns">-->
+      <!--<btn flat @click="ui.audioSelectorShow = false">取消</btn>-->
+      <!--<btn flat color="#008eff" @click="insertAudio">选择</btn>-->
+      <!--</div>-->
+      <!--</layer>-->
     </div>
-
-    <div>
-      <btn @click="start">开始</btn>
-    </div>
-
-    <!--<layer v-if="ui.imageSelectorShow" title="选择图片"  width="800px" class="tc_box">-->
-      <!--<div class="layer-text relative" style="height: 800px;">-->
-        <!--<media-photos select-mode ref="mediaPhotos"></media-photos>-->
-      <!--</div>-->
-      <!--<div class="layer-btns">-->
-        <!--<btn flat @click="ui.imageSelectorShow = false">取消</btn>-->
-        <!--<btn flat color="#008eff" @click="insertImage">选择</btn>-->
-      <!--</div>-->
-    <!--</layer>-->
-
-    <!--<layer v-if="ui.videoSelectorShow" title="选择视频"  width="800px" class="tc_box">-->
-      <!--<div class="layer-text relative" style="height: 800px;">-->
-        <!--<media-videos select-mode ref="mediaVideos"></media-videos>-->
-      <!--</div>-->
-      <!--<div class="layer-btns">-->
-        <!--<btn flat @click="ui.videoSelectorShow = false">取消</btn>-->
-        <!--<btn flat color="#008eff" @click="insertVideo">选择</btn>-->
-      <!--</div>-->
-    <!--</layer>-->
-
-    <!--<layer v-if="ui.audioSelectorShow" title="选择音频"  width="800px" class="tc_box">-->
-      <!--<div class="layer-text relative" style="height: 800px;">-->
-        <!--<media-audios select-mode ref="mediaAudios"></media-audios>-->
-      <!--</div>-->
-      <!--<div class="layer-btns">-->
-        <!--<btn flat @click="ui.audioSelectorShow = false">取消</btn>-->
-        <!--<btn flat color="#008eff" @click="insertAudio">选择</btn>-->
-      <!--</div>-->
-    <!--</layer>-->
   </div>
 </template>
 
@@ -70,9 +84,7 @@
   import MediaAudios from '../medialibrary/pages/audios'
 
 
-  var listdata = [
-    '07aff183bc0e4873b83e2da16e54bf1c','4302e7101fb54cd988d8c36f374ad5bd','db4bdf7e83764769bef113cd0a67d4d6','c28bfca283784ebdbf7a4183b5aa00ad','3979e9e3f63d4848b92fdf70acafb58b','0a8d0b3be8c943268be8cf60d9d595db','eedd189185da4e15bcdccb1939d7677a','d97edb3f47b04663ad938c8b81c6a2ac','ead9119a0fd74ed28a413d65ec4f74cd','c2de62b4c6b942a9aba7b6bf7cc657e9','31cfd16a77814ec5900366aee50ad579','58ba2af536a948f1bf9512012044e837','8d7442a52e8d4ed497c9ac3d04d3bd44','bef3eb79487c4fe981d4d46752efd915','59b84350f6d44b5891204fb62f12cfac','34013bb29e89491294fb5a95325be9a4','51313ff1c3ed491e97674f64585e550c','7c8d226eb1f942d18d3c59191cbc3d3a','2db9d7c2b26c4d6388ff52e44f040843','581b27fc1ef841b9b048382a16bb94da','a5ef0e126e2741b99fe84daaa3ca3337','eb5133d12a704ee486c5f718342eb27e','da840ff33ec74696aa60617ce07eecc3','c83bf7027b074578b331a832bf4e0c87','91a594b7352f48419404c3f67fc0aaa1','f7ec3d3c9cc8441ea6e9d4f573c2875c','50481aafe03d41f79a0b1bffba7051ba',
-  ]
+  var listdata = []
 
 
   export default {
@@ -80,6 +92,9 @@
     components: { VueUeditorWrap, MediaPhotos, MediaVideos, MediaAudios },
     data () {
       return {
+        liststr: '',
+        startNumber: 0,
+        end: 0,
         btn: '',
         arList: [],
         allLength: 0,
@@ -173,12 +188,14 @@
     methods: {
       start () {
         let that = this
+        this.startNumber = Number(this.startNumber)
+        this.end = Number(this.end)
 
-        if (this.number < this.allLength) {
+        if (this.number + this.startNumber < this.end) {
 
           this.$http.post('/cri-cms-platform/automatic/get.monitor', {
             siteId: 1002,
-            id: this.arList[this.number]
+            id: this.arList[this.number + this.startNumber]
           }).then(res => {
             this.content = res.article.content
 
@@ -189,10 +206,10 @@
 
                 that.$http.post('/cri-cms-platform/automatic/update.monitor', {
                   siteId: 1002,
-                  id: that.arList[that.number],
+                  id: that.arList[that.number + this.startNumber],
                   content: that.editor.getContent()
                 }).then(res => {
-                  console.log(that.number, that.allLength)
+                  console.log(that.number + this.startNumber, that.end)
                   that.number = that.number + 1
                   this.start()
                 })
@@ -292,6 +309,14 @@
 
       this.arList = listdata
       this.allLength = this.arList.length
+      this.end = this.arList.length
+    },
+    watch: {
+      'liststr' () {
+        this.arList = this.liststr.split(',')
+        this.allLength = this.arList.length
+        this.end = this.arList.length
+      }
     }
   }
 </script>
