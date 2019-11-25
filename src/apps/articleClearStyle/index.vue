@@ -36,7 +36,9 @@
         <input type="text" v-model="end">
         <btn @click="start">开始</btn>
       </div>
-
+      <div>
+         站点： <input type="text" v-model="siteId">
+      </div>
       <div>ids:</div>
       <textarea  v-model="liststr">
 
@@ -92,6 +94,7 @@
     components: { VueUeditorWrap, MediaPhotos, MediaVideos, MediaAudios },
     data () {
       return {
+        siteId : '1001',
         liststr: '',
         startNumber: 0,
         end: 0,
@@ -194,7 +197,7 @@
         if (this.number + this.startNumber < this.end) {
 
           this.$http.post('/cri-cms-platform/automatic/get.monitor', {
-            siteId: 1002,
+            siteId: this.siteId,
             id: this.arList[this.number + this.startNumber]
           }).then(res => {
             this.content = res.article.content
@@ -205,7 +208,7 @@
               setTimeout(() => {
 
                 that.$http.post('/cri-cms-platform/automatic/update.monitor', {
-                  siteId: 1002,
+                  siteId: this.siteId,
                   id: that.arList[that.number + this.startNumber],
                   content: that.editor.getContent()
                 }).then(res => {
