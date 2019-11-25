@@ -69,6 +69,12 @@
   import MediaVideos from '../medialibrary/pages/videos'
   import MediaAudios from '../medialibrary/pages/audios'
 
+
+  var listdata = [
+    '07aff183bc0e4873b83e2da16e54bf1c','4302e7101fb54cd988d8c36f374ad5bd','db4bdf7e83764769bef113cd0a67d4d6','c28bfca283784ebdbf7a4183b5aa00ad','3979e9e3f63d4848b92fdf70acafb58b','0a8d0b3be8c943268be8cf60d9d595db','eedd189185da4e15bcdccb1939d7677a','d97edb3f47b04663ad938c8b81c6a2ac','ead9119a0fd74ed28a413d65ec4f74cd','c2de62b4c6b942a9aba7b6bf7cc657e9','31cfd16a77814ec5900366aee50ad579','58ba2af536a948f1bf9512012044e837','8d7442a52e8d4ed497c9ac3d04d3bd44','bef3eb79487c4fe981d4d46752efd915','59b84350f6d44b5891204fb62f12cfac','34013bb29e89491294fb5a95325be9a4','51313ff1c3ed491e97674f64585e550c','7c8d226eb1f942d18d3c59191cbc3d3a','2db9d7c2b26c4d6388ff52e44f040843','581b27fc1ef841b9b048382a16bb94da','a5ef0e126e2741b99fe84daaa3ca3337','eb5133d12a704ee486c5f718342eb27e','da840ff33ec74696aa60617ce07eecc3','c83bf7027b074578b331a832bf4e0c87','91a594b7352f48419404c3f67fc0aaa1','f7ec3d3c9cc8441ea6e9d4f573c2875c','50481aafe03d41f79a0b1bffba7051ba',
+  ]
+
+
   export default {
     name: 'article-editor',
     components: { VueUeditorWrap, MediaPhotos, MediaVideos, MediaAudios },
@@ -277,12 +283,15 @@
       }
     },
     mounted () {
-      this.$http.post('/cri-cms-platform/automatic/ids.monitor', {
-        siteId: 1002
-      }).then(res => {
-        this.arList = res.data
-        this.allLength = res.data.length
-      })
+      // this.$http.post('/cri-cms-platform/automatic/ids.monitor', {
+      //   siteId: 1002
+      // }).then(res => {
+      //   this.arList = res.data
+      //   this.allLength = res.data.length
+      // })
+
+      this.arList = listdata
+      this.allLength = this.arList.length
     }
   }
 </script>

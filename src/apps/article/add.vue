@@ -495,9 +495,9 @@ export default {
         console.log(e)
       })
     } else {
-      this.form.virtualPv = 400 + parseInt(Math.random() * 200)
-      this.form.virtualShare = 400 + parseInt(Math.random() * 200)
-      this.form.virtualDigg = 400 + parseInt(Math.random() * 200)
+      this.form.virtualPv = 500 + parseInt(Math.random() * 300)
+      this.form.virtualShare = 5 + parseInt(Math.random() * 5)
+      this.form.virtualDigg = 5 + parseInt(Math.random() * 5)
     }
   },
   watch: {
