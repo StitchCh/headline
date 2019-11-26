@@ -188,6 +188,11 @@
             that.ui.audioSelectorShow = true
           }
         }
+        setTimeout(function () {
+          that.editor.execCommand('lineheight', sessionStorage.siteId == 1001 ? '2' : '1.75')
+
+          that.editor.execCommand( 'justify', sessionStorage.siteId == 1001 ? 'justify' : 'left' )
+        }, 0)
       }
     },
     watch: {

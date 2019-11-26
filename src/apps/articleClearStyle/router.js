@@ -4,3 +4,4 @@ export default [{
   props: true,
   meta: { level: 2, title: '批量自动排版', identifier: 'articleClearStyle' },
 }]
+
