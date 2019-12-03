@@ -206,20 +206,20 @@ export default {
             swiperThumbs.controller.control = swiperTop
           })
         }
-        this.$nextTick(() => {
-          let video = document.querySelectorAll('video')
-          let audio = document.querySelectorAll('audio')
-          if (video.length) {
-            video.forEach(v => {
-              videojs(v)
-            })
-          }
-          // if (audio.length) {
-          //   audio.forEach(v => {
-          //     videojs(v)
-          //   })
-          // }
-        })
+        // this.$nextTick(() => {
+        //   let video = document.querySelectorAll('video')
+        //   let audio = document.querySelectorAll('audio')
+        //   if (video.length) {
+        //     video.forEach(v => {
+        //       videojs(v)
+        //     })
+        //   }
+        //   // if (audio.length) {
+        //   //   audio.forEach(v => {
+        //   //     videojs(v)
+        //   //   })
+        //   // }
+        // })
       }).catch(e => {
         this.content = {}
         this.article = {}

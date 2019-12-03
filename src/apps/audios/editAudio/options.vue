@@ -170,7 +170,7 @@ export default {
         // relateIds: '',
         // specialId: '',
         isOpenComment: 1,
-        hasThumb: 0,
+        hasThumb: 1,
         isOriginal: 0,
         originalFrom: '',
         originalUrl: '',

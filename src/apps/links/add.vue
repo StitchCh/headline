@@ -294,7 +294,7 @@ export default {
         virtualComment: '',
         virtualShare: '',
         virtualDigg: '',
-        hasThumb: 0,
+        hasThumb: 1,
         // thumbType: 1,
         thumb: '',
         isListShowPic: 1

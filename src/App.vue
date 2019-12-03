@@ -173,4 +173,11 @@ a{
 .list-item>.flex-item{
   width: calc(100% - 90px);
 }
+  .video_box{
+    width: 100%;
+  }
+  .video-js{
+    width: 100%;
+    height: auto;
+  }
 </style>

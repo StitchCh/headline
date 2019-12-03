@@ -201,6 +201,8 @@ export default {
         that.editor.execCommand('lineheight', sessionStorage.siteId == 1001 ? '2' : '1.75')
 
         that.editor.execCommand( 'justify', sessionStorage.siteId == 1001 ? 'justify' : 'left' )
+        that.editor.execCommand( 'rowspacing', '20', 'top' )
+        that.editor.execCommand( 'rowspacing', '20', 'bottom' )
       }, 0)
     }
   },
