@@ -173,11 +173,19 @@ a{
 .list-item>.flex-item{
   width: calc(100% - 90px);
 }
-  .video_box{
-    width: 100%;
-  }
-  .video-js{
-    width: 100%;
-    height: auto;
+.video_box{
+  width: 100%;
+}
+.video-js{
+  width: 100%;
+}
+.vjs-tech{
+  height: auto !important;
+}
+.video_box .vjs-tech{
+  height: 100%;
+}
+  .art-ctn img{
+    max-width: 100%;
   }
 </style>
