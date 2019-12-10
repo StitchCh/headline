@@ -12,6 +12,12 @@ Vue.config.productionTip = false
 
 // axios.defaults.timeout = 10000
 
+if (process.env.NODE_ENV == 'build-test') {
+  window.w_api = 'https://testmanage.sinorusfocus.com'
+} else {
+  window.w_api = 'https://static.sinorusfocus.com'
+}
+
 axios.interceptors.request.use(function (config) {
   let token = sessionStorage.token || localStorage.token
   let siteId = sessionStorage.siteId || localStorage.siteId || ''

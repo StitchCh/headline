@@ -240,7 +240,7 @@ export default {
         // virtualComment: '',
         virtualShare: '0',
         virtualDigg: '0',
-        // hasThumb: 1,
+        // hasThumb: 0,
         // thumbType: 1,
         thumb: '',
         // terminalPc: 0,

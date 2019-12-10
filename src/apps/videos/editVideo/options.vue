@@ -160,7 +160,7 @@ export default {
       getend: false,
       form: {
         app: 'VIDEO',
-        hasThumb: 1,
+        hasThumb: 0,
         channelIds: '',
         // galleryId: '',
         // gallerySettingMaxWidth: '640',

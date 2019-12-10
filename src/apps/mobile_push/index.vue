@@ -82,7 +82,7 @@ export default {
         content: '',
         channelIds: '',
         abstarcts: '',
-        hasThumb: 1,
+        hasThumb: 0,
         thumb: ''
       }
     }

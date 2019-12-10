@@ -5,6 +5,7 @@
   "author": "zhuxianyong <zhuxianyong@eversec.cn>",
   "private": true,
   "scripts": {
+    "build-test": "node build/build.js",
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "unit": "jest --config test/unit/jest.conf.js --coverage",

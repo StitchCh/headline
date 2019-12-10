@@ -1,7 +1,8 @@
 'use strict'
 require('./check-versions')()
 
-process.env.NODE_ENV = 'production'
+//process.env.NODE_ENV = 'production'
+process.env.NODE_ENV = process.env.npm_lifecycle_event === 'build-test' ? 'build-test' : 'production';
 
 const ora = require('ora')
 const rm = require('rimraf')
