@@ -89,7 +89,6 @@ export default {
         res.forEach(item => {
           item.name = item.channelName
         })
-        console.log(res)
         this.channel = res
       }).catch(e => {
         this.$toast(e.msg)
@@ -103,6 +102,8 @@ export default {
       }).then(res => {
         this.loading = false
         this.layout = res
+        console.log('layout------------------------------------------')
+        console.log(res)
       }).catch(e => {
         this.loading = false
         this.$toast(e.msg)

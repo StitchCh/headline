@@ -18,7 +18,9 @@
           <div style="width: 100%;height: 500px;">
             <iframe :src="link" frameborder="0" style="width: 100%;height: 100%;"></iframe>
           </div>
-          <div class="f-14" v-html="article.content"></div>
+          <div :style="{
+            'font-size': fontSize
+          }" v-html="article.content"></div>
           <div v-if="relateArticle.length" class="art-relate f-14">
             <div class="b c-8" style="margin-bottom: 10px;">相关阅读：</div>
             <ul>
@@ -125,6 +127,7 @@ export default {
   },
   data () {
     return {
+      fontSize: '18px',
       link: '',
       content: {},
       article: {},
@@ -169,6 +172,9 @@ export default {
   },
   created () {
     this.getArticle()
+    if (sessionStorage.siteId != 1001) {
+      this.fontSize = '16px'
+    }
   },
   watch: {
     id () {

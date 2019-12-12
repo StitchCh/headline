@@ -18,7 +18,7 @@
           <div style="font-weight: bold;background: #eee;padding: 10px 14px;border-radius: 5px;">电商地址：{{ecommerce.ecommerceUrl}}</div>
 
           <p class="art-abstarcts"><strong>[摘要]</strong>{{content.abstarcts}}</p>
-          <div class="f-14" v-html="ecommerce.content"></div>
+          <div v-html="ecommerce.content"></div>
           <div v-if="relateArticle.length" class="art-relate f-14">
             <div class="b c-8" style="margin-bottom: 10px;">相关阅读：</div>
             <ul>

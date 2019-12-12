@@ -15,7 +15,9 @@
             <img v-if="content && content.thumb" v-for="item in content.thumb" :key="item.id" :src="item.url" @click="thumbItem.url = item.url;thumbItem.show = true;" style="margin-left: 5px;height: 50px;cursor: pointer;">
           </div>
           <p class="art-abstarcts"><strong>[摘要]</strong>{{content.abstarcts}}</p>
-          <div class="f-14" v-html="article.content"></div>
+          <div :style="{
+            'font-size': fontSize
+          }" v-html="article.content"></div>
           <div v-if="relateArticle.length" class="art-relate f-14">
             <div class="b c-8" style="margin-bottom: 10px;">相关阅读：</div>
             <ul>
@@ -126,6 +128,7 @@ export default {
   },
   data () {
     return {
+      fontSize: '18px',
       content: {},
       article: {},
       channelIds: '',
@@ -169,6 +172,9 @@ export default {
   },
   created () {
     this.getArticle()
+    if (sessionStorage.siteId != 1001) {
+      this.fontSize = '16px'
+    }
   },
   mounted () {
 

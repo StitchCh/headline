@@ -38,7 +38,6 @@ export default {
   watch: {
     layout () {
       this.newlayout = this.layout
-      console.log(this.layout)
     }
   },
   computed: {

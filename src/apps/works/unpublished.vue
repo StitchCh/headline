@@ -50,12 +50,15 @@
         <div class="f-12 c-a t-center" v-if="!data.length && !loading" style="margin-top: 15px;">暂无数据</div>
 
         <ul style="height: calc(100% - 70px);overflow: auto;">
-          <li class="flex-v-center li-item" v-for="item in data" :key="item.id">
-            <span class="flex-item li-title">【{{appTypeList[item.app]}}】{{item.title}}</span>
-            <icon-btn small
-              @click="checkItem(item)"
-              :disabled="checkedId.includes(item.id)"
-            >arrow_forward</icon-btn>
+          <li v-for="item in data" :key="item.id">
+            <div class="li-time" v-if="item.topTime">{{ item.topTime }}</div>
+            <div class="flex-v-center li-item">
+              <span class="flex-item li-title">【{{appTypeList[item.app]}}】{{item.title}}</span>
+              <icon-btn small
+                        @click="checkItem(item)"
+                        :disabled="checkedId.includes(item.id)"
+              >arrow_forward</icon-btn>
+            </div>
           </li>
         </ul>
 
@@ -192,6 +195,7 @@ export default {
     this.appTypeList = this.$store.state.account.appTypeList
   },
   created () {
+    console.log('a')
     this.getList()
   },
   watch: {
@@ -256,9 +260,15 @@ export default {
         app
       }).then(res => {
         this.loading = false
-        res.data.forEach(item => { item.checked = false })
+        let otime = ''
+        res.data.forEach(item => {
+          if (item.createDate.split(' ')[0] != otime) {
+            item.topTime = item.createDate.split(' ')[0]
+            otime = item.createDate.split(' ')[0]
+          }
+          item.checked = false
+        })
         this.data = res.data
-        console.log(res.data)
         this.totalPage = res.totalPage
       }).catch(e => {
         this.loading = false
@@ -301,6 +311,11 @@ export default {
   height: 100%;
   *{
     max-height: 100%;
+  }
+  .li-time {
+    padding: 10px;
+    font-size: 16px;
+    background: #edf8ff;
   }
   .card{border-radius: 5px;box-shadow: none;margin-bottom: 15px;padding: 15px;white-space: nowrap;}
   .li-item{line-height: 1em;
