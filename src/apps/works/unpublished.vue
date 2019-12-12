@@ -256,6 +256,7 @@ export default {
         channelId: this.filterChannelId || this.$route.query.channelId,
         // eslint disable no-unneeded-ternary
         filterChannelId: this.filterChannelId ? true : false,
+        isEqualsChannel: this.filterChannelId == this.$route.query.channelId ? true : false,
         title: this.searchKey,
         app
       }).then(res => {
