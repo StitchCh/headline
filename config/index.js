@@ -4,7 +4,7 @@
 
 const path = require('path')
 
-let apiUrl = process.env.NODE_ENV === 'build-test' ? 'https://teststatic.sinorusfocus.com' : 'https://manage.sinorusfocus.com'
+//let apiUrl = process.env.NODE_ENV === 'build-test' ? 'https://teststatic.sinorusfocus.com' : 'https://manage.sinorusfocus.com'
 
 module.exports = {
   dev: {
@@ -14,14 +14,14 @@ module.exports = {
     proxyTable: {
       // '/cri-cms-platform': { target: 'http://112.103.196.145:9099' }
       '/cri-cms-platform': {
-        target: apiUrl,
+        target: 'https://testmanage.sinorusfocus.com/',
         changeOrigin: true,
         secure: false,
         pathRewrite: {
           '^/cri-cms-platform': '/cri-cms-platform'  // 路径重写，第一个与上面相同，第二个/queue-admin 为server.context-path（服务器的上下文）
         },
         headers: {
-          Referer: apiUrl
+          Referer: 'https://testmanage.sinorusfocus.com/'
         }
       },
       //'/cri-cms-platform': { target: 'http://60.247.77.208:59099' }

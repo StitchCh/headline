@@ -47,10 +47,10 @@
         <span class="flex-item">©原创声明</span>
         <switcher mode="Number" v-model="form.isOriginal"/>
       </div>
-      <div class="option-item flex" v-if="!form.isOriginal">
-        <input type="text" class="flex-item" placeholder="来源名称" v-model="form.originalFrom">
-        <input type="text" class="flex-item" placeholder="来源URL" v-model="form.originalUrl">
-      </div>
+      <!--<div class="option-item flex" v-if="!form.isOriginal">-->
+        <!--<input type="text" class="flex-item" placeholder="来源名称" v-model="form.originalFrom">-->
+        <!--<input type="text" class="flex-item" placeholder="来源URL" v-model="form.originalUrl">-->
+      <!--</div>-->
       <div class="option-item" style="display: flex">
         <input style="width: calc(100% - 70px);" type="text" placeholder="作者，逗号分隔" v-model="form.author">
         <div class="relative" style="padding: 0 4px;width: 70px;">

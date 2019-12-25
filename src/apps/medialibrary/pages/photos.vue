@@ -262,7 +262,7 @@ export default {
   .listhover:hover{
     background: #eee;
   }
-  .photos-item{height: 150px;overflow: hidden;background: #eee;min-width: 40px;
+  .photos-item{height: 150px;overflow: hidden;background: #eee;min-width: 40px;max-width: 100%;
     .img-name{position: absolute;left: 0;bottom: 0;background: rgba(0, 0, 0, .7);width: 100%;line-height: 1em;padding: 6px;transform: translateY(24px);
       overflow: hidden;text-overflow: ellipsis;white-space: nowrap;transition: all .2s;}
     img{height: 100%;transition: transform .2s;will-change: transform;}

@@ -16,7 +16,7 @@
           <no-data/>
         </div>
         <ul class="flex" ref="ul" style="flex-wrap: wrap;padding-bottom: 50px;" :style="{paddingLeft: (width - (240 * ~~((width - 80) / 240))) * 0.5 + 'px'}">
-          <li v-for="item in list" :key="item.id" class="a" @click="$router.push(`/articleEdit/draft/${item.id}`)">
+          <li v-for="item in list" :key="item.id" class="a" @click="openWindow(`/articleEdit/draft/${item.id}`)">
             <div class="cover flex-center">
               <img v-if="item.thumb && item.thumb.length" :src="item.thumb[0].url" alt="">
             </div>

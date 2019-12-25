@@ -40,16 +40,17 @@
               <span style="margin-left: 10px;" :style="{color: getPublishStatus(li).color}">{{getPublishStatus(li).str}}</span>
             </span>
             <icon-btn small v-tooltip="'恢复'" v-if="li.del" @click="li.del=false">undo</icon-btn>
-            <span class="relative opera-btns" v-if="!li.del">
-              <icon-btn small>more_vert</icon-btn>
-              <bubble pos="left" align="center">
-                <div style="padding: 3px 10px;">
-                  <icon-btn small v-if="!li.top" v-tooltip="'置顶'" :key="li.top" @click="top(li)">vertical_align_top</icon-btn>
-                  <icon-btn small v-if="li.top" v-tooltip="'取消置顶'" :key="li.top" @click="unTop(li)" class="un-top">vertical_align_top</icon-btn>
-                  <icon-btn small v-tooltip="'编辑'" @click="toEdit(li)">edit</icon-btn>
-                  <icon-btn small v-tooltip="'移除'" @click="del(li)">delete</icon-btn>
-                </div>
-              </bubble>
+            <span class="relative opera-btns" style="margin-left: 5px;" v-if="!li.del">
+              <!--<icon-btn small>more_vert</icon-btn>-->
+              <!--<bubble pos="left" align="center">-->
+                <!--<div style="padding: 3px 10px;">-->
+                  <!---->
+                <!--</div>-->
+              <!--</bubble>-->
+              <icon-btn small v-if="!li.top" v-tooltip="'置顶'" :key="li.top" @click="top(li)">vertical_align_top</icon-btn>
+              <icon-btn small v-if="li.top" v-tooltip="'取消置顶'" :key="li.top" @click="unTop(li)" class="un-top">vertical_align_top</icon-btn>
+              <icon-btn small v-tooltip="'编辑'" @click="toEdit(li)">edit</icon-btn>
+              <icon-btn small v-tooltip="'移除'" @click="del(li)">delete</icon-btn>
             </span>
           </li>
         </transition-group>

@@ -13,11 +13,14 @@ Vue.config.productionTip = false
 // axios.defaults.timeout = 10000
 
 if (process.env.NODE_ENV == 'development') {
-  window.w_api = 'https://static.sinorusfocus.com'
+  window.w_api = 'https://teststatic.sinorusfocus.com/'
 } else {
-  window.w_api = window.location.href
+  if (window.location.href.indexOf('//manage.sinorusfocus.com') >= 0) {
+    window.w_api = 'https://static.sinorusfocus.com/'
+  } else {
+    window.w_api = 'https://teststatic.sinorusfocus.com/'
+  }
 }
-console.log(window.w_api)
 
 axios.interceptors.request.use(function (config) {
   let token = sessionStorage.token || localStorage.token
@@ -92,14 +95,10 @@ Vue.prototype.qrcode = function (id) {
 }
 
 Vue.prototype.openWindow = (path, data) => {
-  window.aaa = function () {
-    console.log('aaa')
-  }
   let routeData = router.resolve({
     path: path
   })
   window.open(routeData.href, '_blank')
-
   //router.push(path)
 }
 

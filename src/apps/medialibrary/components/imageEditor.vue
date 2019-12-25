@@ -369,6 +369,7 @@ export default {
             }
             this.watermarkData.height =  (imgObj.width / imgObj.height)
             this.mycanvas.drawImage(imgObj, (this.watermarkData.left - (this.imgboxData.width - canvasData.ratioValue.w) / 2) / canvasData.ratio, (this.watermarkData.top - (this.imgboxData.height - canvasData.ratioValue.h) / 2) / canvasData.ratio, this.watermarkData.width / canvasData.ratio, (this.watermarkData.width / this.watermarkData.height) / canvasData.ratio)
+
             var convertBase64ToBlob = function(base64){
               var base64Arr = base64.split(',');
               var imgtype = '';
