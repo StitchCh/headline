@@ -46,7 +46,7 @@
           <input v-model="searchKey" class="f-14" type="text" placeholder="标题关键字" style="margin: 0;padding: 4px 6px;width: 150px;border:1px solid #eee;border-radius: 4px;"/>
         </div>
 
-        <div v-if="loading" class="abs flex-center"><loading size="30"/></div>
+        <div v-if="loading" class="abs flex-center" style="background: rgba(0,0,0,0.5);"><loading color="#fff" size="30"/></div>
         <div class="f-12 c-a t-center" v-if="!data.length && !loading" style="margin-top: 15px;">暂无数据</div>
 
         <ul style="height: calc(100% - 70px);overflow: auto;">
@@ -85,7 +85,7 @@
               <li class="a" v-for="item in layout"
                 :key="item.id"
                 :class="{'on': activeLayoutId === item.id, 'disabled': item.type === '3'}"
-                @click="activeLayoutId=item.id"
+                @click="setLayout(item)"
               >{{item.layoutName}}</li>
             </ul>
           </div>
@@ -184,6 +184,7 @@ export default {
       filterChannelId: this.$route.query.channelId,
       searchKey: '',
       activeLayoutId: '',
+      activeLayoutType: '',
       data: [],
       appTypeList: {},
       checked: [],
@@ -195,15 +196,40 @@ export default {
     this.appTypeList = this.$store.state.account.appTypeList
   },
   created () {
-    console.log('a')
+    this.activeLayoutId = this.$route.query.typeId
+    this.layout.forEach(item => {
+      if (!this.$route.query.typeId && item.type != 3) {
+        this.activeLayoutId = item.id
+      }
+      if (item.id == this.activeLayoutId) {
+        this.activeLayoutType = item.type
+      }
+    })
     this.getList()
   },
   watch: {
     '$route.query.typeId' () {
       this.activeLayoutId = this.$route.query.typeId
+      this.layout.forEach(item => {
+        if (!this.$route.query.typeId && item.type != 3) {
+          this.activeLayoutId = item.id
+        }
+        if (item.id == this.activeLayoutId) {
+          this.activeLayoutType = item.type
+        }
+      })
+      this.getList()
     },
     '$route.query.channelId' (id) {
-      this.filterChannelId = id
+      this.layout.forEach(item => {
+        if (!this.$route.query.typeId && item.type != 3) {
+          this.activeLayoutId = item.id
+        }
+        if (item.id == this.activeLayoutId) {
+          this.activeLayoutType = item.type
+        }
+      })
+      this.getList()
     },
     filterChannelId () {
       this.getList()
@@ -214,6 +240,17 @@ export default {
     layout (val) {
       // if (val && val.length) this.activeLayoutId = val[0].id || ''
       this.checked = []
+      this.layout.forEach(item => {
+        if (!this.$route.query.typeId && item.type != 3) {
+          this.activeLayoutId = item.id
+        }
+        if (item.id == this.activeLayoutId) {
+          this.activeLayoutType = item.type
+        }
+      })
+    },
+    'activeLayoutId' () {
+      this.getList()
     }
   },
   computed: {
@@ -243,6 +280,11 @@ export default {
       })
       this.getList()
     },
+    setLayout (item) {
+      this.activeLayoutId = item.id
+      this.activeLayoutType = item.type
+      this.getList()
+    },
     getList () {
       this.loading = true
       let app = ''
@@ -251,6 +293,8 @@ export default {
       }
       this.$http.post('/cri-cms-platform/issue/getChannelContentList.monitor', {
         // type: type,
+        layoutId: this.activeLayoutId,
+        layoutType: this.activeLayoutType,
         pageSize: this.size,
         toPage: this.page,
         channelId: this.filterChannelId || this.$route.query.channelId,

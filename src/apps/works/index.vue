@@ -33,7 +33,7 @@
       <!-- <div v-if="loading" class="abs flex-center bg-light-rgb-2" style="z-index:10;"><loading/></div> -->
       <div class="flex-item relative scroll-y" style="padding: 20px;" ref="scrollbox" @scroll="scrollfun">
         <!-- {{childChannel}} -->
-        <keep-alive>
+        <!--<keep-alive>-->
           <router-view
             :layout="layout"
             :channel="channel"
@@ -42,7 +42,7 @@
             @add="onAdd"
             @dragend="$event => {layout=$event}"
           ></router-view>
-        </keep-alive>
+        <!--</keep-alive>-->
       </div>
     </div>
   </div>
@@ -102,8 +102,6 @@ export default {
       }).then(res => {
         this.loading = false
         this.layout = res
-        console.log('layout------------------------------------------')
-        console.log(res)
       }).catch(e => {
         this.loading = false
         this.$toast(e.msg)

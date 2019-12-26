@@ -346,8 +346,8 @@ export default {
         yes () {
           clearInterval(that.autoSaveTimer)
           window.opener = null
-          //window.close()
-          that.$router.go(-1)
+          window.close()
+          // this.$router.go(-1)
         },
         no () {
 
