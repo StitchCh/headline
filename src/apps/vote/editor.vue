@@ -149,7 +149,7 @@ export default {
           'selectimage': '插入图片'
         },
         wordCount: false,
-        autoHeightEnabled: true,
+        autoHeightEnabled: false,
         initialFrameHeight: 400
       }
       // options: {

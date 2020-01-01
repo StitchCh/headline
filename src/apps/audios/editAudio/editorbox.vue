@@ -125,8 +125,8 @@
             'selectimage': '插入图片'
           },
           wordCount: false,
-          autoHeightEnabled: true,
-          initialFrameHeight: window.innerHeight - 250,
+          autoHeightEnabled: false,
+          initialFrameHeight: window.innerHeight - 400,
           serverUrl: '/cri-cms-platform/media/uploadIAU.monitor',
           imageActionName: '/cri-cms-platform/media/uploadIAU.monitor'
         }

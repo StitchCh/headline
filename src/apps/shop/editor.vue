@@ -126,8 +126,8 @@ export default {
           'selectimage': '插入图片'
         },
         wordCount: false,
-        autoHeightEnabled: true,
-        initialFrameHeight: window.innerHeight - 250,
+        autoHeightEnabled: false,
+        initialFrameHeight: window.innerHeight - 400,
         autoTypeSet: {
           indent: true,
           removeEmptyNode: false

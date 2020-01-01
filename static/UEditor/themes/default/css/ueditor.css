@@ -133,9 +133,7 @@ div.edui-box {
 }
 /*UI工具栏、编辑区域、底部*/
 .edui-default .edui-editor {
-  padding-top: 81px;
-    overflow: auto;
-    max-height: 600px;
+    overflow: visible;
     border: 1px solid #d4d4d4;
     background-color: white;
     position: relative;
@@ -148,22 +146,22 @@ div.edui-box {
     height:auto;
 }
 .edui-default .edui-editor-toolbarbox {
-    /*position: relative;*/
-    /*zoom: 1;*/
-    /*-webkit-box-shadow:0 1px 4px rgba(204, 204, 204, 0.6);*/
-    /*-moz-box-shadow:0 1px 4px rgba(204, 204, 204, 0.6);*/
-    /*box-shadow:0 1px 4px rgba(204, 204, 204, 0.6);*/
-    /*border-top-left-radius:2px;*/
-    /*border-top-right-radius:2px;*/
+    position: relative;
+    zoom: 1;
+    -webkit-box-shadow:0 1px 4px rgba(204, 204, 204, 0.6);
+    -moz-box-shadow:0 1px 4px rgba(204, 204, 204, 0.6);
+    box-shadow:0 1px 4px rgba(204, 204, 204, 0.6);
+    border-top-left-radius:2px;
+    border-top-right-radius:2px;
 
-    position: fixed;
-    z-index: 10;
-    top: 197px;
-    left: calc((100% - 320px) * 0.2 / 2 + 10px);
-    width: calc((100% - 320px) * 0.8 - 20px);
-    box-shadow: 0 1px 4px rgba(204, 204, 204, 0.6);
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
+    /*position: fixed;*/
+    /*z-index: 10;*/
+    /*top: 197px;*/
+    /*left: calc((100% - 320px) * 0.2 / 2 + 10px);*/
+    /*width: calc((100% - 320px) * 0.8 - 20px);*/
+    /*box-shadow: 0 1px 4px rgba(204, 204, 204, 0.6);*/
+    /*border-top-left-radius: 2px;*/
+    /*border-top-right-radius: 2px;*/
 }
 
 .edui-default .edui-editor-toolbarboxouter {
