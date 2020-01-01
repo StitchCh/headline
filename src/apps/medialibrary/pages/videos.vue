@@ -172,8 +172,33 @@ export default {
       })
     },
     selectItem (item) {
-      if (this.singleSelect) this.cancelSelect()
-      item.checked = !item.checked
+      if (item.checked) {
+        if (this.singleSelect) this.cancelSelect()
+        item.checked = !item.checked
+
+      } else if (item.state == 'coding') {
+
+        this.$toast('视频正在转码中，请稍后刷新页面再尝试选择此视频')
+
+      } else if (item.state == 'fail') {
+
+        this.$confirm({
+          title: '提示',
+          text: `此视频转码失败，因不同设别兼容性不同，此视频可能会引起播放问题，是否继续选择`,
+          color: 'red',
+          btns: ['取消', '选择'],
+          yes: () => {
+            if (this.singleSelect) this.cancelSelect()
+            item.checked = !item.checked
+          }
+        })
+
+      } else {
+
+        if (this.singleSelect) this.cancelSelect()
+        item.checked = !item.checked
+
+      }
     },
     cancelSelect () {
       this.list.forEach(li => {
