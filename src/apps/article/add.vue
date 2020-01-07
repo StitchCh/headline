@@ -11,6 +11,7 @@
       <div class="flex-v-center">
         <!--<btn big flat style="margin-right: 15px;">递交审核</btn>-->
         <!-- <btn big flat style="margin-right: 10px;">预览</btn> -->
+        <btn big flat color="#008eff" @click="loadOnLine">一键转载</btn>
         <btn big flat style="margin-right: 10px;" @click="autoSave">保存草稿</btn>
         <btn big style="margin-right: 20px;" @click="submit">保存</btn>
         <icon-btn v-tooltip:bottom="'发布选项'" @click="ui.optionShow=!ui.optionShow">menu</icon-btn>
@@ -384,6 +385,9 @@ export default {
           this.$toast(res.msg || res || '保存失败')
         }
       )
+    },
+    loadOnLine () {
+      this.$refs.editor.show = true
     },
     submit () {
       let url = this.id && this.from === 'article' ? '/cri-cms-platform/article/update.monitor' : '/cri-cms-platform/article/save.monitor'

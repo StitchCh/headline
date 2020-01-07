@@ -53,6 +53,18 @@
       <btn flat color="#008eff" @click="insertAudio">选择</btn>
     </div>
   </layer>
+
+
+  <div v-if="show" class="zhuanzai_box" @click="show = false">
+    <div class="zhuanzai_text_box" @click.stop>
+      <div class="zhuanzai_text_title">一键转载</div>
+      <textarea v-model="loadURL" class="zhuanzai_text" placeholder="请输入文章源地址..."></textarea>
+      <div style="text-align: right;">
+        <btn flat @click="show = false">取消</btn>
+        <btn color="#008eff" @click="loadStart">转载文章</btn>
+      </div>
+    </div>
+  </div>
 </div>
 </template>
 
@@ -68,6 +80,8 @@ export default {
   components: { VueUeditorWrap, MediaPhotos, MediaVideos, MediaAudios },
   data () {
     return {
+      show: false,
+      loadURL: '',
       ui: {
         imageSelectorShow: false,
         videoSelectorShow: false,
@@ -153,6 +167,16 @@ export default {
     }
   },
   methods: {
+    loadStart () {
+      //this.loadURL
+      if (this.loadURL == '') {
+        this.$toast('请输入文章源地址')
+        return
+      }
+
+
+
+    },
     titleChange () {
       if ( sessionStorage.siteId == 1002 ) {
         this.$http.post('/cri-cms-platform/article/getKeyToTitle.monitor', { doc: this.title }).then(
@@ -244,6 +268,45 @@ export default {
 
 <style lang="less">
 .article-editor{max-width: 900px;margin: 0 auto;padding: 10px;
+  .zhuanzai_box{
+    z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+  }
+  .zhuanzai_text_title{
+    font-size: 18px;
+    padding: 20px 0;
+    font-weight: bold;
+  }
+  .zhuanzai_text_box{
+    width: 400px;
+    height: 220px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 5px 5px 20px rgba(0,0,0,0.5);
+    padding: 0 20px 20px;
+  }
+  .zhuanzai_text{
+    width: 100%;
+    height: 100px;
+    margin: 0 0 20px;
+    resize: none;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid #aaa;
+  }
   .title{
     outline: none;
     resize: none;

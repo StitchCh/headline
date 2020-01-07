@@ -185,7 +185,13 @@ a{
 .video_box .vjs-tech{
   height: 100%;
 }
-  .art-ctn img{
-    max-width: 100%;
-  }
+.art-ctn img{
+  max-width: 100%;
+}
+#edui1{
+  z-index: 10 !important;
+}
+#edui_fixedlayer{
+  z-index: 60 !important;
+}
 </style>
