@@ -106,6 +106,14 @@ export default {
         {
           value: '俄罗斯外交部',
           state: false
+        },
+        {
+          value: '东北网',
+          state: false
+        },
+        {
+          value: '新华网',
+          state: false
         }
       ]
     }

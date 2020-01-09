@@ -160,7 +160,6 @@ export default {
       width: this.$refs.imgbox.offsetWidth,
       height: this.$refs.imgbox.offsetHeight
     }
-    console.log(this.imgboxData)
     this.init()
   //   window.addEventListener('mousedown', this.onRotateStart)
   //   window.addEventListener('mousemove', this.onRotate)
@@ -420,7 +419,6 @@ export default {
             file: new File([img], current.alias),
             scale: this.cropNumber
           }
-          console.log(data)
           this.$http.post('/cri-cms-platform/media/uploadIAU.monitor', data).then(res => {
             this.$emit('refresh', res[0])
           }).catch(e => {

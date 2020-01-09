@@ -174,7 +174,24 @@ export default {
         return
       }
 
+      if (this.loadURL.indexOf('http://') < 0 && this.loadURL.indexOf('https://') < 0) {
+        this.$toast('请输入正确的网络地址')
+        return
+      }
 
+      this.$http.post('/cri-cms-platform/article/oneKeyImport.monitor', {
+        url: this.loadURL
+      }).then(
+        res => {
+          if (res.ArticleData.info == 'success' ) {
+            this.content = res.ArticleData.content || ''
+            this.title = res.ArticleData.title || ''
+          } else {
+            this.$toast('待爬取网站暂不支持解析')
+          }
+          this.show = false
+        }
+      )
 
     },
     titleChange () {

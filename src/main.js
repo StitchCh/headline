@@ -41,6 +41,12 @@ axios.interceptors.response.use(function (response) {
       return
     }
     if (code === -1001) {
+      router.replace('/login')
+      sessionStorage.removeItem('token')
+      localStorage.removeItem('token')
+      sessionStorage.removeItem('siteId')
+      localStorage.removeItem('siteId')
+      store.commit('LOGOUT')
       Vue.prototype.$toast(response.data.msg)
       return
     }
