@@ -53,13 +53,22 @@
 
     <layer v-if="ui.photoSelectorShow" title="选择图片"  width="800px" class="tc_box">
       <div class="layer-text relative" style="height: 800px;">
-        <media-photos select-mode ref="mediaPhotos"/>
+        <media-photos select-mode ref="mediaPhotos"  @preview="onPreview"/>
       </div>
       <div class="layer-btns">
         <btn flat @click="ui.photoSelectorShow = false">取消</btn>
         <btn flat color="#008eff" @click="selectPhoto">选择</btn>
       </div>
     </layer>
+
+    <media-preview
+      v-if="preview.show"
+      :list="preview.list"
+      :index="preview.index"
+      :type="$route.meta.type"
+      @close="preview.show=false"
+      @refresh="refresh"
+      @delected="onDelected"/>
   </div>
 </template>
 
@@ -71,10 +80,11 @@ import MediaVideos from '../../medialibrary/pages/videos'
 import MediaPhotos from '../../medialibrary/pages/photos'
 import draggable from 'vuedraggable'
 import debounce from 'lodash/debounce'
+import MediaPreview from '../../medialibrary/components/mediaPreview'
 
 export default {
   name: 'video-editor',
-  components: { MediaPhotos, videoPlayer, MediaVideos, draggable },
+  components: { MediaPhotos, videoPlayer, MediaVideos, draggable, MediaPreview },
   data () {
     return {
       ui: {
@@ -85,10 +95,27 @@ export default {
       titleColor: '#000000',
       selected: [],
       activeIndex: 0,
-      allDescription: ''
+      allDescription: '',
+      preview: {
+        show: false,
+        list: [],
+        index: 0
+      }
     }
   },
   methods: {
+    refresh (item) {
+      this.$refs.mediaPhotos.getList('', item)
+      this.preview.show = false
+    },
+    onDelected (e) {
+      this.$refs.mediaPhotos.getList()
+    },
+    onPreview (e) {
+      this.preview.list = e.list || []
+      this.preview.index = e.index || 0
+      this.preview.show = true
+    },
     allDescriptionChange () {
       this.selected.forEach((item, index) => {
         if (item.description == "") {

@@ -15,6 +15,7 @@
   </div>
 </template>
 
+
 <script>
   import Account from '@/components/account'
   import AfLeft from '@/components/app-frame/afLeft'

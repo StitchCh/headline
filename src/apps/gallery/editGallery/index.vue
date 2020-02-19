@@ -120,7 +120,7 @@ export default {
     },
     submit () {
       let url = this.id && this.from === 'gallery' ? '/cri-cms-platform/gallery/update.monitor' : '/cri-cms-platform/gallery/save.monitor'
-      let { title, titleColor, selected } = this.$refs.editor
+      let { title, titleColor, selected, allDescription } = this.$refs.editor
       if (!title) {
         this.$toast('请输入标题')
         return
@@ -144,6 +144,7 @@ export default {
       if (this.id) form.id = this.id
 
       form.isListShowPic = form.isListShowPic == 1 ? 0 : 1
+      form.allDescription = allDescription
 
       if (!form.thumb) {
         this.$toast('请选头图')
@@ -166,7 +167,7 @@ export default {
       )
     },
     autoSave () {
-      let { title, titleColor, selected } = this.$refs.editor
+      let { title, titleColor, selected, allDescription } = this.$refs.editor
       let content = ''
       if (selected.length) {
         content = JSON.stringify(selected.map(v => {
@@ -177,6 +178,7 @@ export default {
         }))
       }
       let form = Object.assign({title, titleColor, content}, this.$refs.option.form)
+      form.allDescription = allDescription
       if (this.autoSaveId) form.id = this.autoSaveId
       return this.$http.post('/cri-cms-platform/articleAutoSave/saveAuto.monitor', form).then(
         res => {

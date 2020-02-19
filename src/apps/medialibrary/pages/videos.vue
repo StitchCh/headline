@@ -39,6 +39,7 @@
         <btn v-if="$route.path === '/media/' || $route.path === '/media'" flat :disabled="!selected.length" color="#008eff" @click="del">删除</btn>
         <media-upload :type="2" @uploaded="onUploaded" :folder-id="$route.query.folderId || 0"/>
       </div>
+      <btn flat color="#008eff" @click="getList">刷新</btn>
     </div>
     <div class="flex-item relative scroll-y">
       <div v-if="loading" class="abs flex-center bg-light-rgb-2" style="z-index: 20;"><loading/></div>
@@ -46,7 +47,7 @@
       <div class="media-group" v-for="group in list" :key="group.date">
         <div class="media-group-title">{{group.date}}</div>
         <ul class="flex">
-          <li class="videos-item relative" v-for="item in group.data" :key="item.id" :class="{'checked': item.checked}" v-if="!selectMode || item.state === 'success'">
+          <li class="videos-item relative" v-for="item in group.data" :key="item.id" :class="{'checked': item.checked}">
             <i class="icon item-check a" @click="selectItem(item)">check_circle</i>
             <div class="relative hidden">
               <div class="videos-item-cover flex-center">

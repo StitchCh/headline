@@ -178,6 +178,8 @@ a{
 }
 .video-js{
   width: 100%;
+  height: auto;
+  min-height: 300px;
 }
 .vjs-tech{
   height: auto !important;
@@ -194,4 +196,10 @@ a{
 #edui_fixedlayer{
   z-index: 60 !important;
 }
+.datepicker-range .datepicker-popup{
+  width: 420px !important;
+}
 </style>
+<style src="./edit.css"></style>
+
+

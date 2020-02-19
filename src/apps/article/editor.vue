@@ -21,12 +21,13 @@
   </div>
   <!--<quill-editor v-model="content" ref="editor" :options="options" @change="getKeyGenerate"/>-->
   <div>
-    <vue-ueditor-wrap v-model="content" ref="editor" :config="config" :destroy="true" @ready="ready"/>
+    <!--<vue-ueditor-wrap v-model="content" ref="editor" :config="config" :destroy="true" @ready="ready"/>-->
+    <v-quill v-model="content" ref="editor"></v-quill>
   </div>
 
   <layer v-if="ui.imageSelectorShow" title="选择图片"  width="800px" class="tc_box">
     <div class="layer-text relative" style="height: 800px;">
-      <media-photos select-mode ref="mediaPhotos"></media-photos>
+      <media-photos select-mode ref="mediaPhotos" @preview="onPreview"></media-photos>
     </div>
     <div class="layer-btns">
       <btn flat @click="ui.imageSelectorShow = false">取消</btn>
@@ -65,6 +66,15 @@
       </div>
     </div>
   </div>
+
+  <media-preview
+    v-if="preview.show"
+    :list="preview.list"
+    :index="preview.index"
+    :type="$route.meta.type"
+    @close="preview.show=false"
+    @refresh="refresh"
+    @delected="onDelected"/>
 </div>
 </template>
 
@@ -74,10 +84,11 @@ import debounce from 'lodash/debounce'
 import MediaPhotos from '../medialibrary/pages/photos'
 import MediaVideos from '../medialibrary/pages/videos'
 import MediaAudios from '../medialibrary/pages/audios'
+import MediaPreview from '../medialibrary/components/mediaPreview'
 
 export default {
   name: 'article-editor',
-  components: { VueUeditorWrap, MediaPhotos, MediaVideos, MediaAudios },
+  components: { VueUeditorWrap, MediaPhotos, MediaVideos, MediaAudios, MediaPreview },
   data () {
     return {
       show: false,
@@ -163,10 +174,27 @@ export default {
         initialFrameHeight: window.innerHeight - 400,
         serverUrl: '/cri-cms-platform/media/uploadIAU.monitor',
         imageActionName: '/cri-cms-platform/media/uploadIAU.monitor'
+      },
+      preview: {
+        show: false,
+        list: [],
+        index: 0
       }
     }
   },
   methods: {
+    refresh (item) {
+      this.$refs.mediaPhotos.getList('', item)
+      this.preview.show = false
+    },
+    onDelected (e) {
+      this.$refs.mediaPhotos.getList()
+    },
+    onPreview (e) {
+      this.preview.list = e.list || []
+      this.preview.index = e.index || 0
+      this.preview.show = true
+    },
     loadStart () {
       //this.loadURL
       if (this.loadURL == '') {
@@ -204,7 +232,7 @@ export default {
       }
     },
     getText () {
-      return this.editor.getContentTxt()
+      return this.$refs.editor.getContentTxt()
       // return this.$refs.editor.quill.getText()
     },
     // getKeyGenerate: debounce(function () {

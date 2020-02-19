@@ -1,7 +1,7 @@
-import Editor from './Editor.vue'
+import Editor from './index.vue'
 
 Editor.install = function (Vue) {
-  Vue.component(Editor.name, Editor)
+  Vue.component('v-quill', Editor)
 }
 
 export default Editor

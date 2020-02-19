@@ -6,7 +6,7 @@ import Button from './Button'
 import CheckBox from './CheckBox'
 import Confirm from './Confirm'
 import DatePicker from './DatePicker'
-// import Editor from './Editor'
+import Editor from './Editor'
 import FoldText from './FoldText'
 import InputBox from './InputBox'
 import Layer from './Layer'
@@ -33,7 +33,7 @@ Vue.use(Button)
 Vue.use(CheckBox)
 Vue.use(Confirm)
 Vue.use(DatePicker)
-// Vue.use(Editor)
+Vue.use(Editor)
 Vue.use(FoldText)
 Vue.use(InputBox)
 Vue.use(Layer)

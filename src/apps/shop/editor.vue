@@ -6,7 +6,7 @@
 
   <layer v-if="ui.imageSelectorShow" title="选择图片"  width="800px" class="tc_box">
     <div class="layer-text relative" style="height: 800px;">
-      <media-photos select-mode ref="mediaPhotos"></media-photos>
+      <media-photos select-mode ref="mediaPhotos" @preview="onPreview"></media-photos>
     </div>
     <div class="layer-btns">
       <btn flat @click="ui.imageSelectorShow = false">取消</btn>
@@ -33,6 +33,15 @@
       <btn flat color="#008eff" @click="insertAudio">选择</btn>
     </div>
   </layer>
+
+  <media-preview
+    v-if="preview.show"
+    :list="preview.list"
+    :index="preview.index"
+    :type="$route.meta.type"
+    @close="preview.show=false"
+    @refresh="refresh"
+    @delected="onDelected"/>
 </div>
 </template>
 
@@ -42,12 +51,13 @@ import debounce from 'lodash/debounce'
 import MediaPhotos from '../medialibrary/pages/photos'
 import MediaVideos from '../medialibrary/pages/videos'
 import MediaAudios from '../medialibrary/pages/audios'
+import MediaPreview from '../medialibrary/components/mediaPreview'
 
 // Quill.register('modules/imageResize', ImageResize)
 console.log(window.innerHeight)
 export default {
   name: 'article-editor',
-  components: { VueUeditorWrap, MediaPhotos, MediaVideos, MediaAudios },
+  components: { VueUeditorWrap, MediaPhotos, MediaVideos, MediaAudios, MediaPreview },
   data () {
     return {
       ui: {
@@ -134,10 +144,27 @@ export default {
         }
         // serverUrl: '/cri-cms-platform/media/uploadIAU.monitor'
         // imageUrlPrefix: '/cri-cms-platform/media/uploadIAU.monitor'
+      },
+      preview: {
+        show: false,
+        list: [],
+        index: 0
       }
     }
   },
   methods: {
+    refresh (item) {
+      this.$refs.mediaPhotos.getList('', item)
+      this.preview.show = false
+    },
+    onDelected (e) {
+      this.$refs.mediaPhotos.getList()
+    },
+    onPreview (e) {
+      this.preview.list = e.list || []
+      this.preview.index = e.index || 0
+      this.preview.show = true
+    },
     getText () {
       return this.editor.getContentTxt()
       // return this.$refs.editor.quill.getText()
