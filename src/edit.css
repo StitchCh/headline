@@ -39,7 +39,7 @@
   left: 0px !important;
   right: 0px !important;
   margin: 0 auto;
-  width: 330px;
+  width: 380px;
   position: fixed !important;
 }
 .ql-picker-label[data-value="10px"]:before,
@@ -184,14 +184,14 @@
   font-family: "sans-serif";
 }
 .ql-container{
-  height: 500px;
+  height: 500px !important;
   overflow: auto;
 }
 .bdiv .quill-editor {
   height: calc(100% - 100px);
 }
 .bdiv .ql-container{
-  height: calc(100% - 60px);
+  height: calc(100% - 60px) !important;
 }
 .ql-lineHeight-0-5{
   line-height: 0.5;
@@ -208,12 +208,13 @@
 .ql-lineHeight-2{
   line-height: 2;
 }
-.ql-container img{
+.ql-editor img{
   display: block;
   margin: 20px auto !important;
 }
 .ql-editor{
   overflow: visible;
+  overflow-y: visible !important;
 }
 .ql-hr{
   height: 1px;
@@ -223,4 +224,32 @@
 }
 .ql-toolbar{
   display: none;
+}
+.ql-editor p{
+  margin: 20px 0;
+}
+.ql-editor>p:nth-child(1){
+  margin-top: 0;
+}
+.ql-editor{
+  color: #000;
+}
+.ql-snow .ql-tooltip a.ql-remove:before {
+  content: '移除';
+}
+.ql-snow .ql-tooltip a.ql-action:after {
+  content: '编辑';
+}
+.ql-snow .ql-tooltip.ql-editing a.ql-action:after {
+  content: '保存';
+}
+.ql-snow .ql-tooltip[data-mode=link]:before {
+  content: "请输入URL:";
+}
+.ql-snow .ql-tooltip:before {
+  content: "当前URL:";
+}
+a{
+  text-decoration: none;
+  color: #00a0e9;
 }

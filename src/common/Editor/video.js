@@ -6,6 +6,8 @@ const Link = Quill.import('formats/link')
 
 const ATTRIBUTES = ['height', 'width']
 
+var poster = ''
+
 class Video extends BlockEmbed {
     static create (value) {
         const node = super.create(value)
@@ -23,11 +25,12 @@ class Video extends BlockEmbed {
         node.setAttribute('x5-playsinline', 'true') // 兼容安卓 不全屏播放
         node.setAttribute('x5-video-player-fullscreen', 'true')    // 全屏设置，设置为 true 是防止横屏
         node.setAttribute('src', srcArr[0])
-        node.setAttribute('poster', srcArr[1])
+        node.setAttribute('poster', srcArr[1] || poster)
         return node
     }
 
     static formats (domNode) {
+      poster = domNode.getAttribute('poster')
         return ATTRIBUTES.reduce((formats, attribute) => {
             if (domNode.hasAttribute(attribute)) {
                 formats[attribute] = domNode.getAttribute(attribute)

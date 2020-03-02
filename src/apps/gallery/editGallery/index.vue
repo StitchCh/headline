@@ -54,7 +54,8 @@ export default {
       },
       res: null,
       autoSaveId: '',
-      autoSaveTimer: null
+      autoSaveTimer: null,
+      setkey: true
     }
   },
   methods: {
@@ -84,20 +85,26 @@ export default {
       })
     },
     getKeyGenerate () {
-      if (this.id) return
+      if (this.id && this.$refs.option.form.abstarcts !== '') return
 
-      let doc = this.$refs.editor.allDescription
-      if (doc == '') return
-      if (sessionStorage.siteId == 1002) {
-        this.$refs.option.form.abstarcts = doc.split('.')[0].substring(0, 128)
-      } else {
-        this.$http.post('/cri-cms-platform/article/getKeyGenerate.monitor', { doc }).then(
-          res => {
-            this.$refs.option.form.abstarcts = res.gerenate
-            this.$refs.option.form.keywords = res.key.join(',')
-          }
-        )
+      if (this.setkey) {
+        let doc = this.$refs.editor.allDescription
+        if (doc == '') return
+        if (sessionStorage.siteId == 1002) {
+          this.$refs.option.form.abstarcts = doc.split('.')[0].substring(0, 128)
+          this.setkey = true
+        } else {
+          this.$http.post('/cri-cms-platform/article/getKeyGenerate.monitor', { doc }).then(
+            res => {
+              this.$refs.option.form.abstarcts = res.gerenate
+              this.$refs.option.form.keywords = res.key.join(',')
+              this.setkey = true
+            }
+          )
+        }
       }
+      this.setkey = false
+
     },
     getGallery () {
       if (this.from && this.id) {
@@ -120,7 +127,7 @@ export default {
     },
     submit () {
       let url = this.id && this.from === 'gallery' ? '/cri-cms-platform/gallery/update.monitor' : '/cri-cms-platform/gallery/save.monitor'
-      let { title, titleColor, selected, allDescription } = this.$refs.editor
+      let { title, titleColor, selected } = this.$refs.editor
       if (!title) {
         this.$toast('请输入标题')
         return
@@ -144,7 +151,6 @@ export default {
       if (this.id) form.id = this.id
 
       form.isListShowPic = form.isListShowPic == 1 ? 0 : 1
-      form.allDescription = allDescription
 
       if (!form.thumb) {
         this.$toast('请选头图')

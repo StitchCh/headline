@@ -81,6 +81,7 @@ import 'vue-video-player/src/custom-theme.css'
 import { videoPlayer } from 'vue-video-player'
 
 const ORIGIN = window.w_api
+
 const typeContent = {
   0: { text: '图片' },
   1: { text: '音频' },
@@ -110,7 +111,7 @@ export default {
       w: 550,
       h: 500,
       i: this.index,
-      origin: ORIGIN,
+      origin: window.w_api,
       show: {
         imageEditor: false
       }

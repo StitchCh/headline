@@ -73,8 +73,6 @@ import MediaLeftTree from '../components/leftTree'
 import MediaUpload from '../components/upload'
 import debounce from 'lodash/debounce'
 
-const origin = window.w_api
-
 const states = {
   'success': { color: '#4caf50 ', text: '转码成功' },
   'coding': { color: '#ffc107 ', text: '转码中' },
@@ -96,7 +94,7 @@ export default {
   },
   data () {
     return {
-      origin,
+      origin: window.w_api,
       states,
       loading: true,
       stateShow: false,

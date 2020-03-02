@@ -46,7 +46,7 @@
       <div>
         <p>批量添加说明</p>
         <div>
-          <textarea @change="allDescriptionChange" class="tysm_box" rows="4" v-model="allDescription" placeholder="在此处输入批量图片说明"></textarea>
+          <textarea class="tysm_box" rows="4" v-model="allDescription" placeholder="在此处输入批量图片说明"></textarea>
         </div>
       </div>
     </div>
@@ -100,7 +100,8 @@ export default {
         show: false,
         list: [],
         index: 0
-      }
+      },
+      firstload: true
     }
   },
   methods: {
@@ -118,11 +119,9 @@ export default {
     },
     allDescriptionChange () {
       this.selected.forEach((item, index) => {
-        if (item.description == "") {
-          let otiem = item
-          otiem.description = this.allDescription
-          this.selected.splice(index, 1, otiem)
-        }
+        let otiem = item
+        otiem.description = this.allDescription
+        this.selected.splice(index, 1, otiem)
       })
     },
     changeTitleColor (color) {
@@ -144,9 +143,10 @@ export default {
     }
   },
   watch: {
-    'allDescription': debounce(function () {
+    'allDescription' () {
+      this.allDescriptionChange()
       this.$emit('getKeyGenerate')
-    }, 1000)
+    }
   }
 }
 </script>

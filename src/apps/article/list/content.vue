@@ -15,7 +15,7 @@
             <img v-if="content && content.thumb" v-for="item in content.thumb" :key="item.id" :src="item.url" @click="thumbItem.url = item.url;thumbItem.show = true;" style="margin-left: 5px;height: 50px;cursor: pointer;">
           </div>
           <p class="art-abstarcts"><strong>[摘要]</strong>{{content.abstarcts}}</p>
-          <div :style="{
+          <div class="ql-editor" :style="{
             'font-size': fontSize
           }" v-html="article.content"></div>
           <div v-if="relateArticle.length" class="art-relate f-14">

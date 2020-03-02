@@ -8,6 +8,8 @@ import obj2FormData from './util/obj2FormData'
 import './util/filter'
 import './common'
 
+import './edit.css'
+
 Vue.config.productionTip = false
 
 // axios.defaults.timeout = 10000
@@ -15,6 +17,7 @@ Vue.config.productionTip = false
 if (process.env.NODE_ENV == 'development') {
   window.w_api = 'https://teststatic.sinorusfocus.com/'
 } else {
+  console.log = function () {}
   if (window.location.href.indexOf('//manage.sinorusfocus.com') >= 0) {
     window.w_api = 'https://static.sinorusfocus.com/'
   } else {
@@ -71,6 +74,7 @@ axios.interceptors.response.use(function (response) {
 })
 
 Vue.prototype.$http = axios
+window.axios = axios
 
 Vue.prototype.keydownFun = function (nub, fun) {
   let gettype = Object.prototype.toString

@@ -25,7 +25,7 @@
                           :options="playerOptions"
                           :playsinline="true"></video-player>
           </div>
-          <div v-html="content.content"></div>
+          <div class="ql-editor" v-html="content.content"></div>
         </div>
       </div>
     </div>

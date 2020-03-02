@@ -44,8 +44,6 @@ import MediaLeftTree from '../components/leftTree'
 import MediaUpload from '../components/upload'
 import debounce from 'lodash/debounce'
 
-const origin = window.w_api
-
 export default {
   name: 'media-audios',
   components: { MediaLeftTree, MediaUpload },
@@ -61,7 +59,7 @@ export default {
   },
   data () {
     return {
-      origin,
+      origin: window.w_api,
       loading: true,
       page: 1,
       size: 50,

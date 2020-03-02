@@ -23,11 +23,11 @@
             <div class="bar_line"></div>
 
             <div v-tooltip:top="'全角转半角'" @click="xq('toDBC2SB')" class="bar_item">
-                <svg viewBox="0 0 1024 1024" width="16" height="16"><path d="M512 512m-480 0a480 480 0 1 0 960 0 480 480 0 1 0-960 0Z"></path></svg>
+              <svg viewBox="0 0 1024 1024" width="16" height="16"><path d="M832.528 139.84A483.152 483.152 0 0 0 668.368 32c70.752 176.528 35.04 385.664-107.84 528.544-142.864 142.864-352 178.576-528.528 107.84a493.488 493.488 0 0 0 107.84 164.16c191.28 191.28 501.408 191.28 692.688 0 191.296-191.648 191.296-501.424 0-692.704z"></path></svg>
             </div>
 
             <div v-tooltip:top="'半角转全角'" @click="xq('toDBC')" class="bar_item">
-                <svg viewBox="0 0 1024 1024" width="16" height="16"><path d="M832.528 139.84A483.152 483.152 0 0 0 668.368 32c70.752 176.528 35.04 385.664-107.84 528.544-142.864 142.864-352 178.576-528.528 107.84a493.488 493.488 0 0 0 107.84 164.16c191.28 191.28 501.408 191.28 692.688 0 191.296-191.648 191.296-501.424 0-692.704z"></path></svg>
+              <svg viewBox="0 0 1024 1024" width="16" height="16"><path d="M512 512m-480 0a480 480 0 1 0 960 0 480 480 0 1 0-960 0Z"></path></svg>
             </div>
 
             <div v-tooltip:top="'分割线'" @click="setHR" class="bar_item">
@@ -62,34 +62,34 @@
                 <i class="icon">format_underline</i>
             </div>
 
-            <div v-tooltip:top="'删除线'" @click="setFormatB('strike')" class="bar_item" :class="{bar_item_on: toolbarConfig.strike}">
-                <i class="icon">format_strikethrough</i>
-            </div>
+            <!--<div v-tooltip:top="'删除线'" @click="setFormatB('strike')" class="bar_item" :class="{bar_item_on: toolbarConfig.strike}">-->
+                <!--<i class="icon">format_strikethrough</i>-->
+            <!--</div>-->
 
             <div class="bar_line"></div>
 
-            <div v-tooltip:top="'引用'" @click="setFormatC('blockquote')" class="bar_item">
-                <i class="icon">format_quote</i>
-            </div>
+            <!--<div v-tooltip:top="'引用'" @click="setFormatC('blockquote')" class="bar_item">-->
+                <!--<i class="icon">format_quote</i>-->
+            <!--</div>-->
 
-            <div v-tooltip:top="'代码块'" @click="setFormatC('code-block')" class="bar_item">
-                <i class="icon">code</i>
-            </div>
+            <!--<div v-tooltip:top="'代码块'" @click="setFormatC('code-block')" class="bar_item">-->
+                <!--<i class="icon">code</i>-->
+            <!--</div>-->
 
             <div class="bar_line"></div>
 
-            <div v-tooltip:top="'标题'" class="bar_item">
-                <!--<span>标题</span>-->
-                <select v-model="toolbarData.header">
-                    <option value="1">标题1</option>
-                    <option value="2">标题2</option>
-                    <option value="3">标题3</option>
-                    <option value="4">标题4</option>
-                    <option value="5">标题5</option>
-                    <option value="6">标题6</option>
-                    <option value="false">文本</option>
-                </select>
-            </div>
+            <!--<div v-tooltip:top="'标题'" class="bar_item">-->
+                <!--&lt;!&ndash;<span>标题</span>&ndash;&gt;-->
+                <!--<select v-model="toolbarData.header">-->
+                    <!--<option value="1">标题1</option>-->
+                    <!--<option value="2">标题2</option>-->
+                    <!--<option value="3">标题3</option>-->
+                    <!--<option value="4">标题4</option>-->
+                    <!--<option value="5">标题5</option>-->
+                    <!--<option value="6">标题6</option>-->
+                    <!--<option value="false">文本</option>-->
+                <!--</select>-->
+            <!--</div>-->
 
             <div v-tooltip:top="'有序列表'" @click="setFormat('list', 'ordered')" class="bar_item" :class="{bar_item_on: toolbarConfig.list == 'ordered'}">
                 <i class="icon">format_list_numbered</i>
@@ -118,6 +118,17 @@
             </div>
 
             <div class="bar_line"></div>
+
+            <div v-tooltip:top="'行高'" class="bar_item">
+              <select v-model="toolbarData.lineHeight">
+                <option value="0-5">0.5</option>
+                <option value="0-75">0.75</option>
+                <option value="1">1</option>
+                <option value="1-5">1.5</option>
+                <option value="1-75">1.75</option>
+                <option value="2">2</option>
+              </select>
+            </div>
 
             <div v-tooltip:top="'字体大小'" class="bar_item">
                 <select v-model="toolbarData.size">
@@ -151,7 +162,7 @@
 
             <div class="bar_line"></div>
 
-            <div v-tooltip:top="'左对齐'" @click="setFormat('align', 'left'); toolbarData.align = 'left'" class="bar_item" :class="{bar_item_on: toolbarData.align == 'left'}">
+            <div v-tooltip:top="'左对齐'" @click="setFormat('align', false); toolbarData.align = 'left'" class="bar_item" :class="{bar_item_on: toolbarData.align == 'left'}">
                 <i class="icon">format_align_left</i>
             </div>
 
@@ -169,18 +180,16 @@
 
             <div class="bar_line"></div>
 
-            <div v-tooltip:top="'清除字体样式'" @click="removeFormat" class="bar_item">
-                <i class="icon">format_clear</i>
-            </div>
+            <!--<div v-tooltip:top="'清除字体样式'" @click="removeFormat" class="bar_item">-->
+                <!--<i class="icon">format_clear</i>-->
+            <!--</div>-->
 
             <div v-tooltip:top="'链接'" @click="link" class="bar_item">
                 <i class="icon">link</i>
             </div>
 
             <div v-tooltip:top="'字体颜色'" @click="colorShow = !colorShow" class="bar_item">
-                <i :style="{
-                    color: toolbarData.color ? toolbarData.color : '#666'
-                }" class="icon">format_color_text</i>
+                <i class="icon">format_color_text</i>
                 <div v-if="colorShow" class="bar_block">
                     <div @click="setFormat('color', false);colorShow = !colorShow" style="width: 100%;font-size: 12px;border: 1px solid #ddd;margin-bottom: 5px;cursor: pointer;">无颜色</div>
                     <div class="color_block" v-for="item in color" @click="setFormat('color', item);colorShow = !colorShow;toolbarData.color = item" :style="{ background: item }"></div>
@@ -188,9 +197,7 @@
             </div>
 
             <div v-tooltip:top="'背景颜色'" @click="backgroundShow = !backgroundShow" class="bar_item">
-                <i :style="{
-                    color: toolbarData.background ? toolbarData.background : '#666'
-                }" class="icon">format_color_fill</i>
+                <i class="icon">format_color_fill</i>
                 <div v-if="backgroundShow" class="bar_block">
                     <div @click="setFormat('background', false);backgroundShow = !backgroundShow" style="width: 100%;font-size: 12px;border: 1px solid #ddd;margin-bottom: 5px;cursor: pointer;">无颜色</div>
                     <div class="color_block" v-for="item in color" @click="setFormat('background', item);backgroundShow = !backgroundShow;toolbarData.background = item" :style="{ background: item }"></div>
@@ -283,6 +290,8 @@
 
     import imageResize from 'quill-image-resize-module' //调节图片大小
     Quill.register('modules/imageResize', imageResize)
+    // import {container, ImageExtend} from 'quill-image-extend-module'
+    // Quill.register('modules/ImageExtend', ImageExtend)
 
     // 设置行高
     import lineHeightStyle from './lineHeight'
@@ -295,6 +304,9 @@
     import MediaVideos from '../../apps/medialibrary/pages/videos'
     import MediaAudios from '../../apps/medialibrary/pages/audios'
     import MediaPreview from '../../apps/medialibrary/components/mediaPreview'
+
+
+    var lastStr = ''
 
 
     export default {
@@ -334,7 +346,8 @@
                     font: 'Arial',
                     align: 'left',
                     color: false,
-                    background: false
+                    background: false,
+                    lineHeight: '2'
                 },
                 editorOption: { //  富文本编辑器配置
                     modules: {
@@ -343,14 +356,23 @@
                             maxStack: 500,
                             userOnly: false
                         },
-                        imageResize: {
-                            displayStyles: {
-                                backgroundColor: 'black',
-                                border: 'none',
-                                color: 'white'
-                            },
-                            modules: ['Resize', 'DisplaySize', 'Toolbar']
-                        },
+                        // imageResize: {
+                        //     displayStyles: {
+                        //         backgroundColor: 'black',
+                        //         border: 'none',
+                        //         color: 'white'
+                        //     },
+                        //     modules: ['Resize', 'DisplaySize']
+                        // },
+                        // ImageExtend: {
+                        //   loading: true,
+                        //   name: 'file',
+                        //   action: 'https://testmanage.sinorusfocus.com/cri-cms-platform/media/uploadIAU.monitor',
+                        //   response: (res) => {
+                        //     console.log(res)
+                        //     return res
+                        //   }
+                        // },
                         toolbar:[
                             // ['bold', 'italic', 'underline', 'strike'],    //加粗，斜体，下划线，删除线
                             // ['blockquote', 'code-block'],     //引用，代码块
@@ -370,7 +392,7 @@
                         ]
                     },
                     theme: 'snow',
-                    placeholder: '请输入正文'
+                    placeholder: ''
                 },
                 preview: {
                   show: false,
@@ -380,27 +402,33 @@
             }
         },
         mounted () {
-
-            // quill.getFormat('align', 'right');
             this.editor = this.$refs.myQuillEditor.quill;
 
-            // const fclean = document.querySelector('.ql-fclean');
-            // fclean.style.cssText = "width:80px; border:1px solid #ccc; border-radius:5px; padding: 0;";
-            // fclean.innerText = "自动排版";
-            // fclean.onclick = this.fclean
+            window.fclean = this.fclean
+
+            // this.editor.root.addEventListener('paste', () => {
+            //   setTimeout(() => {
+            //     console.log('paste')
+            //   }, 200)
+            // }, false)
+
+            this.editor.on('image', function() {
+              console.log('image');
+            });
 
             if (this.select == '1001') {
                 this.editor.format('size', '18px');
                 this.editor.format('lineHeight', '2');
-                this.editor.format('font', 'Microsoft-YaHei');
+                this.editor.format('font', 'Arial');
                 this.editor.format('align', 'justify');
                 this.toolbarData = {
                     header: 'false',
                     size: '18px',
-                    font: 'Microsoft-YaHei',
+                    font: 'Arial',
                     align: 'justify',
                     color: false,
-                    background: false
+                    background: false,
+                    lineHeight: '2'
                 }
             } else {
                 this.editor.format('size', '16px');
@@ -413,19 +441,22 @@
                     font: 'Arial',
                     align: 'left',
                     color: false,
-                    background: false
+                    background: false,
+                    lineHeight: '1-75'
                 }
             }
         },
         beforeDestroy () {
             this.editor = null;
             delete this.editor;
+            switchAngle('，。 ,.')
         },
         methods: {
-          getContentTxt () {
-            return this.editor.getText()
-          },
+            getContentTxt () {
+              return this.editor.getText()
+            },
             link () {
+                window.linkScrollTop = document.getElementsByClassName('ql-container')[0].scrollTop
                 document.getElementsByClassName('ql-link')[0].click()
             },
             removeFormat () {
@@ -480,7 +511,7 @@
                 var tmp = ''
                 for (var i = 0; i < txtstring.length; i++) {
                     let code = txtstring.charCodeAt(i)
-                    if (testSection(code) && txtstring[i] != '\n' ) {
+                    if (txtstring[i] != '\n' ) {
                         if (code == 32) {
                             tmp = tmp + String.fromCharCode(12288);
                         }
@@ -497,6 +528,8 @@
                 return tmp
             },
             xq (type) {
+                let box = document.getElementsByClassName('ql-container')[0]
+                let boxScrollTop = box.scrollTop
                 var range = this.editor.getSelection(true)
                 var delta = this.editor.getContents(range.index, range.length);
                 let number = 0
@@ -520,7 +553,9 @@
 
                 })
 
-                this.editor.setSelection(range.index, number)
+              box.scrollTop = boxScrollTop
+
+              // this.editor.setSelection(range.index, number)
 
                 // setContents
             },
@@ -531,6 +566,7 @@
                 this.editor.history.redo();
             },
             fclean () {
+                lastStr = ''
                 let delta = this.editor.getContents();
                 let arr = []
 
@@ -538,8 +574,7 @@
                     let islist = item.attributes && item.attributes.list ? true : false
 
                     if (item.insert && typeof(item.insert) == 'string' && !islist && item.insert != '\n') {
-                        let listarr = item.insert.split(/[(\r\n)\r\n]+/)
-                        console.log(listarr)
+                        let listarr = item.insert.split(/[\r\n]+/)
                         if (listarr.length > 1) {
                             listarr.forEach(listitem => {
                                 arr.push({
@@ -569,7 +604,7 @@
                             if (this.select == '1001') {
                                 item.attributes.size = '18px'
                                 item.attributes.lineHeight = '2'
-                                item.attributes.font = 'Microsoft-YaHei'
+                                item.attributes.font = 'Arial'
                                 item.attributes.align = 'justify'
                             } else {
                                 item.attributes.size = '16px'
@@ -584,11 +619,14 @@
                         item.insert = item.insert.replace(/\s\s+/g, ' ')
 
                         //全角半角转换
-                        if (this.select == '1001') {
-                            item.insert = ToDBC(item.insert)
-                        } else {
-                            item.insert = DBC2SB(item.insert)
-                        }
+                        // if (this.select == '1001') {
+                        //     item.insert = ToDBC(item.insert)
+                        // } else {
+                        //     item.insert = DBC2SB(item.insert)
+                        // }
+
+                        item.insert = switchAngle(item.insert)
+
                     }
 
                 })
@@ -632,6 +670,37 @@
                 })
                 this.editor.setContents(sdelta)
 
+                this.toolbarConfig = {
+                    bold: false,
+                    italic: false,
+                    underline: false,
+                    strike: false,
+                    list: false,
+                    script: false,
+                    clean: false,
+                    link: false
+                }
+                if (this.select == '1001') {
+                  this.toolbarData = {
+                    header: 'false',
+                    size: '18px',
+                    font: 'Arial',
+                    align: 'justify',
+                    color: false,
+                    background: false,
+                    lineHeight: '2'
+                  }
+                } else {
+                  this.toolbarData = {
+                    header: 'false',
+                    size: '16px',
+                    font: 'Arial',
+                    align: 'left',
+                    color: false,
+                    background: false,
+                    lineHeight: '1-75'
+                  }
+                }
             },
             insertImage () {
               let selected = this.$refs.mediaPhotos.selected.map(v => {
@@ -644,12 +713,14 @@
                   console.log(item)
                   const range = this.editor.getSelection(true);
                   this.editor.insertEmbed(range.index, 'image', item.src);
-                  this.editor.setSelection(range.index + 1000, Quill.sources.SILENT);
+                  this.editor.setSelection(range.index + 1, Quill.sources.SILENT);
                 })
               }
               this.ui.imageSelectorShow = false
             },
             insertVideo () {
+              let box = document.getElementsByClassName('ql-container')[0]
+              let boxScrollTop = box.scrollTop
               let origin = this.$refs.mediaVideos.origin
               let selected = this.$refs.mediaVideos.selected.map(v => {
                 return {
@@ -658,15 +729,52 @@
                 }
               })
               if (selected.length) {
+                var rangeN = this.editor.getSelection(true);
+                // if (this.editor.getContents(rangeN.index, 1).ops[0].insert == '\n') {
+                //   this.editor.deleteText(rangeN.index, 1)
+                // }
+
                 selected.forEach(item => {
                   const range = this.editor.getSelection(true);
                   this.editor.insertEmbed(range.index, 'video', item.url + ',' + item.thumb);
-                  this.editor.setSelection(range.index + 1000, Quill.sources.SILENT);
+                  this.editor.setSelection(range.index + 1, Quill.sources.SILENT);
                 })
+                setTimeout(() => {
+                  var delta = this.editor.getContents(rangeN.index, 1 + selected.length + 1);
+
+                  if (delta.ops[0].insert == '\n') {
+                    this.editor.deleteText(rangeN.index, 1)
+                  }
+                  if (delta.ops[delta.ops.length - 1].insert == '\n') {
+                    this.editor.deleteText(rangeN.index + delta.ops.length - 1, 1)
+                  }
+
+                  box.scrollTop = boxScrollTop
+                  this.editor.format('size', this.toolbarData.size);
+                  this.editor.format('lineHeight', this.toolbarData.lineHeight);
+                  let delta1 = this.editor.getContents().ops;
+
+                  if (!delta1[delta1.length - 1].attributes) {
+                    delta1.push({
+                      attributes: {
+                        size: '18px',
+                        lineHeight: '2',
+                        font: 'Arial',
+                        align: 'justify'
+                      },
+                      insert: '\n'
+                    })
+
+                    this.editor.setContents({ops: delta1})
+                  }
+                  this.editor.blur()
+                }, 200)
               }
               this.ui.videoSelectorShow = false
             },
             insertAudio () {
+              let box = document.getElementsByClassName('ql-container')[0]
+              let boxScrollTop = box.scrollTop
               let origin = window.w_api
               let selected = this.$refs.mediaAudios.selected.map(v => {
                 return {
@@ -675,31 +783,78 @@
               })
 
               if (selected.length) {
+                var rangeN = this.editor.getSelection(true);
+                // if (this.editor.getContents(rangeN.index, 1).ops[0].insert == '\n') {
+                //   this.editor.deleteText(rangeN.index, 1)
+                // }
+
                 selected.forEach(item => {
-                  console.log(item)
                   const range = this.editor.getSelection(true);
                   this.editor.insertEmbed(range.index, 'audio', item.url);
-                  this.editor.setSelection(range.index + 1000, Quill.sources.SILENT);
+                  this.editor.setSelection(range.index + 1, Quill.sources.SILENT);
                 })
+                setTimeout(() => {
+
+                  var delta = this.editor.getContents(rangeN.index, 1 + selected.length + 1);
+
+                  if (delta.ops[0].insert == '\n') {
+                    this.editor.deleteText(rangeN.index, 1)
+                  }
+                  if (delta.ops[delta.ops.length - 1].insert == '\n') {
+                    this.editor.deleteText(rangeN.index + delta.ops.length - 1, 1)
+                  }
+
+                  box.scrollTop = boxScrollTop
+                  this.editor.format('size', this.toolbarData.size);
+                  this.editor.format('lineHeight', this.toolbarData.lineHeight);
+                  let delta1 = this.editor.getContents().ops;
+
+                  if (!delta1[delta1.length - 1].attributes) {
+                    delta1.push({
+                      attributes: {
+                        size: '18px',
+                        lineHeight: '2',
+                        font: 'Arial',
+                        align: 'justify'
+                      },
+                      insert: '\n'
+                    })
+
+                    this.editor.setContents({ops: delta1})
+                  }
+                  this.editor.blur()
+                }, 200)
               }
               this.ui.audioSelectorShow = false
             },
             setHR () {
                 const range = this.editor.getSelection(true);
                 this.editor.insertEmbed(range.index, 'hr', '');
-                this.editor.setSelection(range.index + 1000, Quill.sources.SILENT);
+                this.editor.setSelection(range.index + 1, Quill.sources.SILENT);
             },
-            removeBlankNode (list) {
+            removeBlankNode (list) { //清除空行
                 let arr = []
+                let Pobj = false
                 list.forEach(item => {
-                    if (item.insert !== '') {
-                        let islist = item.attributes && item.attributes.list ? true : false
+
+                    let islist = item.attributes && item.attributes.list ? true : false
+
+                    if (item.insert !== '' && item.insert !== ' ' ) {
+
                         if (item.insert && typeof(item.insert) == 'string' && !islist) {
                             //合并空行  合并空格
                             item.insert = item.insert.replace(/\n\n+/g, '\n')
                             item.insert = item.insert.replace(/\s\s+/g, ' ')
                         }
-                        arr.push(item)
+
+                        if (item.insert !=='\n' || !Pobj) {
+                          arr.push(item)
+                          Pobj = false
+                        }
+                    }
+
+                    if (typeof(item.insert) == 'object') {
+                      Pobj = true
                     }
                 })
                 return arr
@@ -708,6 +863,13 @@
               this.preview.list = e.list || []
               this.preview.index = e.index || 0
               this.preview.show = true
+            },
+            refresh (item) {
+              this.$refs.mediaPhotos.getList('', item)
+              this.preview.show = false
+            },
+            onDelected (e) {
+              this.$refs.mediaPhotos.getList()
             },
             onEditorReady () {
 
@@ -724,36 +886,11 @@
         },
         watch: {
             'content' (val) {
+              if (val === '<p class="ql-align-justify"><br></p>') {
+                this.editor.format('size', this.toolbarData.size);
+                this.editor.format('lineHeight', this.toolbarData.lineHeight);
+              }
               this.$emit('input', val)
-            },
-            'select' (val) {
-                if (val == '1001') {
-                    this.editor.format('size', '18px');
-                    this.editor.format('lineHeight', '2');
-                    this.editor.format('font', 'Microsoft-YaHei');
-                    this.editor.format('align', 'justify');
-                    this.toolbarData = {
-                        header: 'false',
-                        size: '18px',
-                        font: 'Microsoft-YaHei',
-                        align: 'justify',
-                        color: false,
-                        background: false
-                    }
-                } else {
-                    this.editor.format('size', '16px');
-                    this.editor.format('lineHeight', '1-75');
-                    this.editor.format('font', 'Arial');
-                    this.editor.format('align', 'left');
-                    this.toolbarData = {
-                        header: 'false',
-                        size: '16px',
-                        font: 'Arial',
-                        align: 'left',
-                        color: false,
-                        background: false
-                    }
-                }
             },
             'toolbarData.header' (val) {
                 this.editor.format('header', val == 'false' ? false : val);
@@ -763,70 +900,244 @@
             },
             'toolbarData.font' (val) {
                 this.editor.format('font', val);
+            },
+            'toolbarData.lineHeight' (val) {
+                this.editor.format('lineHeight', val);
             }
         }
     }
 
 
-    function DBC2SB(str) {  //全转半
-        var result = '';
-        for (var i = 0; i < str.length; i++) {
-            var code = str.charCodeAt(i); //获取当前字符的unicode编码
-            if (code >= 65281 && code <= 65373)//在这个unicode编码范围中的是所有的英文字母已经各种字符
-            {
-                result += String.fromCharCode(str.charCodeAt(i) - 65248); //把全角字符的unicode编码转换为对应半角字符的unicode码
-            } else if (code == 12288)//空格
-
-            {
-                result += String.fromCharCode(str.charCodeAt(i) - 12288 + 32);
-            } else {
-                result += str.charAt(i);
-            }
-        }
-
-        return result;
-    }
-
-    function testSection (number) {
+    function testSection (number) { //全角字符
         //大写英文
-        if (number > 64 && number < 90) {
-            return false
+        if (number > 64 + 65248 && number < 90 + 65248) {
+            return true
         }
         //小写英文
-        if (number > 96 && number < 123) {
-            return false
+        if (number > 96 + 65248 && number < 123 + 65248) {
+            return true
         }
         //数字和.（46）
-        if (number > 46 && number < 58) {
-            return false
+        if (number > 46 + 65248 && number < 58 + 65248) {
+            return true
         }
         //俄文
-        if (number > 1023 && number < 1328) {
-            return false
+        if (number > 1023 + 65248 && number < 1328 + 65248) {
+            return true
         }
-        return true
+        return false
     }
 
-    function ToDBC(txtstring) { //半转全
+    function testSectionB (number) { //全角字符
+      //大写英文
+      if (number > 64 && number < 90 ) {
+        return true
+      }
+      //小写英文
+      if (number > 96 && number < 123 ) {
+        return true
+      }
+      //数字和.（46）
+      if (number > 46 && number < 58) {
+        return true
+      }
+      //俄文
+      if (number > 1023 && number < 1328) {
+        return true
+      }
+      return false
+    }
+
+    function fBDStr (number) {
+      let arr = [
+        8211,
+        171,
+        187,
+      ]
+      return arr.indexOf(number) < 0 ? false : true
+    }
+
+    function bdStr (number) { //中文标点白名单（无对应半角）
+      let arr = [
+        12304,
+        12305,
+        12300,
+        12301,
+        12290,
+        12289,
+        8220,
+        65292,
+        8221,
+        65292,
+        8216,
+        65292,
+        8217,
+        65292,
+        12308,
+        65292,
+        12309,
+        65292,
+        9472,
+        65292,
+        183,
+        65292,
+        12298,
+        65292,
+        12299,
+        65292,
+        12296,
+        65292,
+        12297,
+        65292,
+        183,
+        65292,
+        8212,
+        65292,
+        215,
+        65292,
+        9633,
+        65292,
+        9650,
+        65292,
+        9679,
+        65292,
+        8230,
+        32,
+        65292,
+        8594
+      ]
+      return arr.indexOf(number) < 0 ? false : true
+    }
+
+    var bdConfig = {
+
+      yinHao: false,
+      shuangYinHao: false,
+      kuoHao: false
+
+    }
+
+
+    function switchAngle (txtstring) {
         var tmp = "";
-        var reg = new RegExp("[\\u4E00-\\u9FFF]+","g")
+        var aPcode = null
+
         for (var i = 0; i < txtstring.length; i++) {
-            let code = txtstring.charCodeAt(i)
-            let Pcode = txtstring[i - 1] || ''
-            if (testSection(code) && txtstring[i] != '\n' && reg.test(Pcode)) {
-                if (code == 32) {
-                    tmp = tmp + String.fromCharCode(12288);
+          var reg = new RegExp("[\\u4E00-\\u9FFF]+","g") //中文验证
+          var areg = new RegExp("[\\u4E00-\\u9FFF]+","g") //中文验证
+          var Qreg = new RegExp("[\\uff00-\\uffff]","g") //全角验证
+          let code = txtstring.charCodeAt(i)
+          let Pcode = aPcode || txtstring[i - 1] || lastStr || ''
+          let ptest = reg.test(Pcode)  //前一个字符中文验证
+
+          if (Pcode != '' && (bdStr(Pcode.charCodeAt(0)) || Pcode == '）')) {
+            ptest = true
+          }
+
+          if (Pcode.charCodeAt(0) == 32) {
+            ptest = false
+          } else if (Pcode.charCodeAt(0) == 12288) {
+            ptest = true
+          }
+
+          if (txtstring[i] != '\n' && !testSectionB(code) && code != 10) {
+
+            if (code == 12288 && !ptest) { //空格全转半
+
+              tmp += String.fromCharCode(32);
+
+            } else if (code == 32 && ptest) { //空格半转全
+
+              tmp += String.fromCharCode(12288);
+
+            } else if (areg.test(txtstring[i])) { //中文验证
+
+              tmp += txtstring[i]
+
+            } else if (testSection(code)) { //全角英文 俄文 数字判断
+
+              if (code >= 65281 && code <= 65373)//在这个unicode编码范围中的是所有的英文字母已经各种字符
+              {
+                tmp += String.fromCharCode(code - 65248); //把全角字符的unicode编码转换为对应半角字符的unicode码
+              } else {
+                tmp += txtstring[i]
+              }
+
+            } else {  //标点
+
+              let jiao = code >= 65248  //自身全角验证
+              if (code == 12288 || code == 32) { //空格过滤
+
+                if (ptest) {
+                  tmp += String.fromCharCode(12288)
+                } else {
+                  tmp += String.fromCharCode(32)
                 }
-                else if (code < 127) {
-                    tmp = tmp + String.fromCharCode(code + 65248);
+
+              } else if (!ptest && jiao && !fBDStr(code)) { //全转半
+
+                if ((code == 65289 && bdConfig.kuoHao) || (code == 65287 && bdConfig.yinHao) || (code == 65282 && bdConfig.shuangYinHao)) {
+                  tmp += txtstring[i]
+                } else {
+                  tmp += String.fromCharCode(code - 65248);
                 }
-                else {
-                    tmp += txtstring.charAt(i);
+
+              } else if (ptest && !jiao && !bdStr(code) && !fBDStr(code)) { //半转全
+
+
+                if (code == 39) {
+                  bdConfig.yinHao = true
+                } else if (code == 34) {
+                  bdConfig.shuangYinHao = true
+                } else if (code == 40) {
+                  bdConfig.kuoHao = true
                 }
-            } else {
-                tmp += String.fromCharCode(code);
+                tmp += String.fromCharCode(code + 65248);
+
+              } else if ((bdConfig.yinHao && code == 39) || (bdConfig.shuangYinHao && code == 34) || (bdConfig.kuoHao && code == 41)) {
+
+
+                if (code == 39) {
+                  bdConfig.yinHao = false
+                  tmp += String.fromCharCode(code + 65248);
+                } else if (code == 34) {
+                  bdConfig.shuangYinHao = false
+                  tmp += String.fromCharCode(code + 65248);
+                } else if (code == 41) {
+                  bdConfig.kuoHao = false
+                  tmp += String.fromCharCode(code + 65248);
+                } else if (code == 65288) {
+                  bdConfig.kuoHao = false
+                  tmp += String.fromCharCode(40);
+                } else {
+                  tmp += String.fromCharCode(code + 65248);
+                }
+
+              } else {
+
+                if (code == 39 + 65248) {
+                  bdConfig.yinHao = true
+                } else if (code == 34 + 65248) {
+                  bdConfig.shuangYinHao = true
+                } else if (code == 65288) {
+                  bdConfig.kuoHao = true
+                }
+
+                tmp += txtstring[i]
+
+              }
+
             }
+
+          } else {
+            tmp += txtstring[i];
+          }
+
+          lastStr = txtstring[i]
+          aPcode = tmp[tmp.length - 1]
+
         }
+
         return tmp;
     }
 </script>
@@ -834,7 +1145,7 @@
 <style scoped>
 
     .sdiv{
-        width: 900px;
+        width: 100%;
         margin: 0 auto
     }
     .bdiv{
@@ -845,7 +1156,7 @@
         width: 100%;
         height: 100%;
         background: #fff;
-        padding: 10px;
+        padding: 30px 10px 10px;
         box-sizing: border-box;
     }
     .toolbar{

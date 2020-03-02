@@ -78,7 +78,7 @@
       </div>
     </transition>
     <div class="flex-item flex-col">
-      <div ref="imgbox" class="flex-item flex-center" style="position: relative">
+      <div ref="imgbox" class="flex-item flex-center" style="position: relative;height: 447px;background: #999;">
         <div class="watermark_box"
              :style="{top: watermarkData.top + 'px', left: watermarkData.left + 'px', width: watermarkData.width + 'px'}"
              @mousedown="watermarkDown"

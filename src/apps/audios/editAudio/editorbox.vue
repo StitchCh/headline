@@ -1,61 +1,65 @@
 <template>
   <div class="article-editor" style="max-width: 100% !important;">
-    <div>
-      <vue-ueditor-wrap v-model="content" ref="editor" :config="config" :destroy="true" @ready="ready"/>
+    <!--<div>-->
+      <!--<vue-ueditor-wrap v-model="content" ref="editor" :config="config" :destroy="true" @ready="ready"/>-->
+    <!--</div>-->
+
+    <div style="margin: 0 auto; max-width: 1000px;">
+      <v-quill v-model="content" ref="editor"></v-quill>
     </div>
 
-    <layer v-if="ui.imageSelectorShow" title="选择图片"  width="800px" class="tc_box">
-      <div class="layer-text relative" style="height: 800px;">
-        <media-photos select-mode ref="mediaPhotos" @preview="onPreview"></media-photos>
-      </div>
-      <div class="layer-btns">
-        <btn flat @click="ui.imageSelectorShow = false">取消</btn>
-        <btn flat color="#008eff" @click="insertImage">选择</btn>
-      </div>
-    </layer>
+    <!--<layer v-if="ui.imageSelectorShow" title="选择图片"  width="800px" class="tc_box">-->
+      <!--<div class="layer-text relative" style="height: 800px;">-->
+        <!--<media-photos select-mode ref="mediaPhotos" @preview="onPreview"></media-photos>-->
+      <!--</div>-->
+      <!--<div class="layer-btns">-->
+        <!--<btn flat @click="ui.imageSelectorShow = false">取消</btn>-->
+        <!--<btn flat color="#008eff" @click="insertImage">选择</btn>-->
+      <!--</div>-->
+    <!--</layer>-->
 
-    <layer v-if="ui.videoSelectorShow" title="选择视频"  width="800px" class="tc_box">
-      <div class="layer-text relative" style="height: 800px;">
-        <media-videos select-mode ref="mediaVideos"></media-videos>
-      </div>
-      <div class="layer-btns">
-        <btn flat @click="ui.videoSelectorShow = false">取消</btn>
-        <btn flat color="#008eff" @click="insertVideo">选择</btn>
-      </div>
-    </layer>
+    <!--<layer v-if="ui.videoSelectorShow" title="选择视频"  width="800px" class="tc_box">-->
+      <!--<div class="layer-text relative" style="height: 800px;">-->
+        <!--<media-videos select-mode ref="mediaVideos"></media-videos>-->
+      <!--</div>-->
+      <!--<div class="layer-btns">-->
+        <!--<btn flat @click="ui.videoSelectorShow = false">取消</btn>-->
+        <!--<btn flat color="#008eff" @click="insertVideo">选择</btn>-->
+      <!--</div>-->
+    <!--</layer>-->
 
-    <layer v-if="ui.audioSelectorShow" title="选择音频"  width="800px" class="tc_box">
-      <div class="layer-text relative" style="height: 800px;">
-        <media-audios select-mode ref="mediaAudios"></media-audios>
-      </div>
-      <div class="layer-btns">
-        <btn flat @click="ui.audioSelectorShow = false">取消</btn>
-        <btn flat color="#008eff" @click="insertAudio">选择</btn>
-      </div>
-    </layer>
+    <!--<layer v-if="ui.audioSelectorShow" title="选择音频"  width="800px" class="tc_box">-->
+      <!--<div class="layer-text relative" style="height: 800px;">-->
+        <!--<media-audios select-mode ref="mediaAudios"></media-audios>-->
+      <!--</div>-->
+      <!--<div class="layer-btns">-->
+        <!--<btn flat @click="ui.audioSelectorShow = false">取消</btn>-->
+        <!--<btn flat color="#008eff" @click="insertAudio">选择</btn>-->
+      <!--</div>-->
+    <!--</layer>-->
 
-    <media-preview
-      v-if="preview.show"
-      :list="preview.list"
-      :index="preview.index"
-      :type="$route.meta.type"
-      @close="preview.show=false"
-      @refresh="refresh"
-      @delected="onDelected"/>
+    <!--<media-preview-->
+      <!--v-if="preview.show"-->
+      <!--:list="preview.list"-->
+      <!--:index="preview.index"-->
+      <!--:type="$route.meta.type"-->
+      <!--@close="preview.show=false"-->
+      <!--@refresh="refresh"-->
+      <!--@delected="onDelected"/>-->
   </div>
 </template>
 
 <script>
   import VueUeditorWrap from 'vue-ueditor-wrap'
   import debounce from 'lodash/debounce'
-  import MediaPhotos from '../../medialibrary/pages/photos'
-  import MediaVideos from '../../medialibrary/pages/videos'
-  import MediaAudios from '../../medialibrary/pages/audios'
-  import MediaPreview from '../../medialibrary/components/mediaPreview'
+  // import MediaPhotos from '../../medialibrary/pages/photos'
+  // import MediaVideos from '../../medialibrary/pages/videos'
+  // import MediaAudios from '../../medialibrary/pages/audios'
+  // import MediaPreview from '../../medialibrary/components/mediaPreview'
 
   export default {
     name: 'editor',
-    components: { VueUeditorWrap, MediaPhotos, MediaVideos, MediaAudios, MediaPreview },
+    components: { VueUeditorWrap },
     data () {
       return {
         ui: {
@@ -161,7 +165,7 @@
         this.preview.show = true
       },
       getText () {
-        return this.editor.getContentTxt()
+        return this.$refs.editor.getContentTxt()
         // return this.$refs.editor.quill.getText()
       },
       insertImage () {

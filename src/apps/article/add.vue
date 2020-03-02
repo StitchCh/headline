@@ -493,7 +493,7 @@ export default {
         this.$nextTick(() => {
           this.$refs.editor.title = this.form.title
           this.$refs.editor.titleColor = this.form.titleColor
-          this.$refs.editor.content = this.form.content
+          this.$refs.editor.$refs.editor.content = this.form.content
         })
       }).catch(e => {
         console.log(e)

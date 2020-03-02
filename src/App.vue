@@ -200,6 +200,6 @@ a{
   width: 420px !important;
 }
 </style>
-<style src="./edit.css"></style>
+
 
 
