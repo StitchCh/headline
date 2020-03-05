@@ -328,6 +328,9 @@ export default {
     'content': debounce(function () {
       this.$emit('getKeyGenerate')
     }, 1000),
+    'title' (val) {
+      this.title = this.switchAngle(val)
+    }
   }
 }
 </script>

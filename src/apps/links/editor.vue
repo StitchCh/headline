@@ -192,6 +192,11 @@ export default {
     insertVideo () {
 
     }
+  },
+  watch: {
+    'title' (val) {
+      this.title = this.switchAngle(val)
+    }
   }
 }
 </script>

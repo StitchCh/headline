@@ -14,7 +14,7 @@ Highcharts.theme = {
 				[1, 'rgb(0, 0, 0)']
 			]
 		},
-		borderColor: '#000000000',
+		borderColor: '#000000',
 		borderWidth: 2,
 		className: 'dark-container',
 		plotBackgroundColor: 'rgba(255, 255, 255, .1)',
@@ -143,7 +143,7 @@ Highcharts.theme = {
 						[0.6, '#333333']
 					]
 				},
-				stroke: '#000000000'
+				stroke: '#000000'
 			}
 		}
 	},
@@ -158,7 +158,7 @@ Highcharts.theme = {
 					[0.6, '#555']
 				]
 			},
-			stroke: '#000000000',
+			stroke: '#000000',
 			style: {
 				color: '#CCC',
 				fontWeight: 'bold'
@@ -172,7 +172,7 @@ Highcharts.theme = {
 							[0.6, '#888']
 						]
 					},
-					stroke: '#000000000',
+					stroke: '#000000',
 					style: {
 						color: 'white'
 					}
@@ -185,7 +185,7 @@ Highcharts.theme = {
 							[0.3, '#333']
 						]
 					},
-					stroke: '#000000000',
+					stroke: '#000000',
 					style: {
 						color: 'yellow'
 					}

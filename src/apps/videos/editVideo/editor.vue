@@ -96,6 +96,11 @@ export default {
       this.playerOptions.sources[0].src = ORIGIN + this.video.video
       this.ui.videoSelectorShow = false
     }
+  },
+  watch: {
+    'title' (val) {
+      this.title = this.switchAngle(val)
+    }
   }
 }
 </script>

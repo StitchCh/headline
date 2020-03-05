@@ -37,7 +37,7 @@ defaultPlotOptions.funnel = merge(defaultPlotOptions.pie, {
 	states: {
 		select: {
 			color: '#C0C0C0',
-			borderColor: '#000000000',
+			borderColor: '#000000',
 			shadow: false
 		}
 	}	

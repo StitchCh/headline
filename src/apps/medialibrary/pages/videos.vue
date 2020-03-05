@@ -251,7 +251,7 @@ export default {
       .videos-item-cover{transform: scale(.85);}
     }
   }
-  .videos-item-cover{height: 150px;background: #000000000;border-radius: 5px;overflow: hidden;transition: transform .2s;will-change: transform;
+  .videos-item-cover{height: 150px;background: #000000;border-radius: 5px;overflow: hidden;transition: transform .2s;will-change: transform;
     img {max-width: 100%;max-height: 100%}
   }
   .videos-item-play i {opacity: 0;transition: opacity .2s;will-change: opacity;font-size: 40px;text-shadow: #000000 0 0 8px;}

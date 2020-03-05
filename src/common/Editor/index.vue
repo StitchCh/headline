@@ -204,6 +204,17 @@
                 </div>
             </div>
 
+            <div class="bar_line"></div>
+
+            <div v-tooltip:top="'粘贴是否自动排版'" class="bar_item"
+                 :class="{bar_item_on: pasteClear}"
+                @click="pasteClear = !pasteClear"
+            >
+              <span>开</span>
+              <svg :class="{bar_item_on1: pasteClear}" viewBox="0 0 2037 1024" width="30" height="16"><path d="M1526.182629 0.659565h-1014.715355C230.213546 0.659565 0 230.822375 0 512.101472c0 281.304464 230.213546 511.467274 511.492642 511.467274h1014.715355c281.279096 0 511.441907-230.16281 511.441906-511.467274C2037.624536 230.822375 1807.461725 0.659565 1526.182629 0.659565zM1938.106327 512.431254c0 233.688946-191.197741 424.886687-424.886687 424.886687H513.395234c-233.688946 0-424.886687-191.197741-424.886687-424.886687 0-233.714314 191.197741-424.912055 424.886687-424.912055h999.824406c233.688946-0.025368 424.886687 191.197741 424.886687 424.912055z" p-id="2296"></path><path d="M1520.880741 514.942675m-308.219789 0a308.219789 308.219789 0 1 0 616.439578 0 308.219789 308.219789 0 1 0-616.439578 0Z" p-id="2297"></path></svg>
+              <span style="margin-left: 4px;">关</span>
+            </div>
+
         </div>
 
 
@@ -211,7 +222,6 @@
                 v-model="content"
                 ref="myQuillEditor"
                 :options="editorOption"
-                @focus="onEditorFocus($event)"
                 @blur="onEditorBlur($event)"
                 @change="onEditorChange($event)">
         </quill-editor>
@@ -317,6 +327,7 @@
         props: [ 'value' ],
         data () {
             return {
+                pasteClear: true,
                 ui: {
                   imageSelectorShow: false,
                   videoSelectorShow: false,
@@ -412,6 +423,11 @@
             //   }, 200)
             // }, false)
 
+          var ebox = document.getElementsByClassName('ql-editor')[0]
+          ebox.onmouseup = this.onEditorMouseup
+
+          window.pasteClear = true
+
             this.editor.on('image', function() {
               console.log('image');
             });
@@ -449,7 +465,6 @@
         beforeDestroy () {
             this.editor = null;
             delete this.editor;
-            switchAngle('，。 ,.')
         },
         methods: {
             getContentTxt () {
@@ -468,6 +483,8 @@
                 this.editor.format(load, this.toolbarConfig[load]);
             },
             setFormat (load, value) {
+              let box = document.getElementsByClassName('ql-container')[0]
+                let linkScrollTop = box.scrollTop
                 if (load == 'indent' || load == 'align') {
                     this.editor.format(load, value);
                 } else {
@@ -482,6 +499,8 @@
                 if (load == 'background') {
                     this.toolbarData.background = value
                 }
+
+              box.scrollTop = linkScrollTop
             },
             setFormatC (load, value) {
                 const range = this.editor.getSelection(true);
@@ -569,11 +588,18 @@
                 lastStr = ''
                 let delta = this.editor.getContents();
                 let arr = []
+                let pImage = false
 
                 delta.forEach(item => {
                     let islist = item.attributes && item.attributes.list ? true : false
 
                     if (item.insert && typeof(item.insert) == 'string' && !islist && item.insert != '\n') {
+                        if (pImage) {
+                          pImage = false
+                          arr.push({
+                            insert: '\n',
+                          })
+                        }
                         let listarr = item.insert.split(/[\r\n]+/)
                         if (listarr.length > 1) {
                             listarr.forEach(listitem => {
@@ -589,9 +615,25 @@
                             arr.push(item)
                         }
                     } else {
+                        if (pImage && item.insert && item.insert != '\n') {
+                          pImage = false
+                          arr.push({
+                            insert: '\n',
+                          })
+                        } else {
+                          pImage = false
+                        }
                         arr.push(item)
                     }
+
+                    if (item.insert && item.insert.image) {
+                      pImage = true
+                    }
                 })
+
+                if (arr[0].insert == '\n' && arr.length > 0) {
+                  arr.splice(0, 1)
+                }
 
                 arr.forEach(item => {
 
@@ -626,7 +668,6 @@
                         // }
 
                         item.insert = switchAngle(item.insert)
-
                     }
 
                 })
@@ -880,6 +921,21 @@
             onEditorFocus () {
 
             },
+            onEditorMouseup () {
+              var range = this.editor.getSelection(true);
+              var format = this.editor.getFormat(range.index, range.length)
+
+              //toolbarConfig
+              for (let k in this.toolbarData) {
+                if (format[k]) {
+                  this.toolbarData[k] = format[k]
+                }
+              }
+              for (let k in this.toolbarConfig) {
+                this.toolbarConfig[k] = format[k] ? true : false
+              }
+
+            },
             onEditorChange () {
 
             },
@@ -903,6 +959,9 @@
             },
             'toolbarData.lineHeight' (val) {
                 this.editor.format('lineHeight', val);
+            },
+            'pasteClear' () {
+              window.pasteClear = this.pasteClear
             }
         }
     }
@@ -1042,11 +1101,11 @@
 
           if (txtstring[i] != '\n' && !testSectionB(code) && code != 10) {
 
-            if (code == 12288 && !ptest) { //空格全转半
+            if ((code == 12288 || code == 160) && !ptest) { //空格全转半
 
               tmp += String.fromCharCode(32);
 
-            } else if (code == 32 && ptest) { //空格半转全
+            } else if ((code == 32 || code == 160) && ptest) { //空格半转全
 
               tmp += String.fromCharCode(12288);
 
@@ -1228,4 +1287,7 @@
         margin: 2px;
         cursor: pointer;
     }
+  .bar_item_on1{
+    transform: rotate(180deg);
+  }
 </style>

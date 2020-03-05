@@ -38,7 +38,7 @@ function defaultOptions(shapeType) {
 		},
 		shape: {
 			params: {
-				stroke: "#000000000",
+				stroke: "#000000",
 				fill: "transparent",
 				strokeWidth: 2
 			}

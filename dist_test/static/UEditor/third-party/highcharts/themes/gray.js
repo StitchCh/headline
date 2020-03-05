@@ -145,7 +145,7 @@ Highcharts.theme = {
 						[0.6, '#333333']
 					]
 				},
-				stroke: '#000000000'
+				stroke: '#000000'
 			}
 		}
 	},
@@ -160,7 +160,7 @@ Highcharts.theme = {
 					[0.6, '#555']
 				]
 			},
-			stroke: '#000000000',
+			stroke: '#000000',
 			style: {
 				color: '#CCC',
 				fontWeight: 'bold'
@@ -174,7 +174,7 @@ Highcharts.theme = {
 							[0.6, '#888']
 						]
 					},
-					stroke: '#000000000',
+					stroke: '#000000',
 					style: {
 						color: 'white'
 					}
@@ -187,7 +187,7 @@ Highcharts.theme = {
 							[0.3, '#333']
 						]
 					},
-					stroke: '#000000000',
+					stroke: '#000000',
 					style: {
 						color: 'yellow'
 					}

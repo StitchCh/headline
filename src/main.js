@@ -112,6 +112,9 @@ Vue.prototype.openWindow = (path, data) => {
   //router.push(path)
 }
 
+import switchAngle from './qbj'
+Vue.prototype.switchAngle = switchAngle
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

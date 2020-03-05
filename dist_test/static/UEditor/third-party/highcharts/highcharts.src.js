@@ -1614,7 +1614,7 @@ defaultOptions = {
 					},
 					select: {
 						fillColor: '#FFFFFF',
-						lineColor: '#000000000',
+						lineColor: '#000000',
 						lineWidth: 2
 					}
 				}
@@ -15603,7 +15603,7 @@ defaultPlotOptions.column = merge(defaultSeriesOptions, {
 		},
 		select: {
 			color: '#C0C0C0',
-			borderColor: '#000000000',
+			borderColor: '#000000',
 			shadow: false
 		}
 	},

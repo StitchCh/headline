@@ -146,6 +146,9 @@ export default {
     'allDescription' () {
       this.allDescriptionChange()
       this.$emit('getKeyGenerate')
+    },
+    'title' (val) {
+      this.title = this.switchAngle(val)
     }
   }
 }

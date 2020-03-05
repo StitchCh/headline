@@ -101,6 +101,11 @@ export default {
       this.playerOptions.sources[0].src = ORIGIN + this.audio.audio
       this.ui.audioSelectorShow = false
     }
+  },
+  watch: {
+    'title' (val) {
+      this.title = this.switchAngle(val)
+    }
   }
 }
 </script>
