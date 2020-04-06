@@ -465,6 +465,7 @@
 
           var ebox = document.getElementsByClassName('ql-editor')[0]
           ebox.onmouseup = this.onEditorMouseup
+          ebox.ontouchend = this.onEditorMouseup
           // ebox.onkeydown = this.onKeydown
 
           window.pasteClear = true
@@ -956,7 +957,6 @@
 
             },
             onEditorMouseup () {
-              console.log('a')
               var range = this.editor.getSelection(true);
               var format = this.editor.getFormat(range.index, range.length)
               var insert = this.editor.getContents(range.index - 1, 1).ops[0]
@@ -985,6 +985,10 @@
         watch: {
             'content' (val) {
               this.$emit('input', val)
+              if (val === '<p class="ql-align-justify"><br></p>') {
+                this.editor.format('size', this.toolbarData.size);
+                this.editor.format('lineHeight', this.toolbarData.lineHeight);
+              }
             },
             'toolbarData.header' (val) {
                 this.editor.format('header', val == 'false' ? false : val);

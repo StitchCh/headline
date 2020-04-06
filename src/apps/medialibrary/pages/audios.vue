@@ -1,8 +1,8 @@
 <template>
 <div class="abs flex-item flex media-audios">
-  <media-left-tree :select-mode="selectMode" @changeFolder="getList" type="1"/>
+  <media-left-tree v-show="$route.path.indexOf('mobilePush') < 0" :select-mode="selectMode" @changeFolder="getList" type="1"/>
   <div class="flex-item flex-col">
-    <div class="af-topbar flex-v-center" style="height:36px;">
+    <div v-show="$route.path.indexOf('mobilePush') < 0" class="af-topbar flex-v-center" style="height:36px;">
       <div class="search-bar flex-v-center">
         <i class="icon f-20 c-a">search</i>
         <input type="text" class="f-14 c-6" placeholder="搜索">
