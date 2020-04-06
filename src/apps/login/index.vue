@@ -35,7 +35,9 @@
       <!--<div class="f-12"><span>忘记了邮箱或密码？</span><a class="c-f a" @click="$router.push('/findPassword')">找回密码</a></div>-->
     </div>
   </div>
-  <div class="bottom t-right f-12" style="padding: 10px;opacity:0.9;">Copyright © 2018 XXXXX Inc.</div>
+  <div class="bottom t-right f-12" style="padding: 10px;opacity:0.9;">
+    Copyright © 2020 中俄头条 <a style="color: #152755;" href="http://www.beian.miit.gov.cn">京ICP备05064898号</a>
+  </div>
 </div>
 </template>
 

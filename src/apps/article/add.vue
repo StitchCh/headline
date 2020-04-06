@@ -427,7 +427,7 @@ export default {
           window.opener.location.reload()
           window.opener = null
           window.close()
-          //this.$router.go(-1)
+          // this.$router.go(-1)
         }
       ).catch(
         res => {

@@ -223,9 +223,9 @@
                 ref="myQuillEditor"
                 :options="editorOption"
                 @blur="onEditorBlur($event)"
-                @change="onEditorChange($event)">
+                @change="onEditorChange($event)"
+        >
         </quill-editor>
-
 
 
         <layer v-if="ui.imageSelectorShow" title="选择图片"  width="800px" class="tc_box">
@@ -280,6 +280,9 @@
     import Video from './video.js'; // 插入h5 video视频
     Quill.register(Video, true);  // 注册video
 
+    import Image from './image.js'; // 插入h5 video视频
+    Quill.register(Image, true);  // 注册video
+
     //quill编辑器的字体
     var fonts = ['Arial','Times-New-Roman','sans-serif','SimSun', 'SimHei','Microsoft-YaHei','KaiTi','FangSong'];
     var Font = Quill.import('formats/font');
@@ -317,7 +320,7 @@
 
 
     var lastStr = ''
-
+  const keyDownWith = [ 37, 38, 39, 40, 16, 8, 13, 20, 9, 17, 18, 91, 93 ]
 
     export default {
         name: 'v-quill',
@@ -413,6 +416,43 @@
             }
         },
         mounted () {
+            setTimeout(() => {
+              let sdelta = this.editor.getContents();
+              sdelta.ops = this.removeBlankNode(sdelta.ops)
+              this.editor.setContents(sdelta)
+              // this.editor.blur()
+
+              if (this.select == '1001') {
+                this.editor.format('size', '18px');
+                this.editor.format('lineHeight', '2');
+                this.editor.format('font', 'Arial');
+                this.editor.format('align', 'justify');
+                this.toolbarData = {
+                  header: 'false',
+                  size: '18px',
+                  font: 'Arial',
+                  align: 'justify',
+                  color: false,
+                  background: false,
+                  lineHeight: '2'
+                }
+              } else {
+                this.editor.format('size', '16px');
+                this.editor.format('lineHeight', '1-75');
+                this.editor.format('font', 'Arial');
+                this.editor.format('align', 'left');
+                this.toolbarData = {
+                  header: 'false',
+                  size: '16px',
+                  font: 'Arial',
+                  align: 'left',
+                  color: false,
+                  background: false,
+                  lineHeight: '1-75'
+                }
+              }
+            }, 500)
+
             this.editor = this.$refs.myQuillEditor.quill;
 
             window.fclean = this.fclean
@@ -425,48 +465,27 @@
 
           var ebox = document.getElementsByClassName('ql-editor')[0]
           ebox.onmouseup = this.onEditorMouseup
+          // ebox.onkeydown = this.onKeydown
 
           window.pasteClear = true
 
-            this.editor.on('image', function() {
-              console.log('image');
-            });
-
-            if (this.select == '1001') {
-                this.editor.format('size', '18px');
-                this.editor.format('lineHeight', '2');
-                this.editor.format('font', 'Arial');
-                this.editor.format('align', 'justify');
-                this.toolbarData = {
-                    header: 'false',
-                    size: '18px',
-                    font: 'Arial',
-                    align: 'justify',
-                    color: false,
-                    background: false,
-                    lineHeight: '2'
-                }
-            } else {
-                this.editor.format('size', '16px');
-                this.editor.format('lineHeight', '1-75');
-                this.editor.format('font', 'Arial');
-                this.editor.format('align', 'left');
-                this.toolbarData = {
-                    header: 'false',
-                    size: '16px',
-                    font: 'Arial',
-                    align: 'left',
-                    color: false,
-                    background: false,
-                    lineHeight: '1-75'
-                }
-            }
         },
         beforeDestroy () {
             this.editor = null;
             delete this.editor;
         },
         methods: {
+            onKeydown (e) {
+              if (e.keyCode == 8) {
+                let range = this.editor.getSelection(true);
+                let format = this.editor.getContents(range.index, 1)
+                if (format.ops[0].insert != '\n') {
+                  this.editor.format('size', this.toolbarData.size);
+                  this.editor.format('lineHeight', this.toolbarData.lineHeight);
+                  this.editor.format('font', this.toolbarData.font);
+                }
+              }
+            },
             getContentTxt () {
               return this.editor.getText()
             },
@@ -588,18 +607,11 @@
                 lastStr = ''
                 let delta = this.editor.getContents();
                 let arr = []
-                let pImage = false
 
                 delta.forEach(item => {
                     let islist = item.attributes && item.attributes.list ? true : false
 
                     if (item.insert && typeof(item.insert) == 'string' && !islist && item.insert != '\n') {
-                        if (pImage) {
-                          pImage = false
-                          arr.push({
-                            insert: '\n',
-                          })
-                        }
                         let listarr = item.insert.split(/[\r\n]+/)
                         if (listarr.length > 1) {
                             listarr.forEach(listitem => {
@@ -615,19 +627,7 @@
                             arr.push(item)
                         }
                     } else {
-                        if (pImage && item.insert && item.insert != '\n') {
-                          pImage = false
-                          arr.push({
-                            insert: '\n',
-                          })
-                        } else {
-                          pImage = false
-                        }
                         arr.push(item)
-                    }
-
-                    if (item.insert && item.insert.image) {
-                      pImage = true
                     }
                 })
 
@@ -696,6 +696,7 @@
                 sdelta.ops = this.removeBlankNode(sdelta.ops)
 
                 sdelta.forEach((item, index) => {
+
                     if (item.insert && typeof(item.insert)=='string') {
                         //段结束
                         if (item.insert == '\n') {
@@ -709,6 +710,7 @@
                         }
                     }
                 })
+
                 this.editor.setContents(sdelta)
 
                 this.toolbarConfig = {
@@ -744,18 +746,50 @@
                 }
             },
             insertImage () {
+              let box = document.getElementsByClassName('ql-container')[0]
+              let boxScrollTop = box.scrollTop
               let selected = this.$refs.mediaPhotos.selected.map(v => {
                 return {
                   src: this.$refs.mediaPhotos.imgOrigin + v.filePath + v.fileName
                 }
               })
               if (selected.length) {
+                var rangeN = this.editor.getSelection(true);
                 selected.forEach(item => {
-                  console.log(item)
                   const range = this.editor.getSelection(true);
                   this.editor.insertEmbed(range.index, 'image', item.src);
-                  this.editor.setSelection(range.index + 1, Quill.sources.SILENT);
                 })
+
+                setTimeout(() => {
+                  var delta = this.editor.getContents(rangeN.index, selected.length + 2);
+
+                  if (delta.ops[0].insert == '\n') {
+                    this.editor.deleteText(rangeN.index, 1)
+                  }
+                  if (delta.ops[delta.ops.length - 1].insert == '\n') {
+                    this.editor.deleteText(rangeN.index + delta.ops.length - 1, 1)
+                  }
+
+                  box.scrollTop = boxScrollTop
+                  this.editor.format('size', this.toolbarData.size);
+                  this.editor.format('lineHeight', this.toolbarData.lineHeight);
+                  let delta1 = this.editor.getContents().ops;
+
+                  if (!delta1[delta1.length - 1].attributes) {
+                    delta1.push({
+                      attributes: {
+                        size: '18px',
+                        lineHeight: '2',
+                        font: 'Arial',
+                        align: 'justify'
+                      },
+                      insert: '\n'
+                    })
+
+                    this.editor.setContents({ops: delta1})
+                  }
+                  this.editor.blur()
+                }, 200)
               }
               this.ui.imageSelectorShow = false
             },
@@ -781,7 +815,7 @@
                   this.editor.setSelection(range.index + 1, Quill.sources.SILENT);
                 })
                 setTimeout(() => {
-                  var delta = this.editor.getContents(rangeN.index, 1 + selected.length + 1);
+                  var delta = this.editor.getContents(rangeN.index, selected.length + 2);
 
                   if (delta.ops[0].insert == '\n') {
                     this.editor.deleteText(rangeN.index, 1)
@@ -836,7 +870,7 @@
                 })
                 setTimeout(() => {
 
-                  var delta = this.editor.getContents(rangeN.index, 1 + selected.length + 1);
+                  var delta = this.editor.getContents(rangeN.index, selected.length + 2);
 
                   if (delta.ops[0].insert == '\n') {
                     this.editor.deleteText(rangeN.index, 1)
@@ -880,7 +914,7 @@
 
                     let islist = item.attributes && item.attributes.list ? true : false
 
-                    if (item.insert !== '' && item.insert !== ' ' ) {
+                    if (item.insert !== '' && item.insert !== ' ' && item.insert !== '') {
 
                         if (item.insert && typeof(item.insert) == 'string' && !islist) {
                             //合并空行  合并空格
@@ -922,8 +956,14 @@
 
             },
             onEditorMouseup () {
+              console.log('a')
               var range = this.editor.getSelection(true);
               var format = this.editor.getFormat(range.index, range.length)
+              var insert = this.editor.getContents(range.index - 1, 1).ops[0]
+
+              this.editor.format('size', this.toolbarData.size);
+              this.editor.format('lineHeight', this.toolbarData.lineHeight);
+              this.editor.format('font', this.toolbarData.font);
 
               //toolbarConfig
               for (let k in this.toolbarData) {
@@ -935,6 +975,8 @@
                 this.toolbarConfig[k] = format[k] ? true : false
               }
 
+              window.linkScrollTop = document.getElementsByClassName('ql-container')[0].scrollTop
+
             },
             onEditorChange () {
 
@@ -942,10 +984,6 @@
         },
         watch: {
             'content' (val) {
-              if (val === '<p class="ql-align-justify"><br></p>') {
-                this.editor.format('size', this.toolbarData.size);
-                this.editor.format('lineHeight', this.toolbarData.lineHeight);
-              }
               this.$emit('input', val)
             },
             'toolbarData.header' (val) {

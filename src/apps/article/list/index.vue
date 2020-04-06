@@ -67,7 +67,7 @@
         <account/>
 
       </div>
-      <div class="flex-item flex-col">
+      <div style="height: calc(100% - 50px);" class="flex-item flex-col">
         <div v-if="id" class="flex-center" style="height: 60px;">
           <div class="tab">
             <div class="tab-item" :class="{ on: $route.name === 'ArticleContent' }" @click="$router.replace({path: `/article/list/${id}`, query: $route.query})">内容</div>

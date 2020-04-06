@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-item flex-col">
+  <div style="height: calc(100% - 40px);" class="flex-item flex-col">
     <div class="flex-item scroll-y">
       <div class="relative article-content c-6">
         <div v-if="!content.id" class="abs flex-center">
