@@ -417,6 +417,9 @@
         },
         mounted () {
             setTimeout(() => {
+              if (!this.editor) {
+                return
+              }
               let sdelta = this.editor.getContents();
               sdelta.ops = this.removeBlankNode(sdelta.ops)
               this.editor.setContents(sdelta)
@@ -962,9 +965,12 @@
               var format = this.editor.getFormat(range.index, range.length)
               var insert = this.editor.getContents(range.index - 1, 1).ops[0]
 
-              this.editor.format('size', this.toolbarData.size);
-              this.editor.format('lineHeight', this.toolbarData.lineHeight);
-              this.editor.format('font', this.toolbarData.font);
+              if (insert.insert == '\n') {
+                this.editor.format('size', this.toolbarData.size);
+                this.editor.format('lineHeight', this.toolbarData.lineHeight);
+                this.editor.format('font', this.toolbarData.font);
+              }
+
 
               //toolbarConfig
               for (let k in this.toolbarData) {
