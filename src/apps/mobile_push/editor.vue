@@ -137,7 +137,7 @@ export default {
   },
   methods: {
     getText () {
-      return this.editor.getContentTxt()
+      return this.$refs.editor.getContentTxt()
       // return this.$refs.editor.quill.getText()
     },
     // getKeyGenerate: debounce(function () {

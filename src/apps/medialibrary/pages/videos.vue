@@ -1,9 +1,9 @@
 <template>
 <div class="abs flex-item flex media-videos">
   <media-left-tree v-show="$route.path.indexOf('mobilePush') < 0" :select-mode="selectMode" @changeFolder="getList" type="2"/>
-  <div class="flex-item flex-col">
-    <div v-show="$route.path.indexOf('mobilePush') < 0" class="af-topbar flex-v-center" style="height:36px;">
-      <div class="search-bar flex-v-center">
+  <div class="flex-item flex-col" style="width: 100%;">
+    <div class="af-topbar flex-v-center" style="height:36px;">
+      <div v-show="$route.path.indexOf('mobilePush') < 0" class="search-bar flex-v-center">
         <i class="icon f-20 c-a">search</i>
         <input type="text" class="f-14 c-6" placeholder="搜索">
       </div>
@@ -36,7 +36,7 @@
       <span class="f-14" v-if="selected.length" style="margin-right: 10px;">已选择 {{selected.length}} 项</span>
       <btn flat v-if="selected.length" color="#008eff" @click="cancelSelect">取消选择</btn>
       <div class="flex-v-center opera-btns">
-        <btn v-if="$route.path === '/media/' || $route.path === '/media'" flat :disabled="!selected.length" color="#008eff" @click="del">删除</btn>
+        <btn v-if="$route.path === '/media/videos' || $route.path === '/media'" flat :disabled="!selected.length" color="#008eff" @click="del">删除</btn>
         <media-upload :type="2" @uploaded="onUploaded" :folder-id="$route.query.folderId || 0"/>
       </div>
       <btn flat color="#008eff" @click="getList">刷新</btn>
@@ -130,6 +130,7 @@ export default {
   },
   created () {
     this.getList()
+    console.log(1024 * 1024 * 80)
   },
   watch: {
     '$route.query' () {
@@ -237,6 +238,7 @@ export default {
 
 <style lang="less">
 .media-videos{
+  width: 100%;
   .flex-item{
     height: auto !important;
   }

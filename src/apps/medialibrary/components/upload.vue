@@ -45,7 +45,16 @@
 </div>
 </template>
 
+
+
 <script>
+  var limit = [
+    'ROLE_SUPERMAN',
+    'SUPER_ADMIN',
+    'ADMIN_ROLE',
+  ]
+
+
 export default {
   name: 'media-upload',
   props: {
@@ -87,7 +96,17 @@ export default {
   },
   methods: {
     onChange (file, fileList) {
-      // console.log(file)
+      let arr = sessionStorage.getItem('roleName').split(',')
+      var uplimit = false
+      arr.forEach(item => {
+        if (limit.indexOf(item) >= 0) {
+          uplimit = true
+        }
+      })
+      if (file.size > 1024 * 1024 * 80 && !uplimit) {
+        this.$toast('请上传大小80M以内的文件')
+        return
+      }
       let data = {
         type: this.type,
         folderId: this.folderId,

@@ -6,7 +6,7 @@
                 <i class="icon">line_style</i>
             </div>
 
-            <div v-tooltip:top="'全屏'" @click="toBig" class="bar_item">
+            <div v-if="$route.path != '/mobilePush'" v-tooltip:top="'全屏'" @click="toBig" class="bar_item">
               <i class="icon">crop_free</i>
             </div>
 
@@ -121,11 +121,11 @@
 
             <div v-tooltip:top="'行高'" class="bar_item">
               <select v-model="toolbarData.lineHeight">
-                <option value="0-5">0.5</option>
-                <option value="0-75">0.75</option>
+                <option value="05">0.5</option>
+                <option value="075">0.75</option>
                 <option value="1">1</option>
-                <option value="1-5">1.5</option>
-                <option value="1-75">1.75</option>
+                <option value="15">1.5</option>
+                <option value="175">1.75</option>
                 <option value="2">2</option>
               </select>
             </div>
@@ -309,7 +309,7 @@
     // 设置行高
     import lineHeightStyle from './lineHeight'
     Quill.register({ "formats/lineHeight": lineHeightStyle }, true);
-    var lineList = ['0-5','0-75','1','1-5','1-75','2']
+    var lineList = ['05','075','1','15','175','2']
     var lineHeight = Quill.import('formats/lineHeight');
     lineHeight.whitelist = lineList;
 
@@ -320,7 +320,7 @@
 
 
     var lastStr = ''
-  const keyDownWith = [ 37, 38, 39, 40, 16, 8, 13, 20, 9, 17, 18, 91, 93 ]
+    const keyDownWith = [ 37, 38, 39, 40, 16, 8, 13, 20, 9, 17, 18, 91, 93 ]
 
     export default {
         name: 'v-quill',
@@ -759,6 +759,7 @@
                 selected.forEach(item => {
                   const range = this.editor.getSelection(true);
                   this.editor.insertEmbed(range.index, 'image', item.src);
+                  this.editor.setSelection(range.index + 1, Quill.sources.SILENT);
                 })
 
                 setTimeout(() => {

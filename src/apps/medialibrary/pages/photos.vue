@@ -1,9 +1,9 @@
 <template>
 <div class="abs flex-item flex media-photos">
   <media-left-tree v-show="$route.path.indexOf('mobilePush') < 0" :select-mode="selectMode" @changeFolder="getList"/>
-  <div class="flex-item flex-col">
+  <div class="flex-item flex-col" style="width: 100%;">
     <div class="af-topbar flex-v-center" style="height:36px;">
-      <div v-show="$route.path.indexOf('mobilePush') < 0" class="search-bar flex-v-center">
+      <div v-if="$route.path.indexOf('mobilePush') < 0" class="search-bar flex-v-center">
         <i class="icon f-20 c-a">search</i>
         <input style="width: 100px;margin-right: 10px;" v-model="secrchName" type="text" class="f-14 c-6" placeholder="输入图片名称">
         <vue-datepicker-local v-model="searchTime" format="YYYY-MM-DD" show-buttons></vue-datepicker-local>
@@ -256,6 +256,7 @@ export default {
 
 <style lang="less">
 .media-photos{
+  width: 100%;
   .flex-item{
     height: auto !important;
   }
