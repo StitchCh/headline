@@ -76,6 +76,7 @@ export default {
           this.loading = false
           return
         }
+        sessionStorage.setItem('roleName', res.roleName)
         if (this.keepLogin) {
           sessionStorage.removeItem('token')
           sessionStorage.removeItem('siteId')

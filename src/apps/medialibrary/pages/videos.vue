@@ -35,11 +35,11 @@
       </div>
       <span class="f-14" v-if="selected.length" style="margin-right: 10px;">已选择 {{selected.length}} 项</span>
       <btn flat v-if="selected.length" color="#008eff" @click="cancelSelect">取消选择</btn>
+      <btn flat color="#008eff" @click="getList">刷新</btn>
       <div class="flex-v-center opera-btns">
         <btn v-if="$route.path === '/media/videos' || $route.path === '/media'" flat :disabled="!selected.length" color="#008eff" @click="del">删除</btn>
         <media-upload :type="2" @uploaded="onUploaded" :folder-id="$route.query.folderId || 0"/>
       </div>
-      <btn flat color="#008eff" @click="getList">刷新</btn>
     </div>
     <div class="flex-item relative scroll-y">
       <div v-if="loading" class="abs flex-center bg-light-rgb-2" style="z-index: 20;"><loading/></div>
@@ -101,22 +101,14 @@ export default {
       page: 1,
       size: 50,
       total: 0,
-      list: []
+      list: [],
+      selected: []
       // filter: {
       //   range: []
       // }
     }
   },
   computed: {
-    selected () {
-      let res = []
-      this.list.forEach(li => {
-        li.data.forEach(item => {
-          if (item.checked) res.push(item)
-        })
-      })
-      return res
-    },
     allList () {
       let res = []
       let { list } = this
@@ -196,7 +188,18 @@ export default {
       } else {
 
         if (this.singleSelect) this.cancelSelect()
-        item.checked = !item.checked
+
+        if (item.checked) {
+          item.checked = !item.checked
+          this.selected.forEach((selected, index) => {
+            if (selected.id == item.id) {
+              this.selected.splice(index, 1)
+            }
+          })
+        } else {
+          this.selected.push(item)
+          item.checked = !item.checked
+        }
 
       }
     },
@@ -206,6 +209,7 @@ export default {
           item.checked = false
         })
       })
+      this.selected = []
     },
     del () {
       this.$confirm({

@@ -205,6 +205,9 @@ export default {
         that.editor.execCommand( 'rowspacing', '20', 'top' )
         that.editor.execCommand( 'rowspacing', '20', 'bottom' )
       }, 0)
+    },
+    resetcontent () {
+      this.$refs.editor.resetcontent()
     }
   },
   watch: {

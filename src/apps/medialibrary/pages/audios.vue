@@ -64,19 +64,11 @@ export default {
       page: 1,
       size: 50,
       total: 0,
-      list: []
+      list: [],
+      selected: []
     }
   },
   computed: {
-    selected () {
-      let res = []
-      this.list.forEach(li => {
-        li.data.forEach(item => {
-          if (item.checked) res.push(item)
-        })
-      })
-      return res
-    },
     allList () {
       let res = []
       let { list } = this
@@ -120,7 +112,17 @@ export default {
     },
     selectItem (item) {
       if (this.singleSelect) this.cancelSelect()
-      item.checked = !item.checked
+      if (item.checked) {
+        item.checked = !item.checked
+        this.selected.forEach((selected, index) => {
+          if (selected.id == item.id) {
+            this.selected.splice(index, 1)
+          }
+        })
+      } else {
+        this.selected.push(item)
+        item.checked = !item.checked
+      }
     },
     cancelSelect () {
       this.list.forEach(li => {
@@ -128,6 +130,7 @@ export default {
           item.checked = false
         })
       })
+      this.selected = []
     },
     del () {
       this.$confirm({

@@ -36,7 +36,7 @@
 
             <div class="bar_line"></div>
 
-            <div v-tooltip:top="'添加音频'" @click="ui.audioSelectorShow = true" class="bar_item">
+            <div v-if="$route.path != '/mobilePush'" v-tooltip:top="'添加音频'" @click="ui.audioSelectorShow = true" class="bar_item">
                 <i class="icon">audiotrack</i>
             </div>
 
@@ -44,7 +44,7 @@
                 <i class="icon">image</i>
             </div>
 
-            <div v-tooltip:top="'添加视频'" @click="ui.videoSelectorShow = true" class="bar_item">
+            <div v-if="$route.path != '/mobilePush'" v-tooltip:top="'添加视频'" @click="ui.videoSelectorShow = true" class="bar_item">
                 <i class="icon">theaters</i>
             </div>
 
@@ -441,7 +441,7 @@
                 }
               } else {
                 this.editor.format('size', '16px');
-                this.editor.format('lineHeight', '1-75');
+                this.editor.format('lineHeight', '175');
                 this.editor.format('font', 'Arial');
                 this.editor.format('align', 'left');
                 this.toolbarData = {
@@ -451,7 +451,7 @@
                   align: 'left',
                   color: false,
                   background: false,
-                  lineHeight: '1-75'
+                  lineHeight: '175'
                 }
               }
             }, 500)
@@ -479,6 +479,9 @@
             delete this.editor;
         },
         methods: {
+            resetcontent () {
+              this.content = ""
+            },
             onKeydown (e) {
               if (e.keyCode == 8) {
                 let range = this.editor.getSelection(true);
@@ -654,7 +657,7 @@
                                 item.attributes.align = 'justify'
                             } else {
                                 item.attributes.size = '16px'
-                                item.attributes.lineHeight = '1-75'
+                                item.attributes.lineHeight = '175'
                                 item.attributes.font = 'Arial'
                                 item.attributes.align = 'left'
                             }
@@ -745,11 +748,15 @@
                     align: 'left',
                     color: false,
                     background: false,
-                    lineHeight: '1-75'
+                    lineHeight: '175'
                   }
                 }
             },
             insertImage () {
+              if (this.$refs.mediaPhotos.selected.length <= 0) {
+                this.$toast('未选择图片')
+                return
+              }
               let box = document.getElementsByClassName('ql-container')[0]
               let boxScrollTop = box.scrollTop
               let selected = this.$refs.mediaPhotos.selected.map(v => {
@@ -799,6 +806,10 @@
               this.ui.imageSelectorShow = false
             },
             insertVideo () {
+              if (this.$refs.mediaVideos.selected.length <= 0) {
+                this.$toast('未选择视频')
+                return
+              }
               let box = document.getElementsByClassName('ql-container')[0]
               let boxScrollTop = box.scrollTop
               let origin = this.$refs.mediaVideos.origin
@@ -853,6 +864,10 @@
               this.ui.videoSelectorShow = false
             },
             insertAudio () {
+              if (this.$refs.mediaAudios.selected.length <= 0) {
+                this.$toast('未选择音频')
+                return
+              }
               let box = document.getElementsByClassName('ql-container')[0]
               let boxScrollTop = box.scrollTop
               let origin = window.w_api
@@ -965,7 +980,7 @@
               var format = this.editor.getFormat(range.index, range.length)
               var insert = this.editor.getContents(range.index - 1, 1).ops[0]
 
-              if (insert.insert == '\n') {
+              if (insert.insert == '\n' || insert.insert.image) {
                 this.editor.format('size', this.toolbarData.size);
                 this.editor.format('lineHeight', this.toolbarData.lineHeight);
                 this.editor.format('font', this.toolbarData.font);

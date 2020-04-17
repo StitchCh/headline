@@ -79,6 +79,10 @@ export default {
       this.$refs.mediaPhotos.getList()
     },
     selectImage () {
+      if (this.$refs.mediaPhotos.selected.length <= 0) {
+        this.$toast('未选择图片')
+        return
+      }
       let image = this.$refs.mediaPhotos.selected[0] || null
       if (this.sle) {
         if (image.scale != this.sle) {

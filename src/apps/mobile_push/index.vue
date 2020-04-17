@@ -40,7 +40,7 @@
     <div class="gallery-editor tc_box">
       <layer v-if="imageSelectorShow" title="选择图片"  width="800px">
         <div class="layer-text relative" style="height: 800px;">
-          <media-photos select-mode ref="mediaPhotos"></media-photos>
+          <media-photos :singleSelect="true" select-mode ref="mediaPhotos"></media-photos>
         </div>
         <div class="layer-btns">
           <btn flat @click="imageSelectorShow = false">取消</btn>
@@ -83,7 +83,8 @@ export default {
         channelIds: '',
         abstarcts: '',
         hasThumb: 0,
-        thumb: ''
+        thumb: '',
+        isOriginal: 0
       }
     }
   },
@@ -138,6 +139,10 @@ export default {
         this.$toast('请选择栏目')
         return
       }
+      if (!this.thumb.id) {
+        this.$toast('请选择封面')
+        return
+      }
       let othis = this
       this.$confirm({
         title: '发布确认',
@@ -159,14 +164,18 @@ export default {
       form.content = content
       this.$http.post('/cri-cms-platform/article/mobileDispatchSave.monitor', form).then(res => {
         console.log(res)
+        this.$refs.editor.resetcontent()
         this.$toast('发布成功')
+        this.thumb = {}
         this.form = {
           title: '',
           content: '',
           channelIds: '',
-          abstarcts: ''
+          abstarcts: '',
+          hasThumb: 0,
+          thumb: '',
+          isOriginal: 0
         }
-        this.$refs.editor.content = ''
       })
     },
     getChannels () {
@@ -218,6 +227,7 @@ export default {
   .bigbigbox{
     width: 100%;
     background: #fff;
+    padding-bottom: 200px;
   }
   textarea{
     outline: none;

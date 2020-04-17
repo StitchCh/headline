@@ -68,7 +68,7 @@
         <div v-if="id" class="flex-center" style="height: 60px;">
           <div class="tab">
             <div class="tab-item" :class="{ on: $route.name === 'ArticleContent' }" @click="$router.replace({path: `/live/list/${id}`, query: $route.query})">内容</div>
-            <div class="tab-item" :class="{ on: $route.name === 'ArticleStatistics' }" @click="$router.replace({path: `/live/list/${id}/statistics`, query: $route.query})">统计</div>
+            <!--<div class="tab-item" :class="{ on: $route.name === 'ArticleStatistics' }" @click="$router.replace({path: `/live/list/${id}/statistics`, query: $route.query})">统计</div>-->
             <div class="tab-item" :class="{ on: $route.name === 'ArticleHistory' }" @click="$router.replace({path: `/live/list/${id}/history`, query: $route.query})">历史</div>
           </div>
         </div>

@@ -120,7 +120,8 @@ export default {
       searchTime: [],
       list: [],
       imgOrigin: '',
-      scaleType: ''
+      scaleType: '',
+      selected: []
     }
   },
   created () {
@@ -132,15 +133,6 @@ export default {
     }
   },
   computed: {
-    selected () {
-      let res = []
-      this.list.forEach(li => {
-        li.data.forEach(item => {
-          if (item.checked) res.push(item)
-        })
-      })
-      return res
-    },
     allList () {
       let res = []
       let { list } = this
@@ -212,11 +204,13 @@ export default {
       this.getList()
     },
     onItemClick (item) {
-      this.$emit('preview', {
-        type: 0,
-        list: this.allList,
-        index: this.allList.indexOf(item)
-      })
+      if (this.$route.path.indexOf('mobilePush') < 0) {
+        this.$emit('preview', {
+          type: 0,
+          list: this.allList,
+          index: this.allList.indexOf(item)
+        })
+      }
     },
     del () {
       this.$confirm({
@@ -241,7 +235,17 @@ export default {
     }, 1000),
     selectItem (item) {
       if (this.singleSelect) this.cancelSelect()
-      item.checked = !item.checked
+      if (item.checked) {
+        item.checked = !item.checked
+        this.selected.forEach((selected, index) => {
+          if (selected.id == item.id) {
+            this.selected.splice(index, 1)
+          }
+        })
+      } else {
+        this.selected.push(item)
+        item.checked = !item.checked
+      }
     },
     cancelSelect () {
       this.list.forEach(li => {
@@ -249,6 +253,7 @@ export default {
           item.checked = false
         })
       })
+      this.selected = []
     }
   }
 }

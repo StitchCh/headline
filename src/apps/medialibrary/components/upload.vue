@@ -7,7 +7,11 @@
       <i class="icon red f-20" v-if="status === 'error'" style="margin-left: 5px;">error_outline</i>
     </btn>
   </div>
-  <bubble v-if="bubbleShow" pos="bottom" align="end">
+  <bubble v-if="bubbleShow"
+          :style="{
+            'max-width': $route.path.indexOf('mobilePush') < 0 ? 'auto' : '300px'
+          }"
+          pos="bottom" align="end">
     <div style="width: 400px;">
       <div class="flex-v-center" style="border-bottom: 1px solid #eee;padding: 15px;">
         <div class="flex-item"></div>
@@ -51,7 +55,7 @@
   var limit = [
     'ROLE_SUPERMAN',
     'SUPER_ADMIN',
-    'ADMIN_ROLE',
+    'ADMIN_ROLE'
   ]
 
 
@@ -103,10 +107,12 @@ export default {
           uplimit = true
         }
       })
-      if (file.size > 1024 * 1024 * 80 && !uplimit) {
+
+      if (file.size > (1024 * 1024 * 80) && !uplimit) {
         this.$toast('请上传大小80M以内的文件')
         return
       }
+
       let data = {
         type: this.type,
         folderId: this.folderId,
