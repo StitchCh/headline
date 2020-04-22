@@ -303,6 +303,38 @@
 
         </div>
 
+        <div style="margin-bottom: 20px;">
+
+          <div class="data_title">
+            <h3>文章Top10</h3>
+          </div>
+
+          <div class="setting-card f-14">
+            <table>
+              <thead>
+              <th>序号</th>
+              <th>文章标题</th>
+              <th>创建人</th>
+              <th>文章类型</th>
+              <th>阅读数</th>
+              </thead>
+              <tbody>
+              <tr v-for="(item, index) in list2" :key="index">
+                <td>{{index + 1}}</td>
+                <td>{{item.title}}</td>
+                <td>{{item.createUser}}</td>
+                <td>{{item.app}}</td>
+                <td>{{item.pv}}</td>
+              </tr>
+              </tbody>
+            </table>
+            <!--<div class="flex-center">-->
+            <!--<pagination :page="page" :size="15" :total="total" @change="p => { page = p; }"></pagination>-->
+            <!--</div>-->
+          </div>
+
+        </div>
+
       </div>
 
 
@@ -339,6 +371,7 @@
         page: 1,
         list: [],
         list1: [],
+        list2: [],
         top: {
           newUsers: 0,
           avgPushedCount: 0,
@@ -672,6 +705,17 @@
           this.myEcharts3.setOption(this.option3)
           this.myEcharts4.setOption(this.option4)
         })
+      },
+      getTopArticle () {
+        let data = {
+          type: this.browseSearch.type,
+          fromDay: this.browseSearch.type == 4 ? moment(this.browseSearch.time[0]).format('YYYY-MM-DD') : '',
+          toDay:  this.browseSearch.type == 4 ? moment(this.browseSearch.time[1]).format('YYYY-MM-DD') : ''
+        }
+        this.$http.post('/cri-cms-platform/appStatistics/topContent.monitor', data).then(res => {
+          console.log('topContent', res)
+          this.list2 = res.list
+        })
       }
     },
     mounted () {
@@ -680,6 +724,7 @@
       this.getBrowse()
       this.getContent1()
       this.getTopLineData()
+      this.getTopArticle()
     },
     watch: {
       'browseSearch.type' () {
