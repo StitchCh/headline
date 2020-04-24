@@ -19,7 +19,8 @@
         <p>标题：</p>
         <input v-model="form.title" class="title" type="text" placeholder="请输入标题">
         <p>摘要：</p>
-        <textarea v-model="form.abstarcts" @change="" placeholder="摘要"></textarea>
+        <textarea v-model="form.abstarcts" @change="" placeholder="摘要，限制 128 字。"></textarea>
+        <div style="position: absolute;bottom: 3px;right: 0;" :style="{ color: form.abstarcts.length > 128 ? '#F44336' : '#999' }">{{form.abstarcts.length}} / 128</div>
       </div>
       <div class="option-item" style="margin: 0 10px;background: #fff;padding: 10px;">
         <div class="flex-v-center">
@@ -132,6 +133,10 @@ export default {
       let { content } = this.$refs.editor
       if (!this.form.title) {
         this.$toast('请输入标题')
+        return
+      }
+      if (this.form.abstarcts.length > 128) {
+        this.$toast('摘要不可超过 128 个字')
         return
       }
       if (!content) {
