@@ -189,6 +189,8 @@
 }
 .bdiv .quill-editor {
   height: calc(100% - 100px);
+  word-wrap: break-word;
+  word-break: normal;
 }
 .bdiv .ql-container{
   height: calc(100% - 60px) !important;

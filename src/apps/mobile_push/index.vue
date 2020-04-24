@@ -120,7 +120,10 @@ export default {
         }
       })
       if (selected.length) {
-        console.log(selected)
+        if (selected[0].scale != sessionStorage.imageratio) {
+          this.$toast('请选择比例为' + sessionStorage.imageratio + '的图片')
+          return false
+        }
         this.thumb = selected[0]
       }
       this.imageSelectorShow = false
@@ -163,7 +166,6 @@ export default {
       form.thumb = this.thumb.id
       form.content = content
       this.$http.post('/cri-cms-platform/article/mobileDispatchSave.monitor', form).then(res => {
-        console.log(res)
         this.$refs.editor.resetcontent()
         this.$toast('发布成功')
         this.thumb = {}
