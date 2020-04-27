@@ -20,7 +20,7 @@
         <input v-model="form.title" class="title" type="text" placeholder="请输入标题">
         <p>摘要：</p>
         <textarea v-model="form.abstarcts" @change="" placeholder="摘要，限制 128 字。"></textarea>
-        <div style="position: absolute;bottom: 3px;right: 0;" :style="{ color: form.abstarcts.length > 128 ? '#F44336' : '#999' }">{{form.abstarcts.length}} / 128</div>
+        <div style="text-align: right;" :style="{ color: form.abstarcts.length > 128 ? '#F44336' : '#999' }">{{form.abstarcts.length}} / 128</div>
       </div>
       <div class="option-item" style="margin: 0 10px;background: #fff;padding: 10px;">
         <div class="flex-v-center">
@@ -113,13 +113,18 @@ export default {
   },
   methods: {
     insertImage () {
+
       let selected = this.$refs.mediaPhotos.selected.map(v => {
-        console.log(v)
         return {
           src: this.$refs.mediaPhotos.imgOrigin + v.filePath + v.fileName,
-          id: v.id
+          id: v.id,
+          scale: v.scale
         }
       })
+      if (selected.length == 0) {
+        this.$toast('请选择图片')
+        return false
+      }
       if (selected.length) {
         if (selected[0].scale != sessionStorage.imageratio) {
           this.$toast('请选择比例为' + sessionStorage.imageratio + '的图片')

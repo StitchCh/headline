@@ -264,3 +264,11 @@ a{
   text-decoration: none;
   color: #00a0e9;
 }
+.ql-editor span{
+  display: inline-block;
+  min-width: 1px;
+}
+.ql-editor{
+  user-select: auto;
+  -webkit-user-select: auto;
+}

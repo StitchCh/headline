@@ -222,14 +222,14 @@
           <div class="setting-card f-14">
             <table>
               <thead>
-                <th>序号</th>
-                <th>姓名</th>
-                <th>发布内容</th>
-                <th>内容通过率</th>
-                <th>阅读</th>
-                <th>点赞</th>
-                <th>评论</th>
-                <th>分享</th>
+              <th>序号</th>
+              <th>姓名</th>
+              <th>发布内容</th>
+              <th>内容通过率</th>
+              <th>阅读</th>
+              <th>点赞</th>
+              <th>评论</th>
+              <th>分享</th>
               </thead>
               <tbody>
               <tr v-for="(item, index) in list" :key="item.id" @click="openDetail(item.id)">
@@ -245,7 +245,7 @@
               </tbody>
             </table>
             <!--<div class="flex-center">-->
-              <!--<pagination :page="page" :size="15" :total="total" @change="p => { page = p; }"></pagination>-->
+            <!--<pagination :page="page" :size="15" :total="total" @change="p => { page = p; }"></pagination>-->
             <!--</div>-->
           </div>
 
@@ -297,7 +297,7 @@
               </tbody>
             </table>
             <!--<div class="flex-center">-->
-              <!--<pagination :page="page" :size="15" :total="total" @change="p => { page = p; }"></pagination>-->
+            <!--<pagination :page="page" :size="15" :total="total" @change="p => { page = p; }"></pagination>-->
             <!--</div>-->
           </div>
 
@@ -334,6 +334,18 @@
           </div>
 
         </div>
+
+
+        <div style="margin-bottom: 20px;">
+
+          <div class="data_title">
+            <h3>文章分类统计</h3>
+          </div>
+
+          <div ref="echarts5" style="height: 400px;"></div>
+
+        </div>
+
 
       </div>
 
@@ -587,6 +599,20 @@
             }
           ]
         },
+        myEcharts5: null,
+        option5: {
+          xAxis: {
+            type: 'category',
+            data: []
+          },
+          yAxis: {
+            type: 'value'
+          },
+          series: [{
+            data: [],
+            type: 'bar'
+          }]
+        },
         browseData: null,
         browseSearch: {
           type: 1,
@@ -599,6 +625,25 @@
       }
     },
     methods: {
+      getCategory () {
+        let data = {
+          type: this.topData.type,
+          fromDay: this.topData.type == 4 ? moment(this.topData.time[0]).format('YYYY-MM-DD') : '',
+          toDay:  this.topData.type == 4 ? moment(this.topData.time[1]).format('YYYY-MM-DD') : ''
+        }
+        this.$http.post('/cri-cms-platform/appStatistics/category.monitor', data).then(res => {
+          // this.top = res.data
+          console.log(res)
+          this.option5.xAxis.data = []
+          this.option5.series[0].data = []
+          res.list.forEach(item => {
+            this.option5.xAxis.data.push(item.name)
+            this.option5.series[0].data.push(item.value)
+          })
+          this.myEcharts5 = echarts.init(this.$refs.echarts5)
+          this.myEcharts5.setOption(this.option5)
+        })
+      },
       getTopData () {
         let data = {
           type: this.topData.type,
@@ -725,6 +770,7 @@
       this.getContent1()
       this.getTopLineData()
       this.getTopArticle()
+      this.getCategory()
     },
     watch: {
       'browseSearch.type' () {
@@ -809,7 +855,7 @@
     font-size: 14px;
   }
   .data_item p:nth-child(2){
-   font-weight: bold;
+    font-weight: bold;
   }
   .data_item_box{
     display: flex;
