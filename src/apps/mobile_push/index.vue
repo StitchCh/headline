@@ -263,7 +263,7 @@ export default {
     width: 100%;
     height: 50px;
     font-size: 16px;
-    line-height: 50px;
+    line-height: 36px;
     text-align: center;
     background: #00a0e9;
     color: #fff;

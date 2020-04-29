@@ -20,9 +20,9 @@
   <!--</div>-->
 
   <!--<quill-editor v-model="content" ref="editor" :options="options" @change="getKeyGenerate"/>-->
-  <div>
+  <div class="mobile_text">
     <!--<vue-ueditor-wrap v-model="content" ref="editor" :config="config" :destroy="true" @ready="ready"/>-->
-    <v-quill v-model="content" ref="editor"></v-quill>
+    <v-quill v-model="content" @setGB="setGB" ref="editor"></v-quill>
   </div>
 
   <!--<div class="gallery-editor tc_box">-->
@@ -136,6 +136,21 @@ export default {
     }
   },
   methods: {
+    setGB () {
+      let box = document.getElementsByClassName('ql-container')[0]
+      let bigbox = document.getElementById('app')
+      let con = document.getElementsByClassName('ql-editor')[0]
+        box.addEventListener('scroll', e => {
+          requestAnimationFrame(() => {
+            con.style.boxShadow = con.style.boxShadow ? '' : 'rgba(0,0,0,0) 0 0 0'
+          })
+        })
+        bigbox.addEventListener('scroll', e => {
+          requestAnimationFrame(() => {
+            con.style.boxShadow = con.style.boxShadow ? '' : 'rgba(0,0,0,0) 0 0 0'
+          })
+        })
+    },
     getText () {
       return this.$refs.editor.getContentTxt()
       // return this.$refs.editor.quill.getText()

@@ -454,6 +454,8 @@
             lineHeight: '175'
           }
         }
+
+        this.$emit('setGB')
       }, 500)
 
       this.editor = this.$refs.myQuillEditor.quill;
@@ -980,7 +982,7 @@
         var format = this.editor.getFormat(range.index, range.length)
         var insert = this.editor.getContents(range.index - 1, 1).ops[0]
 
-        if (insert.insert == '\n' || insert.insert.image) {
+        if (insert && insert.insert == '\n' || insert.insert.image) {
           this.editor.format('size', this.toolbarData.size);
           this.editor.format('lineHeight', this.toolbarData.lineHeight);
           this.editor.format('font', this.toolbarData.font);
@@ -1089,7 +1091,6 @@
   }
 
   function bdStr (number) { //中文标点白名单（无对应半角）
-    console.log(number)
     let arr = [
       12304,
       12305,

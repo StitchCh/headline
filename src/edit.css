@@ -187,6 +187,11 @@
   height: 500px !important;
   overflow: auto;
 }
+.mobile_text .ql-container{
+  height: auto !important;
+  min-height: 500px !important;
+  overflow: hidden;
+}
 .bdiv .quill-editor {
   height: calc(100% - 100px);
   word-wrap: break-word;
@@ -264,11 +269,23 @@ a{
   text-decoration: none;
   color: #00a0e9;
 }
-.ql-editor span{
+.ql-editor .ql-cursor{
   display: inline-block;
   min-width: 1px;
 }
-.ql-editor{
-  user-select: auto;
-  -webkit-user-select: auto;
+.mobile_text .ql-editor{
+  -webkit-user-select:auto;
+  -moz-user-select:auto;
+  -o-user-select:auto;
+  user-select:auto;
+  margin: 0;
+  padding: 0;
+}
+.mobile_text .ql-container{
+  -webkit-user-select:auto;
+  -moz-user-select:auto;
+  -o-user-select:auto;
+  user-select:auto;
+  margin: 0;
+  padding: 0;
 }
