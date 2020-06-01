@@ -20,7 +20,6 @@
               format="YYYY-MM-DD"
               @confirm="topData.type = 4"
               show-buttons></vue-datepicker-local>
-            <!--<span class="data_title_span">数据导出</span>-->
           </div>
         </div>
 
@@ -28,7 +27,9 @@
         <div v-if="top" class="data_item_box">
 
           <div class="data_item">
-            <svg class="icon data_icon" viewBox="0 0 1024 1024" width="62" height="62" fill="#FFFFFF"><path d="M678.4 642.56c24.064-12.8 51.712-20.48 81.408-20.48 3.072 0 4.608-3.584 2.048-5.632-30.72-27.648-65.536-49.664-103.936-66.048-0.512 0-1.024-0.512-1.024-0.512 61.952-45.056 102.4-118.272 102.4-201.216 0-137.216-110.592-247.808-247.296-247.808S264.704 211.968 264.704 349.184c0 82.944 40.448 156.16 102.4 201.216-0.512 0-1.024 0.512-1.024 0.512-44.544 18.944-84.992 46.08-119.296 80.384-34.304 34.304-61.44 74.752-80.384 119.296-18.432 44.032-28.16 90.112-29.184 138.24 0 4.608 3.584 8.192 8.192 8.192H204.8c4.096 0 7.68-3.584 8.192-7.68 2.048-77.312 32.768-149.504 87.552-204.288 56.32-56.832 131.584-88.064 211.456-88.064 56.832 0 111.104 15.872 158.208 45.056 2.56 1.536 5.632 1.536 8.192 0.512zM512 521.216c-45.568 0-89.088-17.92-121.344-50.176-32.256-32.256-50.176-75.776-50.176-121.856s17.92-89.088 50.176-121.856c32.256-32.256 75.264-50.176 121.344-50.176s89.088 17.92 121.344 50.176c32.256 32.256 50.176 75.776 50.176 121.856S665.6 438.272 633.344 471.04c-32.256 32.256-75.264 50.176-121.344 50.176z m368.128 237.568h-83.968v-83.968c0-4.608-3.584-8.192-8.192-8.192H732.16c-4.608 0-8.192 3.584-8.192 8.192v83.968H640c-4.608 0-8.192 3.584-8.192 8.192v55.808c0 4.608 3.584 8.192 8.192 8.192h83.968v83.968c0 4.608 3.584 8.192 8.192 8.192h55.808c4.608 0 8.192-3.584 8.192-8.192v-83.968h83.968c4.608 0 8.192-3.584 8.192-8.192v-55.808c-0.512-4.608-4.096-8.192-8.192-8.192z" p-id="2847"></path></svg>
+            <svg class="icon data_icon" viewBox="0 0 1024 1024" width="62" height="62" fill="#FFFFFF">
+              <path d="M678.4 642.56c24.064-12.8 51.712-20.48 81.408-20.48 3.072 0 4.608-3.584 2.048-5.632-30.72-27.648-65.536-49.664-103.936-66.048-0.512 0-1.024-0.512-1.024-0.512 61.952-45.056 102.4-118.272 102.4-201.216 0-137.216-110.592-247.808-247.296-247.808S264.704 211.968 264.704 349.184c0 82.944 40.448 156.16 102.4 201.216-0.512 0-1.024 0.512-1.024 0.512-44.544 18.944-84.992 46.08-119.296 80.384-34.304 34.304-61.44 74.752-80.384 119.296-18.432 44.032-28.16 90.112-29.184 138.24 0 4.608 3.584 8.192 8.192 8.192H204.8c4.096 0 7.68-3.584 8.192-7.68 2.048-77.312 32.768-149.504 87.552-204.288 56.32-56.832 131.584-88.064 211.456-88.064 56.832 0 111.104 15.872 158.208 45.056 2.56 1.536 5.632 1.536 8.192 0.512zM512 521.216c-45.568 0-89.088-17.92-121.344-50.176-32.256-32.256-50.176-75.776-50.176-121.856s17.92-89.088 50.176-121.856c32.256-32.256 75.264-50.176 121.344-50.176s89.088 17.92 121.344 50.176c32.256 32.256 50.176 75.776 50.176 121.856S665.6 438.272 633.344 471.04c-32.256 32.256-75.264 50.176-121.344 50.176z m368.128 237.568h-83.968v-83.968c0-4.608-3.584-8.192-8.192-8.192H732.16c-4.608 0-8.192 3.584-8.192 8.192v83.968H640c-4.608 0-8.192 3.584-8.192 8.192v55.808c0 4.608 3.584 8.192 8.192 8.192h83.968v83.968c0 4.608 3.584 8.192 8.192 8.192h55.808c4.608 0 8.192-3.584 8.192-8.192v-83.968h83.968c4.608 0 8.192-3.584 8.192-8.192v-55.808c-0.512-4.608-4.096-8.192-8.192-8.192z" p-id="2847"></path>
+            </svg>
             <p>新增用户</p>
             <p style="font-weight: bold;font-size: 24px;">{{ top.newUsers }}</p>
             <p>日均<span style="margin-left: 5px;margin-right: 10px;">{{ top.avgNewUsers }}</span></p>
@@ -38,7 +39,7 @@
             <svg class="icon data_icon" viewBox="0 0 1024 1024" width="58" height="58" fill="#FFFFFF"><path d="M787.2 569.6c12.8 6.4 32 0 44.8-12.8 6.4-12.8 0-32-12.8-44.8-38.4-19.2-76.8-32-115.2-44.8 12.8-6.4 25.6-19.2 38.4-32 25.6-25.6 44.8-51.2 57.6-83.2 12.8-32 19.2-64 19.2-102.4 0-19.2 0-32-6.4-51.2C793.6 96 710.4 19.2 614.4 0h-57.6c-38.4 0-70.4 6.4-102.4 19.2-32 12.8-57.6 32-76.8 57.6-12.8 12.8-25.6 25.6-32 38.4-19.2 25.6-32 57.6-38.4 89.6-6.4 19.2-6.4 32-6.4 51.2 0 89.6 44.8 166.4 115.2 211.2-230.4 64-403.2 275.2-403.2 524.8 0 19.2 12.8 32 32 32s32-12.8 32-32C76.8 729.6 288 512 556.8 512c76.8 0 160 19.2 230.4 57.6zM364.8 256c0-108.8 83.2-192 192-192s192 83.2 192 192-83.2 192-192 192-192-83.2-192-192z" p-id="2100"></path><path d="M940.8 768H768c-12.8 0-25.6 6.4-25.6 19.2l-57.6 108.8-102.4-236.8c-6.4-12.8-19.2-19.2-25.6-19.2-12.8 0-25.6 6.4-32 19.2L473.6 768H313.6c-19.2 0-32 12.8-32 32s12.8 32 32 32h179.2c12.8 0 25.6-6.4 32-19.2l32-70.4 96 236.8c6.4 12.8 12.8 19.2 25.6 19.2s25.6-6.4 25.6-19.2l76.8-153.6h147.2c19.2 0 32-12.8 32-32s-6.4-25.6-19.2-25.6z" p-id="2101"></path></svg>
             <p>活跃用户</p>
             <p style="font-weight: bold;font-size: 24px;">{{ top.activeUsers }}</p>
-            <p>日均<span style="margin-left: 5px;margin-right: 10px;"><span style="margin-left: 5px;margin-right: 10px;">{{ top.avgActiveUsers }}</span></p>
+            <p>日均<span style="margin-left: 5px;margin-right: 10px;">{{ top.avgActiveUsers }}</span></p>
           </div>
 
           <div class="data_item">
@@ -74,7 +75,7 @@
             <p>总下载量</p>
             <p style="font-weight: bold;font-size: 24px;">{{ top.download }}</p>
             <p>日均<span style="margin-left: 5px;margin-right: 10px;">{{ top.newUsers }}</span></p>
-          </div>
+          </div> 
 
           <div class="data_item">
             <svg class="icon data_icon" viewBox="0 0 1024 1024" width="58" height="58" fill="#FFFFFF"><path d="M940.8 243.2l-6.4-6.4-121.6-134.4c-19.2-12.8-38.4-19.2-64-19.2H307.2c-25.6 0-51.2 6.4-64 25.6l-128 128-6.4 6.4c-38.4 19.2-57.6 51.2-57.6 89.6v531.2c0 51.2 44.8 96 96 96H896c51.2 0 96-44.8 96-96V332.8c0-38.4-19.2-70.4-51.2-89.6zM281.6 153.6c6.4-6.4 12.8-6.4 19.2-6.4h441.6c6.4 0 12.8 0 19.2 6.4l76.8 83.2h-640l83.2-83.2z m646.4 710.4c0 19.2-12.8 32-32 32H147.2c-19.2 0-32-12.8-32-32V332.8c0-19.2 12.8-32 32-32H896c19.2 0 32 12.8 32 32v531.2z" p-id="8749"></path><path d="M710.4 537.6c-12.8-12.8-32-12.8-44.8 0L556.8 640V396.8c0-19.2-12.8-32-32-32s-32 12.8-32 32V640L377.6 537.6c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l160 153.6c6.4 6.4 12.8 12.8 25.6 12.8s19.2-6.4 25.6-12.8L704 582.4c19.2-12.8 19.2-32 6.4-44.8z" p-id="8750"></path></svg>
@@ -138,9 +139,9 @@
           <span class="data_title_span" @click="trendType = 'install'" :class="{ data_titleon: trendType == 'install'}">{{ trendConfig['install'] }}</span>
         </div>
 
-        <div v-if="showEcharts1" ref="echarts" style="height: 400px;"></div>
+        <div v-show="showEcharts" ref="echarts" style="height: 400px;"></div>
 
-        <div v-else style="height: 400px;" class="load_box">
+        <div v-show="!showEcharts" style="height: 400px;" class="load_box">
           <loading></loading>
         </div>
       </div>
@@ -152,7 +153,11 @@
           <h3>渠道</h3>
         </div>
 
-        <div ref="echarts1" style="height: 400px;"></div>
+        <div v-show="showEcharts1" ref="echarts1" style="height: 400px;"></div>
+
+        <div v-show="!showEcharts1" style="height: 400px;" class="load_box">
+          <loading></loading>
+        </div>
       </div>
 
       <div class="box_line"></div>
@@ -183,7 +188,7 @@
               <div>{{ browseData.pv }}</div>
               <div>
                 同比 {{ parseInt(browseData.pvRatio) }}%
-                <i v-if="browseData.pvRatioTrend == 1" style="color: #ff9089;" class="icon">arrow_upward</i>
+                <i v-if="browseData.pvRatioTrend == 1" style="color: rgb(255, 174, 169);" class="icon">arrow_upward</i>
                 <i v-else class="icon" style="color: #86ffa6;">arrow_downward</i>
               </div>
             </div>
@@ -193,14 +198,18 @@
               <div>{{ browseData.uv }}</div>
               <div>
                 同比 {{ parseInt(browseData.uvRatio) }}%
-                <i v-if="browseData.uvRatioTrend == 1" style="color: #ff9089;" class="icon">arrow_upward</i>
+                <i v-if="browseData.uvRatioTrend == 1" style="color: rgb(255, 174, 169);" class="icon">arrow_upward</i>
                 <i v-else class="icon" style="color: #86ffa6;">arrow_downward</i>
               </div>
             </div>
 
           </div>
 
-          <div style="height: 400px;width: 100%;" ref="echarts2"></div>
+          <div v-show="showEcharts2" style="height: 400px;width: 100%;" ref="echarts2"></div>
+
+          <div v-show="!showEcharts2" style="height: 400px;width: 100%;" class="load_box">
+            <loading></loading>
+          </div>
 
         </div>
 
@@ -236,7 +245,7 @@
             <span class="data_title_span" :class="{ data_titleon: tab_left == 4}" @click="tab_left = 4">资讯分类</span>
           </div>
 
-          <div :style="{
+          <div v-show="showEchartsall" :style="{
             'margin-left': tab_left * -1000 + 'px'
           }" class="dc_tab_itembox">
             <div class="data_bb dc_tab_item" style="margin-bottom: 20px;">
@@ -386,6 +395,10 @@
 
             </div>
           </div>
+
+          <div v-show="!showEchartsall" style="height: 400px;width: 100%;" class="load_box">
+            <loading></loading>
+          </div>
         </div>
 
 
@@ -458,7 +471,6 @@
         },
         dateRange: [last, today],
         myEcharts: null,
-        showEcharts1: false,
         echartsData: {
           type: '',
           data: []
@@ -783,12 +795,16 @@
           require('../../assets/img/NO.1.png'),
           require('../../assets/img/NO.2.png'),
           require('../../assets/img/NO.3.png')
-        ]
+        ],
+        showEcharts: false,
+        showEcharts1: false,
+        showEcharts2: false,
+        showEchartsall: false,
       }
     },
     methods: {
       getCategory () {
-        this.loadingShow = true
+        this.showEchartsall = false
         let data = {
           type: this.topData.type,
           fromDay: this.topData.type == 4 ? moment(this.topData.time[0]).format('YYYY-MM-DD') : '',
@@ -801,9 +817,12 @@
             this.option5.xAxis.data.push(item.name)
             this.option5.series[0].data.push(item.value)
           })
-          this.myEcharts5 = echarts.init(this.$refs.echarts5)
-          this.myEcharts5.setOption(this.option5)
-          this.loadingShow = false
+          
+          this.showEchartsall = true
+          this.nextFun(() => {
+            this.myEcharts5 = echarts.init(this.$refs.echarts5)
+            this.myEcharts5.setOption(this.option5)
+          })
         })
       },
       getTopData () {
@@ -819,7 +838,7 @@
         })
       },
       getTopLineData () {
-        this.showEcharts1 = false
+        this.showEcharts = false
         this.$http.post('/cri-cms-platform/appStatistics/trend.monitor', {
           fromDay: moment(this.dateRange[0]).format('YYYY-MM-DD'),
           toDay: moment(this.dateRange[1]).format('YYYY-MM-DD')
@@ -840,13 +859,15 @@
           this.option.series[0].data = this.trendData[this.trendType].value
           this.option.series[0].name = this.trendConfig[this.trendType]
 
-          this.myEcharts = echarts.init(this.$refs.echarts)
-          this.myEcharts.setOption(this.option)
-          this.showEcharts1 = true
+          this.showEcharts = true
+          this.nextFun(() => {
+            this.myEcharts = echarts.init(this.$refs.echarts)
+            this.myEcharts.setOption(this.option)
+          })
         })
       },
       getPieData () {
-        this.loadingShow = true
+        this.showEcharts1 = false
         this.$http.post('/cri-cms-platform/appStatistics/download.monitor').then(res => {
           let arr = []
           let name = []
@@ -861,13 +882,15 @@
           this.option1.series[0].data = arr
           this.option1.legend.data = name
 
-          this.myEcharts1 = echarts.init(this.$refs.echarts1)
-          this.myEcharts1.setOption(this.option1)
-          this.loadingShow = false
+          this.showEcharts1 = true
+          this.nextFun(() => {
+            this.myEcharts1 = echarts.init(this.$refs.echarts1)
+            this.myEcharts1.setOption(this.option1)
+          })
         })
       },
       getBrowse () {
-        this.loadingShow = true
+        this.showEcharts2 = false
         let data = {
           type: this.browseSearch.type,
           fromDay: this.browseSearch.type == 4 ? moment(this.browseSearch.time[0]).format('YYYY-MM-DD') : '',
@@ -883,17 +906,16 @@
             this.option2.series[0].data.push(item.value)
             this.option2.series[1].data.push(this.browseData.uvTrend[index].value)
           })
-          console.log(this.option2.series[0].data)
-          console.log(this.option2.series[1].data)
-          this.$nextTick(() => {
+         
+          this.showEcharts2 = true
+          this.nextFun(() => {
             this.myEcharts2 = echarts.init(this.$refs.echarts2)
             this.myEcharts2.setOption(this.option2)
-            this.loadingShow = false
           })
         })
       },
       getContent1 () {
-        this.loadingShow = true
+        this.showEchartsall = false
         let data = {
           type: this.content1.type,
           fromDay: this.content1.type == 4 ? moment(this.content1.time[0]).format('YYYY-MM-DD') : '',
@@ -919,11 +941,15 @@
           this.option4.xAxis[0].data = name
           this.option4.series[0].data = value
           this.option3.series[0].data = res.list
-          this.myEcharts3 = echarts.init(this.$refs.echarts3)
-          this.myEcharts4 = echarts.init(this.$refs.echarts4)
-          this.myEcharts3.setOption(this.option3)
-          this.myEcharts4.setOption(this.option4)
-          this.loadingShow = false
+          
+          
+          this.showEchartsall = true
+          this.nextFun(() => {
+            this.myEcharts3 = echarts.init(this.$refs.echarts3)
+            this.myEcharts4 = echarts.init(this.$refs.echarts4)
+            this.myEcharts3.setOption(this.option3)
+            this.myEcharts4.setOption(this.option4)
+          })
         })
       },
       getTopArticle () {
@@ -938,6 +964,9 @@
           this.list2Page.total = res.list.length
           this.loadingShow = false
         })
+      },
+      nextFun (fun) {
+        this.$nextTick(fun)
       }
     },
     mounted () {
