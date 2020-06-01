@@ -41,10 +41,10 @@
           <div class="tool-item">
             <icon-btn small v-tooltip:bottom="'推送'">open_in_browser</icon-btn>
           </div> -->
-          <div class="tool-item">
+          <div v-if="!$route.query.article_theme" class="tool-item">
             <icon-btn small v-tooltip:bottom="'编辑'" @click="openWindow(`/articleEdit/article/${id}`)">edit</icon-btn>
           </div>
-          <div class="tool-item">
+          <div v-if="!$route.query.article_theme" class="tool-item">
             <icon-btn small v-tooltip:bottom="'删除'" @click="deleteArticle">delete</icon-btn>
           </div>
           <div class="tool-item relative">
@@ -55,7 +55,7 @@
               </div>
             </bubble>
           </div>
-          <div class="tool-item">
+          <div v-if="!$route.query.article_theme" class="tool-item">
             <icon-btn small v-tooltip:bottom="'复制并重新发布'" @click="copyArticle">file_copy</icon-btn>
           </div>
           <div class="tool-item">

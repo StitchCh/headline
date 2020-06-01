@@ -52,7 +52,6 @@ router.beforeEach((to, from, next) => {
   if (to.name != sessionStorage.getItem("pathName")) {
     sessionStorage.removeItem("viewScroll")
     sessionStorage.removeItem("toPage")
-    console.log('a')
   }
 
   setTransition(to, from)
@@ -60,7 +59,6 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((to) => {
-  console.log(to)
   document.title = to.meta.title || 'CCTP'
   let token = localStorage.token || sessionStorage.token
   let siteId = localStorage.siteId || sessionStorage.siteId

@@ -1,7 +1,7 @@
 <template>
 <div class="af-center flex-col">
   <div class="af-topbar flex-center">
-    <icon-btn class="add-btn" v-tooltip:bottom="'添加'" @click="$emit('add')">add</icon-btn>
+    <icon-btn v-if="!$route.query.article_theme" class="add-btn" v-tooltip:bottom="'添加'" @click="$emit('add')">add</icon-btn>
   </div>
   <div class="flex-v-center filter-bar c-6 f-13">
     <i class="icon c-a a item" :class="{ active: filter.recommend }" v-tooltip:top="'推荐'" @click="filter.recommend = ~~!filter.recommend || '';getList(true)">thumb_up</i>
@@ -148,10 +148,8 @@ export default {
     },
     '$route.query' (query) {
       let { filter } = this
-      if (query.status !== filter.status) {
-        filter.status = query.status
-        this.getList(true)
-      }
+      filter.status = query.status
+      this.getList(true)
     },
     'channels' () {
       this.filter.publishChannelId = this.channels.join(',')
@@ -204,6 +202,14 @@ export default {
       if (!this.url) return
       let { filter } = this
       if (refresh) filter.toPage = 1
+
+      console.log(this.$route.query.article_theme)
+      if (this.$route.query.article_theme) {
+        filter.appType = 'article_theme'
+        filter.status = 'all'
+      } else {
+        filter.appType = ''
+      }
       this.$refs.listView.loading = true
       this.$http.post(this.url, filter).then(res => {
         if (res.totalRowsAmount) {
