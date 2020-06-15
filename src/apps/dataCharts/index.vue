@@ -75,7 +75,7 @@
             <p>总下载量</p>
             <p style="font-weight: bold;font-size: 24px;">{{ top.download }}</p>
             <p>日均<span style="margin-left: 5px;margin-right: 10px;">{{ top.newUsers }}</span></p>
-          </div> 
+          </div>
 
           <div class="data_item">
             <svg class="icon data_icon" viewBox="0 0 1024 1024" width="58" height="58" fill="#FFFFFF"><path d="M940.8 243.2l-6.4-6.4-121.6-134.4c-19.2-12.8-38.4-19.2-64-19.2H307.2c-25.6 0-51.2 6.4-64 25.6l-128 128-6.4 6.4c-38.4 19.2-57.6 51.2-57.6 89.6v531.2c0 51.2 44.8 96 96 96H896c51.2 0 96-44.8 96-96V332.8c0-38.4-19.2-70.4-51.2-89.6zM281.6 153.6c6.4-6.4 12.8-6.4 19.2-6.4h441.6c6.4 0 12.8 0 19.2 6.4l76.8 83.2h-640l83.2-83.2z m646.4 710.4c0 19.2-12.8 32-32 32H147.2c-19.2 0-32-12.8-32-32V332.8c0-19.2 12.8-32 32-32H896c19.2 0 32 12.8 32 32v531.2z" p-id="8749"></path><path d="M710.4 537.6c-12.8-12.8-32-12.8-44.8 0L556.8 640V396.8c0-19.2-12.8-32-32-32s-32 12.8-32 32V640L377.6 537.6c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l160 153.6c6.4 6.4 12.8 12.8 25.6 12.8s19.2-6.4 25.6-12.8L704 582.4c19.2-12.8 19.2-32 6.4-44.8z" p-id="8750"></path></svg>
@@ -193,15 +193,15 @@
               </div>
             </div>
 
-            <div class="pie_item">
-              <div>独立访客</div>
-              <div>{{ browseData.uv }}</div>
-              <div>
-                同比 {{ parseInt(browseData.uvRatio) }}%
-                <i v-if="browseData.uvRatioTrend == 1" style="color: rgb(255, 174, 169);" class="icon">arrow_upward</i>
-                <i v-else class="icon" style="color: #86ffa6;">arrow_downward</i>
-              </div>
-            </div>
+            <!--<div class="pie_item">-->
+              <!--<div>独立访客</div>-->
+              <!--<div>{{ browseData.uv }}</div>-->
+              <!--<div>-->
+                <!--同比 {{ parseInt(browseData.uvRatio) }}%-->
+                <!--<i v-if="browseData.uvRatioTrend == 1" style="color: rgb(255, 174, 169);" class="icon">arrow_upward</i>-->
+                <!--<i v-else class="icon" style="color: #86ffa6;">arrow_downward</i>-->
+              <!--</div>-->
+            <!--</div>-->
 
           </div>
 
@@ -427,13 +427,14 @@
   import moment from 'moment'
   let time = new Date()
   var today = moment(time).format('YYYY-MM-DD')
-  var last = moment(new Date(time.getTime() - 24 * 60 * 60 * 1000 * 7)).format('YYYY-MM-DD')
+  var last = moment(new Date(time.getTime() - 24 * 60 * 60 * 1000 * 30)).format('YYYY-MM-DD')
 
 
   export default {
     components: { VueDatepickerLocal, Account, Dock },
     data () {
       return {
+        option1total: 0,
         tab_left: 0,
         loadingShow: false,
         total: 1,
@@ -610,13 +611,13 @@
               stack: '阅览总量',
               data: []
             },
-            {
-              name: '独立访客',
-              type: 'line',
-              smooth: true,
-              stack: '访客总量',
-              data: []
-            }
+            // {
+            //   name: '独立访客',
+            //   type: 'line',
+            //   smooth: true,
+            //   stack: '访客总量',
+            //   data: []
+            // }
           ]
         },
         myEcharts3: null,
@@ -711,10 +712,10 @@
                     ]
                     return new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                       offset: 1,
-                      color: colorList[params.dataIndex % 6].first
+                      color: colorList[params.dataIndex % 5].first
                     }, {
                       offset: 0,
-                      color: colorList[params.dataIndex % 6].end
+                      color: colorList[params.dataIndex % 5].end
                     }])
                   }
                 }
@@ -817,7 +818,7 @@
             this.option5.xAxis.data.push(item.name)
             this.option5.series[0].data.push(item.value)
           })
-          
+
           this.showEchartsall = true
           this.nextFun(() => {
             this.myEcharts5 = echarts.init(this.$refs.echarts5)
@@ -871,10 +872,14 @@
         this.$http.post('/cri-cms-platform/appStatistics/download.monitor').then(res => {
           let arr = []
           let name = []
+          this.option1total = 0
           res.data.forEach(item => {
             arr.push({
               value: item.channelCount,
-              name: item.channelName
+              name: item.channelName,
+              label: {
+                formatter: '{b} ({d}%)'
+              },
             })
             name.push(item.channelName)
           })
@@ -904,9 +909,9 @@
           this.browseData.pvTrend.forEach((item, index) => {
             this.option2.xAxis.data.push(item.day)
             this.option2.series[0].data.push(item.value)
-            this.option2.series[1].data.push(this.browseData.uvTrend[index].value)
+            // this.option2.series[1].data.push(this.browseData.uvTrend[index].value)
           })
-         
+
           this.showEcharts2 = true
           this.nextFun(() => {
             this.myEcharts2 = echarts.init(this.$refs.echarts2)
@@ -921,6 +926,7 @@
           fromDay: this.content1.type == 4 ? moment(this.content1.time[0]).format('YYYY-MM-DD') : '',
           toDay:  this.content1.type == 4 ? moment(this.content1.time[1]).format('YYYY-MM-DD') : ''
         }
+        console.log(data)
         this.$http.post('/cri-cms-platform/appStatistics/content.monitor', data).then(res => {
           this.list = res.list
           this.listPage.total = res.list.length
@@ -941,8 +947,8 @@
           this.option4.xAxis[0].data = name
           this.option4.series[0].data = value
           this.option3.series[0].data = res.list
-          
-          
+
+
           this.showEchartsall = true
           this.nextFun(() => {
             this.myEcharts3 = echarts.init(this.$refs.echarts3)
@@ -979,13 +985,52 @@
       this.getCategory()
     },
     watch: {
-      'browseSearch.type' () {
+      'browseSearch.type' (val) {
+        if (val != 4) {
+          let stime = new Date()
+          let stoday = moment(stime).format('YYYY-MM-DD')
+          let slast = ''
+          if (val == 1) {
+            slast = moment(new Date(time.getTime() - 24 * 60 * 60 * 1000 * 1)).format('YYYY-MM-DD')
+          } else if (val == 2) {
+            slast = moment(new Date(time.getTime() - 24 * 60 * 60 * 1000 * 7)).format('YYYY-MM-DD')
+          } else if (val == 3) {
+            slast = moment(new Date(time.getTime() - 24 * 60 * 60 * 1000 * 30)).format('YYYY-MM-DD')
+          }
+          this.browseSearch.time = [ slast, stoday]
+        }
         this.getBrowse()
       },
-      'content1.type' () {
+      'content1.type' (val) {
+        if (val != 4) {
+          let stime = new Date()
+          let stoday = moment(stime).format('YYYY-MM-DD')
+          let slast = ''
+          if (val == 1) {
+            slast = moment(new Date(time.getTime() - 24 * 60 * 60 * 1000 * 1)).format('YYYY-MM-DD')
+          } else if (val == 2) {
+            slast = moment(new Date(time.getTime() - 24 * 60 * 60 * 1000 * 7)).format('YYYY-MM-DD')
+          } else if (val == 3) {
+            slast = moment(new Date(time.getTime() - 24 * 60 * 60 * 1000 * 30)).format('YYYY-MM-DD')
+          }
+          this.content1.time = [ slast, stoday]
+        }
         this.getContent1()
       },
-      'topData.type' () {
+      'topData.type' (val) {
+        if (val != 4) {
+          let stime = new Date()
+          let stoday = moment(stime).format('YYYY-MM-DD')
+          let slast = ''
+          if (val == 1) {
+            slast = moment(new Date(time.getTime() - 24 * 60 * 60 * 1000 * 1)).format('YYYY-MM-DD')
+          } else if (val == 2) {
+            slast = moment(new Date(time.getTime() - 24 * 60 * 60 * 1000 * 7)).format('YYYY-MM-DD')
+          } else if (val == 3) {
+            slast = moment(new Date(time.getTime() - 24 * 60 * 60 * 1000 * 30)).format('YYYY-MM-DD')
+          }
+          this.topData.time = [ slast, stoday]
+        }
         this.getTopData()
       },
       'trendType' () {

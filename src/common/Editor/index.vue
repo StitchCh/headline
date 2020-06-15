@@ -420,9 +420,6 @@
         if (!this.editor) {
           return
         }
-        let sdelta = this.editor.getContents();
-        sdelta.ops = this.removeBlankNode(sdelta.ops)
-        this.editor.setContents(sdelta)
         // this.editor.blur()
 
         if (this.select == '1001') {
@@ -454,6 +451,17 @@
             lineHeight: '175'
           }
         }
+
+        let sdelta = this.editor.getContents();
+        sdelta.ops = this.removeBlankNode(sdelta.ops)
+        this.editor.setContents(sdelta)
+
+        var that = this
+        setTimeout(() => {
+          if (that.editor.getContents(0, 1).ops[0].insert == '\n') {
+            that.editor.deleteText(0, 1)
+          }
+        }, 300)
 
         this.$emit('setGB')
       }, 500)
@@ -1034,27 +1042,27 @@
 
 
   function testSection (number) { //全角字符
-    //大写英文
-    if (number > 64 + 65248 && number < 90 + 65248) {
-      return true
-    }
-    //小写英文
-    if (number > 96 + 65248 && number < 123 + 65248) {
-      return true
-    }
-    //数字和.（46）
-    if (number > 46 + 65248 && number < 58 + 65248) {
-      return true
-    }
-    //俄文
-    if (number > 1023 + 65248 && number < 1328 + 65248) {
-      return true
-    }
-    //罗马字符
-    if (number >= 8544 && number <= 8553) {
-      return true
-    }
-    return false
+      //大写英文
+      if (number > 64 + 65248 && number < 90 + 65248) {
+        return true
+      }
+      //小写英文
+      if (number > 96 + 65248 && number < 123 + 65248) {
+        return true
+      }
+      //数字和.（46）
+      if (number > 46 + 65248 && number < 58 + 65248) {
+        return true
+      }
+      //俄文
+      if (number > 1023 + 65248 && number < 1328 + 65248) {
+        return true
+      }
+      //罗马字符
+      if (number >= 8544 && number <= 8553) {
+        return true
+      }
+      return false
   }
 
   function testSectionB (number) { //全角字符
