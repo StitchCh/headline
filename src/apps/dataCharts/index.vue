@@ -18,7 +18,7 @@
             <vue-datepicker-local
               v-model="topData.time"
               format="YYYY-MM-DD"
-              @confirm="topData.type = 4"
+              @confirm="topData.type = 4;getTopData()"
               show-buttons></vue-datepicker-local>
           </div>
         </div>
@@ -174,7 +174,7 @@
             <vue-datepicker-local
               v-model="browseSearch.time"
               format="YYYY-MM-DD"
-              @confirm="browseSearch.type = 4"
+              @confirm="browseSearch.type = 4;getBrowse()"
               show-buttons></vue-datepicker-local>
             <!--<span class="data_title_span">数据导出</span>-->
           </div>
@@ -231,7 +231,7 @@
             <vue-datepicker-local
               v-model="content1.time"
               format="YYYY-MM-DD"
-              @confirm="content1.type = 4"
+              @confirm="content1.type = 4;getContent1()"
               show-buttons></vue-datepicker-local>
             <!--<span class="data_title_span">数据导出</span>-->
           </div>
@@ -298,11 +298,11 @@
                 <h3>流量贡献</h3>
               </div>
 
-              <div class="flex" style="height: 300px;">
+              <div>
 
-                <div style="width: 300px;" ref="echarts3"></div>
+                <div style="width: 100%;height: 400px;" ref="echarts3"></div>
 
-                <div style="width: 640px;margin-left: 20px;" ref="echarts4"></div>
+                <div style="width: 100%;height: 400px;" ref="echarts4"></div>
 
               </div>
 
@@ -533,7 +533,7 @@
         option1: {
           tooltip: {
             trigger: 'item',
-            formatter: '{a} <br/>{b}: {c} ({d}%)'
+            formatter: '{b}: {c} ({d}%)'
           },
           legend: {
             orient: 'vertical',
@@ -625,7 +625,12 @@
         option3: {
           tooltip: {
             trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
+            formatter: '{b} : {c} ({d}%)'
+          },
+          legend: {
+            orient: 'vertical',
+            left: 10,
+            data: []
           },
           color: ['#4962FC', '#67b8f3', '#ab9fe5', '#71e7b1', '#fecb9b', '#342af9'],
           series: [
@@ -633,8 +638,23 @@
               name: '访问来源',
               type: 'pie',
               avoidLabelOverlap: false,
-              radius: ['20%', '40%'],
-              center: ['50%', '60%'],
+              label: {
+                show: false,
+                position: 'center'
+              },
+              emphasis: {
+                label: {
+                  show: true,
+                  fontSize: '20',
+                  fontWeight: 'bold',
+                  formatter: '{b} \n {c} ({d}%)'
+                }
+              },
+              labelLine: {
+                show: false
+              },
+              radius: ['60%', '80%'],
+              center: ['50%', '50%'],
               data: [
                 {value: 335, name: '直接访问'},
                 {value: 310, name: '邮件营销'},
@@ -642,13 +662,6 @@
                 {value: 135, name: '视频广告'},
                 {value: 1548, name: '搜索引擎'}
               ],
-              emphasis: {
-                itemStyle: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-              }
             }
           ]
         },
@@ -805,28 +818,6 @@
       }
     },
     methods: {
-      getCategory () {
-        this.showEchartsall = false
-        let data = {
-          type: this.topData.type,
-          fromDay: this.topData.type == 4 ? moment(this.topData.time[0]).format('YYYY-MM-DD') : '',
-          toDay:  this.topData.type == 4 ? moment(this.topData.time[1]).format('YYYY-MM-DD') : ''
-        }
-        this.$http.post('/cri-cms-platform/appStatistics/category.monitor', data).then(res => {
-          this.option5.xAxis.data = []
-          this.option5.series[0].data = []
-          res.list.forEach(item => {
-            this.option5.xAxis.data.push(item.name)
-            this.option5.series[0].data.push(item.value)
-          })
-
-          this.showEchartsall = true
-          this.nextFun(() => {
-            this.myEcharts5 = echarts.init(this.$refs.echarts5)
-            this.myEcharts5.setOption(this.option5)
-          })
-        })
-      },
       getTopData () {
         this.top = null
         let data = {
@@ -874,42 +865,25 @@
           let arr = []
           let name = []
           this.option1total = 0
-
           let dataarr = 0
 
           res.data.forEach(item => {
             dataarr += Number(item.channelCount)
           })
 
-          let dataN = 0
-
           res.data.forEach(item => {
 
-            if (parseInt((item.channelCount / dataarr) * 100) > 4) {
-              arr.push({
-                value: item.channelCount,
-                name: item.channelName,
-                label: {
-                  formatter: '{b} ({d}%)'
-                },
-              })
-              name.push(item.channelName)
-            } else {
-
-              dataN += Number(item.channelCount)
-
-            }
+            arr.push({
+              value: item.channelCount,
+              name: item.channelName,
+              label: {
+                formatter: '{b} ({d}%)'
+              },
+            })
+            name.push(item.channelName)
 
           })
 
-          arr.push({
-            value: dataN,
-            name: '其他',
-            label: {
-              formatter: '{b} ({d}%)'
-            },
-          })
-          name.push('其他')
 
           this.option1.series[0].data = arr
           this.option1.legend.data = name
@@ -953,15 +927,25 @@
           fromDay: this.content1.type == 4 ? moment(this.content1.time[0]).format('YYYY-MM-DD') : '',
           toDay:  this.content1.type == 4 ? moment(this.content1.time[1]).format('YYYY-MM-DD') : ''
         }
-        console.log(data)
+
+        let truearr = []
+
         this.$http.post('/cri-cms-platform/appStatistics/content.monitor', data).then(res => {
           this.list = res.list
           this.listPage.total = res.list.length
+          truearr.push(true)
+          if (truearr.length == 5) {
+            this.showEchartsall = true
+          }
         })
 
         this.$http.post('/cri-cms-platform/appStatistics/channel.monitor', data).then(res => {
           this.list1 = res.list
           this.list1Page.total = res.list.length
+          truearr.push(true)
+          if (truearr.length == 5) {
+            this.showEchartsall = true
+          }
         })
 
         this.$http.post('/cri-cms-platform/appStatistics/traffic.monitor', data).then(res => {
@@ -971,32 +955,40 @@
             name.push(item.name)
             value.push(item.value)
           })
+
           this.option4.xAxis[0].data = name
           this.option4.series[0].data = value
           this.option3.series[0].data = res.list
+          this.option3.legend.data = name
 
-
-          this.showEchartsall = true
-          this.nextFun(() => {
-            this.myEcharts3 = echarts.init(this.$refs.echarts3)
-            this.myEcharts4 = echarts.init(this.$refs.echarts4)
-            this.myEcharts3.setOption(this.option3)
-            this.myEcharts4.setOption(this.option4)
-          })
+          truearr.push(true)
+          if (truearr.length == 5) {
+            this.showEchartsall = true
+          }
         })
-      },
-      getTopArticle () {
-        this.loadingShow = true
-        let data = {
-          type: this.browseSearch.type,
-          fromDay: this.browseSearch.type == 4 ? moment(this.browseSearch.time[0]).format('YYYY-MM-DD') : '',
-          toDay:  this.browseSearch.type == 4 ? moment(this.browseSearch.time[1]).format('YYYY-MM-DD') : ''
-        }
+
         this.$http.post('/cri-cms-platform/appStatistics/topContent.monitor', data).then(res => {
           this.list2 = res.list
           this.list2Page.total = res.list.length
-          this.loadingShow = false
+          truearr.push(true)
+          if (truearr.length == 5) {
+            this.showEchartsall = true
+          }
         })
+
+        this.$http.post('/cri-cms-platform/appStatistics/category.monitor', data).then(res => {
+          this.option5.xAxis.data = []
+          this.option5.series[0].data = []
+          res.list.forEach(item => {
+            this.option5.xAxis.data.push(item.name)
+            this.option5.series[0].data.push(item.value)
+          })
+          truearr.push(true)
+          if (truearr.length == 5) {
+            this.showEchartsall = true
+          }
+        })
+
       },
       nextFun (fun) {
         this.$nextTick(fun)
@@ -1008,10 +1000,20 @@
       this.getBrowse()
       this.getContent1()
       this.getTopLineData()
-      this.getTopArticle()
-      this.getCategory()
     },
     watch: {
+      'showEchartsall' (val) {
+        if (val) {
+          this.nextFun(() => {
+            this.myEcharts5 = echarts.init(this.$refs.echarts5)
+            this.myEcharts5.setOption(this.option5)
+            this.myEcharts3 = echarts.init(this.$refs.echarts3)
+            this.myEcharts4 = echarts.init(this.$refs.echarts4)
+            this.myEcharts3.setOption(this.option3)
+            this.myEcharts4.setOption(this.option4)
+          })
+        }
+      },
       'browseSearch.type' (val) {
         if (val != 4) {
           let stime = new Date()
@@ -1025,8 +1027,9 @@
             slast = moment(new Date(time.getTime() - 24 * 60 * 60 * 1000 * 30)).format('YYYY-MM-DD')
           }
           this.browseSearch.time = [ slast, stoday]
+          this.getBrowse()
         }
-        this.getBrowse()
+
       },
       'content1.type' (val) {
         if (val != 4) {
@@ -1041,8 +1044,8 @@
             slast = moment(new Date(time.getTime() - 24 * 60 * 60 * 1000 * 30)).format('YYYY-MM-DD')
           }
           this.content1.time = [ slast, stoday]
+          this.getContent1()
         }
-        this.getContent1()
       },
       'topData.type' (val) {
         if (val != 4) {
@@ -1057,8 +1060,8 @@
             slast = moment(new Date(time.getTime() - 24 * 60 * 60 * 1000 * 30)).format('YYYY-MM-DD')
           }
           this.topData.time = [ slast, stoday]
+          this.getTopData()
         }
-        this.getTopData()
       },
       'trendType' () {
         this.option.xAxis.data = this.trendData[this.trendType].time
