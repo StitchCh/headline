@@ -133,7 +133,7 @@
         <div class="data_title1" style="padding-top: 20px;">
           <span class="data_title_span" @click="trendType = 'newUsers'" :class="{ data_titleon: trendType == 'newUsers'}">{{ trendConfig['newUsers'] }}</span>
           <span class="data_title_span" @click="trendType = 'activeUsers'" :class="{ data_titleon: trendType == 'activeUsers'}">{{ trendConfig['activeUsers'] }}</span>
-          <span class="data_title_span" @click="trendType = 'retainedUsers'" :class="{ data_titleon: trendType == 'retainedUsers'}">{{ trendConfig['retainedUsers'] }}</span>
+          <!--<span class="data_title_span" @click="trendType = 'retainedUsers'" :class="{ data_titleon: trendType == 'retainedUsers'}">{{ trendConfig['retainedUsers'] }}</span>-->
           <span class="data_title_span" @click="trendType = 'duration'" :class="{ data_titleon: trendType == 'duration'}">{{ trendConfig['duration'] }}</span>
           <span class="data_title_span" @click="trendType = 'startup'" :class="{ data_titleon: trendType == 'startup'}">{{ trendConfig['startup'] }}</span>
           <span class="data_title_span" @click="trendType = 'download'" :class="{ data_titleon: trendType == 'download'}">{{ trendConfig['download'] }}</span>
@@ -185,7 +185,7 @@
           <div class="pie_lbox">
 
             <div class="pie_item">
-              <div>阅览次数</div>
+              <div>PV</div>
               <div>{{ browseData.pv }}</div>
               <div>
                 同比 {{ parseInt(browseData.pvRatio) }}%
@@ -194,15 +194,15 @@
               </div>
             </div>
 
-            <!--<div class="pie_item">-->
-              <!--<div>独立访客</div>-->
-              <!--<div>{{ browseData.uv }}</div>-->
-              <!--<div>-->
-                <!--同比 {{ parseInt(browseData.uvRatio) }}%-->
-                <!--<i v-if="browseData.uvRatioTrend == 1" style="color: rgb(255, 174, 169);" class="icon">arrow_upward</i>-->
-                <!--<i v-else class="icon" style="color: #86ffa6;">arrow_downward</i>-->
-              <!--</div>-->
-            <!--</div>-->
+            <div class="pie_item">
+              <div>UV</div>
+              <div>{{ browseData.uv }}</div>
+              <div>
+                同比 {{ parseInt(browseData.uvRatio) }}%
+                <i v-if="browseData.uvRatioTrend == 1" style="color: rgb(255, 174, 169);" class="icon">arrow_upward</i>
+                <i v-else class="icon" style="color: #86ffa6;">arrow_downward</i>
+              </div>
+            </div>
 
           </div>
 
@@ -378,10 +378,10 @@
                   </tr>
                   </tbody>
                 </table>
-                <div v-if="list2.length > 0" class="pagination_box">
-                  <span>共{{ list1Page.total }}条</span>
-                  <pagination :page="list2Page.page" :size="10" :total="list2Page.total" @change="p => { list2Page.page = p; }"></pagination>
-                </div>
+                <!--<div v-if="list2.length > 0" class="pagination_box">-->
+                  <!--<span>共{{ list1Page.total }}条</span>-->
+                  <!--<pagination :page="list2Page.page" :size="10" :total="list2Page.total" @change="p => { list2Page.page = p; }"></pagination>-->
+                <!--</div>-->
               </div>
 
             </div>
@@ -459,7 +459,7 @@
         trendConfig: {
           newUsers: '新增用户',
           activeUsers: '活跃用户',
-          retainedUsers: '次日留存',
+          // retainedUsers: '次日留存',
           duration: '使用时长',
           startup: '启动次数',
           download: '总下载量',
@@ -571,7 +571,7 @@
           },
           legend: {
             icon: 'roundRect',
-            data: ['阅览次数', '独立访客'],
+            data: ['PV', 'UV'],
             right: 20,
           },
           grid: {
@@ -606,19 +606,19 @@
           },
           series: [
             {
-              name: '阅览次数',
+              name: 'PV',
               type: 'line',
               smooth: true,
               stack: '阅览总量',
               data: []
             },
-            // {
-            //   name: '独立访客',
-            //   type: 'line',
-            //   smooth: true,
-            //   stack: '访客总量',
-            //   data: []
-            // }
+            {
+              name: 'UV',
+              type: 'line',
+              smooth: true,
+              stack: '访客总量',
+              data: []
+            }
           ]
         },
         myEcharts3: null,
@@ -904,13 +904,13 @@
         }
         this.$http.post('/cri-cms-platform/appStatistics/browse.monitor', data).then(res => {
           this.option2.xAxis.data = []
-          // this.option2.series[1].data = []
-          // this.option2.series[0].data = []
+          this.option2.series[1].data = []
+          this.option2.series[0].data = []
           this.browseData = res
           this.browseData.pvTrend.forEach((item, index) => {
             this.option2.xAxis.data.push(item.day)
             this.option2.series[0].data.push(item.value)
-            // this.option2.series[1].data.push(this.browseData.uvTrend[index].value)
+            this.option2.series[1].data.push(this.browseData.uvTrend[index].value)
           })
 
           this.showEcharts2 = true

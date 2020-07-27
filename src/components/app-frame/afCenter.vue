@@ -146,9 +146,7 @@ export default {
     'filter.toPage' () {
       sessionStorage.setItem("toPage", this.filter.toPage)
     },
-    '$route.query' (query) {
-      let { filter } = this
-      filter.status = query.status
+    '$route.query.status' (query) {
       this.getList(true)
     },
     'channels' () {
@@ -203,13 +201,15 @@ export default {
       let { filter } = this
       if (refresh) filter.toPage = 1
 
-      console.log(this.$route.query.article_theme)
       if (this.$route.query.article_theme) {
         filter.appType = 'article_theme'
         filter.status = 'all'
       } else {
         filter.appType = ''
+        filter.status = this.$route.query.status
       }
+      console.log('filter-----------')
+      console.log(filter)
       this.$refs.listView.loading = true
       this.$http.post(this.url, filter).then(res => {
         if (res.totalRowsAmount) {
