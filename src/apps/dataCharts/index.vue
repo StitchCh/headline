@@ -58,7 +58,7 @@
 
           <div class="data_item">
             <svg class="icon data_icon" viewBox="0 0 1024 1024" width="58" height="58" fill="#FFFFFF"><path d="M512 1024C229.376 1024 0 794.624 0 512S229.376 0 512 0s512 229.376 512 512-229.376 512-512 512z m0-960.512C264.192 63.488 63.488 264.192 63.488 512c0 247.808 200.704 448.512 448.512 448.512S960.512 759.808 960.512 512c0-247.808-200.704-448.512-448.512-448.512z m272.384 512H512c-10.24 0-18.432-4.096-24.576-12.288-4.096-6.144-8.192-12.288-8.192-20.48V223.232c0-18.432 14.336-30.72 32.768-30.72 18.432 0 32.768 14.336 32.768 30.72V512h239.616c18.432 0 30.72 14.336 30.72 32.768 0 16.384-12.288 30.72-30.72 30.72z" p-id="5545"></path></svg>
-            <p>使用时长</p>
+            <p>使用时长（单位分钟）</p>
             <p style="font-weight: bold;font-size: 24px;padding-bottom: 5px;">{{ top.duration }}</p>
             <p style="margin-bottom: 0;">人均日使用<span style="margin-left: 5px;margin-right: 10px;">{{ top.avgUserUsedDuration }}</span></p>
             <p style="margin-top: 0;">人均区间时间使用<span style="margin-left: 5px;margin-right: 10px;">{{ top.avgIntervalUserUsedDuration }}</span></p>
@@ -371,7 +371,11 @@
                            :src="imgList[index]" alt="">
                       <span v-else>{{ (listPage.page - 1) * 10 + index + 1 }}</span>
                     </td>
-                    <td style="text-align: left;">{{list2[(list2Page.page - 1) * 10 + index].title}}</td>
+                    <td style="text-align: left;">
+                      <div style="width: 500px;" class="nowrap"
+                        :title="list2[(list2Page.page - 1) * 10 + index].title"
+                      >{{list2[(list2Page.page - 1) * 10 + index].title}}</div>
+                    </td>
                     <td>{{list2[(list2Page.page - 1) * 10 + index].createUser}}</td>
                     <td>{{list2[(list2Page.page - 1) * 10 + index].app}}</td>
                     <td>{{list2[(list2Page.page - 1) * 10 + index].pv}}</td>
@@ -1281,5 +1285,11 @@
     width: 100%;
     height: 20px;
     background: #f5f5f5;
+  }
+  .nowrap{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
   }
 </style>
