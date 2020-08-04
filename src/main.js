@@ -37,6 +37,10 @@ axios.interceptors.request.use(function (config) {
 
 axios.interceptors.response.use(function (response) {
   if (response.data) {
+    if (response.data.code == undefined) {
+      return response.data
+    }
+
     let code = parseInt(response.data.code)
     if (code === 1) return (response.data.result || response.data.results)
     if (code === -2001) {

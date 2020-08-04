@@ -3,7 +3,17 @@
     <div class="af-topbar flex-v-center" style="background: #fff;">
       <dock title="统计" color="#2088ff"/>
       <div class="flex-item"></div>
-      <account/>
+      <div class="top_r_box">
+        <btn class="flex-v-center a top_r_btn" @click="topMenuShow = true">
+          <svg
+            style="margin-right: 10px;"
+            width="20" height="20" viewBox="0 0 1024 1024" version="1.1" p-id="2030">
+            <path fill="#ffffff" d="M1003.861333 219.050667c12.8 19.882667 20.138667 43.52 20.138667 68.949333V896a128 128 0 0 1-128 128h-768A128 128 0 0 1 0 896V288c0-25.429333 7.424-49.066667 20.138667-68.949333a32 32 0 0 1 3.072-9.386667L92.586667 70.826667A128 128 0 0 1 207.189333 0h609.706667a128 128 0 0 1 114.517333 70.826667l69.461334 138.837333c1.450667 2.901333 2.474667 6.058667 2.986666 9.386667z m-83.370666-27.050667l-46.421334-92.586667a64 64 0 0 0-57.173333-35.413333H207.104a64 64 0 0 0-57.173333 35.413333L103.509333 192h816.810667zM480 384c24.234667 64 40.96 106.666667 50.176 128-288 64-306.176 288-242.176 384-21.333333-128 74.666667-202.666667 288-224l32 128L800 512l-320-128z" p-id="2031"></path>
+          </svg>
+          <span>导出</span>
+        </btn>
+        <account/>
+      </div>
     </div>
 
     <div class="flex-item scroll-y relative" style="padding: 40px 0;">
@@ -412,7 +422,31 @@
 
     </div>
 
+    <div v-if="topMenuShow" @click="topMenuShow = false" class="export_zz_box">
+      <div @click.stop class="export_box">
+        <div class="data_title">
+          <h3>导出数据</h3>
 
+          <div style="cursor: pointer;" @click="topMenuShow = false">
+            <svg width="18" height="18" t="1596185192158" class="icon" viewBox="0 0 1366 1024" version="1.1" p-id="2018"><path d="M573.207 527.834l404.184-404.22a52.811 52.811 0 0 0 0-74.401l-2.217-2.217a52.836 52.836 0 0 0-74.413 0l-404.209 404.73-404.22-404.9a52.823 52.823 0 0 0-74.401 0l-2.217 2.217a51.915 51.915 0 0 0 0 74.414l404.22 404.377-404.22 404.22a52.823 52.823 0 0 0 0 74.402l2.217 2.217a52.811 52.811 0 0 0 74.401 0l404.22-404.22 404.22 404.22a52.823 52.823 0 0 0 74.414 0l2.217-2.217a52.811 52.811 0 0 0 0-74.401z m0 0" p-id="2019"></path></svg>
+          </div>
+        </div>
+
+        <div style="font-size: 14px;color: #888888;margin-bottom: 10px;">选择时间：</div>
+        <div style="margin-bottom: 30px;text-align: center;">
+          <vue-datepicker-local
+            v-model="menData"
+            format="YYYY-MM-DD"
+            show-buttons></vue-datepicker-local>
+        </div>
+
+        <div>
+          <btn class="top_r_btn1" @click="downloadEX('1001')">导出中文站</btn>
+          <btn class="top_r_btn1" @click="downloadEX('1002')">导出俄文站</btn>
+          <btn class="top_r_btn1" @click="downloadEX('1001,1002')" style="margin-right: 0;">导出全部</btn>
+        </div>
+      </div>
+    </div>
 
   </div>
 </template>
@@ -431,14 +465,16 @@
   import Dock from '@/components/dock'
   import moment from 'moment'
   let time = new Date()
-  var today = moment(time).format('YYYY-MM-DD')
-  var last = moment(new Date(time.getTime() - 24 * 60 * 60 * 1000 * 30)).format('YYYY-MM-DD')
-
+  var today = moment(new Date(time.getTime() - 24 * 60 * 60 * 1000 * 1)).format('YYYY-MM-DD')
+  var last = moment(new Date(time.getTime() - 24 * 60 * 60 * 1000 * 31)).format('YYYY-MM-DD')
+  var exportToday = moment(new Date(time.getTime() - 24 * 60 * 60 * 1000 * 1)).format('YYYY-MM-DD')
+  var exportLast = moment(new Date(time.getTime() - 24 * 60 * 60 * 1000 * 31)).format('YYYY-MM-DD')
 
   export default {
     components: { VueDatepickerLocal, Account, Dock },
     data () {
       return {
+        topMenuShow: false,
         option1total: 0,
         tab_left: 0,
         loadingShow: false,
@@ -475,6 +511,7 @@
           type: 3,
           time: [last, today]
         },
+        menData: [exportLast, exportToday],
         dateRange: [last, today],
         myEcharts: null,
         echartsData: {
@@ -822,6 +859,38 @@
       }
     },
     methods: {
+      downloadEX (type) {
+        let data = {
+          fromDay: moment(this.menData[0]).format('YYYY-MM-DD'),
+          toDay: moment(this.menData[1]).format('YYYY-MM-DD'),
+          siteId: type
+        }
+        responseType: 'arraybuffer',
+        this.$http({
+          method: 'post',
+          url: '/cri-cms-platform/appStatistics/export.monitor',
+          responseType: 'arraybuffer',
+          data: data
+        }).then(res => {
+          this.$toast('导出成功，开始下载')
+          let name = '全部'
+          if (type == '1001') {
+            name = '中文站'
+          } else if (type == '1002') {
+            name = '俄文站'
+          }
+          let blob = new Blob([res])
+          console.log(blob)
+          var link = document.createElement('a')
+          link.href = window.URL.createObjectURL(blob)
+          link.download =  '中俄头条运营数据统计' + data.fromDay + '至' + data.toDay + '_' + name + '.xlsx'
+          link.click()
+          //释放内存
+          window.URL.revokeObjectURL(link.href)
+        }).catch(err => {
+          console.log(err)
+        })
+      },
       getTopData () {
         this.top = null
         let data = {
@@ -1079,6 +1148,25 @@
 </script>
 
 <style scoped>
+  .export_zz_box{
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.5);
+  }
+  .export_box{
+    width: 365px;
+    background: #ffffff;
+    padding: 0 20px 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  }
   .load_box{
     display: flex;
     align-items: center;
@@ -1291,5 +1379,21 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     max-width: 100%;
+  }
+  .top_r_box{
+    display: flex;
+    align-items: center;
+  }
+  .top_r_btn{
+    border-radius: 4px;
+    padding: 5px 20px;
+    margin-right: 20px;
+  }
+  .top_r_btn1{
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    padding: 10px 0;
   }
 </style>
